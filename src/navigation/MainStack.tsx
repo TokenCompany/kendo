@@ -12,7 +12,15 @@ import { MainStackParamList } from "../types/navigation";
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 export const MainStack = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={{
+      headerBackTitleVisible: false,
+      headerTitleStyle: {
+        color: "#a53010",
+      },
+      headerTintColor: "#a53010",
+    }}
+  >
     <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }} />
     <Stack.Screen name="History" component={HistoryScreen} options={{ title: "稽古実績" }} />
     <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
