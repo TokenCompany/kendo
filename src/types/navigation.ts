@@ -5,4 +5,5 @@ export type MainStackParamList = {
   Schedule: undefined;
   Setting: undefined;
   Statistics: undefined;
+  ProfileEdit: undefined;
 };

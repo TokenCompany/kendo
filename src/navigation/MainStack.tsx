@@ -8,6 +8,7 @@ import { HistoryScreen } from "../screens/HistoryScreen";
 import { ScheduleScreen } from "../screens/ScheduleScreen";
 import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
+import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 // types
 import { MainStackParamList } from "../types/navigation";
 
@@ -29,5 +30,10 @@ export const MainStack = () => (
     <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
     <Stack.Screen name="Setting" component={SettingScreen} options={{ title: "設定" }} />
     <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: "実績表" }} />
+    <Stack.Screen
+      name="ProfileEdit"
+      component={ProfileEditScreen}
+      options={{ title: "プロフィール編集" }}
+    />
   </Stack.Navigator>
 );
