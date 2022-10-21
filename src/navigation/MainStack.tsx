@@ -1,5 +1,6 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { colors } from "../styles";
 // screens
 import { InitScreen } from "../screens/InitScreen";
 import { MenuScreen } from "../screens/MenuScreen";
@@ -17,9 +18,9 @@ export const MainStack = () => (
     screenOptions={{
       headerBackTitleVisible: false,
       headerTitleStyle: {
-        color: "#a53010",
+        color: colors.primary,
       },
-      headerTintColor: "#a53010",
+      headerTintColor: colors.primary,
     }}
   >
     <Stack.Screen name="Init" component={InitScreen} options={{ headerShown: false }} />
