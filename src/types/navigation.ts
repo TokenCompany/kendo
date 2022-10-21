@@ -1,4 +1,5 @@
 export type MainStackParamList = {
+  Init: undefined;
   Menu: undefined;
   History: undefined;
   Schedule: undefined;

@@ -1,6 +1,7 @@
 import React from "react";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 // screens
+import { InitScreen } from "../screens/InitScreen";
 import { MenuScreen } from "../screens/MenuScreen";
 import { HistoryScreen } from "../screens/HistoryScreen";
 import { ScheduleScreen } from "../screens/ScheduleScreen";
@@ -21,6 +22,7 @@ export const MainStack = () => (
       headerTintColor: "#a53010",
     }}
   >
+    <Stack.Screen name="Init" component={InitScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }} />
     <Stack.Screen name="History" component={HistoryScreen} options={{ title: "稽古実績" }} />
     <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
