@@ -1,9 +1,11 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+import type { NativeStackScreenProps } from "@react-navigation/native-stack";
+import { MainStackParamList } from "../types/navigation";
 
-type Props = {};
+type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
-export const HistoryScreen: React.FC<Props> = ({}) => {
+export const HistoryScreen: React.FC<Props> = ({}: Props) => {
   return (
     <View style={styles.container}>
       <View />
