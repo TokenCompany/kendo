@@ -13,6 +13,9 @@ const theme = {
     background: "#fff",
   },
 };
+
+// メインのファイル
+// 一番始めに呼ばれます
 export default function App() {
   return (
     <Provider store={store}>

@@ -12,17 +12,23 @@ import {
   PURGE,
   REGISTER,
 } from "redux-persist";
+
+// 永続化の設定
 const persistConfig = {
   key: "root",
   storage: AsyncStorage,
 };
 
+// reduxツリーの大元を定義します
+// reduxに保存する状態を増やす時はここに追加してください
 const rootReducer = combineReducers({
   profile: profileReducer,
 });
 
+// 永続化のための設定
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 
+// ストアの設定
 export const store = configureStore({
   reducer: persistedReducer,
   middleware: (getDefaultMiddleware) =>

@@ -1,3 +1,5 @@
+// navigation関連の型
+// Screenを追加する際にはここにも定義してください
 export type MainStackParamList = {
   Init: undefined;
   Menu: undefined;

@@ -9,6 +9,7 @@ import { Button } from "../components/Button";
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
 export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
+  // useProfileFormというカスタムフックにフォーム編集に関わるロジックを分離しています
   const { currentName, onChangeName, onPressSave } = useProfileForm();
 
   return (

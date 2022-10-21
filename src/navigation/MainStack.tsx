@@ -24,6 +24,7 @@ export const MainStack = () => (
       headerTintColor: colors.primary,
     }}
   >
+    {/* 画面を追加する時はここに追加してください */}
     <Stack.Screen name="Init" component={InitScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }} />
     <Stack.Screen name="History" component={HistoryScreen} options={{ title: "稽古実績" }} />
