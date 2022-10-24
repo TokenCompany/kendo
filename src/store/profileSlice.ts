@@ -6,11 +6,15 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 //
 export interface ProfileState {
   name: string;
+  age: string;
+  kenNumber: string;
 }
 
 // デフォルトの値
 const initialState: ProfileState = {
   name: "", // 氏名
+  age: "", // 年齢
+  kenNumber: "", // 年齢
 };
 
 export const counterSlice = createSlice({
@@ -21,10 +25,18 @@ export const counterSlice = createSlice({
     setName: (state, action: PayloadAction<string>) => {
       state.name = action.payload;
     },
+    setAge: (state, action: PayloadAction<string>) => {
+      state.age = action.payload;
+    },
+    setKenNumber: (state, action: PayloadAction<string>) => {
+      state.kenNumber = action.payload;
+    },
   },
 });
 
 // Action creators are generated for each case reducer function
 export const { setName } = counterSlice.actions;
+export const { setAge } = counterSlice.actions;
+export const { setKenNumber } = counterSlice.actions;
 
 export default counterSlice.reducer;

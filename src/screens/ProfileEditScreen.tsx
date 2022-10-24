@@ -10,12 +10,23 @@ type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
 export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   // useProfileFormというカスタムフックにフォーム編集に関わるロジックを分離しています
-  const { currentName, onChangeName, onPressSave } = useProfileForm();
+  const {
+    currentName,
+    currentAge,
+    currentKenNumber,
+    onChangeName,
+    onChangeAge,
+    onChangeKenNumber,
+    onPressSave,
+  } = useProfileForm();
 
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
         <TextForm label="氏名" value={currentName} onChangeText={onChangeName} />
+        {/* <TextForm label="生年月日" value={currentName} onChangeText={onChangeName} /> */}
+        <TextForm label="年齢" value={currentAge} onChangeText={onChangeAge} />
+        <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
       </View>
       <View style={styles.buttonContainer}>
         <Button text="プロフィール登録" onPress={onPressSave} />
