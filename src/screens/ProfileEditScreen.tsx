@@ -35,7 +35,16 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const showDatepicker = () => {
+    setShow(true);
     showMode("date");
+  };
+
+  const hideDatePicker = () => {
+    setShow(false);
+  };
+
+  const handleConfirm = () => {
+    hideDatePicker();
   };
 
   return (
@@ -44,9 +53,12 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         <TextForm label="氏名" value={currentName} onChangeText={onChangeName} />
         <View>
           <Button onPress={showDatepicker} text="誕生日設定" />
-          <Text>{currentBirthday.toLocaleString()}</Text>
+          <Text>{currentBirthday}</Text>
           {show && (
             <DateTimePicker
+              isVisible={show}
+              onConfirm={handleConfirm}
+              onCancel={hideDatePicker}
               testID="dateTimePicker"
               // currentBirthdayはYYYYMMDD形式で入っている
               // それをdayjsを用いて読み込んでDate型に変換

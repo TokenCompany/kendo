@@ -1,5 +1,4 @@
 import { useState } from "react";
-import { Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { setName } from "../store/profileSlice";
