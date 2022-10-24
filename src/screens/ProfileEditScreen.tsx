@@ -5,7 +5,8 @@ import { MainStackParamList } from "../types/navigation";
 import { TextForm } from "../components/TextForm";
 import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
+import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
@@ -22,10 +23,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeKenNumber,
     onPressSave,
   } = useProfileForm();
-
-  const [mode, setMode] = useState("date");
+  // useStateで型を指定しておく
+  // なにも指定しないと初期値"date"から推論してstring型になってしまう
+  const [mode, setMode] = useState<AndroidNativeProps["mode"]>("date");
   const [show, setShow] = useState(false);
-  const showMode = (currentMode) => {
+  const showMode = (currentMode: AndroidNativeProps["mode"]) => {
     if (Platform.OS === "android") {
       setShow(false);
     }
@@ -41,14 +43,24 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       <View style={styles.formContainer}>
         <TextForm label="氏名" value={currentName} onChangeText={onChangeName} />
         <View>
-          <Button onPress={showDatepicker} title="誕生日設定" />
+          <Button onPress={showDatepicker} text="誕生日設定" />
           <Text>{currentBirthday.toLocaleString()}</Text>
           {show && (
             <DateTimePicker
               testID="dateTimePicker"
-              value={currentBirthday}
+              // currentBirthdayはYYYYMMDD形式で入っている
+              // それをdayjsを用いて読み込んでDate型に変換
+              // valueはDate型なので
+              value={dayjs(currentBirthday, "YYYYMMDD").toDate()}
               mode={mode}
-              onChangeBirthday={onChangeBirthday}
+              onChange={(event, date) => {
+                if (date) {
+                  // birthdayはYYYYMMDDのnumber型で入れたい
+                  // onChangeで渡されるdateはDate型なのでそれをYYYYMMDDのnumberに変換する
+                  const birthday = Number(dayjs(date).format("YYYYMMDD"));
+                  onChangeBirthday(birthday);
+                }
+              }}
             />
           )}
         </View>
