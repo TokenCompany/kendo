@@ -1,9 +1,11 @@
 import { useState } from "react";
+import { Platform } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { setName } from "../store/profileSlice";
 import { setAge } from "../store/profileSlice";
 import { setKenNumber } from "../store/profileSlice";
+import { setBirthday } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -12,6 +14,8 @@ type Hooks = {
   onChangeAge: (text: string) => void;
   currentKenNumber: string;
   onChangeKenNumber: (text: string) => void;
+  currentBirthday: number;
+  onChangeBirthday: (text: number) => void;
   onPressSave: () => void;
 };
 
@@ -23,6 +27,7 @@ export const useProfileForm = (): Hooks => {
   const name = useSelector((state: RootState) => state.profile.name);
   const age = useSelector((state: RootState) => state.profile.age);
   const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
+  const birthday = useSelector((state: RootState) => state.profile.birthday);
   // currentNameは編集中の一時的な氏名です
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
@@ -30,6 +35,7 @@ export const useProfileForm = (): Hooks => {
   const [currentName, setCurrentName] = useState<string>(name);
   const [currentAge, setCurrentAge] = useState<string>(age);
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
+  const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeName = (text: string) => {
@@ -44,21 +50,28 @@ export const useProfileForm = (): Hooks => {
     setCurrentKenNumber(text);
   };
 
+  const onChangeBirthday = (text: number) => {
+    setCurrentBirthday(text);
+  };
+
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSave = () => {
     dispatch(setName(currentName));
     dispatch(setAge(currentAge));
     dispatch(setKenNumber(currentKenNumber));
+    dispatch(setBirthday(currentBirthday));
   };
 
   return {
     currentName,
     currentAge,
     currentKenNumber,
+    currentBirthday,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
+    onChangeBirthday,
     onPressSave,
   };
 };

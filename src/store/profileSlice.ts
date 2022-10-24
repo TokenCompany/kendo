@@ -14,7 +14,7 @@ export interface ProfileState {
 const initialState: ProfileState = {
   name: "", // 氏名
   age: "", // 年齢
-  kenNumber: "", // 年齢
+  kenNumber: "", // 全剣連番号
 };
 
 export const counterSlice = createSlice({
