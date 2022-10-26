@@ -26,7 +26,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   // useStateで型を指定しておく
   // なにも指定しないと初期値"date"から推論してstring型になってしまう
   const [show, setShow] = useState(false);
-  console.log(show);
   const showDatepicker = () => {
     setShow(true);
   };
@@ -47,9 +46,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           <Text>{currentBirthday}</Text>
           {show && (
             <DateTimePicker
-              isVisible={show}
-              onConfirm={handleConfirm}
               onCancel={hideDatePicker}
+              onConfirm={handleConfirm}
               testID="dateTimePicker"
               // currentBirthdayはYYYYMMDD形式で入っている
               // それをdayjsを用いて読み込んでDate型に変換

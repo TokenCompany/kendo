@@ -10,10 +10,18 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressProfile = () => {
     navigation.navigate("ProfileEdit");
   };
+  const onPressTraining = () => {
+    navigation.navigate("TrainingEdit");
+  };
 
   return (
     <View style={styles.container}>
-      <Button text="プロフィール" onPress={onPressProfile} />
+      <View style={styles.buttonContainer}>
+        <Button text="プロフィール編集" onPress={onPressProfile} />
+      </View>
+      <View>
+        <Button text="練習内容項目設定" onPress={onPressTraining} />
+      </View>
     </View>
   );
 };
@@ -23,5 +31,8 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  buttonContainer: {
+    marginBottom: 10,
   },
 });

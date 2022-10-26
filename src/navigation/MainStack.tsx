@@ -9,6 +9,7 @@ import { ScheduleScreen } from "../screens/ScheduleScreen";
 import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
+import { TrainingEditScreen } from "../screens/TrainingEditScreen";
 // types
 import { MainStackParamList } from "../types/navigation";
 
@@ -35,6 +36,11 @@ export const MainStack = () => (
       name="ProfileEdit"
       component={ProfileEditScreen}
       options={{ title: "プロフィール編集" }}
+    />
+    <Stack.Screen
+      name="TrainingEdit"
+      component={TrainingEditScreen}
+      options={{ title: "練習内容項目編集" }}
     />
   </Stack.Navigator>
 );

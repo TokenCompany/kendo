@@ -8,4 +8,5 @@ export type MainStackParamList = {
   Setting: undefined;
   Statistics: undefined;
   ProfileEdit: undefined;
+  TrainingEdit: undefined;
 };
