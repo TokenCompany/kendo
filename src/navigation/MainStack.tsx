@@ -10,6 +10,15 @@ import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
+import { PlaceScreen } from "../screens/PlaceScreen";
+import { SwingScreen } from "../screens/SwingScreen";
+import { FootworkScreen } from "../screens/FootworkScreen";
+import { BeatScreen } from "../screens/BeatScreen";
+import { ResponseScreen } from "../screens/ResponseScreen";
+import { JigeikoScreen } from "../screens/JigeikoScreen";
+import { TeacherScreen } from "../screens/TeacherScreen";
+import { KakariScreen } from "../screens/KakariScreen";
+import { TargetScreen } from "../screens/TargetScreen";
 // types
 import { MainStackParamList } from "../types/navigation";
 
@@ -42,5 +51,14 @@ export const MainStack = () => (
       component={TrainingEditScreen}
       options={{ title: "練習内容項目編集" }}
     />
+    <Stack.Screen name="Place" component={PlaceScreen} options={{ title: "練習場所" }} />
+    <Stack.Screen name="Swing" component={SwingScreen} options={{ title: "素振り" }} />
+    <Stack.Screen name="Footwork" component={FootworkScreen} options={{ title: "足さばき" }} />
+    <Stack.Screen name="Beat" component={BeatScreen} options={{ title: "基本打ち" }} />
+    <Stack.Screen name="Response" component={ResponseScreen} options={{ title: "応じ技" }} />
+    <Stack.Screen name="Jigeiko" component={JigeikoScreen} options={{ title: "地稽古" }} />
+    <Stack.Screen name="Teacher" component={TeacherScreen} options={{ title: "先生との稽古" }} />
+    <Stack.Screen name="Kakari" component={KakariScreen} options={{ title: "掛稽古" }} />
+    <Stack.Screen name="Target" component={TargetScreen} options={{ title: "年間稽古目標" }} />
   </Stack.Navigator>
 );
