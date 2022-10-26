@@ -25,18 +25,10 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   } = useProfileForm();
   // useStateで型を指定しておく
   // なにも指定しないと初期値"date"から推論してstring型になってしまう
-  const [mode, setMode] = useState<AndroidNativeProps["mode"]>("date");
   const [show, setShow] = useState(false);
-  const showMode = (currentMode: AndroidNativeProps["mode"]) => {
-    if (Platform.OS === "android") {
-      setShow(false);
-    }
-    setMode(currentMode);
-  };
-
+  console.log(show);
   const showDatepicker = () => {
     setShow(true);
-    showMode("date");
   };
 
   const hideDatePicker = () => {
@@ -46,7 +38,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const handleConfirm = () => {
     hideDatePicker();
   };
-
   return (
     <View style={styles.container}>
       <View style={styles.formContainer}>
@@ -63,8 +54,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               // currentBirthdayはYYYYMMDD形式で入っている
               // それをdayjsを用いて読み込んでDate型に変換
               // valueはDate型なので
-              value={dayjs(currentBirthday, "YYYYMMDD").toDate()}
-              mode={mode}
+              value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
+              mode="date"
               onChange={(event, date) => {
                 if (date) {
                   // birthdayはYYYYMMDDのnumber型で入れたい

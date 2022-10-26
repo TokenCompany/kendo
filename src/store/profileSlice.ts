@@ -14,7 +14,7 @@ export interface ProfileState {
 // デフォルトの値
 const initialState: ProfileState = {
   name: "", // 氏名
-  birthday: "", // 誕生日
+  birthday: 19900101, // 誕生日
   age: "", // 年齢
   kenNumber: "", // 全剣連番号
 };
