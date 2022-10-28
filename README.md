@@ -13,6 +13,9 @@ https://docs.expo.dev/get-started/installation/
 
 https://classic.yarnpkg.com/lang/en/docs/install/#mac-stable
 
+## Node version
+14.17.0
+
 # プロジェクトの実行
 
 ```
