@@ -15,9 +15,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       <Calendar
         // 日付を選択したときの挙動。
         theme={{
-          arrowColor: 'red',
-          calendarBackground: 'transparent',
-          todayTextColor: 'red',
+          arrowColor: '#A53010',
+          // calendarBackground: '#F0E8E7',
+          todayTextColor: 'transparent',
           textMonthFontWeight: 'bold',
           textMonthFontSize: 20,
           'stylesheet.calendar.header': {
@@ -38,17 +38,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           'stylesheet.calendar.main': {
             dayContainer: {
               borderColor: '#ffffff',
+              backgroundColor: '#F0E8E7',
               borderWidth: 2,
               flex:1,
               alignItems: 'center',
               paddingTop: 10,
-            },
-            week:{
-              flex:1,
-              marginTop:0,
-              flexDirection: 'row',
-              justifyContent: 'space-around',
-              backgroundColor: '#F0E8E7'
+              margingTop: 0,
             },
           }
         }}
