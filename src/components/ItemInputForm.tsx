@@ -3,20 +3,26 @@ import { TouchableOpacity, StyleSheet, View, Text, TextInput } from "react-nativ
 import { colors } from "../styles";
 
 type Props = {
-  visible: boolean;
-  text: string;
-  onPress: (text: string) => void;
+  visible: boolean; // 入力フォームの表示/非表示
+  text: string; // 入力中の文字
+  onChangeText: (text: string) => void;
+  onPressSubmit: () => void;
 };
 
-export const ItemInputForm: React.FC<Props> = ({ visible, onPress, text }) => {
-  return (
-    <View style={styles.item} visible={visible}>
-      <TextInput style={styles.input} onPress={onPress} placeholder={"テキスト入力"} />
-      <TouchableOpacity>
-        <Text>{text}</Text>
+export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, onChangeText }) => {
+  return visible ? (
+    <View style={styles.item}>
+      <TextInput
+        style={styles.input}
+        placeholder={"テキスト入力"}
+        value={text}
+        onChangeText={onChangeText}
+      />
+      <TouchableOpacity onPress={onPressSubmit}>
+        <Text>登録</Text>
       </TouchableOpacity>
     </View>
-  );
+  ) : null;
 };
 
 const styles = StyleSheet.create({
