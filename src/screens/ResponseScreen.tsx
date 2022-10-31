@@ -5,14 +5,19 @@ import { MainStackParamList } from "../types/navigation";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { FAB, Provider as PaperProvider } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
+import { SwipeItem } from "../components/SwipeItem";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Response">;
 
-const MinorItems = [{ id: 1, name: "item1" }];
-
 export const ResponseScreen: React.FC<Props> = ({}: Props) => {
   const [visible, setVisible] = useState(false);
-  const [currentText, setCurrentText] = useState("");
+  const [currentText, setCurrentText] = useState([]);
+
+  // 項目消去
+  // const onPressDalete = (key: number) => {
+  //   const newcurrentText = currentText.filter((item) => item.key !== key);
+  //   setCurrentText(newcurrentText);
+  // };
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
@@ -35,14 +40,16 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
 
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeListView
-        data={MinorItems}
-        renderItem={(date) => (
+        data={currentText}
+        renderItem={(data) => (
           <View style={styles.item}>
             <Text style={styles.input}>練習項目１</Text>
+            {/* <Text style={styles.input}>{item.name}</Text> */}
           </View>
         )}
         renderHiddenItem={(data, rowMap) => (
           <TouchableOpacity style={styles.dalete} onPress={() => console.log("Pressed")}>
+            {/* <TouchableOpacity style={styles.dalete} onPress={() => onPressDelete(item.key)}> */}
             <Text>消去</Text>
           </TouchableOpacity>
         )}
