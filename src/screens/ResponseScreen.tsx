@@ -12,6 +12,7 @@ const MinorItems = [{ id: 1, name: "item1" }];
 
 export const ResponseScreen: React.FC<Props> = ({}: Props) => {
   const [visible, setVisible] = useState(false);
+  const [currentText, setCurrentText] = useState("");
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
@@ -20,7 +21,17 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
       </View>
 
       {/* プラスボタン押したら出でくるフォーム */}
-      <ItemInputForm text="登録" visible={false} onPress={() => console.log("Pressed")} />
+      <ItemInputForm
+        text={currentText}
+        visible={visible}
+        onChangeText={(text) => {
+          setCurrentText(text);
+        }}
+        onPressSubmit={() => {
+          console.log("Pressed", currentText);
+          // TODO: ここでreduxにdispatchする
+        }}
+      />
 
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeListView
