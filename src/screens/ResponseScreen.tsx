@@ -1,28 +1,33 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { FAB, Provider as PaperProvider } from "react-native-paper";
-import { TextInput } from "react-native";
+import { ItemInputForm } from "../components/ItemInputForm";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Response">;
 
 const MinorItems = [{ id: 1, name: "item1" }];
 
 export const ResponseScreen: React.FC<Props> = ({}: Props) => {
+  const [visible, setVisible] = useState(false);
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
         <Text style={styles.MajorText}>応じ技</Text>
-        <FAB style={styles.fab} small icon="plus" onPress={() => console.log("Pressed")} />
+        <FAB style={styles.fab} small icon="plus" onPress={() => setVisible(true)} />
       </View>
 
+      {/* プラスボタン押したら出でくるフォーム */}
+      <ItemInputForm text="登録" visible={false} onPress={() => console.log("Pressed")} />
+
+      {/* フォーム入力後に表示される練習項目 */}
       <SwipeListView
         data={MinorItems}
         renderItem={(date) => (
           <View style={styles.item}>
-            <TextInput style={styles.input} placeholder={"テキスト入力"} />
+            <Text style={styles.input}>練習項目１</Text>
           </View>
         )}
         renderHiddenItem={(data, rowMap) => (
@@ -77,7 +82,7 @@ const styles = StyleSheet.create({
     shadowRadius: 0,
   },
   input: {
-    height: 40,
+    height: 25,
     borderColor: "#aaa",
     paddingHorizontal: 5,
     color: "#000",
