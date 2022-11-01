@@ -4,13 +4,13 @@ import { colors } from "../styles";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 type Props = {
-  text: string; // 入力中の文字
+  text: string; // アイテムに表示する文字を親の呼び出し側から渡す
+  onPressItem: () => void; // 親の呼び出し側でアイテムタップ時の処理を書く
+  onPressDelete: () => void; // 親の呼び出し側で削除タップ時の処理を書く
   data: string;
-  renderItem: string;
-  onPressdelete: () => void;
 };
 
-export const SwipeItem: React.FC<Props> = ({ onPressdelete, text, data, renderItem }) => {
+export const SwipeItem: React.FC<Props> = ({ onPressDelete, text, data }) => {
   return (
     <SwipeListView
       data={data}
@@ -20,7 +20,7 @@ export const SwipeItem: React.FC<Props> = ({ onPressdelete, text, data, renderIt
         </View>
       )}
       renderHiddenItem={(data, rowMap) => (
-        <TouchableOpacity style={styles.dalete} onPress={onPressdelete}>
+        <TouchableOpacity style={styles.dalete} onPress={onPressDelete}>
           <Text>消去</Text>
         </TouchableOpacity>
       )}

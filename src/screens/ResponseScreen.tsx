@@ -14,10 +14,10 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
   const [currentText, setCurrentText] = useState([]);
 
   // 項目消去
-  // const onPressDalete = (key: number) => {
-  //   const newcurrentText = currentText.filter((item) => item.key !== key);
-  //   setCurrentText(newcurrentText);
-  // };
+  const onPressDalete = (key: number) => {
+    const newcurrentText = currentText.filter((item) => item.key !== key);
+    setCurrentText(newcurrentText);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
@@ -39,21 +39,12 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
       />
 
       {/* フォーム入力後に表示される練習項目 */}
-      <SwipeListView
+      <SwipeItem
+        text={currentText}
         data={currentText}
-        renderItem={(data) => (
-          <View style={styles.item}>
-            <Text style={styles.input}>練習項目１</Text>
-            {/* <Text style={styles.input}>{item.name}</Text> */}
-          </View>
-        )}
-        renderHiddenItem={(data, rowMap) => (
-          <TouchableOpacity style={styles.dalete} onPress={() => console.log("Pressed")}>
-            {/* <TouchableOpacity style={styles.dalete} onPress={() => onPressDelete(item.key)}> */}
-            <Text>消去</Text>
-          </TouchableOpacity>
-        )}
-        leftOpenValue={75}
+        onPressDelete={() => {
+          console.log("Pressed", onPressDalete);
+        }}
       />
     </View>
   );
