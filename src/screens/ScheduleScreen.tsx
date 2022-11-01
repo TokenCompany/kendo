@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text, TouchableOpacity, TextInput } from "react-native";
+import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { Picker } from "@react-native-community/picker";
+import { TextButton } from "../components/TextButton";
 // import CalendarList from "react-native-calendars/src/calendar-list/new";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   // const [currentDate, setCurrentDate] = useState(dayjs());
-  const [time01, onChangeTime01] = React.useState("");
-  const [time02, onChangeTime02] = React.useState("");
-  const [selectedValue, setSelectedValue] = useState("");
+  const [time01, onChangeTime01] = React.useState();
+  const [time02, onChangeTime02] = React.useState();
+  const [selectedValue, setSelectedValue] = useState();
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame />
@@ -50,14 +51,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </Picker>
           </View>
         </View>
-        <View style={styles.boxButton}>
-          <TouchableOpacity style={styles.boxButtonItem}>
-            <Text style={styles.buttonText01}>登録</Text>
-          </TouchableOpacity>
-          <TouchableOpacity style={styles.boxButtonItem}>
-            <Text style={styles.buttonText02}>削除</Text>
-          </TouchableOpacity>
-        </View>
+        <TextButton text01="登録" text02="削除" />
       </View>
     </ScrollView>
   );
@@ -67,9 +61,6 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 10,
-  },
-  button: {
-    height: 40,
   },
   box: {
     marginTop: 10,
@@ -104,23 +95,6 @@ const styles = StyleSheet.create({
     borderColor: "#aaa",
     backgroundColor: "#fff",
     flexGrow: 1,
-  },
-  boxButton: {
-    marginTop: 10,
-    flexDirection: "row",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  boxButtonItem: {
-    flexGrow: 1,
-  },
-  buttonText01: {
-    color: "blue",
-    textAlign: "center",
-  },
-  buttonText02: {
-    color: "red",
-    textAlign: "center",
   },
   picker: {
     height: 30,
