@@ -5,8 +5,6 @@
     "ranking": "Ranking",
     "search": "Search"
   },
-  "schedule": {
-    "Time": "Time",
-    "Place": "場所"
-  }
+  "Time": "Time",
+  "place": "Place"
 }
