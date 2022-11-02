@@ -66,9 +66,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
         data[0].value = yearData[key]
       }
     }
-    return(
-      <BarChart data={passData} horizontal noOfSections={3} />
-    );
   }
   // 関数の実行
   // ①
