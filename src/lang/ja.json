@@ -1,0 +1,12 @@
+{
+  "tab": {
+    "home": "ホーム",
+    "course": "コース",
+    "ranking": "ランキング",
+    "search": "検索"
+  },
+  "schedule": {
+    "time": "時間",
+    "place": "場所"
+  }
+}
