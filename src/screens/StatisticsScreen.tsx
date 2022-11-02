@@ -1,8 +1,9 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity ,ScrollView} from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import dayjs from "dayjs";
+import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
@@ -51,10 +52,33 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
       },
     },
   };
-  console.log(allData[2022].luis.times);
-  
+  // 一番上のグラフのデータ
+  let passData = [{ value: 0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
+  let passData2 = [{ value: 0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
+  let passData3 = [{ value: 0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
+  // 関数の定義
+  let setData = (yearData,data)=>{
+    
+    for (const key in yearData) {
+      if (key === 'goal') {
+        data[1].value = yearData[key]
+      }else if (key === 'times') {
+        data[0].value = yearData[key]
+      }
+    }
+    return(
+      <BarChart data={passData} horizontal noOfSections={3} />
+    );
+  }
+  // 関数の実行
+  // ①
+  setData(allData[currentDate.year()].all,passData);
+  // ②
+  setData(allData[currentDate.year()].tanaka,passData2);
+  // ③
+  setData(allData[currentDate.year()].luis,passData3);
   return (
-    <React.Fragment>
+    <View styles={styles.container}>
       <View style={styles.yearWrap}>
         <TouchableOpacity
           style={[
@@ -80,15 +104,22 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           }}
         ></TouchableOpacity>
       </View>
-      <Text>test</Text>
-    </React.Fragment>
+      <ScrollView style={{ margin: 30 }}>
+        <BarChart data={passData} horizontal noOfSections={3} />
+        <BarChart data={passData2} horizontal noOfSections={3} />
+        <BarChart data={passData3} horizontal noOfSections={3} />
+      </ScrollView>
+    </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container:{
+    flex:1,
+  },
   yearWrap: {
     marginTop: 30,
-    flex: 1,
+    // flex: 1,
     justifyContent: "space-around",
     flexDirection: "row",
   },
