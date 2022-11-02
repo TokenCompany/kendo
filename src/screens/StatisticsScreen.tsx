@@ -53,27 +53,24 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
     },
   };
   // 一番上のグラフのデータ
-  let passData = [{ value: 0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
-  let passData2 = [{ value: 0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
-  let passData3 = [{ value: 0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
+  let passData:any = [];
   // 関数の定義
-  let setData = (yearData,data)=>{
-    
+  let setData = (yearData:any,data:any)=>{
     for (const key in yearData) {
-      if (key === 'goal') {
-        data[1].value = yearData[key]
-      }else if (key === 'times') {
-        data[0].value = yearData[key]
+      let array = [{ value:0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
+      for (const k in yearData[key]) {
+        if (k === 'goal') {
+          array[1].value = yearData[key][k]; 
+        }else if (k === 'times') {
+          array[0].value = yearData[key][k]; 
+        }
+        data.push(array);
       }
     }
   }
-  // 関数の実行
-  // ①
-  setData(allData[currentDate.year()].all,passData);
-  // ②
-  setData(allData[currentDate.year()].tanaka,passData2);
-  // ③
-  setData(allData[currentDate.year()].luis,passData3);
+  setData(allData[currentDate.year()],passData);
+  
+  
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -103,9 +100,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           ></TouchableOpacity>
         </View>
         <View style={{ margin: 30 }}>
-          <BarChart data={passData} horizontal noOfSections={3} />
-          <BarChart data={passData2} horizontal noOfSections={3} />
-          <BarChart data={passData3} horizontal noOfSections={3} />
+        { passData.map((data:any) => (<BarChart data={data} horizontal noOfSections={3} />))}
         </View>
       </ScrollView>
     </View>
