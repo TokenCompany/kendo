@@ -8,6 +8,51 @@ type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
 export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
+  const allData = {
+    2020:{
+      all:{
+        times:10
+      }
+    },
+    2021:{
+      all:{
+        times:20,
+        goal:15,
+      },
+      tanaka:{
+        times:8,
+        goal:5,
+      },
+      luis:{
+        times:8,
+        goal:5,
+      },
+      megu:{
+        times:4,
+        goal:5,
+      },
+    },
+    2022:{
+      all:{
+        times:10,
+        goal:15,
+      },
+      tanaka:{
+        times:2,
+        goal:5,
+      },
+      luis:{
+        times:5,
+        goal:5,
+      },
+      megu:{
+        times:3,
+        goal:5,
+      },
+    },
+  };
+  console.log(allData[2022].luis.times);
+  
   return (
     <React.Fragment>
       <View style={styles.yearWrap}>
