@@ -75,36 +75,38 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   // ③
   setData(allData[currentDate.year()].luis,passData3);
   return (
-    <View styles={styles.container}>
-      <View style={styles.yearWrap}>
-        <TouchableOpacity
-          style={[
-            styles.yearArrow,
-            {
-              transform: [{ rotate: "-45deg" }],
-            },
-          ]}
-          onPress={() => {
-            setCurrentDate(currentDate.add(-1, "year"));
-          }}
-        ></TouchableOpacity>
-        <Text style={styles.yearText}>{currentDate.year()}年</Text>
-        <TouchableOpacity
-          style={[
-            styles.yearArrow,
-            {
-              transform: [{ rotate: "135deg" }],
-            },
-          ]}
-          onPress={() => {
-            setCurrentDate(currentDate.add(1, "year"));
-          }}
-        ></TouchableOpacity>
-      </View>
-      <ScrollView style={{ margin: 30 }}>
-        <BarChart data={passData} horizontal noOfSections={3} />
-        <BarChart data={passData2} horizontal noOfSections={3} />
-        <BarChart data={passData3} horizontal noOfSections={3} />
+    <View style={styles.container}>
+      <ScrollView>
+        <View style={styles.yearWrap}>
+          <TouchableOpacity
+            style={[
+              styles.yearArrow,
+              {
+                transform: [{ rotate: "-45deg" }],
+              },
+            ]}
+            onPress={() => {
+              setCurrentDate(currentDate.add(-1, "year"));
+            }}
+          ></TouchableOpacity>
+          <Text style={styles.yearText}>{currentDate.year()}年</Text>
+          <TouchableOpacity
+            style={[
+              styles.yearArrow,
+              {
+                transform: [{ rotate: "135deg" }],
+              },
+            ]}
+            onPress={() => {
+              setCurrentDate(currentDate.add(1, "year"));
+            }}
+          ></TouchableOpacity>
+        </View>
+        <View style={{ margin: 30 }}>
+          <BarChart data={passData} horizontal noOfSections={3} />
+          <BarChart data={passData2} horizontal noOfSections={3} />
+          <BarChart data={passData3} horizontal noOfSections={3} />
+        </View>
       </ScrollView>
     </View>
   );
@@ -116,7 +118,6 @@ const styles = StyleSheet.create({
   },
   yearWrap: {
     marginTop: 30,
-    // flex: 1,
     justifyContent: "space-around",
     flexDirection: "row",
   },
