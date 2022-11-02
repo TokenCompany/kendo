@@ -5,6 +5,9 @@
     "ranking": "Ranking",
     "search": "Search"
   },
+  "screen": {
+    "history": "History"
+  },
   "schedule": {
     "Time": "Time",
     "Place": "場所"

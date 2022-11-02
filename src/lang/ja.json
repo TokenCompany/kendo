@@ -5,6 +5,9 @@
     "ranking": "ランキング",
     "search": "検索"
   },
+  "screen": {
+    "history": "稽古実績"
+  },
   "schedule": {
     "time": "時間",
     "place": "場所"

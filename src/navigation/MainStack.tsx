@@ -22,6 +22,8 @@ import { TargetScreen } from "../screens/TargetScreen";
 // types
 import { MainStackParamList } from "../types/navigation";
 
+import i18n from "../lang/localization";
+
 const Stack = createNativeStackNavigator<MainStackParamList>();
 
 export const MainStack = () => (
@@ -37,7 +39,11 @@ export const MainStack = () => (
     {/* 画面を追加する時はここに追加してください */}
     <Stack.Screen name="Init" component={InitScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="History" component={HistoryScreen} options={{ title: "稽古実績" }} />
+    <Stack.Screen
+      name="History"
+      component={HistoryScreen}
+      options={{ title: i18n.t("screen.history") }}
+    />
     <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
     <Stack.Screen name="Setting" component={SettingScreen} options={{ title: "設定" }} />
     <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: "実績表" }} />
