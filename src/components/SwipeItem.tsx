@@ -1,11 +1,10 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, View, Text, TextInput } from "react-native";
+import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { colors } from "../styles";
 import { SwipeListView } from "react-native-swipe-list-view";
 
 type Props = {
   text: string; // アイテムに表示する文字を親の呼び出し側から渡す
-  onPressItem: () => void; // 親の呼び出し側でアイテムタップ時の処理を書く
   onPressDelete: () => void; // 親の呼び出し側で削除タップ時の処理を書く
   data: string;
 };
