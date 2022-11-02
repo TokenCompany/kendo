@@ -1,23 +1,46 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import { SwipeListView } from "react-native-swipe-list-view";
 import { FAB, Provider as PaperProvider } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
 import { SwipeItem } from "../components/SwipeItem";
+import uuid from "react-native-uuid";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Response">;
 
 export const ResponseScreen: React.FC<Props> = ({}: Props) => {
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
 
   // 項目消去
-  const onPressDalete = (key: number) => {
-    const newcurrentText = currentText.filter((item) => item.key !== key);
-    setCurrentText(newcurrentText);
+  const onPressDalete = (id: any) => {
+    // console.log(id);
+    const newSubCategory = subCategory.filter((item) => item.id !== id);
+    setSubCategory(newSubCategory);
   };
+
+  // 項目入力
+  const onChangeText = (text: any) => {
+    // console.log(text);
+    setCurrentText(text);
+  };
+
+  // 項目登録
+  const onPressSubmit = () => {
+    const newSubCategory = [
+      ...subCategory,
+      {
+        text: currentText,
+        id: uuid.v4(),
+      },
+    ];
+    console.log(newSubCategory);
+    setCurrentText([]);
+    setSubCategory(newSubCategory);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
@@ -27,23 +50,24 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
 
       {/* プラスボタン押したら出でくるフォーム */}
       <ItemInputForm
-        text={currentText}
+        value={text}
         visible={visible}
-        onChangeText={(text) => {
-          setCurrentText(text);
+        onChangeText={() => {
+          onChangeText;
         }}
         onPressSubmit={() => {
-          console.log("Pressed", currentText);
+          onPressSubmit;
+          setVisible(false);
           // TODO: ここでreduxにdispatchする
         }}
       />
 
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeItem
+        data={subCategory}
         text={currentText}
-        data={currentText}
         onPressDelete={() => {
-          console.log("Pressed", onPressDalete);
+          onPressDalete;
         }}
       />
     </View>

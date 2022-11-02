@@ -1,9 +1,14 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { setText } from "../store/subCategorySlice";
+import { setSubCategory } from "../store/subCategorySlice";
 
-type Hooks = {};
+type Hooks = {
+  currentText: string;
+  subCategory: string;
+  onChangeText: (text: string) => void;
+  onPressSubmit: (text: string) => void;
+};
 
 export const useSubCategory = (): Hooks => {
   const dispatch = useDispatch();
@@ -11,6 +16,7 @@ export const useSubCategory = (): Hooks => {
   const text = useSelector((state: RootState) => state.subCategory.text);
 
   const [currentText, setCurrentText] = useState<string>(text);
+  const [subCategory, setSubCategory] = useState<string>(currentText);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeText = (text: string) => {
@@ -19,13 +25,14 @@ export const useSubCategory = (): Hooks => {
 
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
-  const onPressSave = () => {
-    dispatch(setText(currentText));
+  const onPressSubmit = () => {
+    dispatch(setSubCategory(currentText));
   };
 
   return {
     currentText,
+    subCategory,
     onChangeText,
-    onPressSave,
+    onPressSubmit,
   };
 };
