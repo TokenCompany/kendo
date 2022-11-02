@@ -5,12 +5,18 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // 練習内容項目設定の小項目に関わるredux
 //
 export interface SubCategoryState {
+  text: arrey[];
+  category: string;
+}
+
+interface arrey {
   text: string;
 }
 
 // デフォルトの値
 const initialState: SubCategoryState = {
-  text: "", // 小項目
+  text: [], // 小項目
+  category: "", // 大項目の種類
 };
 
 export const counterSlice = createSlice({
