@@ -5,32 +5,47 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // 練習内容項目設定の小項目に関わるredux
 //
 export interface SubCategoryState {
-  text: arrey[];
-  category: string;
+  placeSubCategories: subcategory[];
+  suburiSubCategories: subcategory[];
+  ashiSabakiSubCategories: subcategory[];
+  kihonUchiSubCategories: subcategory[];
+  oujiwazaSubCategories: subcategory[];
+  jigeikoSubCategories: subcategory[];
+  teacherSubCategories: subcategory[];
+  kakarigeikoSubCategories: subcategory[];
+  targetSubCategories: subcategory[];
 }
 
-interface arrey {
+interface subcategory {
   text: string;
+  id: string;
 }
 
 // デフォルトの値
 const initialState: SubCategoryState = {
-  text: [], // 小項目
-  category: "", // 大項目の種類
+  placeSubCategories: [],
+  suburiSubCategories: [],
+  ashiSabakiSubCategories: [],
+  kihonUchiSubCategories: [],
+  oujiwazaSubCategories: [],
+  jigeikoSubCategories: [],
+  teacherSubCategories: [],
+  kakarigeikoSubCategories: [],
+  targetSubCategories: [],
 };
 
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
   reducers: {
-    // textを更新するアクションです
-    setText: (state, action: PayloadAction<string>) => {
-      state.text = action.payload;
+    // subcategoryを更新するアクションです
+    setSubCategory: (state, action: PayloadAction<string>) => {
+      state.placeSubCategories.text = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setText } = counterSlice.actions;
+export const { setSubCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;

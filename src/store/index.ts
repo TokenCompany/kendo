@@ -2,6 +2,7 @@ import { configureStore } from "@reduxjs/toolkit";
 import { combineReducers } from "redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import profileReducer from "./profileSlice";
+import subCategoryReducer from "./subCategorySlice";
 import {
   persistStore,
   persistReducer,
@@ -23,6 +24,7 @@ const persistConfig = {
 // reduxに保存する状態を増やす時はここに追加してください
 const rootReducer = combineReducers({
   profile: profileReducer,
+  subCategory: subCategoryReducer,
 });
 
 // 永続化のための設定
