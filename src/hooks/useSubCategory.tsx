@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { setSubCategory } from "../store/subCategorySlice";
+import { setSubCategory as setSubCategoryToRedux } from "../store/subCategorySlice";
 
 type Hooks = {
   currentText: string;
@@ -26,7 +26,7 @@ export const useSubCategory = (): Hooks => {
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSubmit = () => {
-    dispatch(setSubCategory(currentText));
+    dispatch(setSubCategoryToRedux(currentText));
   };
 
   return {
