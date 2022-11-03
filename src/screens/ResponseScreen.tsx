@@ -15,14 +15,17 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
   const [subCategory, setSubCategory] = useState([]);
 
   // 項目消去
-  const onPressDalete = (id: any) => {
+  const onPressDalete = (id: string) => {
     const newSubCategory = subCategory.filter((item) => item.id !== id);
+    console.log(newSubCategory);
     setSubCategory(newSubCategory);
   };
 
   // 項目入力
   const onChangeText = (text: string) => {
     setCurrentText(text);
+    console.log(text);
+
   };
 
   // 項目登録
@@ -34,6 +37,7 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
         id: uuid.v4(),
       },
     ];
+    console.log(newSubCategory);
     setCurrentText([]);
     setSubCategory(newSubCategory);
   };
@@ -49,11 +53,11 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
       <ItemInputForm
         text={currentText}
         visible={visible}
-        onChangeText={() => {
-          onChangeText;
+        onChangeText={(value: string) => {
+          onChangeText();
         }}
         onPressSubmit={() => {
-          onPressSubmit;
+          onPressSubmit();
           setVisible(false);
           // TODO: ここでreduxにdispatchする
         }}
@@ -62,9 +66,9 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeItem
         data={subCategory}
-        text={currentText}
+        text={subCategory.text}
         onPressDelete={() => {
-          onPressDalete;
+          onPressDalete(subCategory.id);
         }}
       />
     </View>

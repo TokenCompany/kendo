@@ -9,13 +9,5 @@ export type MainStackParamList = {
   Statistics: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
-  Place: undefined;
-  Swing: undefined;
-  Footwork: undefined;
-  Beat: undefined;
   Response: undefined;
-  Jigeiko: undefined;
-  Teacher: undefined;
-  Kakari: undefined;
-  Target: undefined;
 };
