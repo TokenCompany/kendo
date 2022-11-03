@@ -31,6 +31,28 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           </View>
           <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
         </View>
+        <View style={styles.tableContainer}>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableData,styles.firstColumn]}>階級</Text>
+            <Text style={[styles.tableData,styles.secondColumn]}>合格</Text>
+            <Text style={[styles.tableData,styles.thirdColumn]}>合格日/審査までの日数</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableData,styles.firstColumn]}>初段</Text>
+            <Text style={[styles.tableData,styles.secondColumn]}>〇</Text>
+            <Text style={[styles.tableData,styles.thirdColumn]}>2006年11月20日</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableData,styles.firstColumn]}>弐段</Text>
+            <Text style={[styles.tableData,styles.secondColumn]}>〇</Text>
+            <Text style={[styles.tableData,styles.thirdColumn]}>2006年11月20日</Text>
+          </View>
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableData,styles.firstColumn]}>参段</Text>
+            <Text style={[styles.tableData,styles.secondColumn]}>〇</Text>
+            <Text style={[styles.tableData,styles.thirdColumn]}>2006年11月20日</Text>
+          </View>
+        </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button01")} onPress={onPressProfile} />
         </View>
@@ -76,4 +98,28 @@ const styles = StyleSheet.create({
     paddingLeft: 16,
     fontSize: 16,
   },
+  tableContainer: {
+    marginBottom: 20,
+    // width: '90%',
+    // justifyContent: 'center'
+    // alignItems: 'center',
+  },
+  tableRow:{
+    flexDirection: 'row',
+  },
+  tableData: {
+    borderWidth: 1,
+    borderColor: '#fff',
+    backgroundColor: '#F0E8E7',
+    padding: 10,
+  },
+  firstColumn:{
+    width: '20%'
+  },
+  secondColumn:{
+    width: '25%',
+  },
+  thirdColumn:{
+    width: '50%'
+  }
 });
