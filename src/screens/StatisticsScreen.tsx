@@ -162,9 +162,5 @@ const styles = StyleSheet.create({
   },
   barWrap: {
     marginTop: 100,
-    flex:2,
-    flexDirection:'column',
-    justifyContent: 'center',
-    // alignItems: 'center',
   }
 });
