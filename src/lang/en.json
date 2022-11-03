@@ -1,10 +1,14 @@
 {
-  "tab": {
-    "home": "Home",
-    "course": "Course",
-    "ranking": "Ranking",
-    "search": "Search"
+  "ScheduleScreen": {
+    "time": "Time",
+    "place": "Place",
+    "entry": "Entry",
+    "delete": "Delete"
   },
-  "Time": "Time",
-  "place": "Place"
+  "History": {
+    "time": "Time",
+    "place": "Place",
+    "input": "実績入力",
+    "ncw": "未実施"
+  }
 }
