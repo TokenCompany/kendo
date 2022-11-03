@@ -16,14 +16,12 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
 
   // 項目消去
   const onPressDalete = (id: any) => {
-    // console.log(id);
     const newSubCategory = subCategory.filter((item) => item.id !== id);
     setSubCategory(newSubCategory);
   };
 
   // 項目入力
-  const onChangeText = (text: any) => {
-    // console.log(text);
+  const onChangeText = (text: string) => {
     setCurrentText(text);
   };
 
@@ -36,7 +34,6 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
         id: uuid.v4(),
       },
     ];
-    console.log(newSubCategory);
     setCurrentText([]);
     setSubCategory(newSubCategory);
   };
@@ -50,7 +47,7 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
 
       {/* プラスボタン押したら出でくるフォーム */}
       <ItemInputForm
-        value={text}
+        text={currentText}
         visible={visible}
         onChangeText={() => {
           onChangeText;
