@@ -57,15 +57,26 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   // 関数の定義
   let setData = (yearData:any,data:any)=>{
     for (const key in yearData) {
-      let array = [{ value:0, frontColor: "#5d99c6", label: "稽古回数" },{ value: 0, frontColor: "#f48fb1", label: "稽古回数" }];
+      // console.log('test');
+      
+      let array = [];
+      if (key === 'all') {
+        array.push({ value:0, frontColor: "green", label: "稽古回数" },{ value: 0, frontColor: "green", label: "稽古目標" });
+        console.log(array);
+      }else{
+        array.push({ value:0, frontColor: "#A53010", label: key },{ value: 0, frontColor: "orange"}) 
+      }
+      
       for (const k in yearData[key]) {
+        console.log('test2');
+        
         if (k === 'goal') {
           array[1].value = yearData[key][k]; 
         }else if (k === 'times') {
           array[0].value = yearData[key][k]; 
         }
-        data.push(array);
       }
+      data.push(array);
     }
   }
   setData(allData[currentDate.year()],passData);
