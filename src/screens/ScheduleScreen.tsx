@@ -5,31 +5,21 @@ import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { Picker } from "@react-native-community/picker";
 import { TextButton } from "../components/TextButton";
-import * as Localization from "expo-localization";
-import { I18n } from "i18n-js";
-// import { i18n } from "../lang/localization";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
-  // const [currentDate, setCurrentDate] = useState(dayjs());
   const [time01, onChangeTime01] = React.useState();
   const [time02, onChangeTime02] = React.useState();
   const [selectedValue, setSelectedValue] = useState();
-  const translations = {
-    en: { time: "Time", place: "Place" },
-    ja: { time: "時間", place: "場所" },
-  };
-  const i18n = new I18n(translations);
-  i18n.locale = Localization.locale;
-  i18n.enableFallback = true;
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame />
       <View style={styles.box}>
         <Text style={styles.boxTitle}>2022年4月15日(金)</Text>
         <View style={styles.boxInputArea}>
-          <Text>◆{i18n.t("time")}</Text>
+          <Text>◆{i18n.t("Schedule.time")}</Text>
           <View style={styles.boxInputTime}>
             <View style={styles.boxInputTimeFlex}>
               <TextInput
@@ -47,7 +37,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           </View>
         </View>
         <View style={styles.boxInputArea}>
-          <Text>◆{i18n.t("place")}</Text>
+          <Text>◆{i18n.t("Schedule.place")}</Text>
           <View style={styles.boxInputText}>
             <Picker
               selectedValue={selectedValue}
@@ -60,7 +50,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </Picker>
           </View>
         </View>
-        <TextButton text01="登録" text02="削除" />
+        <TextButton text01={i18n.t("Schedule.entry")} text02={i18n.t("Schedule.delete")} />
       </View>
     </ScrollView>
   );

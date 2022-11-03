@@ -1,10 +1,14 @@
 {
-  "tab": {
-    "home": "ホーム",
-    "course": "コース",
-    "ranking": "ランキング",
-    "search": "検索"
+  "Schedule": {
+    "time": "時間",
+    "place": "場所",
+    "entry": "登録",
+    "delete": "削除"
   },
-  "time": "時間",
-  "place": "場所"
+  "History": {
+    "time": "時間",
+    "place": "場所",
+    "input": "実績入力",
+    "ncw": "未実施"
+  }
 }
