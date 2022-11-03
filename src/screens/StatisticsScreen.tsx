@@ -35,47 +35,69 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
     },
     2022:{
       all:{
-        times:10,
-        goal:15,
+        times:100,
+        goal:150,
       },
       tanaka:{
-        times:2,
-        goal:5,
+        times:20,
+        goal:50,
       },
       luis:{
-        times:5,
-        goal:5,
+        times:50,
+        goal:50,
       },
       megu:{
-        times:3,
-        goal:5,
+        times:30,
+        goal:50,
       },
     },
   };
   // 一番上のグラフのデータ
-  let passData:any = [];
+  let mainData:any = [];
+  // それ以降のグラフのデータ
+  let subData:any = [];
   // 関数の定義
-  let setData = (yearData:any,data:any)=>{
+  let setData = (yearData:any,data:any,teacherData:any)=>{
     for (const key in yearData) {
-      let array = [];
+      let LabelNum:any = [];
       if (key === 'all') {
-        array.push({ value:0, frontColor: "green", label: "稽古回数" },{ value: 0, frontColor: "green", label: "稽古目標" });
-      }else{
-        array.push({ value:0, frontColor: "#A53010", label: key },{ value: 0, frontColor: "orange"}) 
-      }
-      
-      for (const k in yearData[key]) {
-        if (k === 'goal') {
-          array[1].value = yearData[key][k]; 
-        }else if (k === 'times') {
-          array[0].value = yearData[key][k]; 
+        data.push({ value:0, frontColor: "#61A68A", label: "稽古回数", topLabelComponent: () => (
+          <Text style={{color: '#000', fontSize: 12, marginBottom: 6}}>{LabelNum[0]}</Text>
+        ) },{ value: 0, frontColor: "#61A68A", label: "稽古目標", topLabelComponent: () => (
+          <Text style={{color: '#000', fontSize: 12, marginBottom: 6}}>{LabelNum[1]}</Text>
+        ), });
+        for (const k in yearData[key]) {
+          if (k === 'goal') {
+            data[1].value = yearData[key][k]; 
+            LabelNum[1] = yearData[key][k];
+          }else if (k === 'times') {
+            data[0].value = yearData[key][k]; 
+            LabelNum[0] = yearData[key][k];
+          }
         }
+      }else{
+        let array:any = [];
+        for (const k in yearData[key]) {
+          let obj:any = {};
+          if (k === 'goal') {
+            obj = { value:0, frontColor: "#A53010", label: key, topLabelComponent: () => (
+              <Text style={{color: '#000', fontSize: 12, marginBottom: 6}}>{yearData[key][k]}</Text>
+            ), }
+            obj.value = yearData[key][k]; 
+          }else if (k === 'times') {
+            obj = { value: 0, frontColor: "#DE7E18",barStyle: { marginLeft: -20 }, topLabelComponent: () => (
+              <Text style={{color: '#000', fontSize: 12, marginTop:-30}}>{yearData[key][k]}</Text>
+            ), }
+            obj.value = yearData[key][k]; 
+          }
+          array.push(obj);
+        }
+        teacherData.push(array[1]);
+        teacherData.push(array[0]);
       }
-      data.push(array);
     }
   }
-  setData(allData[currentDate.year()],passData);
-  
+  setData(allData[currentDate.year()],mainData,subData);
   
   return (
     <View style={styles.container}>
@@ -105,8 +127,9 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             }}
           ></TouchableOpacity>
         </View>
-        <View style={{ margin: 30 }}>
-        { passData.map((data:any) => (<BarChart data={data} horizontal noOfSections={3} />))}
+        <View style={styles.barWrap}>
+          <BarChart data={mainData} horizontal rulesType='solid' xAxisLabelWidth={35} initialSpacing={20} noOfSections={3} />
+          <BarChart data={subData} horizontal rulesType='solid' yAxisAtTop noOfSections={3} />
         </View>
       </ScrollView>
     </View>
@@ -123,11 +146,11 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   yearArrow: {
-    width: 10,
-    height: 10,
+    width: 18,
+    height: 18,
     borderColor: "#A53010",
-    borderTopWidth: 3,
-    borderLeftWidth: 3,
+    borderTopWidth: 5,
+    borderLeftWidth: 5,
     marginTop: 10,
   },
   yearText: {
@@ -135,5 +158,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     fontSize: 20,
     height: 30,
+    marginTop:10,
   },
+  barWrap: {
+    marginTop: 100,
+    flex:2,
+    flexDirection:'column',
+    justifyContent: 'center',
+    // alignItems: 'center',
+  }
 });
