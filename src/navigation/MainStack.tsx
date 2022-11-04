@@ -1,5 +1,5 @@
 import React from "react";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createNativeStackNavigator, NativeStackScreenProps } from "@react-navigation/native-stack";
 import { colors } from "../styles";
 // screens
 import { InitScreen } from "../screens/InitScreen";
@@ -11,12 +11,17 @@ import { StatisticsScreen } from "../screens/StatisticsScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
 import { SubCategoryScreen } from "../screens/SubCategoryScreen";
+import { SettingButton } from "../components/SettingButton";
 // types
 import { MainStackParamList } from "../types/navigation";
 
+type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 const Stack = createNativeStackNavigator<MainStackParamList>();
+// const onPressMenu = () => {
+//   navigation.navigate("MenuScreen");
+// };
 
-export const MainStack = () => (
+export const MainStack: React.FC<Props> = ({ navigation }: Props) => (
   <Stack.Navigator
     screenOptions={{
       headerBackTitleVisible: false,
@@ -24,6 +29,14 @@ export const MainStack = () => (
         color: colors.primary,
       },
       headerTintColor: colors.primary,
+      headerRight: (props) => (
+        <SettingButton
+          {...props}
+          onPress={() => {
+            navigation.navigate("MenuScreen");
+          }}
+        />
+      ),
     }}
   >
     {/* 画面を追加する時はここに追加してください */}
