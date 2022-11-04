@@ -18,11 +18,11 @@ import { MainStackParamList } from "../types/navigation";
 const Stack = createNativeStackNavigator<MainStackParamList>();
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
-export const MainStack: React.FC<Props> = ({ navigation }: Props) => {
-  const onPressMenu = () => {
-    navigation.navigate("Menu");
-  };
+const renderMenuButton = (navigation: any) => {
+  return <SettingButton onPress={() => navigation.navigate("Menu")} />;
+};
 
+export const MainStack: React.FC<Props> = () => {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -31,7 +31,6 @@ export const MainStack: React.FC<Props> = ({ navigation }: Props) => {
           color: colors.primary,
         },
         headerTintColor: colors.primary,
-        headerRight: () => <SettingButton onPress={onPressMenu} />,
       }}
     >
       {/* 画面を追加する時はここに追加してください */}
@@ -44,7 +43,10 @@ export const MainStack: React.FC<Props> = ({ navigation }: Props) => {
       <Stack.Screen
         name="ProfileEdit"
         component={ProfileEditScreen}
-        options={{ title: "プロフィール編集" }}
+        options={({ navigation }) => ({
+          headerTitle: "プロフィール編集",
+          headerRight: () => renderMenuButton(navigation),
+        })}
       />
       <Stack.Screen
         name="TrainingEdit"
