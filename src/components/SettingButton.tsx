@@ -1,14 +1,13 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, Image } from "react-native";
 
-// type Props = {
-//   onPress: () => void;
-// };
+type Props = {
+  onPress: () => void;
+};
 
-// export const SettingButton: React.FC<Props> = ({ onPress }) => {
-export const SettingButton = () => {
+export const SettingButton: React.FC<Props> = ({ onPress }) => {
   return (
-    <TouchableOpacity style={styles.container}>
+    <TouchableOpacity style={styles.container} onPress={onPress}>
       <Image style={styles.image} source={require("../../assets/images/topButton.jpg")} />
     </TouchableOpacity>
   );
