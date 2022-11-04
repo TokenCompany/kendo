@@ -17,10 +17,6 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
   // ここで遷移元から渡されたパラメータを取得する
   // const subCateogoryType = route.params;
 
-  const [visible, setVisible] = useState(false);
-  const [currentText, setCurrentText] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
-
   // 小項目の出し分け
   // const renderSubCategoryEditor = () => {
   //   if (subCateogoryType === "place") {
@@ -50,11 +46,15 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
   //   );
   // };
 
+  const [visible, setVisible] = useState(false);
+  const [currentText, setCurrentText] = useState([]);
+  const [subCategory, setSubCategory] = useState([]);
+
   // 項目消去
   const onPressDalete = (id: string) => {
     const newSubCategory = subCategory.filter((item) => item.id !== id);
-    console.log(newSubCategory);
     setSubCategory(newSubCategory);
+    console.log(newSubCategory);
   };
 
   // 項目入力
@@ -72,9 +72,9 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
         id: uuid.v4(),
       },
     ];
-    console.log(newSubCategory);
-    setCurrentText([]);
     setSubCategory(newSubCategory);
+    setCurrentText([]);
+    console.log(newSubCategory);
   };
 
   return (
@@ -88,8 +88,8 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
       <ItemInputForm
         text={currentText}
         visible={visible}
-        onChangeText={(value: string) => {
-          onChangeText();
+        onChangeText={(text) => {
+          onChangeText(text);
         }}
         onPressSubmit={() => {
           onPressSubmit();
