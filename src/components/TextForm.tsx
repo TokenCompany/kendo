@@ -24,7 +24,7 @@ export const TextForm: React.FC<Props> = ({ label, value, onChangeText, placehol
 
 const styles = StyleSheet.create({
   container: {
-    margin: 10,
+    marginBottom: 10,
   },
   label: {
     fontSize: 18,
