@@ -128,7 +128,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           ></TouchableOpacity>
         </View>
         <View style={styles.barWrap}>
-          <BarChart data={mainData} horizontal rulesType='solid' xAxisLabelWidth={35} initialSpacing={20} noOfSections={3} />
+          <BarChart data={mainData} horizontal rulesType='solid' initialSpacing={20} noOfSections={3} />
           <BarChart data={subData} horizontal rulesType='solid' yAxisAtTop noOfSections={3} />
         </View>
       </ScrollView>
