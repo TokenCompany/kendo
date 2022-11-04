@@ -2,27 +2,29 @@ import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { colors } from "../styles";
 import { SwipeListView } from "react-native-swipe-list-view";
+import { SubCategory } from "../screens/SubCategoryScreen";
 
 type Props = {
-  text: string; // アイテムに表示する文字を親の呼び出し側から渡す
-  onPressDelete: () => void; // 親の呼び出し側で削除タップ時の処理を書く
-  data: string;
+  onPressDelete: (id: string) => void; // 親の呼び出し側で削除タップ時の処理を書く
+  subCategories: SubCategory[];
 };
 
-export const SwipeItem: React.FC<Props> = ({ onPressDelete, text, data }) => {
+export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => {
   return (
     <SwipeListView
-      data={data}
-      renderItem={(renderItem) => (
+      data={subCategories}
+      renderItem={(data) => (
         <View style={styles.item}>
-          <Text style={styles.input}>{text}</Text>
+          <Text style={styles.input}>{data.item.text}</Text>
         </View>
       )}
-      renderHiddenItem={(data, rowMap) => (
-        <TouchableOpacity style={styles.dalete} onPress={onPressDelete}>
-          <Text>消去</Text>
-        </TouchableOpacity>
-      )}
+      renderHiddenItem={(data, rowMap) => {
+        return (
+          <TouchableOpacity style={styles.dalete} onPress={() => onPressDelete(data.item.id)}>
+            <Text>消去</Text>
+          </TouchableOpacity>
+        );
+      }}
       leftOpenValue={75}
     />
   );

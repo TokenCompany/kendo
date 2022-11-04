@@ -10,6 +10,11 @@ import uuid from "react-native-uuid";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
+export type SubCategory = {
+  text: string;
+  id: string; // uuid
+};
+
 export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
   // export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
 
@@ -47,13 +52,13 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
   // };
 
   const [visible, setVisible] = useState(false);
-  const [currentText, setCurrentText] = useState([]);
-  const [subCategory, setSubCategory] = useState([]);
+  const [currentText, setCurrentText] = useState<string>(""); // stringでいい？
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
 
   // 項目消去
-  const onPressDalete = (id: string) => {
-    const newSubCategory = subCategory.filter((item) => item.id !== id);
-    setSubCategory(newSubCategory);
+  const onPressDelete = (id: string) => {
+    const newSubCategory = subCategories.filter((item) => item.id !== id);
+    setSubCategories(newSubCategory);
     console.log(newSubCategory);
   };
 
@@ -65,21 +70,24 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
 
   // 項目登録
   const onPressSubmit = () => {
-    const newSubCategory = [
-      ...subCategory,
+    const newSubCategories: SubCategory[] = [
+      ...subCategories,
       {
         text: currentText,
         id: uuid.v4(),
-      },
+      } as SubCategory,
     ];
-    setSubCategory(newSubCategory);
-    setCurrentText([]);
-    console.log(newSubCategory);
+    setSubCategories(newSubCategories);
+    setCurrentText("");
+    console.log(newSubCategories);
+    // TODO: reduxに保存
+    // TODO: subCateogoryTypeによってredux保存先を切り替える
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
+        {/* TODO: subCateogoryTypeによって文字を切り替える  */}
         <Text style={styles.MajorText}>応じ技</Text>
         <FAB style={styles.fab} small icon="plus" onPress={() => setVisible(true)} />
       </View>
@@ -100,10 +108,12 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
 
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeItem
-        data={subCategory}
-        text={subCategory.text}
-        onPressDelete={() => {
-          onPressDalete(subCategory.id);
+        subCategories={subCategories}
+        onPressDelete={(id: string) => {
+          console.log("tap delete: ", id);
+          console.log(subCategories);
+
+          onPressDelete(id);
         }}
       />
     </View>
