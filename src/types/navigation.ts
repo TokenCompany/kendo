@@ -9,5 +9,5 @@ export type MainStackParamList = {
   Statistics: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
-  Response: undefined;
+  SubCategory: undefined;
 };
