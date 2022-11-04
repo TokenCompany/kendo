@@ -51,12 +51,18 @@ export const MainStack: React.FC<Props> = () => {
       <Stack.Screen
         name="TrainingEdit"
         component={TrainingEditScreen}
-        options={{ title: "練習内容項目編集" }}
+        options={({ navigation }) => ({
+          title: "練習内容項目編集",
+          headerRight: () => renderMenuButton(navigation),
+        })}
       />
       <Stack.Screen
         name="SubCategory"
         component={SubCategoryScreen}
-        options={{ title: "練習内容項目編集" }}
+        options={({ navigation }) => ({
+          title: "練習内容項目編集",
+          headerRight: () => renderMenuButton(navigation),
+        })}
       />
     </Stack.Navigator>
   );
