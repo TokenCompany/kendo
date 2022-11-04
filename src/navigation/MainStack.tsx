@@ -10,15 +10,7 @@ import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
-import { PlaceScreen } from "../screens/PlaceScreen";
-import { SwingScreen } from "../screens/SwingScreen";
-import { FootworkScreen } from "../screens/FootworkScreen";
-import { BeatScreen } from "../screens/BeatScreen";
-import { ResponseScreen } from "../screens/ResponseScreen";
-import { JigeikoScreen } from "../screens/JigeikoScreen";
-import { TeacherScreen } from "../screens/TeacherScreen";
-import { KakariScreen } from "../screens/KakariScreen";
-import { TargetScreen } from "../screens/TargetScreen";
+import { SubCategoryScreen } from "../screens/SubCategoryScreen";
 import { SettingButton } from "../components/SettingButton";
 // types
 import { MainStackParamList } from "../types/navigation";
@@ -59,7 +51,11 @@ export const MainStack: React.FC<Props> = ({ navigation }: Props) => {
         component={TrainingEditScreen}
         options={{ title: "練習内容項目編集" }}
       />
-      <Stack.Screen name="Response" component={ResponseScreen} options={{ title: "応じ技" }} />
+      <Stack.Screen
+        name="SubCategory"
+        component={SubCategoryScreen}
+        options={{ title: "練習内容項目編集" }}
+      />
     </Stack.Navigator>
   );
 };

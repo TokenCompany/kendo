@@ -5,11 +5,47 @@ import { MainStackParamList } from "../types/navigation";
 import { FAB, Provider as PaperProvider } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
 import { SwipeItem } from "../components/SwipeItem";
+import { MajorItem } from "../components/MajorItem";
 import uuid from "react-native-uuid";
 
-type Props = NativeStackScreenProps<MainStackParamList, "Response">;
+type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
-export const ResponseScreen: React.FC<Props> = ({}: Props) => {
+export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
+  // export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
+
+  /* 2. Get the param */
+  // ここで遷移元から渡されたパラメータを取得する
+  // const subCateogoryType = route.params;
+
+  // 小項目の出し分け
+  // const renderSubCategoryEditor = () => {
+  //   if (subCateogoryType === "place") {
+  //     return <View>練習場所</View>;
+  //   } else if (subCateogoryType === "swing") {
+  //     return <View>素振り</View>;
+  //   } else if (subCateogoryType === "footwork") {
+  //     return <View>足さばき</View>;
+  //   } else if (subCateogoryType === "beat") {
+  //     return <View>基本打ち</View>;
+  //   } else if (subCateogoryType === "response") {
+  //     return <View>応じ技</View>;
+  //   } else if (subCateogoryType === "jigeiko") {
+  //     return <View>地稽古</View>;
+  //   } else if (subCateogoryType === "teacher") {
+  //     return <View>先生との稽古</View>;
+  //   } else if (subCateogoryType === "kakari") {
+  //     return <View>掛稽古</View>;
+  //   } else if (subCateogoryType === "target") {
+  //     return <View>年間稽古目標</View>;
+  //   }
+
+  //   return (
+  //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+  //       {renderSubCategoryEditor()}
+  //     </View>
+  //   );
+  // };
+
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState([]);
   const [subCategory, setSubCategory] = useState([]);
@@ -17,15 +53,14 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
   // 項目消去
   const onPressDalete = (id: string) => {
     const newSubCategory = subCategory.filter((item) => item.id !== id);
-    console.log(newSubCategory);
     setSubCategory(newSubCategory);
+    console.log(newSubCategory);
   };
 
   // 項目入力
   const onChangeText = (text: string) => {
     setCurrentText(text);
     console.log(text);
-
   };
 
   // 項目登録
@@ -37,9 +72,9 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
         id: uuid.v4(),
       },
     ];
-    console.log(newSubCategory);
-    setCurrentText([]);
     setSubCategory(newSubCategory);
+    setCurrentText([]);
+    console.log(newSubCategory);
   };
 
   return (
@@ -53,8 +88,8 @@ export const ResponseScreen: React.FC<Props> = ({}: Props) => {
       <ItemInputForm
         text={currentText}
         visible={visible}
-        onChangeText={(value: string) => {
-          onChangeText();
+        onChangeText={(text) => {
+          onChangeText(text);
         }}
         onPressSubmit={() => {
           onPressSubmit();
