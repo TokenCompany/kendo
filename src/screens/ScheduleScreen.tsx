@@ -10,8 +10,8 @@ import i18n from "../lang/localization";
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
-  const [time01, onChangeTime01] = React.useState();
-  const [time02, onChangeTime02] = React.useState();
+  const [time01, onChangeTime01] = useState();
+  const [time02, onChangeTime02] = useState();
   const [selectedValue, setSelectedValue] = useState();
   return (
     <ScrollView style={styles.container}>
@@ -22,17 +22,35 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           <Text>◆{i18n.t("Schedule.time")}</Text>
           <View style={styles.boxInputTime}>
             <View style={styles.boxInputTimeFlex}>
-              <TextInput
+              <Picker
+                selectedValue={time01}
                 style={styles.inputTime}
-                onChangeText={onChangeTime01}
-                value={time01}
-              ></TextInput>
-              <Text> ~ </Text>
-              <TextInput
+                onValueChange={(itemValue, itemIndex) => onChangeTime01(itemValue)}
+                itemStyle={{ height: 60 }}
+              >
+                <Picker.Item label="10:00" value="10:00" />
+                <Picker.Item label="11:00" value="11:00" />
+                <Picker.Item label="12:00" value="12:00" />
+                <Picker.Item label="13:00" value="13:00" />
+                <Picker.Item label="14:00" value="14:00" />
+                <Picker.Item label="15:00" value="15:00" />
+                <Picker.Item label="16:00" value="16:00" />
+              </Picker>
+              <Text style={styles.timeText}>~</Text>
+              <Picker
+                selectedValue={time02}
                 style={styles.inputTime}
-                onChangeText={onChangeTime02}
-                value={time02}
-              ></TextInput>
+                onValueChange={(itemValue, itemIndex) => onChangeTime02(itemValue)}
+                itemStyle={{ height: 60 }}
+              >
+                <Picker.Item label="10:00" value="10:00" />
+                <Picker.Item label="11:00" value="11:00" />
+                <Picker.Item label="12:00" value="12:00" />
+                <Picker.Item label="13:00" value="13:00" />
+                <Picker.Item label="14:00" value="14:00" />
+                <Picker.Item label="15:00" value="15:00" />
+                <Picker.Item label="16:00" value="16:00" />
+              </Picker>
             </View>
           </View>
         </View>
@@ -88,15 +106,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputTime: {
-    height: 30,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#aaa",
-    backgroundColor: "#fff",
     flexGrow: 1,
   },
-  picker: {
-    height: 30,
-    width: "100%",
+  timeText: {
+    alignItems: "center",
+    fontSize: 16,
   },
 });

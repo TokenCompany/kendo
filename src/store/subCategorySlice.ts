@@ -39,13 +39,13 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     // subcategoryを更新するアクションです
-    setSubCategory: (state, action: PayloadAction<string>) => {
+    setPlace: (state, action: PayloadAction<string>) => {
       state.placeSubCategories.text = action.payload;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setSubCategory } = counterSlice.actions;
+export const { setPlace } = counterSlice.actions;
 
 export default counterSlice.reducer;

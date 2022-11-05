@@ -9,89 +9,142 @@ import uuid from "react-native-uuid";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
-export type SubCategory = {
+export type Place = {
   text: string;
   id: string; // uuid
 };
 
-export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
-  // export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
-
+// export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
+export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
-  // const subCateogoryType = route.params;
-
-  // 小項目の出し分け
-  // const renderSubCategoryEditor = () => {
-  //   if (subCateogoryType === "place") {
-  //     return <View>練習場所</View>;
-  //   } else if (subCateogoryType === "swing") {
-  //     return <View>素振り</View>;
-  //   } else if (subCateogoryType === "footwork") {
-  //     return <View>足さばき</View>;
-  //   } else if (subCateogoryType === "beat") {
-  //     return <View>基本打ち</View>;
-  //   } else if (subCateogoryType === "response") {
-  //     return <View>応じ技</View>;
-  //   } else if (subCateogoryType === "jigeiko") {
-  //     return <View>地稽古</View>;
-  //   } else if (subCateogoryType === "teacher") {
-  //     return <View>先生との稽古</View>;
-  //   } else if (subCateogoryType === "kakari") {
-  //     return <View>掛稽古</View>;
-  //   } else if (subCateogoryType === "target") {
-  //     return <View>年間稽古目標</View>;
-  //   }
-
-  //   return (
-  //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-  //       {renderSubCategoryEditor()}
-  //     </View>
-  //   );
-  // };
-
+  const subCategoryType = route.params;
   const [visible, setVisible] = useState(false);
-  const [currentText, setCurrentText] = useState<string>(""); // stringでいい？
-  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+
+  const { currentPlace, Place, setPlace, setCurrentPlace } = useSubCategory();
+  // 小項目の出し分け
+  const renderSubCategoryEditor = () => {
+    if (subCategoryType === "place") {
+      // 項目消去
+      const onPressDelete = (id: string) => {
+        const newSubCategory = Place.filter((item) => item.id !== id);
+        setPlace(newSubCategory);
+      };
+      // 項目入力
+      const onChangePlace = (text: string) => {
+        setCurrentPlace(text);
+      };
+      // 項目登録
+      const onPressSubmit = () => {
+        const newSubCategories: Place[] = [
+          ...Place,
+          {
+            text: currentPlace,
+            id: uuid.v4(),
+          } as Place,
+        ];
+        setPlace(newSubCategories);
+        setCurrentPlace("");
+      };
+      return (
+        <View style={styles.container}>
+          <View style={styles.MajorTitle}>
+            {/* TODO: subCategoryTypeによって文字を切り替える  */}
+            <Text style={styles.MajorText}>稽古場所</Text>
+            <FAB style={styles.fab} small icon="plus" onPress={() => setVisible(true)} />
+          </View>
+
+          {/* プラスボタン押したら出でくるフォーム */}
+          <ItemInputForm
+            text={currentPlace}
+            visible={visible}
+            onChangeText={(text) => {
+              onChangePlace(text);
+            }}
+            onPressSubmit={() => {
+              onPressSubmit();
+              setVisible(false);
+              // TODO: ここでreduxにdispatchする
+            }}
+          />
+
+          {/* フォーム入力後に表示される練習項目 */}
+          <SwipeItem
+            subCategories={Place}
+            onPressDelete={(id: string) => {
+              onPressDelete(id);
+            }}
+          />
+        </View>
+      );
+    } else if (subCategoryType === "swing") {
+      return <View>素振り</View>;
+    } else if (subCategoryType === "footwork") {
+      return <View>足さばき</View>;
+    } else if (subCategoryType === "beat") {
+      return <View>基本打ち</View>;
+    } else if (subCategoryType === "response") {
+      return <View>応じ技</View>;
+    } else if (subCategoryType === "jigeiko") {
+      return <View>地稽古</View>;
+    } else if (subCategoryType === "teacher") {
+      return <View>先生との稽古</View>;
+    } else if (subCategoryType === "kakari") {
+      return <View>掛稽古</View>;
+    } else if (subCategoryType === "target") {
+      return <View>年間稽古目標</View>;
+    }
+
+    return (
+      <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+        {renderSubCategoryEditor()}
+      </View>
+    );
+  };
 
   // 項目消去
-  const onPressDelete = (id: string) => {
-    const newSubCategory = subCategories.filter((item) => item.id !== id);
-    setSubCategories(newSubCategory);
-  };
+  // const onPressDelete = (id: string) => {
+  //   const newSubCategory = subCategories.filter((item) => item.id !== id);
+  //   setSubCategories(newSubCategory);
+  // };
 
   // 項目入力
-  const onChangeText = (text: string) => {
-    setCurrentText(text);
-    console.log(text);
-  };
+  // const onChangeText = (text: string) => {
+  //   setCurrentText(text);
+  // };
 
   // 項目登録
-  const onPressSubmit = () => {
-    const newSubCategories: SubCategory[] = [
-      ...subCategories,
-      {
-        text: currentText,
-        id: uuid.v4(),
-      } as SubCategory,
-    ];
-    setSubCategories(newSubCategories);
-    setCurrentText("");
-    console.log(newSubCategories);
-    // TODO: reduxに保存
-    // TODO: subCateogoryTypeによってredux保存先を切り替える
-  };
+  // const onPressSubmit = () => {
+  //   const newSubCategories: SubCategory[] = [
+  //     ...subCategories,
+  //     {
+  //       text: currentText,
+  //       id: uuid.v4(),
+  //     } as SubCategory,
+  //   ];
+  //   setSubCategories(newSubCategories);
+  //   setCurrentText("");
+  // TODO: reduxに保存
+  // TODO: subCategoryTypeによってredux保存先を切り替える
+  // };
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.MajorTitle}>
-        {/* TODO: subCateogoryTypeによって文字を切り替える  */}
-        <Text style={styles.MajorText}>応じ技</Text>
+  // return (
+  //   <View style={styles.container}>
+  //     <View style={styles.MajorTitle}>
+  {
+    /* TODO: subCategoryTypeによって文字を切り替える  */
+  }
+  {
+    /* <Text style={styles.MajorText}>応じ技</Text>
         <FAB style={styles.fab} small icon="plus" onPress={() => setVisible(true)} />
-      </View>
+      </View> */
+  }
 
-      {/* プラスボタン押したら出でくるフォーム */}
-      <ItemInputForm
+  {
+    /* プラスボタン押したら出でくるフォーム */
+  }
+  {
+    /* <ItemInputForm
         text={currentText}
         visible={visible}
         onChangeText={(text) => {
@@ -99,23 +152,23 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
         }}
         onPressSubmit={() => {
           onPressSubmit();
-          setVisible(false);
-          // TODO: ここでreduxにdispatchする
-        }}
-      />
+          setVisible(false); */
+  }
+  // TODO: ここでreduxにdispatchする
+  //   }}
+  // />
 
-      {/* フォーム入力後に表示される練習項目 */}
-      <SwipeItem
-        subCategories={subCategories}
-        onPressDelete={(id: string) => {
-          console.log("tap delete: ", id);
-          console.log(subCategories);
-
-          onPressDelete(id);
-        }}
-      />
-    </View>
-  );
+  {
+    /* フォーム入力後に表示される練習項目 */
+  }
+  //     <SwipeItem
+  //       subCategories={subCategories}
+  //       onPressDelete={(id: string) => {
+  //         onPressDelete(id);
+  //       }}
+  //     />
+  //   </View>
+  // );
 };
 
 const styles = StyleSheet.create({
