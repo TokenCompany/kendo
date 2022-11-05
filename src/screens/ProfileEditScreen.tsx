@@ -1,5 +1,13 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+} from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { TextForm } from "../components/TextForm";
@@ -25,6 +33,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeKenNumber,
     onChangePassingDay1st,
     onChangeExamDay1st,
+    objectiveNum,
+    onChangeobjectiveNum,
     onPressSave,
   } = useProfileForm();
   // useStateで型を指定しておく
@@ -41,6 +51,22 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const handleConfirm = () => {
     hideDatePicker();
   };
+
+  const [targetNum, setTargetNum] = useState({
+    all: {
+      times: 30,
+    },
+    tanaka: {
+      times: 10,
+    },
+    luis: {
+      times: 15,
+    },
+    megu: {
+      times: 5,
+    },
+  });
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
@@ -122,6 +148,50 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         onChangeExamDay={onChangeExamDay1st}
       />
 
+      <View style={styles.objectiveContainer}>
+        <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+        <View style={styles.objectiveInputArea}>
+          <Text style={styles.objectiveText}>合計</Text>
+          <TextInput
+            style={styles.objectiveInput}
+            keyboardType="numeric"
+            onChangeText={onChangeobjectiveNum}
+            value={objectiveNum}
+          ></TextInput>
+          <Text style={styles.objectiveText}>回</Text>
+        </View>
+        <View style={styles.objectiveInputArea}>
+          <Text style={styles.objectiveText}>〇〇〇 先生</Text>
+          <TextInput
+            style={styles.objectiveInput}
+            keyboardType="numeric"
+            onChangeText={onChangeobjectiveNum}
+            value={objectiveNum}
+          ></TextInput>
+          <Text style={styles.objectiveText}>回</Text>
+        </View>
+        <View style={styles.objectiveInputArea}>
+          <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
+          <TextInput
+            style={styles.objectiveInput}
+            keyboardType="numeric"
+            onChangeText={onChangeobjectiveNum}
+            value={objectiveNum}
+          ></TextInput>
+          <Text style={styles.objectiveText}>回</Text>
+        </View>
+        <View style={styles.objectiveInputArea}>
+          <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
+          <TextInput
+            style={styles.objectiveInput}
+            keyboardType="numeric"
+            onChangeText={onChangeobjectiveNum}
+            value={objectiveNum}
+          ></TextInput>
+          <Text style={styles.objectiveText}>回</Text>
+        </View>
+      </View>
+
       <View style={styles.buttonContainer}>
         <Button text="プロフィール登録" onPress={onPressSave} />
       </View>
@@ -185,5 +255,30 @@ const styles = StyleSheet.create({
   profileImage: {
     width: 100,
     height: 100,
+  },
+  objectiveContainer: {
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  objectiveLabel: {
+    fontSize: 18,
+    color: "#000",
+  },
+  objectiveInputArea: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  objectiveInput: {
+    width: 100,
+    height: 40,
+    marginHorizontal: 10,
+    fontSize: 18,
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#aaa",
+  },
+  objectiveText: {
+    fontSize: 18,
   },
 });
