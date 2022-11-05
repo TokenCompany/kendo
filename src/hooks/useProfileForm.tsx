@@ -16,9 +16,6 @@ type Hooks = {
   currentBirthday: number;
   onChangeBirthday: (text: number) => void;
   onPressSave: () => void;
-  current1st: string;
-  onChangePassingDay1st: (text: string) => void;
-  onChangeExamDay1st: (text: string) => void;
 };
 
 export const useProfileForm = (): Hooks => {
@@ -74,9 +71,6 @@ export const useProfileForm = (): Hooks => {
     onChangeAge,
     onChangeKenNumber,
     onChangeBirthday,
-    current1st,
-    onChangePassingDay1st,
-    onChangeExamDay1st,
     onPressSave,
   };
 };
