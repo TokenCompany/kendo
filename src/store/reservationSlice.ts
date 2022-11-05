@@ -10,19 +10,19 @@ interface ReservationItem {
   place: string;// 稽古場所
 }
 
-export interface reservationState {
+export interface ReservationState {
   [date: string]: ReservationItem;
 }
 
 // デフォルトの値
 // これはからオブジェクトでOKです
-const initialState: reservationState = {}
+const initialState: ReservationState = {}
 
 export const counterSlice = createSlice({
   name: "reservation",
   initialState,
   reducers: {
-    // nameを更新するアクションです
+    // 予約情報を更新するアクションです
     setStartTime: (state, action: PayloadAction<string>) => {
       state.date.startTime = action.payload;
     },

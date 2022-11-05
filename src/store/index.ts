@@ -3,6 +3,7 @@ import { combineReducers } from "redux";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import profileReducer from "./profileSlice";
 import subCategoryReducer from "./subCategorySlice";
+import reservationReducer from "./reservationSlice";
 import {
   persistStore,
   persistReducer,
@@ -25,6 +26,7 @@ const persistConfig = {
 const rootReducer = combineReducers({
   profile: profileReducer,
   subCategory: subCategoryReducer,
+  reservation: reservationReducer,
 });
 
 // 永続化のための設定
