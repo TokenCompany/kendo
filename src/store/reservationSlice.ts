@@ -23,18 +23,26 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     // 予約情報を新規追加するアクションです
-    addReservationItem: (state, action: PayloadAction<ReservationState>) => {
-      state = action.payload;
+    addReservationItem: (state, action) => {
+      state = {
+        ...state,[action.payload.date]:{
+          startTime: action.payload.startTime,
+          endTime: action.payload.endTime,
+          place: action.payload.place
+        }
+      }
     },
     // 予約情報を更新するアクションです
-    updateReservationItem: (state, action: PayloadAction<ReservationItem>) => {
-      state.startTime = action.payload;
-      state.endTime = action.payload;
-      state.place = action.payload;
+    updateReservationItem: (state, action) => {
+      state[action.payload.date] =  {
+        startTime: action.payload.startTime,
+        endTime: action.payload.endTime,
+        place: action.payload.place
+      }
     },
     // 予約情報を削除するアクションです
-    deleteReservationItem: (state, action: PayloadAction<ReservationItem>) => {
-      state = {};
+    deleteReservationItem: (state, action) => {
+      delete state[action.payload.date];
     },
   },
 });
