@@ -5,9 +5,9 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // カレンダーの予約に関わるREDUX
 //
 interface ReservationItem {
-  startTime: string;// 開始時間
-  endTime: string;// 終了時間
-  place: string;// 稽古場所
+  startTime: string; // 開始時間
+  endTime: string; // 終了時間
+  place: string; // 稽古場所
 }
 
 export interface ReservationState {
@@ -16,28 +16,32 @@ export interface ReservationState {
 
 // デフォルトの値
 // これはからオブジェクトでOKです
-const initialState: ReservationState = {}
+const initialState: ReservationState = {};
 
 export const counterSlice = createSlice({
   name: "reservation",
   initialState,
   reducers: {
+    // 予約情報を新規追加するアクションです
+    addReservationItem: (state, action: PayloadAction<ReservationState>) => {
+      state = action.payload;
+    },
     // 予約情報を更新するアクションです
-    setStartTime: (state, action: PayloadAction<string>) => {
-      state.date.startTime = action.payload;
+    updateReservationItem: (state, action: PayloadAction<ReservationItem>) => {
+      state.startTime = action.payload;
+      state.endTime = action.payload;
+      state.place = action.payload;
     },
-    setEndTime: (state, action: PayloadAction<string>) => {
-      state.date.endTime = action.payload;
-    },
-    setPlace: (state, action: PayloadAction<string>) => {
-      state.date.place = action.payload;
+    // 予約情報を削除するアクションです
+    deleteReservationItem: (state, action: PayloadAction<ReservationItem>) => {
+      state = {};
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setStartTime } = counterSlice.actions;
-export const { setEndTime } = counterSlice.actions;
-export const { setPlace } = counterSlice.actions;
+export const { addReservationItem } = counterSlice.actions;
+export const { updateReservationItem } = counterSlice.actions;
+export const { deleteReservationItem } = counterSlice.actions;
 
 export default counterSlice.reducer;

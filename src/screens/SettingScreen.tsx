@@ -15,15 +15,15 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
   const rankTableData = [
-    ['初段','〇','2006年11月20日'],
-    ['弐段','〇','2007年11月13日'],
-    ['参段 ','〇','2009年11月12日'],
-    ['四段 ','〇','2011年11月1日'],
-    ['五段','〇','2015年11月17日'],
-    ['六段 ','〇','2020年11月22日'],
-    ['七段','-','残り1945日(5年4か月)'],
-    ['八段','-','残り5596日(15年4か月)'],
-  ]
+    ["初段", "〇", "2006年11月20日"],
+    ["弐段", "〇", "2007年11月13日"],
+    ["参段 ", "〇", "2009年11月12日"],
+    ["四段 ", "〇", "2011年11月1日"],
+    ["五段", "〇", "2015年11月17日"],
+    ["六段 ", "〇", "2020年11月22日"],
+    ["七段", "-", "残り1945日(5年4か月)"],
+    ["八段", "-", "残り5596日(15年4か月)"],
+  ];
 
   return (
     <ScrollView>
@@ -43,18 +43,17 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
         </View>
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData,styles.firstColumn]}>階級</Text>
-            <Text style={[styles.tableData,styles.secondColumn]}>合格</Text>
-            <Text style={[styles.tableData,styles.thirdColumn]}>合格日/審査までの日数</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>階級</Text>
+            <Text style={[styles.tableData, styles.secondColumn]}>合格</Text>
+            <Text style={[styles.tableData, styles.thirdColumn]}>合格日/審査までの日数</Text>
           </View>
-          { rankTableData.map(rankData => (
+          {rankTableData.map((rankData) => (
             <View style={styles.tableRow}>
-              <Text style={[styles.tableData,styles.firstColumn]}>{rankData[0]}</Text>
-              <Text style={[styles.tableData,styles.secondColumn]}>{rankData[1]}</Text>
-              <Text style={[styles.tableData,styles.thirdColumn]}>{rankData[2]}</Text>
+              <Text style={[styles.tableData, styles.firstColumn]}>{rankData[0]}</Text>
+              <Text style={[styles.tableData, styles.secondColumn]}>{rankData[1]}</Text>
+              <Text style={[styles.tableData, styles.thirdColumn]}>{rankData[2]}</Text>
             </View>
-            ))
-          }
+          ))}
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button01")} onPress={onPressProfile} />
@@ -104,23 +103,23 @@ const styles = StyleSheet.create({
   tableContainer: {
     marginBottom: 20,
   },
-  tableRow:{
-    flexDirection: 'row',
+  tableRow: {
+    flexDirection: "row",
   },
   tableData: {
     borderWidth: 1,
-    borderColor: '#fff',
-    backgroundColor: '#F0E8E7',
+    borderColor: "#fff",
+    backgroundColor: "#F0E8E7",
     padding: 10,
-    textAlign: 'center',
+    textAlign: "center",
   },
-  firstColumn:{
-    width: '20%'
+  firstColumn: {
+    width: "20%",
   },
-  secondColumn:{
-    width: '25%',
+  secondColumn: {
+    width: "25%",
   },
-  thirdColumn:{
-    width: '50%'
-  }
+  thirdColumn: {
+    width: "50%",
+  },
 });
