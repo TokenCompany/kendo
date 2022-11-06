@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { setStartTime } from "../store/reservationSlice";
-import { setEndTime } from "../store/reservationSlice";
-import { setPlace } from "../store/reservationSlice";
+// import { setStartTime } from "../store/reservationSlice";
+// import { setEndTime } from "../store/reservationSlice";
+// import { setPlace } from "../store/reservationSlice";
 
 type Hooks = {
   // これでカレンダー上に日付が押された時、currentDateに日付文字列を格納する
@@ -18,7 +18,9 @@ export const Reservation = (): Hooks => {
   const dispatch = useDispatch();
   // useSelectorでreduxから状態を取得します
   // 既に予約が入ってたらその予約を取得し、ない場合は''にする
-  const date = useSelector((state: RootState) => state.reservation.date)?useSelector((state: RootState) => state.reservation.date):'';
+  const date = useSelector((state: RootState) => state.reservation.date)
+    ? useSelector((state: RootState) => state.reservation.date)
+    : "";
   const startTime = useSelector((state: RootState) => state.reservation.date.startTime);
   const endTime = useSelector((state: RootState) => state.reservation.date.endTime);
   const place = useSelector((state: RootState) => state.reservation.date.place);
