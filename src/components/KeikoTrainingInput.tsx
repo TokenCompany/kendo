@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Checkbox } from 'react-native-paper';
+import { Checkbox } from "react-native-paper";
 
 type Props = {
   textTraining: string;
@@ -8,35 +8,34 @@ type Props = {
 };
 
 export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit }) => {
-
-  
   const [checked, setChecked] = React.useState(false);
 
   return (
     <View style={styles.inputWrap}>
-    <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      onPress={() => {
-        setChecked(!checked);
-      }}
-    />
-    <View style={styles.inputArea}>
-      <Text style={styles.label}>{textTraining}</Text>
-      {!!checked && 
-      <View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputText}>上下素振り</Text>
-        <TextInput style={styles.input}/>
-        <Text style={styles.inputText}>{textTrainingUnit}</Text>
+      <Checkbox
+        status={checked ? "checked" : "unchecked"}
+        onPress={() => {
+          setChecked(!checked);
+        }}
+      />
+      <View style={styles.inputArea}>
+        <Text style={styles.label}>{textTraining}</Text>
+        {!!checked && 
+          <View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputText}>上下素振り</Text>
+              <TextInput style={styles.input}/>
+              <Text style={styles.inputText}>{textTrainingUnit}</Text>
+            </View>
+            <View style={styles.inputGroup}>
+              <Text style={styles.inputText}>正面打ち</Text>
+              <TextInput style={styles.input}/>
+              <Text style={styles.inputText}>{textTrainingUnit}</Text>
+            </View>
+          </View>
+        }
       </View>
-      <View style={styles.inputGroup}>
-        <Text style={styles.inputText}>正面打ち</Text>
-        <TextInput style={styles.input}/>
-        <Text style={styles.inputText}>{textTrainingUnit}</Text>
-      </View>
-      </View>}
     </View>
-  </View>
   );
 };
 

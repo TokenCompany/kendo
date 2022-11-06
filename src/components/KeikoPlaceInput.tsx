@@ -1,34 +1,33 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Checkbox } from 'react-native-paper';
+import { Checkbox } from "react-native-paper";
 
 type Props = {
   textPlace: string;
 };
 
 export const KeikoPlaceInput: React.FC<Props> = ({ textPlace }) => {
-
-  
   const [checked, setChecked] = React.useState(false);
 
   return (
-  <View style={styles.inputWrap}>
-    <Checkbox
-    status={checked ? 'checked' : 'unchecked'}
-    onPress={() => {
-      setChecked(!checked);
-    }}
-  />
-    <View style={styles.inputArea}>
-      <Text style={styles.label}>{textPlace}</Text>
-      {!!checked && <View>
-      <View style={styles.inputGroup}>
-        <TextInput style={styles.inputFull}/>
+    <View style={styles.inputWrap}>
+      <Checkbox 
+        status={checked ? "checked" : "unchecked"}
+        onPress={() => {
+          setChecked(!checked);
+        }}
+      />
+      <View style={styles.inputArea}>
+        <Text style={styles.label}>{textPlace}</Text>
+        {!!checked && 
+          <View>
+            <View style={styles.inputGroup}>
+              <TextInput style={styles.inputFull}/>
+            </View>
+          </View>
+        }
       </View>
-      </View>}
     </View>
-
-  </View>
   );
 };
 
