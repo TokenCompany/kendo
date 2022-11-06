@@ -40,7 +40,11 @@ export const MainStack: React.FC<Props> = () => {
       <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
       <Stack.Screen name="Setting" component={SettingScreen} options={{ title: "設定" }} />
       <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: "実績表" }} />
-      <Stack.Screen name="ResultEdit" component={ResultEditScreen} options={{ title: "実績入力" }} />
+      <Stack.Screen
+        name="ResultEdit"
+        component={ResultEditScreen}
+        options={{ title: "実績入力" }}
+      />
       <Stack.Screen
         name="ProfileEdit"
         component={ProfileEditScreen}

@@ -8,7 +8,6 @@ type Props = {
 };
 
 export const TextButton: React.FC<Props> = ({ text01, text02, onPress }) => {
-
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={onPress}>

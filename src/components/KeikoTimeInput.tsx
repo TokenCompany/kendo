@@ -1,36 +1,34 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Checkbox } from 'react-native-paper';
+import { Checkbox } from "react-native-paper";
 
 type Props = {
   textTime: string;
 };
 
 export const KeikoTimeInput: React.FC<Props> = ({ textTime }) => {
-
-  
   const [checked, setChecked] = React.useState(false);
 
   return (
     <View style={styles.inputWrap}>
-    <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      onPress={() => {
-        setChecked(!checked);
-      }}
-    />
-    <View style={styles.inputArea}>
-      <Text style={styles.label}>{textTime}</Text>
-      {!!checked && 
-      <View>
-      <View style={styles.inputGroup}>
-        <TextInput style={styles.inputLarge}/>
-        <Text style={styles.inputText}>時間</Text>
+      <Checkbox
+        status={checked ? "checked" : "unchecked"}
+        onPress={() => {
+          setChecked(!checked);
+        }}
+      />
+      <View style={styles.inputArea}>
+        <Text style={styles.label}>{textTime}</Text>
+        {!!checked && (
+          <View>
+            <View style={styles.inputGroup}>
+              <TextInput style={styles.inputLarge} />
+              <Text style={styles.inputText}>時間</Text>
+            </View>
+          </View>
+        )}
       </View>
-        </View>}
-
     </View>
-  </View>
   );
 };
 

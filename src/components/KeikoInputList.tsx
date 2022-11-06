@@ -1,50 +1,50 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
-import { Checkbox } from 'react-native-paper';
+import { Checkbox } from "react-native-paper";
 
 type Props = {
   textTeacher: string;
 };
 
 export const KeikoTeacherInput: React.FC<Props> = ({ textTeacher }) => {
-
-  
   const [checked, setChecked] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
 
   return (
     <View style={styles.inputWrap}>
-    <Checkbox
-      status={checked ? 'checked' : 'unchecked'}
-      onPress={() => {
-        setChecked(!checked);
-      }}
-    />
-    {!!checked && <View style={styles.inputArea}>
-      <Text style={styles.label}>{textTeacher}</Text>
-      <View style={styles.inputGroup}>
-      <TextInput style={styles.inputLarge}/>
-      <Text style={styles.inputText}>先生</Text>
-    </View>
-    <View style={styles.inputGroup}>
-      <TextInput style={styles.inputLarge}/>
-      <Text style={styles.inputText}>先生</Text>
-    </View>
-    <View style={styles.inputGroup}>
-      <View style={styles.inputGroup}>
-        <Checkbox
-        status={checked2 ? 'checked' : 'unchecked'}
+      <Checkbox
+        status={checked ? "checked" : "unchecked"}
         onPress={() => {
-          setChecked2(!checked2);
+          setChecked(!checked);
         }}
       />
-        <Text style={styles.inputText}>あり</Text>
-      </View>
-      <TextInput style={styles.input}/>
-      <Text style={styles.inputText}>分</Text>
+      {!!checked && (
+        <View style={styles.inputArea}>
+          <Text style={styles.label}>{textTeacher}</Text>
+          <View style={styles.inputGroup}>
+            <TextInput style={styles.inputLarge} />
+            <Text style={styles.inputText}>先生</Text>
+          </View>
+          <View style={styles.inputGroup}>
+            <TextInput style={styles.inputLarge} />
+            <Text style={styles.inputText}>先生</Text>
+          </View>
+          <View style={styles.inputGroup}>
+            <View style={styles.inputGroup}>
+              <Checkbox
+                status={checked2 ? "checked" : "unchecked"}
+                onPress={() => {
+                  setChecked2(!checked2);
+                }}
+              />
+              <Text style={styles.inputText}>あり</Text>
+            </View>
+            <TextInput style={styles.input} />
+            <Text style={styles.inputText}>分</Text>
+          </View>
+        </View>
+      )}
     </View>
-    </View>}
-  </View>
   );
 };
 

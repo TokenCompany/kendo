@@ -12,9 +12,7 @@ import { KeikoTeacherInput } from "../components/KeikoTeacherInput";
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
 export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
-  const {
-    onPressSave,
-  } = useProfileForm();
+  const { onPressSave } = useProfileForm();
 
   return (
     <ScrollView style={styles.container}>
