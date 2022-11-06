@@ -4,12 +4,14 @@ import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 type Props = {
   text01: string;
   text02: string;
+  onPress: () => void;
 };
 
-export const TextButton: React.FC<Props> = ({ text01, text02 }) => {
+export const TextButton: React.FC<Props> = ({ text01, text02, onPress }) => {
+
   return (
     <View style={styles.container}>
-      <TouchableOpacity style={styles.button}>
+      <TouchableOpacity style={styles.button} onPress={onPress}>
         <Text style={styles.buttonText01}>{text01}</Text>
       </TouchableOpacity>
       <TouchableOpacity style={styles.button}>

@@ -7,7 +7,11 @@ import { TextButton } from "../components/TextButton";
 
 type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
-export const HistoryScreen: React.FC<Props> = ({}: Props) => {
+export const HistoryScreen: React.FC<Props> = ({navigation}: Props) => {
+  const onPress = () => {
+    navigation.navigate("ResultEdit");
+  };
+
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame />
@@ -25,7 +29,7 @@ export const HistoryScreen: React.FC<Props> = ({}: Props) => {
             <Text>スポーツ会館</Text>
           </View>
         </View>
-        <TextButton text01="実績入力" text02="未実施" />
+        <TextButton text01="実績入力" text02="未実施" onPress={onPress} />
       </View>
     </ScrollView>
   );
