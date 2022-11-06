@@ -5,49 +5,57 @@ import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { Picker } from "@react-native-community/picker";
 import { TextButton } from "../components/TextButton";
-import * as Localization from "expo-localization";
-import { I18n } from "i18n-js";
-// import { i18n } from "../lang/localization";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
-  // const [currentDate, setCurrentDate] = useState(dayjs());
-  const [time01, onChangeTime01] = React.useState();
-  const [time02, onChangeTime02] = React.useState();
+  const [time01, onChangeTime01] = useState();
+  const [time02, onChangeTime02] = useState();
   const [selectedValue, setSelectedValue] = useState();
-  const translations = {
-    en: { time: "Time", place: "Place" },
-    ja: { time: "時間", place: "場所" },
-  };
-  const i18n = new I18n(translations);
-  i18n.locale = Localization.locale;
-  i18n.enableFallback = true;
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame />
       <View style={styles.box}>
         <Text style={styles.boxTitle}>2022年4月15日(金)</Text>
         <View style={styles.boxInputArea}>
-          <Text>◆{i18n.t("time")}</Text>
+          <Text>◆{i18n.t("Schedule.time")}</Text>
           <View style={styles.boxInputTime}>
             <View style={styles.boxInputTimeFlex}>
-              <TextInput
+              <Picker
+                selectedValue={time01}
                 style={styles.inputTime}
-                onChangeText={onChangeTime01}
-                value={time01}
-              ></TextInput>
-              <Text> ~ </Text>
-              <TextInput
+                onValueChange={(itemValue, itemIndex) => onChangeTime01(itemValue)}
+                itemStyle={{ height: 60 }}
+              >
+                <Picker.Item label="10:00" value="10:00" />
+                <Picker.Item label="11:00" value="11:00" />
+                <Picker.Item label="12:00" value="12:00" />
+                <Picker.Item label="13:00" value="13:00" />
+                <Picker.Item label="14:00" value="14:00" />
+                <Picker.Item label="15:00" value="15:00" />
+                <Picker.Item label="16:00" value="16:00" />
+              </Picker>
+              <Text style={styles.timeText}>~</Text>
+              <Picker
+                selectedValue={time02}
                 style={styles.inputTime}
-                onChangeText={onChangeTime02}
-                value={time02}
-              ></TextInput>
+                onValueChange={(itemValue, itemIndex) => onChangeTime02(itemValue)}
+                itemStyle={{ height: 60 }}
+              >
+                <Picker.Item label="10:00" value="10:00" />
+                <Picker.Item label="11:00" value="11:00" />
+                <Picker.Item label="12:00" value="12:00" />
+                <Picker.Item label="13:00" value="13:00" />
+                <Picker.Item label="14:00" value="14:00" />
+                <Picker.Item label="15:00" value="15:00" />
+                <Picker.Item label="16:00" value="16:00" />
+              </Picker>
             </View>
           </View>
         </View>
         <View style={styles.boxInputArea}>
-          <Text>◆{i18n.t("place")}</Text>
+          <Text>◆{i18n.t("Schedule.place")}</Text>
           <View style={styles.boxInputText}>
             <Picker
               selectedValue={selectedValue}
@@ -60,7 +68,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </Picker>
           </View>
         </View>
-        <TextButton text01="登録" text02="削除" />
+        <TextButton text01={i18n.t("Schedule.entry")} text02={i18n.t("Schedule.delete")} />
       </View>
     </ScrollView>
   );
@@ -98,15 +106,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   inputTime: {
-    height: 30,
-    padding: 10,
-    borderWidth: 1,
-    borderColor: "#aaa",
-    backgroundColor: "#fff",
     flexGrow: 1,
   },
-  picker: {
-    height: 30,
-    width: "100%",
+  timeText: {
+    alignItems: "center",
+    fontSize: 16,
   },
 });

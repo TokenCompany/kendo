@@ -4,18 +4,18 @@ import { colors } from "../styles";
 
 type Props = {
   visible: boolean; // 入力フォームの表示/非表示
-  value: string; // 入力中の文字
+  text: string; // 入力中の文字
   onChangeText: (text: string) => void;
   onPressSubmit: () => void;
 };
 
-export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, value, onChangeText }) => {
+export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, onChangeText }) => {
   return visible ? (
     <View style={styles.item}>
       <TextInput
         style={styles.input}
         placeholder={"テキスト入力"}
-        value={value}
+        value={text}
         onChangeText={onChangeText}
       />
       <TouchableOpacity onPress={onPressSubmit}>

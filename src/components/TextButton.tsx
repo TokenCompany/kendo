@@ -34,9 +34,11 @@ const styles = StyleSheet.create({
   buttonText01: {
     color: "blue",
     textAlign: "center",
+    fontSize: 16,
   },
   buttonText02: {
     color: "red",
     textAlign: "center",
+    fontSize: 16,
   },
 });

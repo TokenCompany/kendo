@@ -1,37 +1,44 @@
 import { useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { setSubCategory } from "../store/subCategorySlice";
+import { setPlace } from "../store/subCategorySlice";
 
 type Hooks = {
-  currentText: string;
-  subCategory: string;
+  Place: Place[];
+  currentPlace: string;
+  onPressSave: (text: string) => void;
   onChangeText: (text: string) => void;
-  onPressSubmit: (text: string) => void;
+};
+
+export type Place = {
+  text: string;
+  id: string; // uuid
 };
 
 export const useSubCategory = (): Hooks => {
   const dispatch = useDispatch();
 
-  const text = useSelector((state: RootState) => state.subCategory.text);
+  const placeSubCategories = useSelector(
+    (state: RootState) => state.subCategory.placeSubCategories,
+  );
 
-  const [currentText, setCurrentText] = useState<string>(text);
-  const [subCategory, setSubCategory] = useState<string>(currentText);
+  const [currentPlace, setCurrentPlace] = useState<string>("");
+  const [Place, setPlace] = useState<Place[]>([]);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeText = (text: string) => {
-    setCurrentText(text);
+    setCurrentPlace(text);
   };
 
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSubmit = () => {
-    dispatch(setSubCategory(currentText));
+    dispatch(setPlace(currentPlace));
   };
 
   return {
-    currentText,
-    subCategory,
+    Place,
+    currentPlace,
     onChangeText,
     onPressSubmit,
   };

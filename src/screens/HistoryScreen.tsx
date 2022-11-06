@@ -4,6 +4,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { TextButton } from "../components/TextButton";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
@@ -18,18 +19,18 @@ export const HistoryScreen: React.FC<Props> = ({navigation}: Props) => {
       <View style={styles.box}>
         <Text style={styles.boxTitle}>2022年4月15日(金)</Text>
         <View style={styles.boxInputArea}>
-          <Text>◆時間</Text>
+          <Text>◆{i18n.t("History.time")}</Text>
           <View style={styles.boxInputTime}>
             <Text>13:00 ~ 16:00</Text>
           </View>
         </View>
         <View style={styles.boxInputArea}>
-          <Text>◆場所</Text>
+          <Text>◆{i18n.t("History.place")}</Text>
           <View style={styles.boxInputText}>
             <Text>スポーツ会館</Text>
           </View>
         </View>
-        <TextButton text01="実績入力" text02="未実施" onPress={onPress} />
+        <TextButton text01={i18n.t("History.input")} text02={i18n.t("History.ncw")} onPress={onPress} />
       </View>
     </ScrollView>
   );

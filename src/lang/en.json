@@ -1,10 +1,22 @@
 {
-  "tab": {
-    "home": "Home",
-    "course": "Course",
-    "ranking": "Ranking",
-    "search": "Search"
+  "ScheduleScreen": {
+    "time": "Time",
+    "place": "Place",
+    "entry": "Entry",
+    "delete": "Delete"
   },
-  "Time": "Time",
-  "place": "Place"
+  "History": {
+    "time": "Time",
+    "place": "Place",
+    "input": "実績入力",
+    "ncw": "未実施"
+  },
+  "Setting": {
+    "name": "name",
+    "birthday": "birth date",
+    "age": "age",
+    "number": "全剣連番号",
+    "button01": "プロフィール編集",
+    "button02": "練習内容項目設定"
+  }
 }

@@ -8,31 +8,53 @@ type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressPlace = () => {
-    navigation.navigate("Place");
+    navigation.navigate("SubCategory", {
+      // 遷移先にどの小項目を編集したいかを渡す
+      subCategoryType: "place", // 地稽古の小項目設定に遷移するとき
+    });
   };
   const onPressSwing = () => {
-    navigation.navigate("Swing");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "swing",
+    });
   };
   const onPressFootwork = () => {
-    navigation.navigate("Footwork");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "footwork",
+    });
   };
   const onPressBeat = () => {
-    navigation.navigate("Beat");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "beat",
+    });
   };
+  // const onPressResponse = () => {
+  //   navigation.navigate("SubCategory", {
+  //     subCategoryType: "response",
+  //   });
+  // };
   const onPressResponse = () => {
-    navigation.navigate("Response");
+    navigation.navigate("SubCategory");
   };
   const onPressJigeiko = () => {
-    navigation.navigate("Jigeiko");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "jigeiko",
+    });
   };
   const onPressTeacher = () => {
-    navigation.navigate("Teacher");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "teacher",
+    });
   };
   const onPressKakari = () => {
-    navigation.navigate("Kakari");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "kakari",
+    });
   };
   const onPressTarget = () => {
-    navigation.navigate("Target");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "target",
+    });
   };
 
   return (
