@@ -14,6 +14,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressTraining = () => {
     navigation.navigate("TrainingEdit");
   };
+  const onPressTask = () => {
+    navigation.navigate("TrainingEdit");
+  };
+  const onPressInitial = () => {
+    navigation.navigate("TrainingEdit");
+  };
+
   const rankTableData = [
     ["初段", "〇", "2006年11月20日"],
     ["弐段", "〇", "2007年11月13日"],
@@ -54,6 +61,12 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               <Text style={[styles.tableData, styles.thirdColumn]}>{rankData[2]}</Text>
             </View>
           ))}
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button text={i18n.t("Setting.button04")} onPress={onPressInitial} />
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button01")} onPress={onPressProfile} />
