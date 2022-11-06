@@ -1,22 +1,89 @@
 {
   "Schedule": {
+    "title": "稽古予定",
     "time": "時間",
     "place": "場所",
     "entry": "登録",
     "delete": "削除"
   },
   "History": {
+    "title": "稽古実績",
     "time": "時間",
     "place": "場所",
     "input": "実績入力",
     "ncw": "未実施"
   },
   "Setting": {
+    "title": "設定",
     "name": "氏名",
     "birthday": "生年月日",
     "age": "年齢",
     "number": "全剣連番号",
     "button01": "プロフィール編集",
-    "button02": "練習内容項目設定"
+    "button02": "練習内容項目設定",
+    "th01": "階級",
+    "th02": "合格",
+    "th03": "合格日/審査までの日数"
+  },
+  "ResultEdit": {
+    "title": "実績入力",
+    "textPlace": "稽古場所",
+    "textTime": "稽古時間",
+    "textTeacher": "先生との稽古",
+    "teacher": "先生",
+    "textButton": "稽古実績登録",
+    "textUnit01": "本",
+    "textUnit02": "分",
+    "textUnit03": "時間",
+    "ari": "あり"
+  },
+  "Statistics": {
+    "title": "実績表",
+    "label01": "稽古回数",
+    "label02": "稽古目標",
+    "year": "年",
+    "teacher": "先生"
+  },
+  "ProfileEdit": {
+    "title": "プロフィール編集",
+    "name": "氏名",
+    "birthday": "誕生日設定",
+    "age": "年齢",
+    "number": "全剣連番号",
+    "stage01": "初段",
+    "stage02": "弐段",
+    "stage03": "参段",
+    "stage04": "四段",
+    "stage05": "五段",
+    "stage06": "六段",
+    "stage07": "七段",
+    "stage08": "八段",
+    "passingDate": "合格日",
+    "examinationDate": "審査日",
+    "registerButton": "プロフィール登録"
+  },
+  "TrainingEdit": {
+    "title": "練習内容項目編集",
+    "training01": "練習場所",
+    "training02": "素振り",
+    "training03": "足さばき",
+    "training04": "基本打ち",
+    "training05": "応じ技",
+    "training06": "地稽古",
+    "training07": "先生との稽古",
+    "training08": "掛稽古",
+    "training09": "年間稽古目標"
+  },
+  "Modal": {
+    "task": "課題",
+    "stage": "段まで",
+    "day": "日",
+    "registered": "登録しました"
+  },
+  "Alert": {
+    "alert01": "終了時間は開始時間より遅い時間を入力してください",
+    "alert02": "稽古予定を修正しますか？",
+    "alert03": "稽古予定を削除しますか？",
+    "alert04": "本当に削除しますか？"
   }
 }
