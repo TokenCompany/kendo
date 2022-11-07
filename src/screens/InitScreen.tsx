@@ -3,6 +3,7 @@ import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } fr
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
@@ -44,10 +45,10 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalLead}>課題</Text>
+              <Text style={styles.modalLead}>{i18n.t("Setting.task")}</Text>
               <Text style={styles.modalText}>素振りの姿勢を修正</Text>
-              <Text style={styles.modalLead}>七段まで</Text>
-              <Text style={styles.modalText}>182日</Text>
+              <Text style={styles.modalLead}>七{i18n.t("Setting.stage")}</Text>
+              <Text style={styles.modalText}>182{i18n.t("Setting.registered")}</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => onPressMenu()}
