@@ -15,9 +15,13 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPress = () => {
     setModalVisible(true);
   };
+  const hiddenModal = () => {
+    setModalVisible(!modalVisible);
+  };
   const onPressMenu = () => {
     navigation.navigate("Menu");
     setModalVisible(!modalVisible);
+    setTimeout(hiddenModal, 5000);
   };
 
   return (
@@ -45,10 +49,10 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
         >
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
-              <Text style={styles.modalLead}>{i18n.t("Setting.task")}</Text>
-              <Text style={styles.modalText}>素振りの姿勢を修正</Text>
-              <Text style={styles.modalLead}>七{i18n.t("Setting.stage")}</Text>
-              <Text style={styles.modalText}>182{i18n.t("Setting.registered")}</Text>
+              <Text style={styles.modalLead}>{i18n.t("Modal.task")}</Text>
+              <Text style={styles.modalText}>-</Text>
+              <Text style={styles.modalLead}>初段{i18n.t("Modal.stage")}</Text>
+              <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => onPressMenu()}
