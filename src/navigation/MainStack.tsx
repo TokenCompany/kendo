@@ -9,6 +9,7 @@ import { ScheduleScreen } from "../screens/ScheduleScreen";
 import { ResultEditScreen } from "../screens/ResultEditScreen";
 import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
+import { TaskEditScreen } from "../screens/TaskEditScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
 import { SubCategoryScreen } from "../screens/SubCategoryScreen";
@@ -44,6 +45,14 @@ export const MainStack: React.FC<Props> = () => {
         name="ResultEdit"
         component={ResultEditScreen}
         options={{ title: "実績入力" }}
+      />
+      <Stack.Screen
+        name="TaskEdit"
+        component={TaskEditScreen}
+        options={({ navigation }) => ({
+          headerTitle: "課題設定",
+          headerRight: () => renderMenuButton(navigation),
+        })}
       />
       <Stack.Screen
         name="ProfileEdit"

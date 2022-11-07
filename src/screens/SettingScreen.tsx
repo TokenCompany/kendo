@@ -8,16 +8,19 @@ import i18n from "../lang/localization";
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const onPressTask = () => {
+    navigation.navigate("TaskEdit");
+  };
+  const onPressInitial = () => {
+    navigation.navigate("TrainingEdit");
+  };
   const onPressProfile = () => {
     navigation.navigate("ProfileEdit");
   };
   const onPressTraining = () => {
     navigation.navigate("TrainingEdit");
   };
-  const onPressTask = () => {
-    navigation.navigate("TrainingEdit");
-  };
-  const onPressInitial = () => {
+  const onPressLanguage = () => {
     navigation.navigate("TrainingEdit");
   };
 
@@ -71,8 +74,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button01")} onPress={onPressProfile} />
         </View>
-        <View>
+        <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button02")} onPress={onPressTraining} />
+        </View>
+        <View>
+          <Button text={i18n.t("Setting.button05")} onPress={onPressLanguage} />
         </View>
       </View>
     </ScrollView>
