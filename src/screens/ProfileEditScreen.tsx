@@ -25,6 +25,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeKenNumber,
     onChangePassingDay1st,
     onChangeExamDay1st,
+    objectiveNum,
+    onChangeobjectiveNum,
     onPressSave,
   } = useProfileForm();
   // useStateで型を指定しておく

@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
@@ -69,6 +69,49 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         <MajorItem text="先生との稽古" onPress={onPressTeacher} />
         <MajorItem text="掛稽古" onPress={onPressKakari} />
         <MajorItem text="年間稽古目標" onPress={onPressTarget} />
+        <View style={styles.objectiveContainer}>
+          <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+          <View style={styles.objectiveInputArea}>
+            <Text style={styles.objectiveText}>合計</Text>
+            <TextInput
+              style={styles.objectiveInput}
+              keyboardType="numeric"
+              onChangeText={onChangeobjectiveNum}
+              value={objectiveNum}
+            ></TextInput>
+            <Text style={styles.objectiveText}>回</Text>
+          </View>
+          <View style={styles.objectiveInputArea}>
+            <Text style={styles.objectiveText}>〇〇〇 先生</Text>
+            <TextInput
+              style={styles.objectiveInput}
+              keyboardType="numeric"
+              onChangeText={onChangeobjectiveNum}
+              value={objectiveNum}
+            ></TextInput>
+            <Text style={styles.objectiveText}>回</Text>
+          </View>
+          <View style={styles.objectiveInputArea}>
+            <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
+            <TextInput
+              style={styles.objectiveInput}
+              keyboardType="numeric"
+              onChangeText={onChangeobjectiveNum}
+              value={objectiveNum}
+            ></TextInput>
+            <Text style={styles.objectiveText}>回</Text>
+          </View>
+          <View style={styles.objectiveInputArea}>
+            <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
+            <TextInput
+              style={styles.objectiveInput}
+              keyboardType="numeric"
+              onChangeText={onChangeobjectiveNum}
+              value={objectiveNum}
+            ></TextInput>
+            <Text style={styles.objectiveText}>回</Text>
+          </View>
+        </View>
       </View>
     </View>
   );
@@ -86,5 +129,30 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginBottom: 50,
+  },
+  objectiveContainer: {
+    marginTop: 30,
+    marginBottom: 20,
+  },
+  objectiveLabel: {
+    fontSize: 18,
+    color: "#000",
+  },
+  objectiveInputArea: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  objectiveInput: {
+    width: 100,
+    height: 40,
+    marginHorizontal: 10,
+    fontSize: 18,
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#aaa",
+  },
+  objectiveText: {
+    fontSize: 18,
   },
 });
