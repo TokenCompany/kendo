@@ -11,6 +11,7 @@ export type MainStackParamList = {
   TaskEdit: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
-  SubCategory: { subCategory: SubCategory };
+  SubCategory: undefined;
+  // SubCategory: { subCategory: SubCategory };
   ResultEdit: undefined;
 };

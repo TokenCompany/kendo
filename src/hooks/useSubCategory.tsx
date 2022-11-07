@@ -8,6 +8,7 @@ type Hooks = {
   currentPlace: string;
   onPressSave: (text: string) => void;
   onChangeText: (text: string) => void;
+  onPressSave: () => void;
 };
 
 export type Place = {
@@ -41,5 +42,6 @@ export const useSubCategory = (): Hooks => {
     currentPlace,
     onChangeText,
     onPressSubmit,
+    onPressSave,
   };
 };
