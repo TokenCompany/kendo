@@ -14,32 +14,29 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
-    modalHiddenTimer();
+    timer();
   };
 
   const hiddenModal = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(false);
     navigation.navigate("Menu");
   };
 
-  const onPressMenu = () => {
-    setModalVisible(!modalVisible);
+  const onPressClose = () => {
+    setModalVisible(false);
     navigation.navigate("Menu");
   };
 
-  const modalHiddenTimer = () => {
-    const [count, setCount] = useState(0);
-
-    useEffect(() => {
-      const time = setInterval(() => {
-        setCount((prevCount) => prevCount + 1);
-      }, 1000);
-      return () => clearInterval(time);
-    }, []);
-
-    if (count === 5) {
-      hiddenModal();
-    }
+  const timer = () => {
+    let count = 0;
+    const countUp = () => {
+      count++;
+      setTimeout(countUp, 1000);
+      if (count === 5) {
+        hiddenModal();
+      }
+    };
+    countUp();
   };
 
   return (
@@ -73,7 +70,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
               <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => onPressMenu()}
+                onPress={() => onPressClose()}
               >
                 <Text style={styles.textStyle}>×</Text>
               </TouchableOpacity>
