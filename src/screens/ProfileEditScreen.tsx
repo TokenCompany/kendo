@@ -18,28 +18,20 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentBirthday,
     currentAge,
     currentKenNumber,
-    current1st,
     onChangeName,
     onChangeBirthday,
     onChangeAge,
     onChangeKenNumber,
-    onChangePassingDay1st,
-    onChangeExamDay1st,
+    /* エラーになるため、一旦コメントアウトしてます */
+    // current1st,
+    // onChangePassingDay1st,
+    // onChangeExamDay1st,
     onPressSave,
   } = useProfileForm();
-  // useStateで型を指定しておく
-  // なにも指定しないと初期値"date"から推論してstring型になってしまう
-  const [show, setShow] = useState(false);
+
+  const [show, setShow] = useState<boolean>(false);
   const showDatepicker = () => {
     setShow(true);
-  };
-
-  const hideDatePicker = () => {
-    setShow(false);
-  };
-
-  const handleConfirm = () => {
-    hideDatePicker();
   };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -53,9 +45,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             <Text style={styles.birthdayText}>{currentBirthday}</Text>
             {show && (
               <DateTimePicker
-                onCancel={hideDatePicker}
-                onConfirm={handleConfirm}
-                testID="dateTimePicker"
                 value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
                 mode="date"
                 onChange={(event, date) => {
@@ -73,7 +62,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
       </View>
 
-      <LevelForm
+      {/* エラーになるため、一旦コメントアウトしてます */}
+      {/* <LevelForm
         label="初段"
         value={current1st}
         onChangePassingDay={onChangePassingDay1st}
@@ -120,7 +110,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         value={current1st}
         onChangePassingDay={onChangePassingDay1st}
         onChangeExamDay={onChangeExamDay1st}
-      />
+      /> */}
 
       <View style={styles.buttonContainer}>
         <Button text="プロフィール登録" onPress={onPressSave} />
