@@ -14,9 +14,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
-    setInterval(() => {
-      hiddenModal();
-    }, 5000);
+    modalHiddenTimer();
   };
 
   const hiddenModal = () => {
@@ -29,20 +27,20 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Menu");
   };
 
-  // const modalHiddenTimer = () => {
-  //   const [count, setCount] = useState(0);
+  const modalHiddenTimer = () => {
+    const [count, setCount] = useState(0);
 
-  //   useEffect(() => {
-  //     const time = setInterval(() => {
-  //       setCount((prevCount) => prevCount + 1);
-  //     }, 1000);
-  //     return () => clearInterval(time);
-  //   }, []);
+    useEffect(() => {
+      const time = setInterval(() => {
+        setCount((prevCount) => prevCount + 1);
+      }, 1000);
+      return () => clearInterval(time);
+    }, []);
 
-  //   if (count === 5) {
-  //     hiddenModal();
-  //   }
-  // };
+    if (count === 5) {
+      hiddenModal();
+    }
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
