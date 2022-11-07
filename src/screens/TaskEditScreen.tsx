@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { colors } from "../styles";
@@ -13,11 +13,19 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setCurrentTask(text);
   };
   const onChangeDelete = () => {
-    setCurrentTask("");
+    createAlert();
   };
   const onChangeSetting = () => {
     navigation.navigate("Setting");
   };
+  const createAlert = () =>
+    Alert.alert("Alert Title", "本当に削除しますか？", [
+      {
+        text: "いいえ",
+        style: "cancel",
+      },
+      { text: "はい", onPress: () => setCurrentTask("") },
+    ]);
   return (
     <View style={styles.container}>
       <TextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
