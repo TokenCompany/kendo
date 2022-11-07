@@ -14,41 +14,40 @@ export type SubCategory = {
   id: string; // uuid
 };
 
-export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
-  // export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
-
+// export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
+export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
-  // const subCateogoryType = route.params;
+  const subCategoryType = route.params;
 
   // 小項目の出し分け
-  // const renderSubCategoryEditor = () => {
-  //   if (subCateogoryType === "place") {
-  //     return <View>練習場所</View>;
-  //   } else if (subCateogoryType === "swing") {
-  //     return <View>素振り</View>;
-  //   } else if (subCateogoryType === "footwork") {
-  //     return <View>足さばき</View>;
-  //   } else if (subCateogoryType === "beat") {
-  //     return <View>基本打ち</View>;
-  //   } else if (subCateogoryType === "response") {
-  //     return <View>応じ技</View>;
-  //   } else if (subCateogoryType === "jigeiko") {
-  //     return <View>地稽古</View>;
-  //   } else if (subCateogoryType === "teacher") {
-  //     return <View>先生との稽古</View>;
-  //   } else if (subCateogoryType === "kakari") {
-  //     return <View>掛稽古</View>;
-  //   } else if (subCateogoryType === "target") {
-  //     return <View>年間稽古目標</View>;
-  //   }
+  const renderSubCategoryEditor = () => {
+    if (subCategoryType === "place") {
+      return <View>練習場所</View>;
+    } else if (subCategoryType === "swing") {
+      return <View>素振り</View>;
+    } else if (subCategoryType === "footwork") {
+      return <View>足さばき</View>;
+    } else if (subCategoryType === "beat") {
+      return <View>基本打ち</View>;
+    } else if (subCategoryType === "response") {
+      return <View>応じ技</View>;
+    } else if (subCategoryType === "jigeiko") {
+      return <View>地稽古</View>;
+    } else if (subCategoryType === "teacher") {
+      return <View>先生との稽古</View>;
+    } else if (subCategoryType === "kakari") {
+      return <View>掛稽古</View>;
+    } else if (subCategoryType === "target") {
+      return <View>年間稽古目標</View>;
+    }
 
-  //   return (
-  //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-  //       {renderSubCategoryEditor()}
-  //     </View>
-  //   );
-  // };
+    //   return (
+    //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
+    //       {renderSubCategoryEditor()}
+    //     </View>
+    //   );
+  };
 
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
@@ -77,14 +76,13 @@ export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
     setSubCategories(newSubCategories);
     setCurrentText("");
     // TODO: reduxに保存
-    // TODO: subCateogoryTypeによってredux保存先を切り替える
+    // TODO: subCategoryTypeによってredux保存先を切り替える
   };
 
   return (
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
-        {/* TODO: subCateogoryTypeによって文字を切り替える  */}
-        <Text style={styles.MajorText}>応じ技</Text>
+        {renderSubCategoryEditor()}
         <FAB style={styles.fab} small icon="plus" onPress={() => setVisible(true)} />
       </View>
 
