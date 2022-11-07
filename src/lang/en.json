@@ -1,10 +1,32 @@
 {
   "ScheduleScreen": {
-    "title": "稽古予定",
+    "title": "Schedule",
     "time": "Time",
     "place": "Place",
     "entry": "Entry",
-    "delete": "Delete"
+    "delete": "Delete",
+    "jan": "Jan",
+    "feb": "Feb",
+    "mar": "Mar",
+    "apr": "Apr",
+    "may": "May",
+    "jun": "Jun",
+    "jul": "Jul",
+    "aug": "Aug",
+    "sep": "Sep",
+    "oct": "Oct",
+    "nov": "Nov",
+    "dec": "Dec",
+    "sun": "Sun",
+    "mon": "Mon",
+    "tue": "Tue",
+    "wed": "Wed",
+    "thu": "Thu",
+    "fri": "Fri",
+    "sat": "Sat",
+    "year": ".",
+    "month": ".",
+    "day": "."
   },
   "History": {
     "title": "稽古実績",
@@ -61,6 +83,9 @@
     "stage06": "六段",
     "stage07": "七段",
     "stage08": "八段",
+    "stage09": "錬士",
+    "stage10": "教士",
+    "stage11": "範士",
     "passingDate": "合格日",
     "examinationDate": "審査日",
     "registerButton": "プロフィール登録"
@@ -75,7 +100,10 @@
     "training06": "地稽古",
     "training07": "先生との稽古",
     "training08": "掛稽古",
-    "training09": "年間稽古目標"
+    "training09": "年間稽古目標",
+    "times": "回",
+    "total": "合計",
+    "remain": "残り"
   },
   "Modal": {
     "task": "課題",
@@ -87,6 +115,8 @@
     "alert01": "終了時間は開始時間より遅い時間を入力してください",
     "alert02": "稽古予定を修正しますか？",
     "alert03": "稽古予定を削除しますか？",
-    "alert04": "本当に削除しますか？"
+    "alert04": "本当に削除しますか？",
+    "ok": "OK",
+    "cancel": "Cancel"
   }
 }
