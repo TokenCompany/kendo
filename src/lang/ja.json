@@ -1,10 +1,10 @@
 {
-  "Schedule": {
-    "title": "稽古予定",
+  "ScheduleScreen": {
+    "title": "Schedule",
     "time": "時間",
-    "place": "場所",
+    "place": "稽古場所",
     "entry": "登録",
-    "delete": "削除",
+    "delete": "消去",
     "jan": "1",
     "feb": "2",
     "mar": "3",
@@ -37,8 +37,8 @@
   },
   "Setting": {
     "title": "設定",
-    "name": "氏名",
-    "birthday": "生年月日",
+    "name": "名前",
+    "birthday": "誕生日設定",
     "age": "年齢",
     "number": "全剣連番号",
     "button01": "プロフィール編集",
@@ -116,7 +116,7 @@
     "alert02": "稽古予定を修正しますか？",
     "alert03": "稽古予定を削除しますか？",
     "alert04": "本当に削除しますか？",
-    "ok": "はい",
+    "ok": "OK",
     "cancel": "キャンセル"
   }
 }
