@@ -1,5 +1,5 @@
-import React from "react";
-import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } from "react-native";
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -10,9 +10,13 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
   });
-
+  const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
+    setModalVisible(true);
+  };
+  const onPressMenu = () => {
     navigation.navigate("Menu");
+    setModalVisible(!modalVisible);
   };
 
   return (
@@ -28,6 +32,32 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
       ) : (
         <ActivityIndicator size={"large"} />
       )}
+      <View>
+        <Modal
+          animationType="fade"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            navigation.navigate("Menu");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Text style={styles.modalLead}>課題</Text>
+              <Text style={styles.modalText}>素振りの姿勢を修正</Text>
+              <Text style={styles.modalLead}>七段まで</Text>
+              <Text style={styles.modalText}>182日</Text>
+              <TouchableOpacity
+                style={[styles.button, styles.buttonClose]}
+                onPress={() => onPressMenu()}
+              >
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+        </Modal>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -41,5 +71,59 @@ const styles = StyleSheet.create({
   text: {
     fontFamily: "KouzanGyousho",
     fontSize: 64,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  button: {
+    borderRadius: 5,
+    padding: 7,
+    width: 30,
+    elevation: 2,
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  modalView: {
+    position: "relative",
+    margin: 20,
+    backgroundColor: "#31538f",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#fff",
+  },
+  textStyle: {
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalLead: {
+    color: "yellow",
+    fontWeight: "bold",
+    fontSize: 24,
+    marginTop: 10,
+    textAlign: "center",
+  },
+  modalText: {
+    color: "#fff",
+    fontSize: 22,
+    textAlign: "center",
   },
 });
