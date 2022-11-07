@@ -6,9 +6,10 @@ import { setPlace } from "../store/subCategorySlice";
 type Hooks = {
   Place: Place[];
   currentPlace: string;
-  onPressSave: (text: string) => void;
+  onChangeobjectiveNum: string;
+  objectiveNum: string;
+  onPressSubmit: (text: string) => void;
   onChangeText: (text: string) => void;
-  onPressSave: () => void;
 };
 
 export type Place = {
@@ -42,6 +43,7 @@ export const useSubCategory = (): Hooks => {
     currentPlace,
     onChangeText,
     onPressSubmit,
-    onPressSave,
+    onChangeobjectiveNum,
+    objectiveNum,
   };
 };

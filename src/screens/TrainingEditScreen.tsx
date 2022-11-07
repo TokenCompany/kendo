@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
-import { useProfileForm } from "../hooks/useProfileForm";
+import { useSubCategory } from "../hooks/useSubCategory";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -81,7 +81,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   );
 };
 
-const { onChangeobjectiveNum, objectiveNum } = useProfileForm();
+const { onChangeobjectiveNum, objectiveNum } = useSubCategory();
 const [visible, setVisible] = useState(false);
 const renderTarget = () => {
   console.log(visible);
