@@ -29,32 +29,32 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onPressSave,
   } = useProfileForm();
 
-  const [show, setShow] = useState<boolean>(false);
-  const showDatepicker = () => {
-    setShow(true);
-  };
+  // const [show, setShow] = useState<boolean>(false);
+  // const showDatepicker = () => {
+  //   setShow(true);
+  // };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
         <View style={styles.profileBody}>
           <TextForm label="氏名" value={currentName} onChangeText={onChangeName} />
           <View style={styles.birthdayInput}>
-            <TouchableOpacity style={styles.button} onPress={showDatepicker}>
+            {/* <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>誕生日設定</Text>
-            </TouchableOpacity>
+            </TouchableOpacity> */}
             <Text style={styles.birthdayText}>{currentBirthday}</Text>
-            {show && (
-              <DateTimePicker
-                value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
-                mode="date"
-                onChange={(event, date) => {
-                  if (date) {
-                    const birthday = Number(dayjs(date).format("YYYYMMDD"));
-                    onChangeBirthday(birthday);
-                  }
-                }}
-              />
-            )}
+            {/* {show && ( */}
+            <DateTimePicker
+              value={dayjs(currentBirthday, "YYYYMMDD").toDate()}
+              mode="date"
+              onChange={(event, date) => {
+                if (date) {
+                  const birthday = Number(dayjs(date).format("YYYYMMDD"));
+                  onChangeBirthday(birthday);
+                }
+              }}
+            />
+            {/* )} */}
           </View>
           <TextForm label="年齢" value={currentAge} onChangeText={onChangeAge} />
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
