@@ -6,7 +6,6 @@ import { deleteReservationItem } from "../store/reservationSlice";
 
 type Hooks = {
   // これでカレンダー上に日付が押された時、currentDateに日付文字列を格納する
-  currentState: any;
   onPressReserve: () => void;
   onPressDelete: () => void;
 };
