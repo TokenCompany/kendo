@@ -3,9 +3,11 @@ import { View, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
+import { useProfileForm } from "../hooks/useProfileForm";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
+// const { objectiveNum, onChangeobjectiveNum } = useProfileForm();
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {

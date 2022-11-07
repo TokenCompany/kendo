@@ -1,3 +1,4 @@
+import { SubCategory } from "./subCategory";
 // navigation関連の型
 // Screenを追加する際にはここにも定義してください
 export type MainStackParamList = {
@@ -10,6 +11,6 @@ export type MainStackParamList = {
   TaskEdit: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
-  SubCategory: undefined;
+  SubCategory: { subCategory: SubCategory };
   ResultEdit: undefined;
 };
