@@ -6,30 +6,24 @@ type Props = {
   textTeacher: string;
 };
 
-export const KeikoTeacherInput: React.FC<Props> = ({ textTeacher }) => {
+export const KeikoKakariInput: React.FC<Props> = ({ textTeacher }) => {
   const [checked, setChecked] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
 
   return (
     <View style={styles.inputWrap}>
-      <Checkbox
-        status={checked ? "checked" : "unchecked"}
-        onPress={() => {
-          setChecked(!checked);
-        }}
-      />
+      <View style={styles.check}>
+        <Checkbox
+          status={checked ? "checked" : "unchecked"}
+          onPress={() => {
+            setChecked(!checked);
+          }}
+        />
+      </View>
       <View style={styles.inputArea}>
         <Text style={styles.label}>{textTeacher}</Text>
         {!!checked && (
           <View>
-            <View style={styles.inputGroup}>
-              <TextInput style={styles.inputLarge} />
-              <Text style={styles.inputText}>先生</Text>
-            </View>
-            <View style={styles.inputGroup}>
-              <TextInput style={styles.inputLarge} />
-              <Text style={styles.inputText}>先生</Text>
-            </View>
             <View style={styles.inputGroup}>
               <View style={styles.inputGroup}>
                 <Checkbox
@@ -70,7 +64,15 @@ const styles = StyleSheet.create({
     flex: 1,
     marginTop: 6,
   },
-
+  check: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 35,
+    width: 35,
+    marginRight: 10,
+    borderColor: "#aaa",
+    borderWidth: 1,
+  },
   inputGroup: {
     flexDirection: "row",
   },
