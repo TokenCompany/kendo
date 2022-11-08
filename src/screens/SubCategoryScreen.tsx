@@ -23,7 +23,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
     if (subCategoryType === "place") {
-      return <View>練習場所</View>;
+      return <View>稽古場所</View>;
     } else if (subCategoryType === "swing") {
       return <View>素振り</View>;
     } else if (subCategoryType === "footwork") {
@@ -41,12 +41,6 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
     } else if (subCategoryType === "target") {
       return <View>年間稽古目標</View>;
     }
-
-    //   return (
-    //     <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-    //       {renderSubCategoryEditor()}
-    //     </View>
-    //   );
   };
 
   const [visible, setVisible] = useState(false);

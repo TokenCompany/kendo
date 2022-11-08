@@ -60,13 +60,21 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
   };
   const onPressTarget = () => {
-    setVisible(visible);
+    showTargetSetting();
   };
 
+  const [show, setShow] = useState(false);
+  const [currentText, setCurrentText] = useState<string>("");
+  const onChangeText = (text: string) => {
+    setCurrentText(text);
+  };
+  const showTargetSetting = () => {
+    setShow(true);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <MajorItem text="練習場所" onPress={onPressPlace} />
+        <MajorItem text="稽古場所" onPress={onPressPlace} />
         <MajorItem text="素振り" onPress={onPressSwing} />
         <MajorItem text="足さばき" onPress={onPressFootwork} />
         <MajorItem text="基本打ち" onPress={onPressBeat} />
@@ -75,65 +83,56 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         <MajorItem text="先生との稽古" onPress={onPressTeacher} />
         <MajorItem text="掛稽古" onPress={onPressKakari} />
         <MajorItem text="年間稽古目標" onPress={onPressTarget} />
-        {/* {renderTarget()} */}
+
+        {show && (
+          <View style={styles.objectiveContainer}>
+            <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>合計</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>〇〇〇 先生</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
 };
-
-// const { onChangeobjectiveNum, objectiveNum } = useSubCategory();
-// const [visible, setVisible] = useState(false);
-// const renderTarget = () => {
-//   console.log(visible);
-
-//   if (visible) {
-//     return (
-//       <View style={styles.objectiveContainer}>
-//         <Text style={styles.objectiveLabel}>年間稽古目標</Text>
-//         <View style={styles.objectiveInputArea}>
-//           <Text style={styles.objectiveText}>合計</Text>
-//           <TextInput
-//             style={styles.objectiveInput}
-//             keyboardType="numeric"
-//             onChangeText={onChangeobjectiveNum}
-//             value={objectiveNum}
-//           ></TextInput>
-//           <Text style={styles.objectiveText}>回</Text>
-//         </View>
-//         <View style={styles.objectiveInputArea}>
-//           <Text style={styles.objectiveText}>〇〇〇 先生</Text>
-//           <TextInput
-//             style={styles.objectiveInput}
-//             keyboardType="numeric"
-//             onChangeText={onChangeobjectiveNum}
-//             value={objectiveNum}
-//           ></TextInput>
-//           <Text style={styles.objectiveText}>回</Text>
-//         </View>
-//         <View style={styles.objectiveInputArea}>
-//           <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
-//           <TextInput
-//             style={styles.objectiveInput}
-//             keyboardType="numeric"
-//             onChangeText={onChangeobjectiveNum}
-//             value={objectiveNum}
-//           ></TextInput>
-//           <Text style={styles.objectiveText}>回</Text>
-//         </View>
-//         <View style={styles.objectiveInputArea}>
-//           <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
-//           <TextInput
-//             style={styles.objectiveInput}
-//             keyboardType="numeric"
-//             onChangeText={onChangeobjectiveNum}
-//             value={objectiveNum}
-//           ></TextInput>
-//           <Text style={styles.objectiveText}>回</Text>
-//         </View>
-//       </View>
-//     );
-//   }
-// };
 
 const styles = StyleSheet.create({
   container: {
@@ -151,6 +150,7 @@ const styles = StyleSheet.create({
   objectiveContainer: {
     marginTop: 30,
     marginBottom: 20,
+    paddingRight: 60,
   },
   objectiveLabel: {
     fontSize: 18,
