@@ -14,7 +14,9 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
-    timer();
+    setTimeout(() => {
+      hiddenModal();
+    }, 5000);
   };
 
   const hiddenModal = () => {
@@ -25,18 +27,6 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressClose = () => {
     setModalVisible(false);
     navigation.navigate("Menu");
-  };
-
-  const timer = () => {
-    let count = 0;
-    const countUp = () => {
-      count++;
-      setTimeout(countUp, 1000);
-      if (count === 5) {
-        hiddenModal();
-      }
-    };
-    countUp();
   };
 
   return (
