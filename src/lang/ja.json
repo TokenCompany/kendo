@@ -62,6 +62,14 @@
     "textUnit03": "時間",
     "ari": "あり"
   },
+  "InitEdit": {
+    "InitEdit01": "八段への道",
+    "InitEdit02": "全国大会への道",
+    "InitEdit03": "流汗悟道",
+    "InitEdit04": "交剣知愛",
+    "InitEdit05": "不動心",
+    "InitEdit06": "切磋琢磨"
+  },
   "Statistics": {
     "title": "実績表",
     "label01": "稽古回数",
