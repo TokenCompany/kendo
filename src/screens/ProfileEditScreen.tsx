@@ -23,9 +23,9 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeAge,
     onChangeKenNumber,
     /* エラーになるため、一旦コメントアウトしてます */
-    // current1st,
-    // onChangePassingDay1st,
-    // onChangeExamDay1st,
+    current1st,
+    onChangePassingDay1st,
+    onChangeExamDay1st,
     onPressSave,
   } = useProfileForm();
 
@@ -56,7 +56,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               setShow(false);
             }}
           >
-            {/* <View style={styles.centeredView}> */}
             <View style={styles.modalView}>
               <DateTimePicker
                 value={new Date(20220101)}
@@ -73,7 +72,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
                 <Text style={styles.textStyle}>×</Text>
               </TouchableOpacity>
             </View>
-            {/* </View> */}
           </Modal>
           <TextForm label="年齢" value={currentAge} onChangeText={onChangeAge} />
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
@@ -81,8 +79,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
       </View>
 
-      {/* エラーになるため、一旦コメントアウトしてます */}
-      {/* <LevelForm
+      <LevelForm
         label="初段"
         value={current1st}
         onChangePassingDay={onChangePassingDay1st}
@@ -129,7 +126,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         value={current1st}
         onChangePassingDay={onChangePassingDay1st}
         onChangeExamDay={onChangeExamDay1st}
-      /> */}
+      />
 
       <View style={styles.buttonContainer}>
         <Button text="プロフィール登録" onPress={onPressSave} />
@@ -143,12 +140,6 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingHorizontal: 20,
     marginTop: 20,
-  },
-  centeredView: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-    marginTop: 22,
   },
   modalView: {
     position: "relative",
