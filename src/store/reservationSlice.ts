@@ -17,11 +17,18 @@ export interface ReservationState {
 // デフォルトの値
 // これはからオブジェクトでOKです
 const initialState: ReservationState = {
-  '2022-11-07':{
-    startTime: '19:00', // 開始時間
-    endTime: '21:00', // 終了時間
-    place: '横浜アリーナ', // 稽古場所
-  }
+  "2022-11-07": {
+    startTime: "19:00", // 開始時間
+    endTime: "21:00", // 終了時間
+    place: "横浜アリーナ", // 稽古場所
+  },
+};
+
+type BookReservationItemPayload = {
+  date: string;
+  startTime: string;
+  endTime: string;
+  place: string;
 };
 
 export const counterSlice = createSlice({
@@ -29,16 +36,13 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     // 予約情報を新規追加(更新)するアクションです
-    bookReservationItem: (state, action) => {
-      // state = {
-      //   ...state,[action.payload.date]:{
-      //     startTime: action.payload.date.startTime,
-      //     endTime: action.payload.date.endTime,
-      //     place: action.payload.date.place
-      //   }
-      // }
-      console.log(action);
-      
+    bookReservationItem: (state, action: PayloadAction<BookReservationItemPayload>) => {
+      console.log("bookReservationItem-------------", action);
+      state[action.payload.date] = {
+        startTime: action.payload.startTime,
+        endTime: action.payload.endTime,
+        place: action.payload.place,
+      };
     },
     // 予約情報を削除するアクションです
     deleteReservationItem: (state, action) => {

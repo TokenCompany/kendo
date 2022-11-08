@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -15,8 +15,7 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-  // console.log(reservations);
-  
+
   // 日付の取得と表示
   const [selectedDate, setSelectedDate] = useState<string>();
   const [startTime, onChangeStartTime] = useState<string>();
@@ -26,36 +25,43 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     startTime: string; // 開始時間
     endTime: string; // 終了時間
     place: string; // 稽古場所
-  }
+  };
   type reservation = {
     [date: string]: Item;
-  }
-  const [reservationObj,setReservationObj] = useState<reservation>();
+  };
+  const [reservationObj, setReservationObj] = useState<reservation>();
+
+  // TODO: ただの確認用のログなので消してください
+  useEffect(() => {
+    console.log("reservations--------", reservations);
+  }, [reservations]);
 
   return (
     <ScrollView style={styles.container}>
-      <CalendarFrame onPressDay={(day)=>{
-        // 文字列型日付を日本語に変換
-        let dateTextArray = day.split('-');
-        let dateText = dateTextArray[0] + '年'+dateTextArray[1]+'月' + dateTextArray[2]+'日';
-        // 文字の変更
-        setSelectedDate(dateText);
-        // 選択された日付が既に存在する場合
-        if (day in reservations) {
-          onChangeStartTime(reservations[day].startTime);
-          onChangeEndTime(reservations[day].endTime);
-          setPlace(reservations[day].place)
-        }
-        setReservationObj({
-          [selectedDate]:{
-            startTime: startTime,
-            endTime: endTime,
-            place: place,
+      <CalendarFrame
+        onPressDay={(day) => {
+          // 文字列型日付を日本語に変換
+          let dateTextArray = day.split("-");
+          let dateText =
+            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          // 文字の変更
+          setSelectedDate(dateText);
+          // 選択された日付が既に存在する場合
+          if (day in reservations) {
+            onChangeStartTime(reservations[day].startTime);
+            onChangeEndTime(reservations[day].endTime);
+            setPlace(reservations[day].place);
           }
-        });
-        console.log(reservationObj);
-        
-      } } />
+          setReservationObj({
+            [selectedDate]: {
+              startTime: startTime,
+              endTime: endTime,
+              place: place,
+            },
+          });
+          console.log(reservationObj);
+        }}
+      />
       <View style={styles.box}>
         <Text style={styles.boxTitle}>{selectedDate}</Text>
         <View style={styles.boxInputArea}>
@@ -92,7 +98,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 <Picker.Item label="15:00" value="15:00" />
                 <Picker.Item label="16:00" value="16:00" />
                 <Picker.Item label="21:00" value="21:00" />
-
               </Picker>
             </View>
           </View>
@@ -109,12 +114,25 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               <Picker.Item label="text01" value="text01" />
               <Picker.Item label="text02" value="text02" />
               <Picker.Item label="横浜アリーナ" value="横浜アリーナ" />
+              <Picker.Item label="東京ドーム" value="東京ドーム" />
             </Picker>
           </View>
         </View>
-        <TextButton text01="登録" onPress01={()=>{
-          dispatch(bookReservationItem(selectedDate))
-        }}  text02="削除" />
+        <TextButton
+          text01="登録"
+          onPress01={() => {
+            dispatch(
+              bookReservationItem({
+                // TODO: 値がハードコードなので正しい値にしてください
+                date: "2022-11-05",
+                startTime: "13:00",
+                endTime: "15:00",
+                place: "東京ドーム",
+              }),
+            );
+          }}
+          text02="削除"
+        />
       </View>
     </ScrollView>
   );
