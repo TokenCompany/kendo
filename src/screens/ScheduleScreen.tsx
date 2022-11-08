@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -14,15 +14,23 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
-  const reservations = useSelector((state: RootState) => state.reservation);
+  const reservations = useSelector((state: RootState) => state);
   // 日付の取得と表示
   const [currentDate, setDate] = useState();
   const [time01, onChangeTime01] = useState();
   const [time02, onChangeTime02] = useState();
   const [selectedValue, setSelectedValue] = useState();
+  useEffect(() => {
+    console.log(reservations);
+  }, [reservations]);
   return (
     <ScrollView style={styles.container}>
-      <CalendarFrame />
+      <CalendarFrame
+        onPressDay={(day) => {
+          console.log("おや：", day);
+          // TODO: setState
+        }}
+      />
       <View style={styles.box}>
         <Text style={styles.boxTitle}></Text>
         <View style={styles.boxInputArea}>
