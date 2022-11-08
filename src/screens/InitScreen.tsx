@@ -14,9 +14,9 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
-    setInterval(() => {
-      hiddenModal();
-    }, 5000);
+    // setInterval(() => {
+    //   hiddenModal();
+    // }, 5000);
   };
 
   const hiddenModal = () => {

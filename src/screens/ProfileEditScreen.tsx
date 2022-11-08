@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Modal } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { TextForm } from "../components/TextForm";
@@ -32,8 +32,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const [show, setShow] = useState<boolean>(false);
   const showDatepicker = () => {
     setShow(true);
-    console.log(currentBirthday);
   };
+  const onPressClose = () => {
+    setShow(false);
+  };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
@@ -45,19 +48,33 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             </TouchableOpacity>
             <Text style={styles.birthdayText}>{currentBirthday}</Text>
           </View>
-          {show && (
-            <DateTimePicker
-              value={new Date(20220101)}
-              mode="date"
-              display={"spinner"}
-              onChange={(event, date) => {
-                if (date) {
-                  const birthday = Number(dayjs(date).format("YYYYMMDD"));
-                  onChangeBirthday(birthday);
-                }
-              }}
-            />
-          )}
+          <Modal
+            animationType="fade"
+            visible={show}
+            transparent={true}
+            onRequestClose={() => {
+              setShow(false);
+            }}
+          >
+            {/* <View style={styles.centeredView}> */}
+            <View style={styles.modalView}>
+              <DateTimePicker
+                value={new Date(20220101)}
+                mode="date"
+                display={"spinner"}
+                onChange={(event, date) => {
+                  if (date) {
+                    const birthday = Number(dayjs(date).format("YYYYMMDD"));
+                    onChangeBirthday(birthday);
+                  }
+                }}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+            {/* </View> */}
+          </Modal>
           <TextForm label="年齢" value={currentAge} onChangeText={onChangeAge} />
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
@@ -126,6 +143,36 @@ const styles = StyleSheet.create({
     flexDirection: "column",
     paddingHorizontal: 20,
     marginTop: 20,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    position: "relative",
+    top: "40%",
+    backgroundColor: "#fff",
+    paddingVertical: 20,
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 7,
+    width: 50,
+    elevation: 2,
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  textStyle: {
+    fontSize: 26,
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
   },
   profileContainer: {
     flexDirection: "row",
