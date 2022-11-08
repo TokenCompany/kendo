@@ -5,11 +5,18 @@ import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { Picker } from "@react-native-community/picker";
 import { TextButton } from "../components/TextButton";
-import i18n from "../lang/localization";
+import { bookReservationItem } from "../store/reservationSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
+// import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
+  const dispatch = useDispatch();
+  const reservations = useSelector((state: RootState) => state.reservation);
+  // 日付の取得と表示
+  const [currentDate, setDate] = useState();
   const [time01, onChangeTime01] = useState();
   const [time02, onChangeTime02] = useState();
   const [selectedValue, setSelectedValue] = useState();
@@ -17,9 +24,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     <ScrollView style={styles.container}>
       <CalendarFrame />
       <View style={styles.box}>
-        <Text style={styles.boxTitle}>2022年4月15日(金)</Text>
+        <Text style={styles.boxTitle}></Text>
         <View style={styles.boxInputArea}>
-          <Text>◆{i18n.t("Schedule.time")}</Text>
+          <Text>◆時間</Text>
           <View style={styles.boxInputTime}>
             <View style={styles.boxInputTimeFlex}>
               <Picker
@@ -55,7 +62,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           </View>
         </View>
         <View style={styles.boxInputArea}>
-          <Text>◆{i18n.t("Schedule.place")}</Text>
+          <Text>◆場所</Text>
           <View style={styles.boxInputText}>
             <Picker
               selectedValue={selectedValue}
@@ -68,7 +75,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </Picker>
           </View>
         </View>
-        <TextButton text01={i18n.t("Schedule.entry")} text02={i18n.t("Schedule.delete")} />
+        <TextButton text01="登録" text02="削除" />
       </View>
     </ScrollView>
   );

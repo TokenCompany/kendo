@@ -9,6 +9,8 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const CalendarFrame: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
+ 
+
   return (
     <View style={styles.container}>
       <Calendar
@@ -57,7 +59,10 @@ export const CalendarFrame: React.FC<Props> = ({}: Props) => {
         }}
         dayComponent={({ date }) => {
           return (
-            <TouchableOpacity onPress={() => {}} style={styles.button}>
+            <TouchableOpacity onPress={() => {
+              console.log(date.dateString);
+              
+            }} style={styles.button}>
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
           );
