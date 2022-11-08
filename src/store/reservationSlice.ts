@@ -30,13 +30,13 @@ export const counterSlice = createSlice({
   reducers: {
     // 予約情報を新規追加(更新)するアクションです
     bookReservationItem: (state, action) => {
-      state = {
-        ...state,[action.payload.date]:{
-          startTime: action.payload.startTime,
-          endTime: action.payload.endTime,
-          place: action.payload.place
-        }
-      }
+      // state = {
+      //   ...state,[action.payload.date]:{
+      //     startTime: action.payload.date.startTime,
+      //     endTime: action.payload.date.endTime,
+      //     place: action.payload.date.place
+      //   }
+      // }
       console.log(action);
       
     },

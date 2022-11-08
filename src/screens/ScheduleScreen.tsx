@@ -15,24 +15,57 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
+  // console.log(reservations);
+  
   // 日付の取得と表示
-  const [currentDate, setDate] = useState();
-  const [time01, onChangeTime01] = useState();
-  const [time02, onChangeTime02] = useState();
-  const [selectedValue, setSelectedValue] = useState();
+  const [selectedDate, setSelectedDate] = useState<string>();
+  const [startTime, onChangeStartTime] = useState<string>();
+  const [endTime, onChangeEndTime] = useState<string>();
+  const [place, setPlace] = useState<string>();
+  type Item = {
+    startTime: string; // 開始時間
+    endTime: string; // 終了時間
+    place: string; // 稽古場所
+  }
+  type reservation = {
+    [date: string]: Item;
+  }
+  const [reservationObj,setReservationObj] = useState<reservation>();
+
   return (
     <ScrollView style={styles.container}>
-      <CalendarFrame />
+      <CalendarFrame onPressDay={(day)=>{
+        // 文字列型日付を日本語に変換
+        let dateTextArray = day.split('-');
+        let dateText = dateTextArray[0] + '年'+dateTextArray[1]+'月' + dateTextArray[2]+'日';
+        // 文字の変更
+        setSelectedDate(dateText);
+        // 選択された日付が既に存在する場合
+        if (day in reservations) {
+          onChangeStartTime(reservations[day].startTime);
+          onChangeEndTime(reservations[day].endTime);
+          setPlace(reservations[day].place)
+        }
+        setReservationObj({
+          [selectedDate]:{
+            startTime: startTime,
+            endTime: endTime,
+            place: place,
+          }
+        });
+        console.log(reservationObj);
+        
+      } } />
       <View style={styles.box}>
-        <Text style={styles.boxTitle}></Text>
+        <Text style={styles.boxTitle}>{selectedDate}</Text>
         <View style={styles.boxInputArea}>
           <Text>◆時間</Text>
           <View style={styles.boxInputTime}>
             <View style={styles.boxInputTimeFlex}>
               <Picker
-                selectedValue={time01}
+                selectedValue={startTime}
                 style={styles.inputTime}
-                onValueChange={(itemValue, itemIndex) => onChangeTime01(itemValue)}
+                onValueChange={(itemValue, itemIndex) => onChangeStartTime(itemValue)}
                 itemStyle={{ height: 60 }}
               >
                 <Picker.Item label="10:00" value="10:00" />
@@ -41,13 +74,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 <Picker.Item label="13:00" value="13:00" />
                 <Picker.Item label="14:00" value="14:00" />
                 <Picker.Item label="15:00" value="15:00" />
-                <Picker.Item label="16:00" value="16:00" />
+                <Picker.Item label="19:00" value="19:00" />
+                <Picker.Item label="21:00" value="21:00" />
               </Picker>
               <Text style={styles.timeText}>~</Text>
               <Picker
-                selectedValue={time02}
+                selectedValue={endTime}
                 style={styles.inputTime}
-                onValueChange={(itemValue, itemIndex) => onChangeTime02(itemValue)}
+                onValueChange={(itemValue, itemIndex) => onChangeEndTime(itemValue)}
                 itemStyle={{ height: 60 }}
               >
                 <Picker.Item label="10:00" value="10:00" />
@@ -57,6 +91,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 <Picker.Item label="14:00" value="14:00" />
                 <Picker.Item label="15:00" value="15:00" />
                 <Picker.Item label="16:00" value="16:00" />
+                <Picker.Item label="21:00" value="21:00" />
+
               </Picker>
             </View>
           </View>
@@ -65,17 +101,20 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           <Text>◆場所</Text>
           <View style={styles.boxInputText}>
             <Picker
-              selectedValue={selectedValue}
+              selectedValue={place}
               style={styles.Picker}
-              onValueChange={(itemValue, itemIndex) => setSelectedValue(itemValue)}
+              onValueChange={(itemValue, itemIndex) => setPlace(itemValue)}
               itemStyle={{ height: 60 }}
             >
               <Picker.Item label="text01" value="text01" />
               <Picker.Item label="text02" value="text02" />
+              <Picker.Item label="横浜アリーナ" value="横浜アリーナ" />
             </Picker>
           </View>
         </View>
-        <TextButton text01="登録" text02="削除" />
+        <TextButton text01="登録" onPress01={()=>{
+          dispatch(bookReservationItem(selectedDate))
+        }}  text02="削除" />
       </View>
     </ScrollView>
   );
@@ -92,7 +131,7 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
   boxTitle: {
-    fontSize: 16,
+    fontSize: 20,
   },
   boxInputArea: {
     marginTop: 10,
