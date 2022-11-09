@@ -21,21 +21,25 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
 
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
-    if (subCategoryType === { subCategoryType: "place" }) {
+    if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "place" })) {
       return <Text style={styles.MajorText}>稽古場所</Text>;
-    } else if (subCategoryType === { subCategoryType: "swing" }) {
+    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "swing" })) {
       return <Text style={styles.MajorText}>素振り</Text>;
-    } else if (subCategoryType === { subCategoryType: "footwork" }) {
+    } else if (
+      JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "footwork" })
+    ) {
       return <Text style={styles.MajorText}>足さばき</Text>;
-    } else if (subCategoryType === { subCategoryType: "beat" }) {
+    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "beat" })) {
       return <Text style={styles.MajorText}>基本打ち</Text>;
-    } else if (subCategoryType === { subCategoryType: "response" }) {
+    } else if (
+      JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "response" })
+    ) {
       return <Text style={styles.MajorText}>応じ技</Text>;
-    } else if (subCategoryType === { subCategoryType: "jigeiko" }) {
+    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "jigeiko" })) {
       return <Text style={styles.MajorText}>地稽古</Text>;
-    } else if (subCategoryType === { subCategoryType: "teacher" }) {
+    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "teacher" })) {
       return <Text style={styles.MajorText}>先生との稽古</Text>;
-    } else if (subCategoryType === { subCategoryType: "kakari" }) {
+    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "kakari" })) {
       return <Text style={styles.MajorText}>掛稽古</Text>;
     }
   };
