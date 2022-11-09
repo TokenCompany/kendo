@@ -8,12 +8,22 @@ import i18n from "../lang/localization";
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const onPressTask = () => {
+    navigation.navigate("TaskEdit");
+  };
+  const onPressInitial = () => {
+    navigation.navigate("TrainingEdit");
+  };
   const onPressProfile = () => {
     navigation.navigate("ProfileEdit");
   };
   const onPressTraining = () => {
     navigation.navigate("TrainingEdit");
   };
+  const onPressLanguage = () => {
+    navigation.navigate("TrainingEdit");
+  };
+
   const rankTableData = [
     ["初段", "〇", "2006年11月20日"],
     ["弐段", "〇", "2007年11月13日"],
@@ -56,10 +66,19 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           ))}
         </View>
         <View style={styles.buttonContainer}>
+          <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />
+        </View>
+        <View style={styles.buttonContainer}>
+          <Button text={i18n.t("Setting.button04")} onPress={onPressInitial} />
+        </View>
+        <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button01")} onPress={onPressProfile} />
         </View>
-        <View>
+        <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button02")} onPress={onPressTraining} />
+        </View>
+        <View>
+          <Button text={i18n.t("Setting.button05")} onPress={onPressLanguage} />
         </View>
       </View>
     </ScrollView>

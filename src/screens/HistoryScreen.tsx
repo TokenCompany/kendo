@@ -8,7 +8,11 @@ import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
-export const HistoryScreen: React.FC<Props> = ({}: Props) => {
+export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const onPress = () => {
+    navigation.navigate("ResultEdit");
+  };
+
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame />
@@ -26,7 +30,11 @@ export const HistoryScreen: React.FC<Props> = ({}: Props) => {
             <Text>スポーツ会館</Text>
           </View>
         </View>
-        <TextButton text01={i18n.t("History.input")} text02={i18n.t("History.ncw")} />
+        <TextButton
+          text01={i18n.t("History.input")}
+          text02={i18n.t("History.ncw")}
+          onPress01={onPress}
+        />
       </View>
     </ScrollView>
   );

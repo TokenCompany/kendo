@@ -6,8 +6,10 @@ import { InitScreen } from "../screens/InitScreen";
 import { MenuScreen } from "../screens/MenuScreen";
 import { HistoryScreen } from "../screens/HistoryScreen";
 import { ScheduleScreen } from "../screens/ScheduleScreen";
+import { ResultEditScreen } from "../screens/ResultEditScreen";
 import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
+import { TaskEditScreen } from "../screens/TaskEditScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
 import { SubCategoryScreen } from "../screens/SubCategoryScreen";
@@ -17,7 +19,6 @@ import { MainStackParamList } from "../types/navigation";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
-
 const renderMenuButton = (navigation: any) => {
   return <SettingButton onPress={() => navigation.navigate("Menu")} />;
 };
@@ -40,6 +41,19 @@ export const MainStack: React.FC<Props> = () => {
       <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
       <Stack.Screen name="Setting" component={SettingScreen} options={{ title: "設定" }} />
       <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: "実績表" }} />
+      <Stack.Screen
+        name="ResultEdit"
+        component={ResultEditScreen}
+        options={{ title: "実績入力" }}
+      />
+      <Stack.Screen
+        name="TaskEdit"
+        component={TaskEditScreen}
+        options={({ navigation }) => ({
+          headerTitle: "課題設定",
+          headerRight: () => renderMenuButton(navigation),
+        })}
+      />
       <Stack.Screen
         name="ProfileEdit"
         component={ProfileEditScreen}

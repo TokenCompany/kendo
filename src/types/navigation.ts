@@ -7,7 +7,9 @@ export type MainStackParamList = {
   Schedule: undefined;
   Setting: undefined;
   Statistics: undefined;
+  TaskEdit: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
   SubCategory: undefined;
+  ResultEdit: undefined;
 };

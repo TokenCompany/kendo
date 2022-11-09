@@ -8,7 +8,7 @@ type Props = {
   onPress02: ()=>void;
 };
 
-export const TextButton: React.FC<Props> = ({ text01, text02,onPress01,onPress02 }) => {
+export const TextButton: React.FC<Props> = ({ text01, text02, onPress01,onPress02 }) => {
   return (
     <View style={styles.container}>
       <TouchableOpacity style={styles.button} onPress={onPress01}>
