@@ -20,10 +20,12 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentAge,
     currentKenNumber,
     current1st,
+    currentImage,
     onChangeName,
     onChangeBirthday,
     onChangeAge,
     onChangeKenNumber,
+    onChangeImage,
     onChangePassingDay1st,
     onChangeExamDay1st,
     onPressSave,
@@ -56,7 +58,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
     if (!result.cancelled) {
       setImage(result.base64);
-      setVisible(!visible);
+      // setVisible(!visible);
+      onChangeImage(result.base64);
     }
   };
 

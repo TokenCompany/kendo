@@ -9,6 +9,7 @@ export interface ProfileState {
   birthday: number;
   age: string;
   kenNumber: string;
+  profileImage: string;
 }
 
 // デフォルトの値
@@ -17,6 +18,7 @@ const initialState: ProfileState = {
   birthday: 19900101, // 誕生日
   age: "", // 年齢
   kenNumber: "", // 全剣連番号
+  profileImage: "", // プロフィール画像
 };
 
 export const counterSlice = createSlice({
@@ -36,6 +38,11 @@ export const counterSlice = createSlice({
     setBirthday: (state, action: PayloadAction<number>) => {
       state.birthday = action.payload;
     },
+    setProfileImage: (state, action: PayloadAction<string>) => {
+      // state.profileImage = action.payload;
+      console.log(action.payload);
+      // console.log(state);
+    },
   },
 });
 
@@ -44,5 +51,6 @@ export const { setName } = counterSlice.actions;
 export const { setAge } = counterSlice.actions;
 export const { setKenNumber } = counterSlice.actions;
 export const { setBirthday } = counterSlice.actions;
+export const { setProfileImage } = counterSlice.actions;
 
 export default counterSlice.reducer;
