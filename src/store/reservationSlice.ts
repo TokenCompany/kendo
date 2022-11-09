@@ -17,11 +17,6 @@ export interface ReservationState {
 // デフォルトの値
 // これはからオブジェクトでOKです
 const initialState: ReservationState = {
-  '2022-11-07':{
-    startTime: '19:00', // 開始時間
-    endTime: '21:00', // 終了時間
-    place: '横浜アリーナ', // 稽古場所
-  }
 };
 
 type BookReservationItemPayload = {
