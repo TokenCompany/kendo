@@ -14,7 +14,6 @@ export type SubCategory = {
   id: string; // uuid
 };
 
-// export const SubCategoryScreen: React.FC<Props> = ({}: Props) => {
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
@@ -22,24 +21,22 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
 
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
-    if (subCategoryType === "place") {
-      return <View>稽古場所</View>;
-    } else if (subCategoryType === "swing") {
-      return <View>素振り</View>;
-    } else if (subCategoryType === "footwork") {
-      return <View>足さばき</View>;
-    } else if (subCategoryType === "beat") {
-      return <View>基本打ち</View>;
-    } else if (subCategoryType === "response") {
-      return <View>応じ技</View>;
-    } else if (subCategoryType === "jigeiko") {
-      return <View>地稽古</View>;
-    } else if (subCategoryType === "teacher") {
-      return <View>先生との稽古</View>;
-    } else if (subCategoryType === "kakari") {
-      return <View>掛稽古</View>;
-    } else if (subCategoryType === "target") {
-      return <View>年間稽古目標</View>;
+    if (subCategoryType === { subCategoryType: "place" }) {
+      return <Text style={styles.MajorText}>稽古場所</Text>;
+    } else if (subCategoryType === { subCategoryType: "swing" }) {
+      return <Text style={styles.MajorText}>素振り</Text>;
+    } else if (subCategoryType === { subCategoryType: "footwork" }) {
+      return <Text style={styles.MajorText}>足さばき</Text>;
+    } else if (subCategoryType === { subCategoryType: "beat" }) {
+      return <Text style={styles.MajorText}>基本打ち</Text>;
+    } else if (subCategoryType === { subCategoryType: "response" }) {
+      return <Text style={styles.MajorText}>応じ技</Text>;
+    } else if (subCategoryType === { subCategoryType: "jigeiko" }) {
+      return <Text style={styles.MajorText}>地稽古</Text>;
+    } else if (subCategoryType === { subCategoryType: "teacher" }) {
+      return <Text style={styles.MajorText}>先生との稽古</Text>;
+    } else if (subCategoryType === { subCategoryType: "kakari" }) {
+      return <Text style={styles.MajorText}>掛稽古</Text>;
     }
   };
 
