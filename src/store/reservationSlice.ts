@@ -16,8 +16,7 @@ export interface ReservationState {
 
 // デフォルトの値
 // これはからオブジェクトでOKです
-const initialState: ReservationState = {
-};
+const initialState: ReservationState = {};
 
 type BookReservationItemPayload = {
   date: string;
@@ -39,7 +38,7 @@ export const counterSlice = createSlice({
         startTime: action.payload.startTime,
         endTime: action.payload.endTime,
         place: action.payload.place,
-      }
+      };
     },
     // 予約情報を削除するアクションです
     deleteReservationItem: (state, action: PayloadAction<DeleteReservationItemPayload>) => {
