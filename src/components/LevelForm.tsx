@@ -10,6 +10,11 @@ type Props = {
   examDateValue: any;
   onChangePassed: (event: DateTimePickerEvent, date1?: Date) => void;
   onChangeExam: (event: DateTimePickerEvent, date2?: Date) => void;
+  showDatepickerPassed: () => void;
+  showDatepickerExam: () => void;
+  visiblePassed: any;
+  visibleExam: any;
+  onPressClose: () => void;
 };
 
 export const LevelForm: React.FC<Props> = ({
@@ -20,14 +25,15 @@ export const LevelForm: React.FC<Props> = ({
   examDateValue,
   onChangePassed,
   onChangeExam,
+  visiblePassed,
+  visibleExam,
+  showDatepickerPassed,
+  showDatepickerExam,
+  onPressClose,
 }) => {
-  const [show, setShow] = useState<boolean>(false);
-  const showDatepicker = () => {
-    setShow(true);
-  };
-  const onPressClose = () => {
-    setShow(false);
-  };
+  const [show01, setShow01] = useState<boolean>(false);
+  const [show02, setShow02] = useState<boolean>(false);
+
   return (
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>
@@ -35,17 +41,17 @@ export const LevelForm: React.FC<Props> = ({
         <Text style={styles.dayLavel}>合格日</Text>
         <View>
           <View style={styles.dayInput}>
-            <TouchableOpacity style={styles.button} onPress={showDatepicker}>
+            <TouchableOpacity style={styles.button} onPress={showDatepickerPassed}>
               <Text style={styles.buttonText}>設定</Text>
             </TouchableOpacity>
             <Text style={styles.dayText}>{currentPassedDateText}</Text>
           </View>
           <Modal
             animationType="fade"
-            visible={show}
+            visible={visiblePassed}
             transparent={true}
             onRequestClose={() => {
-              setShow(false);
+              setShow01(false);
             }}
           >
             <View style={styles.modalView}>
@@ -55,7 +61,7 @@ export const LevelForm: React.FC<Props> = ({
                 display={"spinner"}
                 onChange={onChangePassed}
               />
-              <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
+              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
                 <Text style={styles.textStyle}>×</Text>
               </TouchableOpacity>
             </View>
@@ -66,17 +72,17 @@ export const LevelForm: React.FC<Props> = ({
         <Text style={styles.dayLavel}>審査日</Text>
         <View>
           <View style={styles.dayInput}>
-            <TouchableOpacity style={styles.button} onPress={showDatepicker}>
+            <TouchableOpacity style={styles.button} onPress={showDatepickerExam}>
               <Text style={styles.buttonText}>設定</Text>
             </TouchableOpacity>
             <Text style={styles.dayText}>{currentExamDateText}</Text>
           </View>
           <Modal
             animationType="fade"
-            visible={show}
+            visible={visibleExam}
             transparent={true}
             onRequestClose={() => {
-              setShow(false);
+              setShow02(false);
             }}
           >
             <View style={styles.modalView}>
@@ -86,7 +92,7 @@ export const LevelForm: React.FC<Props> = ({
                 display={"spinner"}
                 onChange={onChangeExam}
               />
-              <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
+              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
                 <Text style={styles.textStyle}>×</Text>
               </TouchableOpacity>
             </View>
@@ -165,10 +171,9 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderColor: "#aaa",
     paddingLeft: 5,
-    paddingRight: "40%",
+    paddingRight: 120,
     marginLeft: 10,
     height: 40,
-    width: 60,
   },
   buttonContainer: {
     alignItems: "center",
