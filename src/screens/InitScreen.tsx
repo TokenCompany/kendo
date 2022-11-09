@@ -14,14 +14,19 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
+    setTimeout(() => {
+      hiddenModal();
+    }, 5000);
   };
+
   const hiddenModal = () => {
-    setModalVisible(!modalVisible);
-  };
-  const onPressMenu = () => {
+    setModalVisible(false);
     navigation.navigate("Menu");
-    setModalVisible(!modalVisible);
-    setTimeout(hiddenModal, 5000);
+  };
+
+  const onPressClose = () => {
+    setModalVisible(false);
+    navigation.navigate("Menu");
   };
 
   return (
@@ -55,7 +60,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
               <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => onPressMenu()}
+                onPress={() => onPressClose()}
               >
                 <Text style={styles.textStyle}>×</Text>
               </TouchableOpacity>
