@@ -1,23 +1,26 @@
 import React, { useState } from "react";
-import { View, StyleSheet, TextInput, Text, Modal, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
-import dayjs from "dayjs";
 
 type Props = {
   label: string;
-  value: number;
-  // onChangePassingDay: (text: string) => void;
-  // onChangeExamDay: (text: string) => void;
+  currentPassedDateText: any;
+  currentExamDateText: any;
+  passedDateValue: any;
+  examDateValue: any;
+  onChangePassed: (event: any, date: Date) => void;
+  onChangeExam: (event: any, date: Date) => void;
 };
 
 export const LevelForm: React.FC<Props> = ({
   label,
-  value,
-  // onChangePassingDay,
-  // onChangeExamDay,
+  currentPassedDateText,
+  currentExamDateText,
+  passedDateValue,
+  examDateValue,
+  onChangePassed,
+  onChangeExam,
 }) => {
-  const [currentPassedDate, setCurrentPassedDate] = useState<number>();
-  const [currentExamDate, setCurrentExamDate] = useState<number>();
   const [show, setShow] = useState<boolean>(false);
   const showDatepicker = () => {
     setShow(true);
@@ -35,7 +38,7 @@ export const LevelForm: React.FC<Props> = ({
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>設定</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{currentPassedDate}</Text>
+            <Text style={styles.dayText}>{currentPassedDateText}</Text>
           </View>
           <Modal
             animationType="fade"
@@ -47,15 +50,10 @@ export const LevelForm: React.FC<Props> = ({
           >
             <View style={styles.modalView}>
               <DateTimePicker
-                value={new Date(20220101)}
+                value={passedDateValue}
                 mode="date"
                 display={"spinner"}
-                onChange={(event, passedDate) => {
-                  if (passedDate) {
-                    const setPassedDate = Number(dayjs(passedDate).format("YYYYMMDD"));
-                    setCurrentPassedDate(setPassedDate);
-                  }
-                }}
+                onChange={onChangePassed}
               />
               <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
                 <Text style={styles.textStyle}>×</Text>
@@ -71,7 +69,7 @@ export const LevelForm: React.FC<Props> = ({
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>設定</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{currentExamDate}</Text>
+            <Text style={styles.dayText}>{currentExamDateText}</Text>
           </View>
           <Modal
             animationType="fade"
@@ -83,15 +81,10 @@ export const LevelForm: React.FC<Props> = ({
           >
             <View style={styles.modalView}>
               <DateTimePicker
-                value={new Date(20220101)}
+                value={examDateValue}
                 mode="date"
                 display={"spinner"}
-                onChange={(event, examDate) => {
-                  if (examDate) {
-                    const setExamDate = Number(dayjs(examDate).format("YYYYMMDD"));
-                    setCurrentExamDate(setExamDate);
-                  }
-                }}
+                onChange={onChangeExam}
               />
               <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
                 <Text style={styles.textStyle}>×</Text>

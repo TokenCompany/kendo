@@ -18,14 +18,14 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentBirthday,
     currentAge,
     currentKenNumber,
+    currentPassedDate,
+    currentExamDate,
     onChangeName,
     onChangeBirthday,
+    onChangePassedDate,
+    onChangeExamDate,
     onChangeAge,
     onChangeKenNumber,
-    /* エラーになるため、一旦コメントアウトしてます */
-    current1st,
-    onChangePassingDay1st,
-    onChangeExamDay1st,
     onPressSave,
   } = useProfileForm();
 
@@ -58,7 +58,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           >
             <View style={styles.modalView}>
               <DateTimePicker
-                value={new Date(20220101)}
+                value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
                 mode="date"
                 display={"spinner"}
                 onChange={(event, date) => {
@@ -81,51 +81,24 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
       <LevelForm
         label="初段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="弐段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="参段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="四段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="五段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="六段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="七段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
-      />
-      <LevelForm
-        label="八段"
-        value={current1st}
-        onChangePassingDay={onChangePassingDay1st}
-        onChangeExamDay={onChangeExamDay1st}
+        currentPassedDateText={currentPassedDate}
+        currentExamDateText={currentExamDate}
+        // .toString()を入れるとエラーになってしまいます
+        // TypeError: undefined is not an object (evaluating 'currentPassedDate.toString')
+        passedDateValue={dayjs(currentPassedDate, "YYYYMMDD").toDate()}
+        examDateValue={dayjs(currentExamDate, "YYYYMMDD").toDate()}
+        onChangePassed={(event, date) => {
+          if (date) {
+            const passed = Number(dayjs(date).format("YYYYMMDD"));
+            onChangePassedDate(passed);
+          }
+        }}
+        onChangeExam={(event, date) => {
+          if (date) {
+            const exam = Number(dayjs(date).format("YYYYMMDD"));
+            onChangeExamDate(exam);
+          }
+        }}
       />
 
       <View style={styles.buttonContainer}>

@@ -5,6 +5,8 @@ import { setName } from "../store/profileSlice";
 import { setAge } from "../store/profileSlice";
 import { setKenNumber } from "../store/profileSlice";
 import { setBirthday } from "../store/profileSlice";
+import { setPassed } from "../store/profileSlice";
+import { setExam } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -15,6 +17,10 @@ type Hooks = {
   onChangeKenNumber: (text: string) => void;
   currentBirthday: number;
   onChangeBirthday: (text: number) => void;
+  currentPassedDate: number;
+  onChangePassedDate: (text: number) => void;
+  currentExamDate: number;
+  onChangeExamDate: (text: number) => void;
   onPressSave: () => void;
 };
 
@@ -27,7 +33,8 @@ export const useProfileForm = (): Hooks => {
   const age = useSelector((state: RootState) => state.profile.age);
   const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
   const birthday = useSelector((state: RootState) => state.profile.birthday);
-  // currentNameは編集中の一時的な氏名です
+  const passed = useSelector((state: RootState) => state.profile.passed);
+  const exam = useSelector((state: RootState) => state.profile.exam);
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
   // useStateの初期値にnameを入れることで,端末に永続化された氏名をフォーム初期値にします
@@ -35,6 +42,8 @@ export const useProfileForm = (): Hooks => {
   const [currentAge, setCurrentAge] = useState<string>(age);
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
   const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
+  const [currentPassedDate, setCurrentPassedDate] = useState<number>(passed);
+  const [currentExamDate, setCurrentExamDate] = useState<number>(exam);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeName = (text: string) => {
@@ -53,6 +62,13 @@ export const useProfileForm = (): Hooks => {
     setCurrentBirthday(text);
   };
 
+  const onChangePassedDate = (text: number) => {
+    setCurrentPassedDate(text);
+  };
+  const onChangeExamDate = (text: number) => {
+    setCurrentExamDate(text);
+  };
+
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSave = () => {
@@ -60,6 +76,8 @@ export const useProfileForm = (): Hooks => {
     dispatch(setAge(currentAge));
     dispatch(setKenNumber(currentKenNumber));
     dispatch(setBirthday(currentBirthday));
+    dispatch(setPassed(currentPassedDate));
+    dispatch(setExam(currentExamDate));
   };
 
   return {
@@ -67,10 +85,14 @@ export const useProfileForm = (): Hooks => {
     currentAge,
     currentKenNumber,
     currentBirthday,
+    currentPassedDate,
+    currentExamDate,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
     onChangeBirthday,
+    onChangePassedDate,
+    onChangeExamDate,
     onPressSave,
   };
 };
