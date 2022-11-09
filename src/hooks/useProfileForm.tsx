@@ -16,11 +16,11 @@ type Hooks = {
   currentKenNumber: string;
   onChangeKenNumber: (text: string) => void;
   currentBirthday: number;
-  onChangeBirthday: (text: number) => void;
+  onChangeBirthday: (data: number) => void;
   currentPassedDate: number;
-  onChangePassedDate: (text: number) => void;
+  onChangePassedDate: (passed: number) => void;
   currentExamDate: number;
-  onChangeExamDate: (text: number) => void;
+  onChangeExamDate: (exam: number) => void;
   onPressSave: () => void;
 };
 
@@ -58,15 +58,15 @@ export const useProfileForm = (): Hooks => {
     setCurrentKenNumber(text);
   };
 
-  const onChangeBirthday = (text: number) => {
-    setCurrentBirthday(text);
+  const onChangeBirthday = (data: number) => {
+    setCurrentBirthday(data);
   };
 
-  const onChangePassedDate = (text: number) => {
-    setCurrentPassedDate(text);
+  const onChangePassedDate = (passed: number) => {
+    setCurrentPassedDate(passed);
   };
-  const onChangeExamDate = (text: number) => {
-    setCurrentExamDate(text);
+  const onChangeExamDate = (exam: number) => {
+    setCurrentExamDate(exam);
   };
 
   // ”登録"ボタンを押したときに呼ばれます

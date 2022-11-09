@@ -7,10 +7,10 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 export interface ProfileState {
   name: string;
   birthday: number;
-  passed: number;
-  exam: number;
   age: string;
   kenNumber: string;
+  passed: number;
+  exam: number;
 }
 
 // デフォルトの値

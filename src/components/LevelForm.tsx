@@ -8,8 +8,8 @@ type Props = {
   currentExamDateText: any;
   passedDateValue: any;
   examDateValue: any;
-  onChangePassed: (event: DateTimePickerEvent, date?: Date) => void;
-  onChangeExam: (event: DateTimePickerEvent, date?: Date) => void;
+  onChangePassed: (event: DateTimePickerEvent, date1?: Date) => void;
+  onChangeExam: (event: DateTimePickerEvent, date2?: Date) => void;
 };
 
 export const LevelForm: React.FC<Props> = ({
