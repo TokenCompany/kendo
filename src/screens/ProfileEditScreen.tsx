@@ -58,7 +58,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
     if (!result.cancelled) {
       setImage(result.base64);
-      // setVisible(!visible);
+      setVisible(false);
       onChangeImage(result.base64);
     }
   };
