@@ -24,26 +24,31 @@ const initialState: ReservationState = {
   }
 };
 
+type BookReservationItemPayload = {
+  date: string;
+  startTime: string;
+  endTime: string;
+  place: string;
+};
+type DeleteReservationItemPayload = {
+  date: string;
+};
+
 export const counterSlice = createSlice({
   name: "reservation",
   initialState,
   reducers: {
     // 予約情報を新規追加(更新)するアクションです
-    bookReservationItem: (state, action) => {
-      // state = {
-      //   ...state,[action.payload.date]:{
-      //     startTime: action.payload.date.startTime,
-      //     endTime: action.payload.date.endTime,
-      //     place: action.payload.date.place
-      //   }
-      // }
-      console.log(action);
-      
+    bookReservationItem: (state, action: PayloadAction<BookReservationItemPayload>) => {
+      state[action.payload.date] = {
+        startTime: action.payload.startTime,
+        endTime: action.payload.endTime,
+        place: action.payload.place,
+      }
     },
     // 予約情報を削除するアクションです
-    deleteReservationItem: (state, action) => {
+    deleteReservationItem: (state, action: PayloadAction<DeleteReservationItemPayload>) => {
       delete state[action.payload.date];
-      console.log(action);
     },
   },
 });

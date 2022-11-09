@@ -5,7 +5,7 @@ import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { Picker } from "@react-native-community/picker";
 import { TextButton } from "../components/TextButton";
-import { bookReservationItem } from "../store/reservationSlice";
+import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 // import i18n from "../lang/localization";
@@ -16,48 +16,35 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   // console.log(reservations);
-  
+
   // 日付の取得と表示
+  const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [startTime, onChangeStartTime] = useState<string>();
   const [endTime, onChangeEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
-  type Item = {
-    startTime: string; // 開始時間
-    endTime: string; // 終了時間
-    place: string; // 稽古場所
-  }
-  type reservation = {
-    [date: string]: Item;
-  }
-  const [reservationObj,setReservationObj] = useState<reservation>();
 
   return (
     <ScrollView style={styles.container}>
-      <CalendarFrame onPressDay={(day)=>{
-        // 文字列型日付を日本語に変換
-        let dateTextArray = day.split('-');
-        let dateText = dateTextArray[0] + '年'+dateTextArray[1]+'月' + dateTextArray[2]+'日';
-        // 文字の変更
-        setSelectedDate(dateText);
-        // 選択された日付が既に存在する場合
-        if (day in reservations) {
-          onChangeStartTime(reservations[day].startTime);
-          onChangeEndTime(reservations[day].endTime);
-          setPlace(reservations[day].place)
-        }
-        setReservationObj({
-          [selectedDate]:{
-            startTime: startTime,
-            endTime: endTime,
-            place: place,
+      <CalendarFrame
+        onPressDay={(day) => {
+          // 文字列型日付を日本語に変換
+          let dateTextArray = day.split("-");
+          let dateText =
+            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          // 文字の変更
+          setSelectedDate(day);
+          setSelectedDateText(dateText);
+          // 選択された日付が既に存在する場合
+          if (day in reservations) {
+            onChangeStartTime(reservations[day].startTime);
+            onChangeEndTime(reservations[day].endTime);
+            setPlace(reservations[day].place);
           }
-        });
-        console.log(reservationObj);
-        
-      } } />
+        }}
+      />
       <View style={styles.box}>
-        <Text style={styles.boxTitle}>{selectedDate}</Text>
+        <Text style={styles.boxTitle}>{selectedDateText}</Text>
         <View style={styles.boxInputArea}>
           <Text>◆時間</Text>
           <View style={styles.boxInputTime}>
@@ -92,7 +79,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 <Picker.Item label="15:00" value="15:00" />
                 <Picker.Item label="16:00" value="16:00" />
                 <Picker.Item label="21:00" value="21:00" />
-
               </Picker>
             </View>
           </View>
@@ -112,9 +98,27 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </Picker>
           </View>
         </View>
-        <TextButton text01="登録" onPress01={()=>{
-          dispatch(bookReservationItem(selectedDate))
-        }}  text02="削除" />
+        <TextButton
+          text01="登録"
+          onPress01={() => {
+            dispatch(
+              bookReservationItem({
+                date: selectedDate,
+                startTime: startTime,
+                endTime: endTime,
+                place: place,
+              }),
+            );
+          }}
+          onPress02={() => {
+            dispatch(
+              deleteReservationItem({
+                date: selectedDate,
+              }),
+            );
+          }}
+          text02="削除"
+        />
       </View>
     </ScrollView>
   );
