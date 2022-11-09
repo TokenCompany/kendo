@@ -6,7 +6,7 @@ import { TextForm } from "../components/TextForm";
 import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
 import { LevelForm } from "../components/LevelForm";
-import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
@@ -83,19 +83,17 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         label="初段"
         currentPassedDateText={currentPassedDate}
         currentExamDateText={currentExamDate}
-        // .toString()を入れるとエラーになってしまいます
-        // TypeError: undefined is not an object (evaluating 'currentPassedDate.toString')
-        passedDateValue={dayjs(currentPassedDate, "YYYYMMDD").toDate()}
-        examDateValue={dayjs(currentExamDate, "YYYYMMDD").toDate()}
-        onChangePassed={(event, date) => {
-          if (date) {
-            const passed = Number(dayjs(date).format("YYYYMMDD"));
+        passedDateValue={dayjs(currentPassedDate.toString(), "YYYYMMDD").toDate()}
+        examDateValue={dayjs(currentExamDate.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed = Number(dayjs(date1).format("YYYYMMDD"));
             onChangePassedDate(passed);
           }
         }}
-        onChangeExam={(event, date) => {
-          if (date) {
-            const exam = Number(dayjs(date).format("YYYYMMDD"));
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam = Number(dayjs(date2).format("YYYYMMDD"));
             onChangeExamDate(exam);
           }
         }}

@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
-import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 
 type Props = {
   label: string;
@@ -8,8 +8,8 @@ type Props = {
   currentExamDateText: any;
   passedDateValue: any;
   examDateValue: any;
-  onChangePassed: (event: any, date: Date) => void;
-  onChangeExam: (event: any, date: Date) => void;
+  onChangePassed: (event: DateTimePickerEvent, date?: Date) => void;
+  onChangeExam: (event: DateTimePickerEvent, date?: Date) => void;
 };
 
 export const LevelForm: React.FC<Props> = ({
@@ -165,7 +165,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderColor: "#aaa",
     paddingLeft: 5,
-    paddingRight: "60%",
+    paddingRight: "40%",
     marginLeft: 10,
     height: 40,
     width: 60,
