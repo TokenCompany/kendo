@@ -18,7 +18,6 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const subCategoryType = route.params.subCategoryType;
-  console.log(subCategoryType);
 
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
