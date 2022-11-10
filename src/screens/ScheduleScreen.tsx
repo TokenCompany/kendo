@@ -101,21 +101,25 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         <TextButton
           text01="登録"
           onPress01={() => {
-            dispatch(
-              bookReservationItem({
-                date: selectedDate,
-                startTime: startTime,
-                endTime: endTime,
-                place: place,
-              }),
-            );
+            if (selectedDate && startTime && endTime && place) {
+              dispatch(
+                bookReservationItem({
+                  date: selectedDate,
+                  startTime: startTime,
+                  endTime: endTime,
+                  place: place,
+                }),
+              );
+            }
           }}
           onPress02={() => {
-            dispatch(
-              deleteReservationItem({
-                date: selectedDate,
-              }),
-            );
+            if (selectedDate) {
+              dispatch(
+                deleteReservationItem({
+                  date: selectedDate,
+                }),
+              );
+            }
           }}
           text02="削除"
         />
