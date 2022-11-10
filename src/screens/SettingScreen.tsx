@@ -48,6 +48,8 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             <Text style={styles.profileText02}>34歳</Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
             <Text style={styles.profileText02}>12345678</Text>
+            <Text style={styles.profileText01}>課題</Text>
+            <Text style={styles.profileText02}>テキストテキストテキスト</Text>
           </View>
           <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
         </View>
