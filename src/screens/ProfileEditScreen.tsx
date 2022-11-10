@@ -45,8 +45,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     hideDatePicker();
   };
 
-  const [image, setImage] = useState(null);
-  const [visible, setVisible] = useState(true);
+  const [image, setImage] = useState(currentImage);
+  // const [visible, setVisible] = useState(true);
 
   const pickImage = async () => {
     // No permissions request is necessary for launching the image library
@@ -58,7 +58,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
     if (!result.cancelled) {
       setImage(result.base64);
-      setVisible(false);
+      // setVisible(false);
       onChangeImage(result.base64);
     }
   };
@@ -93,16 +93,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
         <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
-          {visible && (
-            <Image
-              style={styles.profileImageImg}
-              source={require("../../assets/images/profile.png")}
-            />
-          )}
-          {image && (
+          {image ? (
             <Image
               source={{ uri: "data:image/jpeg;base64," + image }}
               style={styles.profileImageImg}
+            />
+          ) : (
+            <Image
+              style={styles.profileImageImg}
+              source={require("../../assets/images/profile.png")}
             />
           )}
         </TouchableOpacity>

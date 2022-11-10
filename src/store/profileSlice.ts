@@ -39,8 +39,7 @@ export const counterSlice = createSlice({
       state.birthday = action.payload;
     },
     setProfileImage: (state, action: PayloadAction<string>) => {
-      // state.profileImage = action.payload;
-      console.log(action.payload);
+      state.profileImage = action.payload;
       // console.log(state);
     },
   },
