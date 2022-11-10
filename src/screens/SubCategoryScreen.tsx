@@ -17,29 +17,26 @@ export type SubCategory = {
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
-  const subCategoryType = route.params;
+  const subCategoryType = route.params.subCategoryType;
+  console.log(subCategoryType);
 
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
-    if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "place" })) {
+    if (subCategoryType === "place") {
       return <Text style={styles.MajorText}>稽古場所</Text>;
-    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "swing" })) {
+    } else if (subCategoryType === "swing") {
       return <Text style={styles.MajorText}>素振り</Text>;
-    } else if (
-      JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "footwork" })
-    ) {
+    } else if (subCategoryType === "footwork") {
       return <Text style={styles.MajorText}>足さばき</Text>;
-    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "beat" })) {
+    } else if (subCategoryType === "beat") {
       return <Text style={styles.MajorText}>基本打ち</Text>;
-    } else if (
-      JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "response" })
-    ) {
+    } else if (subCategoryType === "response") {
       return <Text style={styles.MajorText}>応じ技</Text>;
-    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "jigeiko" })) {
+    } else if (subCategoryType === "jigeiko") {
       return <Text style={styles.MajorText}>地稽古</Text>;
-    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "teacher" })) {
+    } else if (subCategoryType === "teacher") {
       return <Text style={styles.MajorText}>先生との稽古</Text>;
-    } else if (JSON.stringify(subCategoryType) === JSON.stringify({ subCategoryType: "kakari" })) {
+    } else if (subCategoryType === "kakari") {
       return <Text style={styles.MajorText}>掛稽古</Text>;
     }
   };
