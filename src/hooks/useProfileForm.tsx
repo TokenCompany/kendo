@@ -5,6 +5,7 @@ import { setName } from "../store/profileSlice";
 import { setAge } from "../store/profileSlice";
 import { setKenNumber } from "../store/profileSlice";
 import { setBirthday } from "../store/profileSlice";
+import { setProfileImage } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -16,6 +17,8 @@ type Hooks = {
   currentBirthday: number;
   onChangeBirthday: (text: number) => void;
   onPressSave: () => void;
+  currentImage: string;
+  onChangeImage: (text: string) => void;
 };
 
 export const useProfileForm = (): Hooks => {
@@ -27,6 +30,7 @@ export const useProfileForm = (): Hooks => {
   const age = useSelector((state: RootState) => state.profile.age);
   const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
   const birthday = useSelector((state: RootState) => state.profile.birthday);
+  const image = useSelector((state: RootState) => state.profile.profileImage);
   // currentNameは編集中の一時的な氏名です
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
@@ -35,6 +39,7 @@ export const useProfileForm = (): Hooks => {
   const [currentAge, setCurrentAge] = useState<string>(age);
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
   const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
+  const [currentImage, setCurrentImage] = useState<string>(image);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeName = (text: string) => {
@@ -53,6 +58,10 @@ export const useProfileForm = (): Hooks => {
     setCurrentBirthday(text);
   };
 
+  const onChangeImage = (text: string) => {
+    setCurrentImage(text);
+  };
+
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSave = () => {
@@ -60,6 +69,7 @@ export const useProfileForm = (): Hooks => {
     dispatch(setAge(currentAge));
     dispatch(setKenNumber(currentKenNumber));
     dispatch(setBirthday(currentBirthday));
+    dispatch(setProfileImage(currentImage));
   };
 
   return {
@@ -67,10 +77,12 @@ export const useProfileForm = (): Hooks => {
     currentAge,
     currentKenNumber,
     currentBirthday,
+    currentImage,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
     onChangeBirthday,
     onPressSave,
+    onChangeImage,
   };
 };

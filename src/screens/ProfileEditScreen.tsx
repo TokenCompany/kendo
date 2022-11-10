@@ -8,6 +8,7 @@ import { Button } from "../components/Button";
 import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
+import * as ImagePicker from "expo-image-picker";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
@@ -18,13 +19,24 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentBirthday,
     currentAge,
     currentKenNumber,
+<<<<<<< HEAD
     // current1st,
+=======
+    current1st,
+    currentImage,
+>>>>>>> main
     onChangeName,
     onChangeBirthday,
     onChangeAge,
     onChangeKenNumber,
+<<<<<<< HEAD
     // onChangePassingDay1st,
     // onChangeExamDay1st,
+=======
+    onChangeImage,
+    onChangePassingDay1st,
+    onChangeExamDay1st,
+>>>>>>> main
     onPressSave,
   } = useProfileForm();
   // useStateで型を指定しておく
@@ -38,9 +50,34 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   //   setShow(false);
   // };
 
+<<<<<<< HEAD
   // const handleConfirm = () => {
   //   hideDatePicker();
   // };
+=======
+  const handleConfirm = () => {
+    hideDatePicker();
+  };
+
+  const [image, setImage] = useState(currentImage);
+  // const [visible, setVisible] = useState(true);
+
+  const pickImage = async () => {
+    // No permissions request is necessary for launching the image library
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0,
+      base64: true,
+    });
+
+    if (!result.cancelled) {
+      setImage(result.base64);
+      // setVisible(false);
+      onChangeImage(result.base64);
+    }
+  };
+
+>>>>>>> main
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
@@ -70,7 +107,19 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           <TextForm label="年齢" value={currentAge} onChangeText={onChangeAge} />
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
-        <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
+        <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
+          {image ? (
+            <Image
+              source={{ uri: "data:image/jpeg;base64," + image }}
+              style={styles.profileImageImg}
+            />
+          ) : (
+            <Image
+              style={styles.profileImageImg}
+              source={require("../../assets/images/profile.png")}
+            />
+          )}
+        </TouchableOpacity>
       </View>
 
       {/* <LevelForm
@@ -183,6 +232,10 @@ const styles = StyleSheet.create({
     marginBottom: 50,
   },
   profileImage: {
+    width: 100,
+    height: 100,
+  },
+  profileImageImg: {
     width: 100,
     height: 100,
   },
