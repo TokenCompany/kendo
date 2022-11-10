@@ -28,14 +28,14 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       subCategoryType: "beat",
     });
   };
-  // const onPressResponse = () => {
-  //   navigation.navigate("SubCategory", {
-  //     subCategoryType: "response",
-  //   });
-  // };
   const onPressResponse = () => {
-    navigation.navigate("SubCategory");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "response",
+    });
   };
+  // const onPressResponse = () => {
+  //   navigation.navigate("SubCategory");
+  // };
   const onPressJigeiko = () => {
     navigation.navigate("SubCategory", {
       subCategoryType: "jigeiko",
