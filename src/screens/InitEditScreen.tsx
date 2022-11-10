@@ -6,31 +6,63 @@ import { MainStackParamList } from "../types/navigation";
 type Props = NativeStackScreenProps<MainStackParamList, "InitEdit">;
 
 export const InitEditScreen: React.FC<Props> = ({}: Props) => {
+  const [Selected, setSelected] = useState(false);
+  const [initEdit, setInitEdit] = useState("");
+  const onChangeStyle = () => {
+    setSelected(true);
+    setInitEdit("");
+    setInitEdit(initEditText[0]);
+  };
+  const initEditText = [
+    "八段への道",
+    "全国大会への道",
+    "流汗悟道",
+    "交剣知愛",
+    "不動心",
+    "切磋琢磨",
+  ];
+
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.initEditContainer}>
-          <Text style={styles.initEditText}>八段への道</Text>
+        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
+          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
+            {initEditText[0]}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditContainer}>
-          <Text style={styles.initEditText}>全国大会への道</Text>
+        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
+          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
+            {initEditText[1]}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditContainer}>
-          <Text style={styles.initEditText}>流汗悟道</Text>
+        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
+          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
+            {initEditText[2]}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditContainer}>
-          <Text style={styles.initEditText}>交剣知愛</Text>
+        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
+          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
+            {initEditText[3]}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditContainer}>
-          <Text style={styles.initEditText}>不動心</Text>
+        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
+          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
+            {initEditText[4]}
+          </Text>
         </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditContainer}>
-          <Text style={styles.initEditText}>切磋琢磨</Text>
+        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
+          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
+            {initEditText[5]}
+          </Text>
         </TouchableOpacity>
       </View>
     </View>
   );
 };
+// isSelectedというフラグがあるとして
+{
+  /* <View style={isSelected ? styles.selectedStyle : styles.notSelectedStyle } ></View> */
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -45,7 +77,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: 50,
   },
-  initEditContainer: {
+  initEditButton: {
     marginBottom: 3,
     width: "100%",
     height: 50,
@@ -53,9 +85,13 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  initEditText: {
+  selectedStyle: {
     color: "#000",
+    fontSize: 20,
     fontWeight: "600",
+  },
+  notSelectedStyle: {
+    color: "#000",
     fontSize: 20,
   },
 });
