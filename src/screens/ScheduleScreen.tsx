@@ -20,8 +20,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
-  const [startTime, onChangeStartTime] = useState<string>();
-  const [endTime, onChangeEndTime] = useState<string>();
+  const [startTime, setStartTime] = useState<string>();
+  const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
 
   return (
@@ -37,8 +37,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setSelectedDateText(dateText);
           // 選択された日付が既に存在する場合
           if (day in reservations) {
-            onChangeStartTime(reservations[day].startTime);
-            onChangeEndTime(reservations[day].endTime);
+            setStartTime(reservations[day].startTime);
+            setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
           }
         }}
@@ -52,7 +52,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               <Picker
                 selectedValue={startTime}
                 style={styles.inputTime}
-                onValueChange={(itemValue, itemIndex) => onChangeStartTime(itemValue)}
+                onValueChange={(itemValue, itemIndex) => setStartTime(itemValue.toString())}
                 itemStyle={{ height: 60 }}
               >
                 <Picker.Item label="10:00" value="10:00" />
@@ -68,7 +68,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               <Picker
                 selectedValue={endTime}
                 style={styles.inputTime}
-                onValueChange={(itemValue, itemIndex) => onChangeEndTime(itemValue)}
+                onValueChange={(itemValue, itemIndex) => setEndTime(itemValue.toString())}
                 itemStyle={{ height: 60 }}
               >
                 <Picker.Item label="10:00" value="10:00" />
@@ -88,8 +88,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           <View style={styles.boxInputText}>
             <Picker
               selectedValue={place}
-              style={styles.Picker}
-              onValueChange={(itemValue, itemIndex) => setPlace(itemValue)}
+              onValueChange={(itemValue, itemIndex) => setPlace(itemValue.toString())}
               itemStyle={{ height: 60 }}
             >
               <Picker.Item label="text01" value="text01" />
