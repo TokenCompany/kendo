@@ -8,11 +8,32 @@ import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
 import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { KeikoKakariInput } from "../components/KeikoKakariInput";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
 export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
   const { onPressSave } = useProfileForm();
+  const dispatch = useDispatch();
+  // hoges=[passData, passData2, passData3]という配列があるとして...
+  const mainCategories = {
+    ashiSabakiSubCategories: "足さばき",
+    jigeikoSubCategories: "地稽古",
+    kakarigeikoSubCategories: "掛稽古",
+    kihonUchiSubCategories: "基本打ち",
+    oujiwazaSubCategories: "応じ技",
+    placeSubCategories: "稽古場所",
+    suburiSubCategories: "素振り",
+    targetSubCategories: "",
+    teacherSubCategories: "先生との稽古",
+  }
+  let mainCategoriesArray = [];
+  let mainCategorieskeys:any = [];
+  for (const key in mainCategories) {
+    mainCategoriesArray.push(mainCategories[key]);
+    mainCategorieskeys.push(key);
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -21,10 +42,11 @@ export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
       </View>
       <KeikoPlaceInput textPlace="稽古場所" />
       <KeikoTimeInput textTime="稽古時間" />
-      <KeikoTrainingInput textTraining="素振り" textTrainingUnit="本" />
-      <KeikoTrainingInput textTraining="足さばき" textTrainingUnit="分" />
-      <KeikoTrainingInput textTraining="基本打ち" textTrainingUnit="本" />
-      <KeikoTrainingInput textTraining="先生との稽古" textTrainingUnit="分" />
+      {/* {mainCategoriesArray.map((category,index)=> (<KeikoTrainingInput textTraining={category} trainingKey={mainCategorieskeys[index]}/>))} */}
+      <KeikoTrainingInput textTraining="素振り" />
+      <KeikoTrainingInput textTraining="足さばき" />
+      <KeikoTrainingInput textTraining="基本打ち" />
+      <KeikoTrainingInput textTraining="先生との稽古" />
       <KeikoKakariInput textTeacher="地稽古" />
       <KeikoKakariInput textTeacher="掛稽古" />
       <View style={styles.buttonContainer}>

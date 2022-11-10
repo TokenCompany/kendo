@@ -1,14 +1,50 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
 
 type Props = {
   textTraining: string;
-  textTrainingUnit: string;
+  trainingKey: string;
 };
 
-export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit }) => {
+export const KeikoTrainingInput: React.FC<Props> = ({ textTraining,trainingKey}) => {
   const [checked, setChecked] = React.useState(false);
+  const subCategories = {
+    ashiSabakiSubCategories: {
+      unit: '分',
+      subCategoryNames:["すり足","歩み足"],
+    },
+    kakarigeikoSubCategories: {
+      unit: '分',
+      subCategoryNames:["すり足","歩み足"],
+    },
+    kihonUchiSubCategories: {
+      unit: '本',
+      subCategoryNames:["切り返し","歩み足"],
+    },
+    oujiwazaSubCategories: {
+      unit: '本',
+      subCategoryNames:["すり足","歩み足"],
+    },
+    placeSubCategories: {
+      subCategoryNames:["横浜アリーナ","与那国道場","アグレ体育館"],
+    },
+    suburiSubCategories: {
+      unit: '本',
+      subCategoryNames:["上下素振り","正面内","左右面","素振り"],
+    },
+    targetSubCategories: {
+      unit: '回',
+      subCategoryNames:["12","13"],
+    },
+    jigeikoSubCategories: {
+      unit:"本",
+      subCategoryNames:["あり"]
+    },
+  }
+  // let subCategoriesArray = subCategories[trainingKey].subCategoryNames;
+  // console.log(subCategories[trainingKey]);
+  // console.log(subCategoriesArray);
 
   return (
     <View style={styles.inputWrap}>
@@ -26,16 +62,12 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
         {!!checked && (
           <View>
             <View style={styles.inputGroup}>
-              <Text style={styles.inputText}>上下素振り</Text>
-              <TextInput style={styles.input} />
-              <Text style={styles.inputText}>{textTrainingUnit}</Text>
-            </View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputText}>正面打ち</Text>
+              <Text style={styles.inputText}>{textSubTraining}</Text>
               <TextInput style={styles.input} />
               <Text style={styles.inputText}>{textTrainingUnit}</Text>
             </View>
           </View>
+          // {subCategoriesArray.map((category,index)=> (<KeikoTrainingInput textTraining={category} trainingKey={mainCategorieskeys[index]}/>))}
         )}
       </View>
     </View>
