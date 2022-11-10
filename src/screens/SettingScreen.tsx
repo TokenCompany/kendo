@@ -4,7 +4,8 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import i18n from "../lang/localization";
-import { useProfileForm } from "../hooks/useProfileForm";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
@@ -36,8 +37,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     ["八段", "-", "残り5596日(15年4か月)"],
   ];
 
-  const { currentImage } = useProfileForm();
-  const image = currentImage;
+  const image = useSelector((state: RootState) => state.profile.profileImage);
 
   return (
     <ScrollView>
