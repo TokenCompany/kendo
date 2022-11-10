@@ -19,21 +19,21 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.lheshiki.kendoapp"
+      "bundleIdentifier": "com.shimafactory.waytohachidan"
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
       },
-      "package": "com.lheshiki.kendoapp"
+      "package": "com.shimafactory.waytohachidan"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
     "extra": {
       "eas": {
-        "projectId": "1b30ae48-155f-468e-bec1-54556e39997b"
+        "projectId": "5b15a8da-d7f6-4e8d-8ef4-61e1bfd31386"
       }
     }
   }
