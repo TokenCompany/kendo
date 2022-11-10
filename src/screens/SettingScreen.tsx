@@ -4,6 +4,8 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import i18n from "../lang/localization";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
@@ -35,6 +37,8 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     ["八段", "-", "残り5596日(15年4か月)"],
   ];
 
+  const image = useSelector((state: RootState) => state.profile.profileImage);
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -51,7 +55,17 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             <Text style={styles.profileText01}>課題</Text>
             <Text style={styles.profileText02}>テキストテキストテキスト</Text>
           </View>
-          <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
+          {image ? (
+            <Image
+              source={{ uri: "data:image/jpeg;base64," + image }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Image
+              style={styles.profileImage}
+              source={require("../../assets/images/profile.png")}
+            />
+          )}
         </View>
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
