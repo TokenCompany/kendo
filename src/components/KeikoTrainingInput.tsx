@@ -42,10 +42,21 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining,trainingKey})
       subCategoryNames:["あり"]
     },
   }
-  // let subCategoriesArray = subCategories[trainingKey].subCategoryNames;
-  // console.log(subCategories[trainingKey]);
-  // console.log(subCategoriesArray);
-
+  const mainCategories = {
+    ashiSabakiSubCategories: "足さばき",
+    jigeikoSubCategories: "地稽古",
+    kakarigeikoSubCategories: "掛稽古",
+    kihonUchiSubCategories: "基本打ち",
+    oujiwazaSubCategories: "応じ技",
+    placeSubCategories: "稽古場所",
+    suburiSubCategories: "素振り",
+    targetSubCategories: "",
+    teacherSubCategories: "先生との稽古",
+  }
+  // tokyo に対応する値を取得する（find() メソッドを使用）
+  const arrayResult1 = mainCategories.find(e => e.key === textTraining)?.value;
+  console.log(arrayResult1);
+  
   return (
     <View style={styles.inputWrap}>
       <View style={styles.check}>

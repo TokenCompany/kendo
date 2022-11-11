@@ -8,26 +8,13 @@ import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
 import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { KeikoKakariInput } from "../components/KeikoKakariInput";
-import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
 export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
   const { onPressSave } = useProfileForm();
-  const dispatch = useDispatch();
-  // hoges=[passData, passData2, passData3]という配列があるとして...
-  const mainCategories = {
-    ashiSabakiSubCategories: "足さばき",
-    jigeikoSubCategories: "地稽古",
-    kakarigeikoSubCategories: "掛稽古",
-    kihonUchiSubCategories: "基本打ち",
-    oujiwazaSubCategories: "応じ技",
-    placeSubCategories: "稽古場所",
-    suburiSubCategories: "素振り",
-    targetSubCategories: "",
-    teacherSubCategories: "先生との稽古",
-  }
+  
   let mainCategoriesArray = [];
   let mainCategorieskeys:any = [];
   for (const key in mainCategories) {
