@@ -1,68 +1,40 @@
 import React, { useState } from "react";
-import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
+import { TouchableOpacity, StyleSheet, Text, View, FlatList } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 
 type Props = NativeStackScreenProps<MainStackParamList, "InitEdit">;
 
 export const InitEditScreen: React.FC<Props> = ({}: Props) => {
-  const [Selected, setSelected] = useState(false);
-  const [initEdit, setInitEdit] = useState("");
-  const onChangeStyle = () => {
-    setSelected(true);
-    setInitEdit("");
-    setInitEdit(initEditText[0]);
-  };
   const initEditText = [
-    "八段への道",
-    "全国大会への道",
-    "流汗悟道",
-    "交剣知愛",
-    "不動心",
-    "切磋琢磨",
+    { text: "八段への道", id: 1 },
+    { text: "全国大会への道", id: 2 },
+    { text: "流汗悟道", id: 3 },
+    { text: "交剣知愛", id: 4 },
+    { text: "不動心", id: 5 },
+    { text: "切磋琢磨", id: 6 },
   ];
+
+  const renderItem = ({ item }) => {
+    // const [Selected, setSelected] = useState();
+    // const SelectedStyle = item.id === Selected ? styles.selectedStyle : styles.notSelectedStyle;
+
+    return (
+      <TouchableOpacity style={styles.initEditButton} onPress={() => setSelected(item.id)}>
+        {/* <Text style={SelectedStyle}>{item.text}</Text> */}
+        <Text>{item.text}</Text>
+      </TouchableOpacity>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
-          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
-            {initEditText[0]}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
-          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
-            {initEditText[1]}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
-          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
-            {initEditText[2]}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
-          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
-            {initEditText[3]}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
-          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
-            {initEditText[4]}
-          </Text>
-        </TouchableOpacity>
-        <TouchableOpacity style={styles.initEditButton} onPress={onChangeStyle}>
-          <Text style={Selected ? styles.selectedStyle : styles.notSelectedStyle}>
-            {initEditText[5]}
-          </Text>
-        </TouchableOpacity>
+        <FlatList data={initEditText} renderItem={renderItem} />
       </View>
     </View>
   );
 };
-// isSelectedというフラグがあるとして
-{
-  /* <View style={isSelected ? styles.selectedStyle : styles.notSelectedStyle } ></View> */
-}
 
 const styles = StyleSheet.create({
   container: {
@@ -74,7 +46,7 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   buttonContainer: {
-    alignItems: "center",
+    flex: 1,
     marginBottom: 50,
   },
   initEditButton: {
