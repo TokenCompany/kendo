@@ -5,20 +5,21 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // 練習内容項目設定の小項目に関わるredux
 //
 export interface SubCategoryState {
-  placeSubCategories: subcategory[];
-  suburiSubCategories: subcategory[];
-  ashiSabakiSubCategories: subcategory[];
-  kihonUchiSubCategories: subcategory[];
-  oujiwazaSubCategories: subcategory[];
-  jigeikoSubCategories: subcategory[];
-  teacherSubCategories: subcategory[];
-  kakarigeikoSubCategories: subcategory[];
-  targetSubCategories: subcategory[];
+  placeSubCategories: subCategory[];
+  suburiSubCategories: subCategory[];
+  ashiSabakiSubCategories: subCategory[];
+  kihonUchiSubCategories: subCategory[];
+  oujiwazaSubCategories: subCategory[];
+  jigeikoSubCategories: subCategory[];
+  teacherSubCategories: subCategory[];
+  kakarigeikoSubCategories: subCategory[];
+  targetSubCategories: subCategory[];
 }
 
-interface subcategory {
-  text: string;
+interface subCategory {
   id: string;
+  subCategories: string[];
+  unit: string;
 }
 
 // デフォルトの値
@@ -34,18 +35,32 @@ const initialState: SubCategoryState = {
   targetSubCategories: [],
 };
 
+type addSubCategoryPayload = {
+  mainCategory: string;
+  subCategoriesArray: string[];
+}
+type deleteSubCategoryPayload = {
+  mainCategory: string;
+  category: string;
+}
+
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
   reducers: {
-    // subcategoryを更新するアクションです
-    setPlace: (state, action: PayloadAction<string>) => {
-      state.placeSubCategories.text = action.payload;
+    // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
+    addSubCategory: (state, action: PayloadAction<addSubCategoryPayload>) => {
+      state[action.payload.mainCategory].subCategories = action.payload.subCategoriesArray;
     },
+    deleteSubCategory:(state, action: PayloadAction<deleteSubCategoryPayload>)=>{
+      let deleteCategoryNum = state[action.payload.mainCategory].subCategories.indexOf(action.payload.category);
+      state[action.payload.mainCategory].subCategories.splice(deleteCategoryNum,1);
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setPlace } = counterSlice.actions;
+export const { addSubCategory } = counterSlice.actions;
+export const { deleteSubCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;
