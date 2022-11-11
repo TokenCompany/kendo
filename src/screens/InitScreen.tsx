@@ -24,6 +24,54 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     setTimeout(hiddenModal, 5000);
   };
 
+  // const renderSubCategoryEditor = () => {
+  //   if (nitEditText.id === 1) {
+  //     <View>
+  //       <Text style={styles.text}>八</Text>
+  //       <Text style={styles.text}>段</Text>
+  //       <Text style={styles.text}>へ</Text>
+  //       <Text style={styles.text}>の</Text>
+  //       <Text style={styles.text}>道</Text>
+  //     </View>;
+  //   } else if (nitEditText.id === 2) {
+  //     <View>
+  //       <Text style={styles.text}>全</Text>
+  //       <Text style={styles.text}>国</Text>
+  //       <Text style={styles.text}>大</Text>
+  //       <Text style={styles.text}>会</Text>
+  //       <Text style={styles.text}>へ</Text>
+  //       <Text style={styles.text}>の</Text>
+  //       <Text style={styles.text}>道</Text>
+  //     </View>;
+  //   } else if (nitEditText.id === 3) {
+  //     <View>
+  //       <Text style={styles.text}>流</Text>
+  //       <Text style={styles.text}>汗</Text>
+  //       <Text style={styles.text}>悟</Text>
+  //       <Text style={styles.text}>道</Text>
+  //     </View>;
+  //   } else if (nitEditText.id === 4) {
+  //     <View>
+  //       <Text style={styles.text}>交</Text>
+  //       <Text style={styles.text}>剣</Text>
+  //       <Text style={styles.text}>知</Text>
+  //       <Text style={styles.text}>愛</Text>
+  //     </View>;
+  //   } else if (nitEditText.id === 5) {
+  //     <View>
+  //       <Text style={styles.text}>不</Text>
+  //       <Text style={styles.text}>動</Text>
+  //       <Text style={styles.text}>心</Text>
+  //     </View>;
+  //   } else if (nitEditText.id === 6) {
+  //     <View>
+  //       <Text style={styles.text}>切</Text>
+  //       <Text style={styles.text}>磋</Text>
+  //       <Text style={styles.text}>琢</Text>
+  //       <Text style={styles.text}>磨</Text>
+  //     </View>;
+  //   }
+  // };
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
@@ -35,6 +83,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
           <Text style={styles.text}>道</Text>
         </View>
       ) : (
+        // renderSubCategoryEditor()
         <ActivityIndicator size={"large"} />
       )}
       <View>
