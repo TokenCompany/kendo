@@ -19,24 +19,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentBirthday,
     currentAge,
     currentKenNumber,
-<<<<<<< HEAD
-    // current1st,
-=======
     current1st,
     currentImage,
->>>>>>> main
     onChangeName,
     onChangeBirthday,
     onChangeAge,
     onChangeKenNumber,
-<<<<<<< HEAD
-    // onChangePassingDay1st,
-    // onChangeExamDay1st,
-=======
     onChangeImage,
     onChangePassingDay1st,
     onChangeExamDay1st,
->>>>>>> main
     onPressSave,
   } = useProfileForm();
   // useStateで型を指定しておく
@@ -50,11 +41,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   //   setShow(false);
   // };
 
-<<<<<<< HEAD
-  // const handleConfirm = () => {
-  //   hideDatePicker();
-  // };
-=======
   const handleConfirm = () => {
     hideDatePicker();
   };
@@ -77,7 +63,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     }
   };
 
->>>>>>> main
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
