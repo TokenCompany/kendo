@@ -15,14 +15,13 @@ export const InitEditScreen: React.FC<Props> = ({}: Props) => {
     { text: "切磋琢磨", id: 6 },
   ];
 
+  const [Selected, setSelected] = useState();
   const renderItem = ({ item }) => {
-    // const [Selected, setSelected] = useState();
-    // const SelectedStyle = item.id === Selected ? styles.selectedStyle : styles.notSelectedStyle;
+    const SelectedStyle = item.id === Selected ? styles.selectedStyle : styles.notSelectedStyle;
 
     return (
       <TouchableOpacity style={styles.initEditButton} onPress={() => setSelected(item.id)}>
-        {/* <Text style={SelectedStyle}>{item.text}</Text> */}
-        <Text>{item.text}</Text>
+        <Text style={SelectedStyle}>{item.text}</Text>
       </TouchableOpacity>
     );
   };
