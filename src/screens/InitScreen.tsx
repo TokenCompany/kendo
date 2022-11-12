@@ -4,6 +4,8 @@ import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import i18n from "../lang/localization";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
@@ -29,76 +31,20 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Menu");
   };
 
-  // 初期画面の出しわけ部分です
-  const renderSubCategoryEditor = () => {
-    if (initEditText.id === 1) {
-      return (
-        <View>
-          <Text style={styles.text}>八</Text>
-          <Text style={styles.text}>段</Text>
-          <Text style={styles.text}>へ</Text>
-          <Text style={styles.text}>の</Text>
-          <Text style={styles.text}>道</Text>
-        </View>
-      );
-    } else if (initEditText.id === 2) {
-      return (
-        <View>
-          <Text style={styles.text}>全</Text>
-          <Text style={styles.text}>国</Text>
-          <Text style={styles.text}>大</Text>
-          <Text style={styles.text}>会</Text>
-          <Text style={styles.text}>へ</Text>
-          <Text style={styles.text}>の</Text>
-          <Text style={styles.text}>道</Text>
-        </View>
-      );
-    } else if (initEditText.id === 3) {
-      return (
-        <View>
-          <Text style={styles.text}>流</Text>
-          <Text style={styles.text}>汗</Text>
-          <Text style={styles.text}>悟</Text>
-          <Text style={styles.text}>道</Text>
-        </View>
-      );
-    } else if (initEditText.id === 4) {
-      return (
-        <View>
-          <Text style={styles.text}>交</Text>
-          <Text style={styles.text}>剣</Text>
-          <Text style={styles.text}>知</Text>
-          <Text style={styles.text}>愛</Text>
-        </View>
-      );
-    } else if (initEditText.id === 5) {
-      return (
-        <View>
-          <Text style={styles.text}>不</Text>
-          <Text style={styles.text}>動</Text>
-          <Text style={styles.text}>心</Text>
-        </View>
-      );
-    } else if (initEditText.id === 6) {
-      return (
-        <View>
-          <Text style={styles.text}>切</Text>
-          <Text style={styles.text}>磋</Text>
-          <Text style={styles.text}>琢</Text>
-          <Text style={styles.text}>磨</Text>
-        </View>
-      );
-    }
-  };
+  const initText = useSelector((state: RootState) => state.initText.initText);
+  const splitText = initText.split("");
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
         <View>
-          <Text style={styles.text}>八</Text>
-          <Text style={styles.text}>段</Text>
-          <Text style={styles.text}>へ</Text>
-          <Text style={styles.text}>の</Text>
-          <Text style={styles.text}>道</Text>
+          {splitText.map((data) => {
+            return (
+              <Text key={data} style={styles.text}>
+                {data}
+              </Text>
+            );
+          })}
         </View>
       ) : (
         <ActivityIndicator size={"large"} />

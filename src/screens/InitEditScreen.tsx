@@ -2,26 +2,35 @@ import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, Text, View, FlatList } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
+import { useInitText } from "../hooks/useInitText";
 
 type Props = NativeStackScreenProps<MainStackParamList, "InitEdit">;
 
 export const InitEditScreen: React.FC<Props> = ({}: Props) => {
   const initEditText = [
-    { text: "八段への道", id: 1 },
-    { text: "全国大会への道", id: 2 },
-    { text: "流汗悟道", id: 3 },
-    { text: "交剣知愛", id: 4 },
-    { text: "不動心", id: 5 },
-    { text: "切磋琢磨", id: 6 },
+    "八段への道",
+    "全国大会への道",
+    "流汗悟道",
+    "交剣知愛",
+    "不動心",
+    "切磋琢磨",
   ];
 
-  const [Selected, setSelected] = useState();
+  const { currentText, onPressSave } = useInitText();
+  const initTitle = currentText ? currentText : "八段への道";
+  const [Selected, setSelected] = useState(initTitle);
   const renderItem = ({ item }) => {
-    const SelectedStyle = item.id === Selected ? styles.selectedStyle : styles.notSelectedStyle;
+    const SelectedStyle = item === Selected ? styles.selectedStyle : styles.notSelectedStyle;
 
     return (
-      <TouchableOpacity style={styles.initEditButton} onPress={() => setSelected(item.id)}>
-        <Text style={SelectedStyle}>{item.text}</Text>
+      <TouchableOpacity
+        style={styles.initEditButton}
+        onPress={() => {
+          setSelected(item);
+          onPressSave(item);
+        }}
+      >
+        <Text style={SelectedStyle}>{item}</Text>
       </TouchableOpacity>
     );
   };
