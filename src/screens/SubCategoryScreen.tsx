@@ -6,15 +6,24 @@ import { FAB, Provider as PaperProvider } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
 import { SwipeItem } from "../components/SwipeItem";
 import uuid from "react-native-uuid";
+import { addSubCategory, deleteSubCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
+export type TotalResults = {
+  [year: string]:number;
+}
+
 export type SubCategory = {
+  mainCategoryName:string;
   id:string;
   text: string;
+  totalResults:TotalResults;
 };
+
+
 
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
@@ -84,12 +93,12 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   };
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
-  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
+  const [subCategories, setSubCategories] = useState<SubCategory>();
 
   // 項目消去
   const onPressDelete = (id: string) => {
-    const newSubCategory = subCategories.filter((item) => item.id !== id);
-    setSubCategories(newSubCategory);
+    // const newSubCategory = subCategories.filter((item) => item.id !== id);
+    // setSubCategories(newSubCategory);
   };
 
   // 項目入力
@@ -99,17 +108,18 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
 
   // 項目登録
   const onPressSubmit = () => {
-    const newSubCategories: SubCategory[] = [
-      ...subCategories,
-      {
-        text: currentText,
-        id: uuid.v4(),
-      } as SubCategory,
-    ];
+    const newSubCategories: SubCategory = {
+      mainCategoryName: subCategoryType,
+      text: currentText,
+      id: uuid.v4().toString(),
+      // totalResults:{}
+      };
     setSubCategories(newSubCategories);
     setCurrentText("");
     // TODO: reduxに保存
-    dispatch(newSubCategories)
+    // console.log(newSubCategories);
+    
+    dispatch(addSubCategory(newSubCategories))
     // TODO: subCategoryTypeによってredux保存先を切り替える
   };
 

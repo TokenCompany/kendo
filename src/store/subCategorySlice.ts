@@ -23,7 +23,6 @@ interface TotalResults{
 interface subCategory {
   id: string;
   text: string;
-  unit: string;
   totalResults:TotalResults;
 }
 
@@ -53,9 +52,16 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<addSubCategoryPayload>) => {
-      // state[action.payload.mainCategory].subCategories = action.payload.subCategoriesArray;
-      console.log(action.payload);
+      // state[action.payload.mainCategoryName].push({
+      //  id: action.payload.id,
+      //  text: action.payload.text,
+      // //  totalResults:action.payload.totalResults,
+      // })
+      console.log(state);
       
+      // console.log(action);
+      // console.log(state);
+      // console.log(state[action.payload.mainCategoryName]);
     },
     deleteSubCategory:(state, action)=>{
       // let deleteCategoryNum = state[action.payload.mainCategory].subCategories.indexOf(action.payload.category);
