@@ -8,6 +8,7 @@ import { TextButton } from "../components/TextButton";
 import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import DropDownPicker from "react-native-dropdown-picker";
 // import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
@@ -31,6 +32,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   {
     timeErrorAlert();
   }
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(null);
+  const [items, setItems] = useState([
+    { label: "text1", value: "text1" },
+    { label: "text2", value: "text2" },
+    { label: "text3", value: "text3" },
+    { label: "text4", value: "text4" },
+    { label: "横浜アリーナ", value: "横浜アリーナ" },
+  ]);
 
   return (
     <ScrollView style={styles.container}>
@@ -63,7 +73,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 onValueChange={(itemValue, itemIndex) => setStartTime(itemValue.toString())}
                 itemStyle={{ height: 60 }}
               >
-                {console.log(startTime)}
                 <Picker.Item label="10:00" value="1000" />
                 <Picker.Item label="11:00" value="1100" />
                 <Picker.Item label="12:00" value="1200" />
@@ -95,15 +104,32 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.boxInputArea}>
           <Text>◆場所</Text>
           <View style={styles.boxInputText}>
-            <Picker
-              selectedValue={place}
-              onValueChange={(itemValue, itemIndex) => setPlace(itemValue.toString())}
-              itemStyle={{ height: 60 }}
-            >
-              <Picker.Item label="text01" value="text01" />
-              <Picker.Item label="text02" value="text02" />
-              <Picker.Item label="横浜アリーナ" value="横浜アリーナ" />
-            </Picker>
+            <DropDownPicker
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              labelStyle={{
+                fontSize: 18,
+                textAlign: "center",
+              }}
+              containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
+              style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
+              dropDownStyle={{ backgroundColor: "#F4F4F5" }}
+              onChangeItem={(item) =>
+                this.setState({
+                  country: item.value,
+                })
+              }
+              placeholder="場所を選択"
+              placeholderStyle={{
+                textAlign: "center",
+                fontSize: 20,
+              }}
+              activeLabelStyle={{ color: "red" }}
+            />
           </View>
         </View>
         <TextButton
