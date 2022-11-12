@@ -1,4 +1,4 @@
-import React from "react";
+import { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -9,8 +9,7 @@ import { useProfileForm } from "../hooks/useProfileForm";
 type Props = NativeStackScreenProps<MainStackParamList, "TaskEdit">;
 
 export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const { currentTask, onChangeTask, onPressSaveTask, onPressDeleteTask } = useProfileForm();
-  // const text = "";
+  const { currentTask, onChangeTask, onPressSaveTask } = useProfileForm();
   const onChangeDelete = () => {
     createAlert();
   };
