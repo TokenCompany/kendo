@@ -16,7 +16,7 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-  // console.log(reservations);
+  console.log(reservations);
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
@@ -118,11 +118,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
               style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
               dropDownStyle={{ backgroundColor: "#F4F4F5" }}
-              onChangeItem={(item) =>
-                this.setState({
-                  country: item.value,
-                })
-              }
+              onChangeValue={(value) => setPlace(value)}
               placeholder="場所を選択"
               placeholderStyle={{
                 textAlign: "center",
@@ -136,24 +132,26 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           text01="登録"
           onPress01={() => {
             if (selectedDate && startTime && endTime && place) {
-              Alert.alert("稽古予定を削除しますか？", "", [
-                {
-                  text: "いいえ",
-                  style: "cancel",
-                },
-                {
-                  text: "はい",
-                  onPress: () =>
-                    dispatch(
-                      bookReservationItem({
-                        date: selectedDate,
-                        startTime: startTime,
-                        endTime: endTime,
-                        place: place,
-                      }),
-                    ),
-                },
-              ]);
+              if (reservations) {
+                Alert.alert("稽古予定を修正しますか？", "", [
+                  {
+                    text: "いいえ",
+                    style: "cancel",
+                  },
+                  {
+                    text: "はい",
+                    onPress: () =>
+                      dispatch(
+                        bookReservationItem({
+                          date: selectedDate,
+                          startTime: startTime,
+                          endTime: endTime,
+                          place: place,
+                        }),
+                      ),
+                  },
+                ]);
+              }
             }
           }}
           onPress02={() => {
@@ -179,6 +177,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         />
       </View>
       {console.log(selectedDate)}
+      {console.log(value)}
     </ScrollView>
   );
 };
