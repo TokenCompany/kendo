@@ -39,11 +39,10 @@ const initialState: SubCategoryState = {
   targetSubCategories: [],
 }
 
-type addSubCategoryPayload = {
+type SubCategoryPayload = {
   mainCategoryName:string;
   id:string;
   text:string;
-  totalResults:TotalResults;
 }
 
 export const counterSlice = createSlice({
@@ -51,22 +50,18 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
-    addSubCategory: (state, action: PayloadAction<addSubCategoryPayload>) => {
+    addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
       // state[action.payload.mainCategoryName].push({
       //  id: action.payload.id,
       //  text: action.payload.text,
-      // //  totalResults:action.payload.totalResults,
       // })
-      console.log(state);
-      
-      // console.log(action);
-      // console.log(state);
-      // console.log(state[action.payload.mainCategoryName]);
     },
-    deleteSubCategory:(state, action)=>{
-      // let deleteCategoryNum = state[action.payload.mainCategory].subCategories.indexOf(action.payload.category);
-      // state[action.payload.mainCategory].subCategories.splice(deleteCategoryNum,1);
-      console.log(action.payload);
+    deleteSubCategory:(state, action:PayloadAction<SubCategoryPayload>)=>{
+      // const newState = state[action.payload.mainCategoryName].filter((item) => item.id !== action.payload.id);
+      // console.log(newState);
+      // state["placeSubCategories"].splice(3,1);
+      // console.log(state);
+      
     }
   },
 }) ;

@@ -22,8 +22,8 @@ export type SubCategory = {
 
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
-  const subCategoryData = useSelector((state: RootState) => state.subCategory);
-  // console.log(subCategoryData);
+  const subCategoryData:any = useSelector((state: RootState) => state.subCategory);
+  // console.log(subCategoryData.placeSubCategories);
   const mainCategories = {
     placeSubCategories: {
       text:'稽古場所',
@@ -88,12 +88,16 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   };
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
-  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
-
+  // REDUXの中身を取り出して表示
+  const [subCategories, setSubCategories] = useState<SubCategory[]>(subCategoryData[subCategoryType]);
   // 項目消去
-  const onPressDelete = (id: string) => {
-    // const newSubCategory = subCategories.filter((item) => item.id !== id);
-    // setSubCategories(newSubCategory);
+  const onPressDelete = (id: string,mainCategoryName: string) => {
+    let deleteBlock: SubCategory[] = subCategories.filter((item) => item.id === id);
+    deleteBlock[0].mainCategoryName = mainCategoryName;
+    const newSubCategory: SubCategory[] = subCategories.filter((item) => item.id !== id);
+    console.log(deleteBlock[0]);
+    dispatch(deleteSubCategory(deleteBlock[0]));
+    setSubCategories(newSubCategory);
   };
 
   // 項目入力
@@ -103,7 +107,9 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
 
   // 項目登録
   const onPressSubmit = () => {
-    const newSubCategories: SubCategory[] = [{
+    const newSubCategories: SubCategory[] = [
+      ...subCategories,
+      {
       mainCategoryName: subCategoryType,
       text: currentText,
       id: uuid.v4().toString(),
@@ -111,13 +117,11 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
     ];
     setSubCategories(newSubCategories);
     setCurrentText("");
-    console.log(newSubCategories);
-    
-    // TODO: reduxに保存
-    // console.log(newSubCategories);
-    
-    // dispatch(addSubCategory(newSubCategories))
-    // TODO: subCategoryTypeによってredux保存先を切り替える
+    // 一番最後(最新)のものを取得
+    let lastNum: number = newSubCategories.length -1;
+    // TODO: reduxに保存,newSubCategoriesのmainCategoryNameによってredux保存先を切り替える
+    dispatch(addSubCategory(newSubCategories[lastNum]))
+    // TODO: 
   };
 
   return (
@@ -144,8 +148,8 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeItem
         subCategories={subCategories}
-        onPressDelete={(id: string) => {
-          onPressDelete(id);
+        onPressDelete={(id: string,mainCategoryName: string) => {
+          onPressDelete(id,subCategoryType);
         }}
       />
     </View>
