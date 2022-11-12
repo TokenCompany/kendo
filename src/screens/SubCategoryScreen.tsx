@@ -6,40 +6,82 @@ import { FAB, Provider as PaperProvider } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
 import { SwipeItem } from "../components/SwipeItem";
 import uuid from "react-native-uuid";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
 export type SubCategory = {
+  id:string;
   text: string;
-  id: string; // uuid
 };
 
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
+  const dispatch = useDispatch();
+  const subCategoryData = useSelector((state: RootState) => state.subCategory);
+  // console.log(subCategoryData);
+  const mainCategories = {
+    placeSubCategories: {
+      text:'稽古場所',
+      unit:'本'
+    },
+    suburiSubCategories: {
+      text:'素振り',
+      unit:'本'
+    },
+    ashiSabakiSubCategories: {
+      text:'足さばき',
+      unit:'本'
+    },
+    kihonUchiSubCategories: {
+      text:'基本打ち',
+      unit:'本'
+    },
+    oujiwazaSubCategories: {
+      text:'応じ技',
+      unit:'本'
+    },
+    jigeikoSubCategories: {
+      text:'地稽古',
+      unit:'回'
+    },
+    teacherSubCategories: {
+      text:'先生との稽古',
+      unit:'分',
+    },
+    kakarigeikoSubCategories: {
+      text:'掛稽古',
+      unit:'分',
+    },
+    targetSubCategories: {
+      text:'目標',
+      unit:'回',
+    },
+  }
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const subCategoryType = route.params.subCategoryType;
-
+  
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
-    if (subCategoryType === "place") {
+    if (subCategoryType === "placeSubCategories") {
       return <Text style={styles.MajorText}>稽古場所</Text>;
-    } else if (subCategoryType === "swing") {
+    } else if (subCategoryType === "suburiSubCategories") {
       return <Text style={styles.MajorText}>素振り</Text>;
-    } else if (subCategoryType === "footwork") {
+    } else if (subCategoryType === "ashiSabakiSubCategories") {
       return <Text style={styles.MajorText}>足さばき</Text>;
-    } else if (subCategoryType === "beat") {
+    } else if (subCategoryType === "kihonUchiSubCategories") {
       return <Text style={styles.MajorText}>基本打ち</Text>;
-    } else if (subCategoryType === "response") {
+    } else if (subCategoryType === "oujiwazaSubCategories") {
       return <Text style={styles.MajorText}>応じ技</Text>;
-    } else if (subCategoryType === "jigeiko") {
+    } else if (subCategoryType === "jigeikoSubCategories") {
       return <Text style={styles.MajorText}>地稽古</Text>;
-    } else if (subCategoryType === "teacher") {
+    } else if (subCategoryType === "teacherSubCategories") {
       return <Text style={styles.MajorText}>先生との稽古</Text>;
-    } else if (subCategoryType === "kakari") {
+    } else if (subCategoryType === "kakarigeikoSubCategories") {
       return <Text style={styles.MajorText}>掛稽古</Text>;
     }
   };
-
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
   const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
@@ -67,6 +109,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
     setSubCategories(newSubCategories);
     setCurrentText("");
     // TODO: reduxに保存
+    dispatch(newSubCategories)
     // TODO: subCategoryTypeによってredux保存先を切り替える
   };
 

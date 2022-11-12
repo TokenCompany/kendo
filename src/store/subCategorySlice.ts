@@ -16,10 +16,15 @@ export interface SubCategoryState {
   targetSubCategories: subCategory[];
 }
 
+interface TotalResults{
+  [year: string]:number;
+}
+
 interface subCategory {
   id: string;
-  subCategories: string[];
+  text: string;
   unit: string;
+  totalResults:TotalResults;
 }
 
 // デフォルトの値
@@ -33,15 +38,13 @@ const initialState: SubCategoryState = {
   teacherSubCategories: [],
   kakarigeikoSubCategories: [],
   targetSubCategories: [],
-};
+}
 
 type addSubCategoryPayload = {
-  mainCategory: string;
-  subCategoriesArray: string[];
-}
-type deleteSubCategoryPayload = {
-  mainCategory: string;
-  category: string;
+  mainCategoryName:string;
+  id:string;
+  text:string;
+  totalResults:TotalResults;
 }
 
 export const counterSlice = createSlice({
@@ -50,14 +53,17 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<addSubCategoryPayload>) => {
-      state[action.payload.mainCategory].subCategories = action.payload.subCategoriesArray;
+      // state[action.payload.mainCategory].subCategories = action.payload.subCategoriesArray;
+      console.log(action.payload);
+      
     },
-    deleteSubCategory:(state, action: PayloadAction<deleteSubCategoryPayload>)=>{
-      let deleteCategoryNum = state[action.payload.mainCategory].subCategories.indexOf(action.payload.category);
-      state[action.payload.mainCategory].subCategories.splice(deleteCategoryNum,1);
+    deleteSubCategory:(state, action)=>{
+      // let deleteCategoryNum = state[action.payload.mainCategory].subCategories.indexOf(action.payload.category);
+      // state[action.payload.mainCategory].subCategories.splice(deleteCategoryNum,1);
+      console.log(action.payload);
     }
   },
-});
+}) ;
 
 // Action creators are generated for each case reducer function
 export const { addSubCategory } = counterSlice.actions;
