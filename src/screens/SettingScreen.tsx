@@ -4,6 +4,8 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import i18n from "../lang/localization";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
@@ -35,21 +37,41 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     ["八段", "-", "残り5596日(15年4か月)"],
   ];
 
+  const name = useSelector((state: RootState) => state.profile.name);
+  const age = useSelector((state: RootState) => state.profile.age);
+  const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
+  const birthday = useSelector((state: RootState) => state.profile.birthday);
+  const image = useSelector((state: RootState) => state.profile.profileImage);
+
   return (
     <ScrollView>
       <View style={styles.container}>
         <View style={styles.profileContainer}>
           <View style={styles.profileBody}>
             <Text style={styles.profileText01}>{i18n.t("Setting.name")}</Text>
-            <Text style={styles.profileText02}>山田 太郎</Text>
+            <Text style={styles.profileText02}>{name ? name : "名前が入ります"}</Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
-            <Text style={styles.profileText02}>1988年4月27日</Text>
+            <Text style={styles.profileText02}>{birthday ? birthday : "生年月日が入ります"}</Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
-            <Text style={styles.profileText02}>34歳</Text>
+            <Text style={styles.profileText02}>{age ? age : "年齢が入ります"}</Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
-            <Text style={styles.profileText02}>12345678</Text>
+            <Text style={styles.profileText02}>
+              {kenNumber ? kenNumber : "全剣連番号が入ります"}
+            </Text>
+            <Text style={styles.profileText01}>課題</Text>
+            <Text style={styles.profileText02}>テキストテキストテキスト</Text>
           </View>
-          <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
+          {image ? (
+            <Image
+              source={{ uri: "data:image/jpeg;base64," + image }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Image
+              style={styles.profileImage}
+              source={require("../../assets/images/profile.png")}
+            />
+          )}
         </View>
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
