@@ -16,14 +16,14 @@ export interface SubCategoryState {
   targetSubCategories: subCategory[];
 }
 
-interface TotalResults{
-  [year: string]:number;
+interface TotalResults {
+  [year: string]: number;
 }
 
 interface subCategory {
   id: string;
   text: string;
-  totalResults:TotalResults;
+  // totalResults:TotalResults;
 }
 
 // デフォルトの値
@@ -37,18 +37,18 @@ const initialState: SubCategoryState = {
   teacherSubCategories: [],
   kakarigeikoSubCategories: [],
   targetSubCategories: [],
-}
+};
 
 type SubCategoryPayload = {
-  mainCategoryName:string;
-  id:string;
-  text:string;
-}
+  mainCategoryName: string;
+  id: string;
+  text: string;
+};
 
 type deleteSubCategory = {
-  categoryName:string;
-  id:string;
-}
+  categoryName: string;
+  id: string;
+};
 
 export const counterSlice = createSlice({
   name: "subCategory",
@@ -56,18 +56,19 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      // state[action.payload.mainCategoryName].push({
-      //  id: action.payload.id,
-      //  text: action.payload.text,
-      // })
+      state[action.payload.mainCategoryName as keyof SubCategoryState].push({
+        id: action.payload.id,
+        text: action.payload.text,
+      });
     },
-    deleteSubCategory:(state, action:PayloadAction<deleteSubCategory>)=>{
-      const newState = state[action.payload.categoryName].filter((item) => item.id !== action.payload.id);
-      state = newState;
-      console.log(state);
-    }
+    deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
+      const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
+        (item) => item.id !== action.payload.id,
+      );
+      state[action.payload.categoryName as keyof SubCategoryState] = newArray;
+    },
   },
-}) ;
+});
 
 // Action creators are generated for each case reducer function
 export const { addSubCategory } = counterSlice.actions;
