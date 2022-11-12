@@ -4,6 +4,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import profileReducer from "./profileSlice";
 import subCategoryReducer from "./subCategorySlice";
 import reservationReducer from "./reservationSlice";
+import initTextReducer from "./initTextSlice";
 import {
   persistStore,
   persistReducer,
@@ -27,6 +28,7 @@ const rootReducer = combineReducers({
   profile: profileReducer,
   subCategory: subCategoryReducer,
   reservation: reservationReducer,
+  initText: initTextReducer,
 });
 
 // 永続化のための設定

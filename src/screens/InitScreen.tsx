@@ -4,6 +4,8 @@ import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import i18n from "../lang/localization";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
@@ -29,15 +31,20 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Menu");
   };
 
+  const initText = useSelector((state: RootState) => state.initText.initText);
+  const splitText = initText.split("");
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
         <View>
-          <Text style={styles.text}>八</Text>
-          <Text style={styles.text}>段</Text>
-          <Text style={styles.text}>へ</Text>
-          <Text style={styles.text}>の</Text>
-          <Text style={styles.text}>道</Text>
+          {splitText.map((data) => {
+            return (
+              <Text key={data} style={styles.text}>
+                {data}
+              </Text>
+            );
+          })}
         </View>
       ) : (
         <ActivityIndicator size={"large"} />

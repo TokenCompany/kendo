@@ -14,7 +14,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TaskEdit");
   };
   const onPressInitial = () => {
-    navigation.navigate("TrainingEdit");
+    navigation.navigate("InitEdit");
   };
   const onPressProfile = () => {
     navigation.navigate("ProfileEdit");
