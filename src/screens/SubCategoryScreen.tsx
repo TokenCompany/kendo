@@ -12,15 +12,10 @@ import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
-export type TotalResults = {
-  [year: string]:number;
-}
-
 export type SubCategory = {
   mainCategoryName:string;
   id:string;
   text: string;
-  totalResults:TotalResults;
 };
 
 
@@ -93,7 +88,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   };
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
-  const [subCategories, setSubCategories] = useState<SubCategory>();
+  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
 
   // 項目消去
   const onPressDelete = (id: string) => {
@@ -108,18 +103,20 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
 
   // 項目登録
   const onPressSubmit = () => {
-    const newSubCategories: SubCategory = {
+    const newSubCategories: SubCategory[] = [{
       mainCategoryName: subCategoryType,
       text: currentText,
       id: uuid.v4().toString(),
-      // totalResults:{}
-      };
+      } as SubCategory
+    ];
     setSubCategories(newSubCategories);
     setCurrentText("");
+    console.log(newSubCategories);
+    
     // TODO: reduxに保存
     // console.log(newSubCategories);
     
-    dispatch(addSubCategory(newSubCategories))
+    // dispatch(addSubCategory(newSubCategories))
     // TODO: subCategoryTypeによってredux保存先を切り替える
   };
 
