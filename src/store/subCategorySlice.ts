@@ -45,6 +45,11 @@ type SubCategoryPayload = {
   text:string;
 }
 
+type deleteSubCategory = {
+  categoryName:string;
+  id:string;
+}
+
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
@@ -56,12 +61,10 @@ export const counterSlice = createSlice({
       //  text: action.payload.text,
       // })
     },
-    deleteSubCategory:(state, action:PayloadAction<SubCategoryPayload>)=>{
-      // const newState = state[action.payload.mainCategoryName].filter((item) => item.id !== action.payload.id);
-      // console.log(newState);
-      // state["placeSubCategories"].splice(3,1);
-      // console.log(state);
-      
+    deleteSubCategory:(state, action:PayloadAction<deleteSubCategory>)=>{
+      const newState = state[action.payload.categoryName].filter((item) => item.id !== action.payload.id);
+      state = newState;
+      console.log(state);
     }
   },
 }) ;

@@ -23,7 +23,7 @@ export type SubCategory = {
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
   const subCategoryData:any = useSelector((state: RootState) => state.subCategory);
-  // console.log(subCategoryData.placeSubCategories);
+  console.log(subCategoryData.placeSubCategories);
   const mainCategories = {
     placeSubCategories: {
       text:'稽古場所',
@@ -92,11 +92,12 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   const [subCategories, setSubCategories] = useState<SubCategory[]>(subCategoryData[subCategoryType]);
   // 項目消去
   const onPressDelete = (id: string,mainCategoryName: string) => {
-    let deleteBlock: SubCategory[] = subCategories.filter((item) => item.id === id);
-    deleteBlock[0].mainCategoryName = mainCategoryName;
     const newSubCategory: SubCategory[] = subCategories.filter((item) => item.id !== id);
-    console.log(deleteBlock[0]);
-    dispatch(deleteSubCategory(deleteBlock[0]));
+    const deleteObj = {
+      categoryName: mainCategoryName,
+      id : id,
+    }
+    dispatch(deleteSubCategory(deleteObj));
     setSubCategories(newSubCategory);
   };
 
