@@ -26,16 +26,118 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
 
-  const rankTableData = [
-    ["初段", "〇", "2006年11月20日"],
-    ["弐段", "〇", "2007年11月13日"],
-    ["参段 ", "〇", "2009年11月12日"],
-    ["四段 ", "〇", "2011年11月1日"],
-    ["五段", "〇", "2015年11月17日"],
-    ["六段 ", "〇", "2020年11月22日"],
-    ["七段", "-", "残り1945日(5年4か月)"],
-    ["八段", "-", "残り5596日(15年4か月)"],
+  // const rankTableData = [
+  //   ["初段", "〇", "2006-11-20", "2006-11-20"],
+  //   ["弐段", "〇", "2007年11月13日"],
+  //   ["参段 ", "〇", "2009年11月12日"],
+  //   ["四段 ", "〇", "2011年11月1日"],
+  //   ["五段", "〇", "2015年11月17日"],
+  //   ["六段 ", "〇", "2020年11月22日"],
+  //   ["七段", "-", "残り1945日(5年4か月)"],
+  //   ["八段", "-", "残り5596日(15年4か月)"],
+  //   ["錬士", "-", "残り5596日(15年4か月)"],
+  //   ["教士", "-", "残り5596日(15年4か月)"],
+  // ];
+
+  const rankTable = [
+    {
+      class: "初段",
+      status: "〇",
+      passingDate: "2006-11-20",
+      ExaminationDate: "2006-11-20",
+    },
+    {
+      class: "弐段",
+      status: "〇",
+      passingDate: "2007-11-13",
+      ExaminationDate: "2007-11-13",
+    },
+    {
+      class: "参段",
+      status: "〇",
+      passingDate: "2009-11-12",
+      ExaminationDate: "2006-11-20",
+    },
+    {
+      class: "四段",
+      status: "〇",
+      passingDate: "2011-11-1",
+      ExaminationDate: "2011-11-1",
+    },
+    {
+      class: "五段",
+      status: "〇",
+      passingDate: "2015-11-17",
+      ExaminationDate: "2015-11-17",
+    },
+    {
+      class: "六段",
+      status: "〇",
+      passingDate: "2022-5-22",
+      ExaminationDate: "2022-4-22",
+    },
+    {
+      class: "七段",
+      status: "〇",
+      passingDate: "2022-6-5",
+      ExaminationDate: "2022-6-5",
+    },
+    {
+      class: "八段",
+      status: "-",
+      passingDate: "",
+      ExaminationDate: "2026-12-5",
+    },
+    {
+      class: "錬士",
+      status: "-",
+      passingDate: "",
+      ExaminationDate: "",
+    },
+    {
+      class: "教士",
+      status: "-",
+      passingDate: "",
+      ExaminationDate: "",
+    },
   ];
+  let rankTableData: any = [];
+  let currentDate = new Date();
+  rankTable.forEach(function (item) {
+    if (item.status == "〇") {
+      rankTableData.push([item.class, item.status, item.passingDate]);
+    } else {
+      if (item.ExaminationDate) {
+        let passDay = item.ExaminationDate.split('-');
+        let passYear = Number(passDay[0]);
+        let passMonth = Number(passDay[1]) - 1;
+        let passDate = Number(passDay[2]);
+        let affterDate = new Date(passYear, passMonth, passDate);
+        let termDay = (affterDate - currentDate) / 86400000;
+        let scheduleText = "残り" + Math.ceil(termDay) + "日";
+
+        rankTableData.push([item.class, item.status, scheduleText]);
+      } else if (rankTable[5].status == "〇" && item.class == '錬士') {
+        let passDay = rankTable[5].passingDate.split('-');
+        let passYear = Number(passDay[0]) + 1;
+        let passMonth = Number(passDay[1]) - 1;
+        let passDate = Number(passDay[2]);
+        let affterDate = new Date(passYear, passMonth, passDate);
+        let termDay = (affterDate - currentDate) / 86400000;
+        let scheduleText = "残り" + Math.ceil(termDay) + "日";
+        rankTableData.push([item.class, item.status, scheduleText]);
+      } else if (rankTable[6].status == "〇" && item.class == '教士') {
+        let passDay = rankTable[6].passingDate.split('-');
+        let passYear = Number(passDay[0]) + 2;
+        let passMonth = Number(passDay[1]) - 1;
+        let passDate = Number(passDay[2]);
+        let affterDate = new Date(passYear, passMonth, passDate);
+        let termDay = (affterDate - currentDate) / 86400000;
+        let scheduleText = "残り" + Math.ceil(termDay) + "日";
+        rankTableData.push([item.class, item.status, scheduleText]);
+      }
+    }
+   });
 
   const name = useSelector((state: RootState) => state.profile.name);
   const age = useSelector((state: RootState) => state.profile.age);
