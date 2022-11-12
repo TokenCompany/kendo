@@ -26,7 +26,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [place, setPlace] = useState<string>();
   const timeErrorAlert = () => {
     if (startTime > endTime) {
-      Alert.alert("注意", "終了時間は開始時間より遅い時間を入力してください", [{ text: "OK" }]);
+      Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
     }
   };
   {
@@ -136,28 +136,49 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           text01="登録"
           onPress01={() => {
             if (selectedDate && startTime && endTime && place) {
-              dispatch(
-                bookReservationItem({
-                  date: selectedDate,
-                  startTime: startTime,
-                  endTime: endTime,
-                  place: place,
-                }),
-              );
+              Alert.alert("稽古予定を削除しますか？", "", [
+                {
+                  text: "いいえ",
+                  style: "cancel",
+                },
+                {
+                  text: "はい",
+                  onPress: () =>
+                    dispatch(
+                      bookReservationItem({
+                        date: selectedDate,
+                        startTime: startTime,
+                        endTime: endTime,
+                        place: place,
+                      }),
+                    ),
+                },
+              ]);
             }
           }}
           onPress02={() => {
             if (selectedDate) {
-              dispatch(
-                deleteReservationItem({
-                  date: selectedDate,
-                }),
-              );
+              Alert.alert("稽古予定を削除しますか？", "", [
+                {
+                  text: "いいえ",
+                  style: "cancel",
+                },
+                {
+                  text: "はい",
+                  onPress: () =>
+                    dispatch(
+                      deleteReservationItem({
+                        date: selectedDate,
+                      }),
+                    ),
+                },
+              ]);
             }
           }}
           text02="削除"
         />
       </View>
+      {console.log(selectedDate)}
     </ScrollView>
   );
 };
