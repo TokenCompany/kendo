@@ -1,17 +1,16 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { colors } from "../styles";
 import { TextForm } from "../components/TextForm";
+import { useProfileForm } from "../hooks/useProfileForm";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TaskEdit">;
 
 export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const [currentTask, setCurrentTask] = useState<string>("");
-  const onChangeTask = (text: string) => {
-    setCurrentTask(text);
-  };
+  const { currentTask, onChangeTask, onPressSaveTask, onPressDeleteTask } = useProfileForm();
+  // const text = "";
   const onChangeDelete = () => {
     createAlert();
   };
@@ -24,8 +23,17 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         text: "いいえ",
         style: "cancel",
       },
-      { text: "はい", onPress: () => setCurrentTask("") },
+      {
+        text: "はい",
+        onPress: () => onSettingDelete(),
+      },
     ]);
+  const onSettingDelete = () => {
+    onChangeTask("");
+    onPressSaveTask();
+    console.log(currentTask);
+  };
+
   return (
     <View style={styles.container}>
       <TextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
@@ -33,7 +41,13 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         <TouchableOpacity style={styles.button} onPress={onChangeDelete}>
           <Text style={styles.text}>消去</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.color]} onPress={onChangeSetting}>
+        <TouchableOpacity
+          style={[styles.button, styles.color]}
+          onPress={() => {
+            onPressSaveTask();
+            onChangeSetting();
+          }}
+        >
           <Text style={styles.text}>設定</Text>
         </TouchableOpacity>
       </View>

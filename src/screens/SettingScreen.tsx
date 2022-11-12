@@ -42,6 +42,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
   const birthday = useSelector((state: RootState) => state.profile.birthday);
   const image = useSelector((state: RootState) => state.profile.profileImage);
+  const task = useSelector((state: RootState) => state.profile.task);
 
   return (
     <ScrollView>
@@ -59,7 +60,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {kenNumber ? kenNumber : "全剣連番号が入ります"}
             </Text>
             <Text style={styles.profileText01}>課題</Text>
-            <Text style={styles.profileText02}>テキストテキストテキスト</Text>
+            {task ? <Text style={styles.profileText02}>{task}</Text> : ""}
           </View>
           {image ? (
             <Image
