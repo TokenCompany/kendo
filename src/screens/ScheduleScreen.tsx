@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text, TextInput } from "react-native";
+import { View, ScrollView, StyleSheet, Text, TextInput, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
@@ -23,6 +23,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
+  const timeErrorAlert = () => {
+    if (startTime > endTime) {
+      Alert.alert("注意", "終了時間は開始時間より遅い時間を入力してください", [{ text: "OK" }]);
+    }
+  };
+  {
+    timeErrorAlert();
+  }
 
   return (
     <ScrollView style={styles.container}>
@@ -55,14 +63,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 onValueChange={(itemValue, itemIndex) => setStartTime(itemValue.toString())}
                 itemStyle={{ height: 60 }}
               >
-                <Picker.Item label="10:00" value="10:00" />
-                <Picker.Item label="11:00" value="11:00" />
-                <Picker.Item label="12:00" value="12:00" />
-                <Picker.Item label="13:00" value="13:00" />
-                <Picker.Item label="14:00" value="14:00" />
-                <Picker.Item label="15:00" value="15:00" />
-                <Picker.Item label="19:00" value="19:00" />
-                <Picker.Item label="21:00" value="21:00" />
+                {console.log(startTime)}
+                <Picker.Item label="10:00" value="1000" />
+                <Picker.Item label="11:00" value="1100" />
+                <Picker.Item label="12:00" value="1200" />
+                <Picker.Item label="13:00" value="1300" />
+                <Picker.Item label="14:00" value="1400" />
+                <Picker.Item label="15:00" value="1500" />
+                <Picker.Item label="19:00" value="1900" />
+                <Picker.Item label="21:00" value="2100" />
               </Picker>
               <Text style={styles.timeText}>~</Text>
               <Picker
@@ -71,14 +80,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 onValueChange={(itemValue, itemIndex) => setEndTime(itemValue.toString())}
                 itemStyle={{ height: 60 }}
               >
-                <Picker.Item label="10:00" value="10:00" />
-                <Picker.Item label="11:00" value="11:00" />
-                <Picker.Item label="12:00" value="12:00" />
-                <Picker.Item label="13:00" value="13:00" />
-                <Picker.Item label="14:00" value="14:00" />
-                <Picker.Item label="15:00" value="15:00" />
-                <Picker.Item label="16:00" value="16:00" />
-                <Picker.Item label="21:00" value="21:00" />
+                <Picker.Item label="10:00" value="1000" />
+                <Picker.Item label="11:00" value="1100" />
+                <Picker.Item label="12:00" value="1200" />
+                <Picker.Item label="13:00" value="1300" />
+                <Picker.Item label="14:00" value="1400" />
+                <Picker.Item label="15:00" value="1500" />
+                <Picker.Item label="16:00" value="1600" />
+                <Picker.Item label="21:00" value="2100" />
               </Picker>
             </View>
           </View>
