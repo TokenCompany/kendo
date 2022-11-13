@@ -1,13 +1,22 @@
-import React, { useState } from "react";
-import { View, StyleSheet, Text, TextInput } from "react-native";
+import React, { useState, useRef } from "react";
+import { View, StyleSheet, Text, TextInput, ScrollView } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
-import { useSubCategory } from "../hooks/useSubCategory";
+import { addSubCategory, deleteSubCategory } from "../store/subCategorySlice";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
+// import { useSubCategory } from "../hooks/useSubCategory";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const dispatch = useDispatch();
+  const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
+  let teachers: string[] = [];
+  subCategoryData["teacherSubCategories"].forEach((element: any) => {
+    teachers.push(element.text);
+  });
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -49,10 +58,16 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       subCategoryType: "kakarigeikoSubCategories",
     });
   };
+  // 年間目標の入力UIが出てから自動スクロールさせるための記述
+  const scrollViewRef = useRef<ScrollView>(null);
+  const goToBottom = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  };
   const onPressTarget = () => {
     showTargetSetting();
   };
-
   const [show, setShow] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
   const onChangeText = (text: string) => {
@@ -63,63 +78,55 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   return (
     <View style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <MajorItem text="稽古場所" onPress={onPressPlace} />
-        <MajorItem text="素振り" onPress={onPressSwing} />
-        <MajorItem text="足さばき" onPress={onPressFootwork} />
-        <MajorItem text="基本打ち" onPress={onPressBeat} />
-        <MajorItem text="応じ技" onPress={onPressResponse} />
-        <MajorItem text="地稽古" onPress={onPressJigeiko} />
-        <MajorItem text="先生との稽古" onPress={onPressTeacher} />
-        <MajorItem text="掛稽古" onPress={onPressKakari} />
-        <MajorItem text="年間稽古目標" onPress={onPressTarget} />
+      <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
+        <View style={styles.buttonContainer}>
+          <MajorItem text="稽古場所" onPress={onPressPlace} />
+          <MajorItem text="素振り" onPress={onPressSwing} />
+          <MajorItem text="足さばき" onPress={onPressFootwork} />
+          <MajorItem text="基本打ち" onPress={onPressBeat} />
+          <MajorItem text="応じ技" onPress={onPressResponse} />
+          <MajorItem text="地稽古" onPress={onPressJigeiko} />
+          <MajorItem text="先生との稽古" onPress={onPressTeacher} />
+          <MajorItem text="掛稽古" onPress={onPressKakari} />
+          <MajorItem
+            text="年間稽古目標"
+            onPress={() => {
+              onPressTarget();
+              setTimeout(goToBottom, 100);
+            }}
+          />
 
-        {show && (
-          <View style={styles.objectiveContainer}>
-            <Text style={styles.objectiveLabel}>年間稽古目標</Text>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>合計</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
+          {show && (
+            <View style={styles.objectiveContainer}>
+              <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+              <View style={styles.objectiveInputArea}>
+                <Text style={styles.objectiveText}>合計</Text>
+                <TextInput
+                  style={styles.objectiveInput}
+                  keyboardType="numeric"
+                  onChangeText={onChangeText}
+                  // value={objectiveNum}
+                ></TextInput>
+                <Text style={styles.objectiveText}>回</Text>
+              </View>
+              {teachers.map((teacher: string) => {
+                return (
+                  <View style={styles.objectiveInputArea}>
+                    <Text style={styles.objectiveText}>{teacher}先生</Text>
+                    <TextInput
+                      style={styles.objectiveInput}
+                      keyboardType="numeric"
+                      onChangeText={onChangeText}
+                      // value={objectiveNum}
+                    ></TextInput>
+                    <Text style={styles.objectiveText}>回</Text>
+                  </View>
+                );
+              })}
             </View>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>〇〇〇 先生</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-          </View>
-        )}
-      </View>
+          )}
+        </View>
+      </ScrollView>
     </View>
   );
 };
@@ -130,6 +137,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     flexDirection: "column",
     marginTop: 40,
+  },
+  scrollContainer: {
     paddingRight: 10,
     paddingLeft: 10,
   },

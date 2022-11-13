@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text ,Alert} from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { FAB, Provider as PaperProvider } from "react-native-paper";
@@ -84,21 +84,32 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
 
   // 項目登録
   const onPressSubmit = () => {
-    const newSubCategories: SubCategory[] = [
-      ...subCategories,
-      {
-        mainCategoryName: subCategoryType,
-        text: currentText,
-        id: uuid.v4().toString(),
-      } as SubCategory,
-    ];
-    setSubCategories(newSubCategories);
-    setCurrentText("");
-    // 一番最後(最新)のものを取得
-    let lastNum: number = newSubCategories.length - 1;
-    // TODO: reduxに保存,newSubCategoriesのmainCategoryNameによってredux保存先を切り替える
-    dispatch(addSubCategory(newSubCategories[lastNum]));
-    // TODO:
+    if (currentText !== "") {
+      const newSubCategories: SubCategory[] = [
+        ...subCategories,
+        {
+          mainCategoryName: subCategoryType,
+          text: currentText,
+          id: uuid.v4().toString(),
+        } as SubCategory,
+      ];
+      setSubCategories(newSubCategories);
+      setCurrentText("");
+      // 一番最後(最新)のものを取得
+      let lastNum: number = newSubCategories.length - 1;
+      // TODO: reduxに保存,newSubCategoriesのmainCategoryNameによってredux保存先を切り替える
+      dispatch(addSubCategory(newSubCategories[lastNum]));
+    }else{
+      Alert.alert(
+        `空の内容は登録できません。`,
+        "もう一度入力し直してください。",
+        [
+          {
+            text: "戻る",
+          }
+        ]
+      );
+    }
   };
 
   return (
@@ -126,7 +137,6 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
         }}
         onPressSubmit={() => {
           onPressSubmit();
-    
           if (subCategories.length > max) {
             setPlussButton(styles.offFab);
           } else {
@@ -140,7 +150,22 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       <SwipeItem
         subCategories={subCategories}
         onPressDelete={(id: string, mainCategoryName: string) => {
-          onPressDelete(id, subCategoryType);
+          // アラートの記述追加
+          Alert.alert(
+            `登録された内容が削除されます。`,
+            "本当に削除しますか？",
+            [
+              {
+                text: "はい",
+                onPress: () => {
+                  onPressDelete(id, subCategoryType);
+                },
+              },
+              {
+                text: "いいえ",
+              },
+            ]
+          );
         }}
       />
     </View>
