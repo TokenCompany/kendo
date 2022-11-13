@@ -16,7 +16,6 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-  console.log(reservations);
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
@@ -132,7 +131,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           text01="登録"
           onPress01={() => {
             if (selectedDate && startTime && endTime && place) {
-              if (reservations) {
+              if (Object.hasOwnProperty(selectedDate)) {
                 Alert.alert("稽古予定を修正しますか？", "", [
                   {
                     text: "いいえ",
@@ -176,8 +175,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           text02="削除"
         />
       </View>
-      {console.log(selectedDate)}
-      {console.log(value)}
     </ScrollView>
   );
 };
