@@ -20,14 +20,38 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentKenNumber,
     currentPassedDate01,
     currentPassedDate02,
+    currentPassedDate03,
+    currentPassedDate04,
+    currentPassedDate05,
+    currentPassedDate06,
+    currentPassedDate07,
+    currentPassedDate08,
     currentExamDate01,
     currentExamDate02,
+    currentExamDate03,
+    currentExamDate04,
+    currentExamDate05,
+    currentExamDate06,
+    currentExamDate07,
+    currentExamDate08,
     onChangeName,
     onChangeBirthday,
     onChangePassedDate01,
     onChangePassedDate02,
+    onChangePassedDate03,
+    onChangePassedDate04,
+    onChangePassedDate05,
+    onChangePassedDate06,
+    onChangePassedDate07,
+    onChangePassedDate08,
     onChangeExamDate01,
     onChangeExamDate02,
+    onChangeExamDate03,
+    onChangeExamDate04,
+    onChangeExamDate05,
+    onChangeExamDate06,
+    onChangeExamDate07,
+    onChangeExamDate08,
     onChangeAge,
     onChangeKenNumber,
     onPressSave,
@@ -39,6 +63,18 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const [show02, setShow02] = useState<boolean>(false);
   const [show03, setShow03] = useState<boolean>(false);
   const [show04, setShow04] = useState<boolean>(false);
+  const [show05, setShow05] = useState<boolean>(false);
+  const [show06, setShow06] = useState<boolean>(false);
+  const [show07, setShow07] = useState<boolean>(false);
+  const [show08, setShow08] = useState<boolean>(false);
+  const [show09, setShow09] = useState<boolean>(false);
+  const [show10, setShow10] = useState<boolean>(false);
+  const [show11, setShow11] = useState<boolean>(false);
+  const [show12, setShow12] = useState<boolean>(false);
+  const [show13, setShow13] = useState<boolean>(false);
+  const [show14, setShow14] = useState<boolean>(false);
+  const [show15, setShow15] = useState<boolean>(false);
+  const [show16, setShow16] = useState<boolean>(false);
 
   const showDatepicker = () => {
     setShow(true);
@@ -55,12 +91,60 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const showDatepicker04 = () => {
     setShow04(true);
   };
+  const showDatepicker05 = () => {
+    setShow05(true);
+  };
+  const showDatepicker06 = () => {
+    setShow06(true);
+  };
+  const showDatepicker07 = () => {
+    setShow07(true);
+  };
+  const showDatepicker08 = () => {
+    setShow08(true);
+  };
+  const showDatepicker09 = () => {
+    setShow09(true);
+  };
+  const showDatepicker10 = () => {
+    setShow10(true);
+  };
+  const showDatepicker11 = () => {
+    setShow11(true);
+  };
+  const showDatepicker12 = () => {
+    setShow12(true);
+  };
+  const showDatepicker13 = () => {
+    setShow13(true);
+  };
+  const showDatepicker14 = () => {
+    setShow14(true);
+  };
+  const showDatepicker15 = () => {
+    setShow15(true);
+  };
+  const showDatepicker16 = () => {
+    setShow15(true);
+  };
   const onPressClose = () => {
     setShow(false);
     setShow01(false);
     setShow02(false);
     setShow03(false);
     setShow04(false);
+    setShow05(false);
+    setShow06(false);
+    setShow07(false);
+    setShow08(false);
+    setShow09(false);
+    setShow10(false);
+    setShow11(false);
+    setShow12(false);
+    setShow13(false);
+    setShow14(false);
+    setShow15(false);
+    setShow16(false);
   };
 
   return (
@@ -104,7 +188,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         </View>
         <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
       </View>
-
       <LevelForm
         label="初段"
         visiblePassed={show01}
@@ -129,7 +212,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         }}
         onPressClose={onPressClose}
       />
-
       <LevelForm
         label="弐段"
         visiblePassed={show03}
@@ -150,6 +232,180 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           if (date2) {
             const exam02 = Number(dayjs(date2).format("YYYYMMDD"));
             onChangeExamDate02(exam02);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+      <LevelForm
+        label="参段"
+        visiblePassed={show05}
+        visibleExam={show06}
+        showDatepickerPassed={showDatepicker05}
+        showDatepickerExam={showDatepicker06}
+        currentPassedDateText={currentPassedDate03}
+        currentExamDateText={currentExamDate03}
+        passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed03 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed03);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate03.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam03 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam03);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+
+      <LevelForm
+        label="四段"
+        visiblePassed={show07}
+        visibleExam={show08}
+        showDatepickerPassed={showDatepicker07}
+        showDatepickerExam={showDatepicker08}
+        currentPassedDateText={currentPassedDate04}
+        currentExamDateText={currentExamDate04}
+        passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed04 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed04);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate04.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam04 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam04);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+
+      <LevelForm
+        label="五段"
+        visiblePassed={show09}
+        visibleExam={show10}
+        showDatepickerPassed={showDatepicker09}
+        showDatepickerExam={showDatepicker10}
+        currentPassedDateText={currentPassedDate05}
+        currentExamDateText={currentExamDate05}
+        passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed05 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed05);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate05.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam05 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam05);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+
+      <LevelForm
+        label="六段"
+        visiblePassed={show11}
+        visibleExam={show12}
+        showDatepickerPassed={showDatepicker11}
+        showDatepickerExam={showDatepicker12}
+        currentPassedDateText={currentPassedDate06}
+        currentExamDateText={currentExamDate06}
+        passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed06);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam06 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam06);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+
+      <LevelForm
+        label="六段"
+        visiblePassed={show11}
+        visibleExam={show12}
+        showDatepickerPassed={showDatepicker11}
+        showDatepickerExam={showDatepicker12}
+        currentPassedDateText={currentPassedDate06}
+        currentExamDateText={currentExamDate06}
+        passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed06);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam06 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam06);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+
+      <LevelForm
+        label="七段"
+        visiblePassed={show13}
+        visibleExam={show14}
+        showDatepickerPassed={showDatepicker13}
+        showDatepickerExam={showDatepicker14}
+        currentPassedDateText={currentPassedDate07}
+        currentExamDateText={currentExamDate07}
+        passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed07 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed07);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam07 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam07);
+          }
+        }}
+        onPressClose={onPressClose}
+      />
+
+      <LevelForm
+        label="八段"
+        visiblePassed={show15}
+        visibleExam={show16}
+        showDatepickerPassed={showDatepicker15}
+        showDatepickerExam={showDatepicker16}
+        currentPassedDateText={currentPassedDate08}
+        currentExamDateText={currentExamDate08}
+        passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
+        onChangePassed={(event, date1) => {
+          if (date1) {
+            const passed08 = Number(dayjs(date1).format("YYYYMMDD"));
+            onChangePassedDate02(passed08);
+          }
+        }}
+        examDateValue={dayjs(currentExamDate08.toString(), "YYYYMMDD").toDate()}
+        onChangeExam={(event, date2) => {
+          if (date2) {
+            const exam08 = Number(dayjs(date2).format("YYYYMMDD"));
+            onChangeExamDate02(exam08);
           }
         }}
         onPressClose={onPressClose}

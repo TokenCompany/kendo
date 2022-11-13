@@ -11,8 +11,20 @@ export interface ProfileState {
   kenNumber: string;
   passed01: number;
   passed02: number;
+  passed03: number;
+  passed04: number;
+  passed05: number;
+  passed06: number;
+  passed07: number;
+  passed08: number;
   exam01: number;
   exam02: number;
+  exam03: number;
+  exam04: number;
+  exam05: number;
+  exam06: number;
+  exam07: number;
+  exam08: number;
 }
 
 // デフォルトの値
@@ -23,8 +35,20 @@ const initialState: ProfileState = {
   kenNumber: "", // 全剣連番号
   passed01: 19900101, // 合格日
   passed02: 19900101,
+  passed03: 19900101,
+  passed04: 19900101,
+  passed05: 19900101,
+  passed06: 19900101,
+  passed07: 19900101,
+  passed08: 19900101,
   exam01: 19900101, // 審査日
   exam02: 19900101,
+  exam03: 19900101,
+  exam04: 19900101,
+  exam05: 19900101,
+  exam06: 19900101,
+  exam07: 19900101,
+  exam08: 19900101,
 };
 
 export const counterSlice = createSlice({
@@ -50,11 +74,47 @@ export const counterSlice = createSlice({
     setPassed02: (state, action: PayloadAction<number>) => {
       state.passed02 = action.payload;
     },
+    setPassed03: (state, action: PayloadAction<number>) => {
+      state.passed03 = action.payload;
+    },
+    setPassed04: (state, action: PayloadAction<number>) => {
+      state.passed04 = action.payload;
+    },
+    setPassed05: (state, action: PayloadAction<number>) => {
+      state.passed05 = action.payload;
+    },
+    setPassed06: (state, action: PayloadAction<number>) => {
+      state.passed06 = action.payload;
+    },
+    setPassed07: (state, action: PayloadAction<number>) => {
+      state.passed07 = action.payload;
+    },
+    setPassed08: (state, action: PayloadAction<number>) => {
+      state.passed08 = action.payload;
+    },
     setExam01: (state, action: PayloadAction<number>) => {
       state.exam01 = action.payload;
     },
     setExam02: (state, action: PayloadAction<number>) => {
       state.exam02 = action.payload;
+    },
+    setExam03: (state, action: PayloadAction<number>) => {
+      state.exam03 = action.payload;
+    },
+    setExam04: (state, action: PayloadAction<number>) => {
+      state.exam04 = action.payload;
+    },
+    setExam05: (state, action: PayloadAction<number>) => {
+      state.exam05 = action.payload;
+    },
+    setExam06: (state, action: PayloadAction<number>) => {
+      state.exam06 = action.payload;
+    },
+    setExam07: (state, action: PayloadAction<number>) => {
+      state.exam07 = action.payload;
+    },
+    setExam08: (state, action: PayloadAction<number>) => {
+      state.exam08 = action.payload;
     },
   },
 });
@@ -66,7 +126,19 @@ export const { setKenNumber } = counterSlice.actions;
 export const { setBirthday } = counterSlice.actions;
 export const { setPassed01 } = counterSlice.actions;
 export const { setPassed02 } = counterSlice.actions;
+export const { setPassed03 } = counterSlice.actions;
+export const { setPassed04 } = counterSlice.actions;
+export const { setPassed05 } = counterSlice.actions;
+export const { setPassed06 } = counterSlice.actions;
+export const { setPassed07 } = counterSlice.actions;
+export const { setPassed08 } = counterSlice.actions;
 export const { setExam01 } = counterSlice.actions;
 export const { setExam02 } = counterSlice.actions;
+export const { setExam03 } = counterSlice.actions;
+export const { setExam04 } = counterSlice.actions;
+export const { setExam05 } = counterSlice.actions;
+export const { setExam06 } = counterSlice.actions;
+export const { setExam07 } = counterSlice.actions;
+export const { setExam08 } = counterSlice.actions;
 
 export default counterSlice.reducer;
