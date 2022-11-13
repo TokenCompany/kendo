@@ -19,6 +19,7 @@ type Hooks = {
   onChangeBirthday: (text: number) => void;
   onPressSave: () => void;
   onPressSaveTask: () => void;
+  onPressDeleteTask: () => void;
   currentImage: string;
   onChangeImage: (text: string) => void;
   currentTask: string;
@@ -87,6 +88,10 @@ export const useProfileForm = (): Hooks => {
     console.log("a");
   };
 
+  const onPressDeleteTask = () => {
+    dispatch(setTask(""));
+  };
+
   return {
     currentName,
     currentAge,
@@ -100,6 +105,7 @@ export const useProfileForm = (): Hooks => {
     onChangeBirthday,
     onPressSave,
     onPressSaveTask,
+    onPressDeleteTask,
     onChangeImage,
     onChangeTask,
   };

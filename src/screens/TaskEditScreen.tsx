@@ -9,7 +9,7 @@ import { useProfileForm } from "../hooks/useProfileForm";
 type Props = NativeStackScreenProps<MainStackParamList, "TaskEdit">;
 
 export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const { currentTask, onChangeTask, onPressSaveTask } = useProfileForm();
+  const { currentTask, onChangeTask, onPressSaveTask, onPressDeleteTask } = useProfileForm();
   const onChangeDelete = () => {
     createAlert();
   };
@@ -29,8 +29,8 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     ]);
   const onSettingDelete = () => {
     onChangeTask("");
-    onPressSaveTask();
-    console.log(currentTask);
+    onPressDeleteTask();
+    navigation.navigate("Setting");
   };
 
   return (

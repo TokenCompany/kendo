@@ -45,7 +45,6 @@ export const counterSlice = createSlice({
     },
     setTask: (state, action: PayloadAction<string>) => {
       state.task = action.payload;
-      console.log(state.task);
     },
   },
 });
