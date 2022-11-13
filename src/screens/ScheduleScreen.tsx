@@ -23,6 +23,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
+  const [allReservations, setAllReservations] = useState(reservations);
   const timeErrorAlert = () => {
     if (startTime > endTime) {
       Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
@@ -118,7 +119,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
               dropDownStyle={{ backgroundColor: "#F4F4F5" }}
               onChangeValue={(value) => setPlace(value)}
-              placeholder="場所を選択"
+              placeholder={place}
               placeholderStyle={{
                 textAlign: "center",
                 fontSize: 20,
@@ -131,7 +132,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           text01="登録"
           onPress01={() => {
             if (selectedDate && startTime && endTime && place) {
-              if (Object.hasOwnProperty(selectedDate)) {
+              if (selectedDate in allReservations) {
                 Alert.alert("稽古予定を修正しますか？", "", [
                   {
                     text: "いいえ",
@@ -150,6 +151,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       ),
                   },
                 ]);
+              } else {
+                dispatch(
+                  bookReservationItem({
+                    date: selectedDate,
+                    startTime: startTime,
+                    endTime: endTime,
+                    place: place,
+                  }),
+                );
               }
             }
           }}
@@ -174,6 +184,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           }}
           text02="削除"
         />
+        {console.log(allReservations)}
+        {console.log(selectedDate)}
       </View>
     </ScrollView>
   );
