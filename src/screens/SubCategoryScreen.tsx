@@ -24,7 +24,10 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const subCategoryType = route.params.subCategoryType;
-
+  // 登録できる数をsubCategoryTypeで制限
+  const max = subCategoryType == "placeSubCategories" ? 5 - 1: 30 -1;
+  console.log(max);
+   
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
     if (subCategoryType === "placeSubCategories") {
@@ -51,6 +54,13 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   const [subCategories, setSubCategories] = useState<SubCategory[]>(
     subCategoryData[subCategoryType],
   );
+  const [plusButton,setPlussButton] = useState(()=>{
+    if (subCategories.length > max) {
+      return styles.offFab;
+    }else{
+      return styles.fab;
+    }
+  })
   // 項目消去
   const onPressDelete = (id: string, mainCategoryName: string) => {
     const newSubCategory: SubCategory[] = subCategories.filter((item) => item.id !== id);
@@ -59,6 +69,11 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       id: id,
     };
     dispatch(deleteSubCategory(deleteObj));
+    if (newSubCategory.length > max) {
+      setPlussButton(styles.offFab)
+    }else{
+      setPlussButton(styles.fab)
+    }
     setSubCategories(newSubCategory);
   };
 
@@ -90,7 +105,16 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
     <View style={styles.container}>
       <View style={styles.MajorTitle}>
         {renderSubCategoryEditor()}
-        <FAB style={styles.fab} small icon="plus" onPress={() => setVisible(true)} />
+        <FAB style={plusButton} small icon="plus" onPress={() => {
+    
+          if (subCategories.length > max) {
+            setVisible(false);
+            setPlussButton(styles.offFab)
+          }else{
+            setVisible(true);
+            setPlussButton(styles.fab)
+          }
+          }} />
       </View>
 
       {/* プラスボタン押したら出でくるフォーム */}
@@ -102,8 +126,13 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
         }}
         onPressSubmit={() => {
           onPressSubmit();
+    
+          if (subCategories.length > max) {
+            setPlussButton(styles.offFab);
+          } else {
+            setPlussButton(styles.fab);
+          }
           setVisible(false);
-          // TODO: ここでreduxにdispatchする
         }}
       />
 
@@ -148,4 +177,12 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 0 },
     shadowRadius: 0,
   },
+  offFab: {
+    position: "absolute",
+    right: 0,
+    backgroundColor: "grey",
+    color: "#000",
+    shadowOffset: { width: 0, height: 0 },
+    shadowRadius: 0,
+  }
 });
