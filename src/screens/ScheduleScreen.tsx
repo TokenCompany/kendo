@@ -24,6 +24,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
   const [allReservations, setAllReservations] = useState(reservations);
+  const [form, setForm] = useState(false);
   const timeErrorAlert = () => {
     if (startTime > endTime) {
       Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
@@ -32,6 +33,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   {
     timeErrorAlert();
   }
+  const showForm = () => {
+    setForm(true);
+  };
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [items, setItems] = useState([
@@ -40,6 +44,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     { label: "text3", value: "text3" },
     { label: "text4", value: "text4" },
     { label: "横浜アリーナ", value: "横浜アリーナ" },
+    { label: "直接入力", value: showForm },
   ]);
 
   return (
@@ -58,6 +63,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             setStartTime(reservations[day].startTime);
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
+          } else {
+            setStartTime("10:00");
+            setEndTime("10:00");
+            setPlace("場所を選択");
           }
         }}
       />
@@ -128,6 +137,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             />
           </View>
         </View>
+        {form && <TextInput style={styles.form} onChangeText={place} />}
         <TextButton
           text01="登録"
           onPress01={() => {
@@ -197,8 +207,8 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   box: {
-    marginTop: 10,
     padding: 20,
+    paddingTop: 5,
     borderWidth: 1,
   },
   boxTitle: {
@@ -213,6 +223,17 @@ const styles = StyleSheet.create({
   boxInputText: {
     paddingLeft: 10,
     flexGrow: 1,
+  },
+  form: {
+    height: 30,
+    width: "79%",
+    marginLeft: "18%",
+    marginTop: "5%",
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#aaa",
+    borderRadius: 5,
+    paddingHorizontal: 5,
   },
   boxInputTime: {
     paddingLeft: 10,
