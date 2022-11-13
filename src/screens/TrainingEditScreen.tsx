@@ -3,9 +3,13 @@ import { View, StyleSheet, Text, TextInput, ScrollView } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
-import { addSubCategory, deleteSubCategory } from "../store/subCategorySlice";
+import { addTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import { Button } from "../components/Button";
+import dayjs from "dayjs";
+// import { Button } from "react-native-paper";
+
 // import { useSubCategory } from "../hooks/useSubCategory";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
@@ -13,6 +17,7 @@ type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
+  const [currentYear, setCurrentDate] = useState(dayjs().year());
   let teachers: string[] = [];
   subCategoryData["teacherSubCategories"].forEach((element: any) => {
     teachers.push(element.text);
@@ -69,13 +74,26 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     showTargetSetting();
   };
   const [show, setShow] = useState(false);
-  const [currentText, setCurrentText] = useState<string>("");
+  const [currentText, setcurrentText] = useState<string>();
+  const [currentYearGoal, setCurrentYearGoal] = useState<string>();
   const onChangeText = (text: string) => {
-    setCurrentText(text);
+    // console.log(text);
+    setcurrentText(text);
   };
+  const onChangeYearGoal = (text: string) => {
+    // console.log(text);
+    setCurrentYearGoal(text);
+  };
+
   const showTargetSetting = () => {
     setShow(true);
   };
+
+  let targetData = {
+    [currentYear]:[]
+  }
+  // console.log(targetData);
+  
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
@@ -104,7 +122,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 <TextInput
                   style={styles.objectiveInput}
                   keyboardType="numeric"
-                  onChangeText={onChangeText}
+                  onChangeText={onChangeYearGoal}
                   // value={objectiveNum}
                 ></TextInput>
                 <Text style={styles.objectiveText}>回</Text>
@@ -117,12 +135,20 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                       style={styles.objectiveInput}
                       keyboardType="numeric"
                       onChangeText={onChangeText}
+                      onSubmitEditing={()=>{
+                        console.log(teacher);
+                      }}
                       // value={objectiveNum}
                     ></TextInput>
                     <Text style={styles.objectiveText}>回</Text>
                   </View>
                 );
               })}
+              <View style={styles.submitButtonContainer}>
+                <Button text="目標登録" onPress={()=>{
+                  console.log(currentText);
+                }} />
+              </View>
             </View>
           )}
         </View>
@@ -149,7 +175,7 @@ const styles = StyleSheet.create({
   objectiveContainer: {
     marginTop: 30,
     marginBottom: 20,
-    paddingRight: 60,
+    // paddingRight: 60,
   },
   objectiveLabel: {
     fontSize: 18,
@@ -172,4 +198,11 @@ const styles = StyleSheet.create({
   objectiveText: {
     fontSize: 18,
   },
+  submitButtonContainer: {
+    marginTop: 20,
+    width: '100%',
+    // height: '30%',
+    // justifyContent: 'center',
+    alignItems: 'center'
+  }
 });
