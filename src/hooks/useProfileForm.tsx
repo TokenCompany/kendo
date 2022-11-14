@@ -25,7 +25,7 @@ import { setExam08 } from "../store/profileSlice";
 type Hooks = {
   currentName: string;
   onChangeName: (text: string) => void;
-  currentAge: string;
+  currentAge: number;
   onChangeAge: (text: string) => void;
   currentKenNumber: string;
   onChangeKenNumber: (text: string) => void;
@@ -95,7 +95,7 @@ export const useProfileForm = (): Hooks => {
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
   // useStateの初期値にnameを入れることで,端末に永続化された氏名をフォーム初期値にします
   const [currentName, setCurrentName] = useState<string>(name);
-  let [currentAge, setCurrentAge] = useState<string>(age);
+  let [currentAge, setCurrentAge] = useState<number>(age);
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
   const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
   const [currentPassedDate01, setCurrentPassedDate01] = useState<number>(passed01);
@@ -119,7 +119,7 @@ export const useProfileForm = (): Hooks => {
   const onChangeName = (text: string) => {
     setCurrentName(text);
   };
-  const onChangeAge = (text: string) => {
+  const onChangeAge = (text: number) => {
     setCurrentAge(text);
   };
   const onChangeKenNumber = (text: string) => {
