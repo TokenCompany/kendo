@@ -70,80 +70,113 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           }
         }}
       />
-      <View style={styles.box}>
-        <Text style={styles.boxTitle}>{selectedDateText}</Text>
-        <View style={styles.boxInputArea}>
-          <Text>◆時間</Text>
-          <View style={styles.boxInputTime}>
-            <View style={styles.boxInputTimeFlex}>
-              <Picker
-                selectedValue={startTime}
-                style={styles.inputTime}
-                onValueChange={(itemValue, itemIndex) => setStartTime(itemValue.toString())}
-                itemStyle={{ height: 60 }}
-              >
-                <Picker.Item label="10:00" value="1000" />
-                <Picker.Item label="11:00" value="1100" />
-                <Picker.Item label="12:00" value="1200" />
-                <Picker.Item label="13:00" value="1300" />
-                <Picker.Item label="14:00" value="1400" />
-                <Picker.Item label="15:00" value="1500" />
-                <Picker.Item label="19:00" value="1900" />
-                <Picker.Item label="21:00" value="2100" />
-              </Picker>
-              <Text style={styles.timeText}>~</Text>
-              <Picker
-                selectedValue={endTime}
-                style={styles.inputTime}
-                onValueChange={(itemValue, itemIndex) => setEndTime(itemValue.toString())}
-                itemStyle={{ height: 60 }}
-              >
-                <Picker.Item label="10:00" value="1000" />
-                <Picker.Item label="11:00" value="1100" />
-                <Picker.Item label="12:00" value="1200" />
-                <Picker.Item label="13:00" value="1300" />
-                <Picker.Item label="14:00" value="1400" />
-                <Picker.Item label="15:00" value="1500" />
-                <Picker.Item label="16:00" value="1600" />
-                <Picker.Item label="21:00" value="2100" />
-              </Picker>
+      {selectedDate ? (
+        <View style={styles.box}>
+          <Text style={styles.boxTitle}>{selectedDateText}</Text>
+          <View style={styles.boxInputArea}>
+            <Text>◆時間</Text>
+            <View style={styles.boxInputTime}>
+              <View style={styles.boxInputTimeFlex}>
+                <Picker
+                  selectedValue={startTime}
+                  style={styles.inputTime}
+                  onValueChange={(itemValue, itemIndex) => setStartTime(itemValue.toString())}
+                  itemStyle={{ height: 60 }}
+                >
+                  <Picker.Item label="10:00" value="1000" />
+                  <Picker.Item label="11:00" value="1100" />
+                  <Picker.Item label="12:00" value="1200" />
+                  <Picker.Item label="13:00" value="1300" />
+                  <Picker.Item label="14:00" value="1400" />
+                  <Picker.Item label="15:00" value="1500" />
+                  <Picker.Item label="19:00" value="1900" />
+                  <Picker.Item label="21:00" value="2100" />
+                </Picker>
+                <Text style={styles.timeText}>~</Text>
+                <Picker
+                  selectedValue={endTime}
+                  style={styles.inputTime}
+                  onValueChange={(itemValue, itemIndex) => setEndTime(itemValue.toString())}
+                  itemStyle={{ height: 60 }}
+                >
+                  <Picker.Item label="10:00" value="1000" />
+                  <Picker.Item label="11:00" value="1100" />
+                  <Picker.Item label="12:00" value="1200" />
+                  <Picker.Item label="13:00" value="1300" />
+                  <Picker.Item label="14:00" value="1400" />
+                  <Picker.Item label="15:00" value="1500" />
+                  <Picker.Item label="16:00" value="1600" />
+                  <Picker.Item label="21:00" value="2100" />
+                </Picker>
+              </View>
             </View>
           </View>
-        </View>
-        <View style={styles.boxInputArea}>
-          <Text>◆場所</Text>
-          <View style={styles.boxInputText}>
-            <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              labelStyle={{
-                fontSize: 18,
-                textAlign: "center",
-              }}
-              containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
-              style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-              dropDownStyle={{ backgroundColor: "#F4F4F5" }}
-              onChangeValue={(value) => setPlace(value)}
-              placeholder={place}
-              placeholderStyle={{
-                textAlign: "center",
-                fontSize: 20,
-              }}
-              activeLabelStyle={{ color: "red" }}
-            />
+          <View style={styles.boxInputArea}>
+            <Text>◆場所</Text>
+            <View style={styles.boxInputText}>
+              <DropDownPicker
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setValue}
+                setItems={setItems}
+                labelStyle={{
+                  fontSize: 18,
+                  textAlign: "center",
+                }}
+                containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
+                style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
+                dropDownStyle={{ backgroundColor: "#F4F4F5" }}
+                onChangeValue={(value) => setPlace(value)}
+                placeholder={place}
+                placeholderStyle={{
+                  textAlign: "center",
+                  fontSize: 20,
+                }}
+                activeLabelStyle={{ color: "red" }}
+              />
+            </View>
           </View>
-        </View>
-        {form && <TextInput style={styles.form} onChangeText={place} />}
-        <TextButton
-          text01="登録"
-          onPress01={() => {
-            if (selectedDate && startTime && endTime && place) {
-              if (selectedDate in allReservations) {
-                Alert.alert("稽古予定を修正しますか？", "", [
+          {form && <TextInput style={styles.form} onChangeText={place} />}
+          <TextButton
+            text01="登録"
+            onPress01={() => {
+              if (selectedDate && startTime && endTime && place) {
+                if (selectedDate in allReservations) {
+                  Alert.alert("稽古予定を修正しますか？", "", [
+                    {
+                      text: "いいえ",
+                      style: "cancel",
+                    },
+                    {
+                      text: "はい",
+                      onPress: () =>
+                        dispatch(
+                          bookReservationItem({
+                            date: selectedDate,
+                            startTime: startTime,
+                            endTime: endTime,
+                            place: place,
+                          }),
+                        ),
+                    },
+                  ]);
+                } else {
+                  dispatch(
+                    bookReservationItem({
+                      date: selectedDate,
+                      startTime: startTime,
+                      endTime: endTime,
+                      place: place,
+                    }),
+                  );
+                }
+              }
+            }}
+            onPress02={() => {
+              if (selectedDate) {
+                Alert.alert("稽古予定を削除しますか？", "", [
                   {
                     text: "いいえ",
                     style: "cancel",
@@ -152,51 +185,22 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                     text: "はい",
                     onPress: () =>
                       dispatch(
-                        bookReservationItem({
+                        deleteReservationItem({
                           date: selectedDate,
-                          startTime: startTime,
-                          endTime: endTime,
-                          place: place,
                         }),
                       ),
                   },
                 ]);
-              } else {
-                dispatch(
-                  bookReservationItem({
-                    date: selectedDate,
-                    startTime: startTime,
-                    endTime: endTime,
-                    place: place,
-                  }),
-                );
               }
-            }
-          }}
-          onPress02={() => {
-            if (selectedDate) {
-              Alert.alert("稽古予定を削除しますか？", "", [
-                {
-                  text: "いいえ",
-                  style: "cancel",
-                },
-                {
-                  text: "はい",
-                  onPress: () =>
-                    dispatch(
-                      deleteReservationItem({
-                        date: selectedDate,
-                      }),
-                    ),
-                },
-              ]);
-            }
-          }}
-          text02="削除"
-        />
-        {console.log(allReservations)}
-        {console.log(selectedDate)}
-      </View>
+            }}
+            text02="削除"
+          />
+          {console.log(allReservations)}
+          {console.log(selectedDate)}
+        </View>
+      ) : (
+        ""
+      )}
     </ScrollView>
   );
 };
