@@ -33,6 +33,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const initText = useSelector((state: RootState) => state.initText.initText);
   const splitText = initText.split("");
+  const task = useSelector((state: RootState) => state.profile.task);
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -62,7 +63,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalLead}>{i18n.t("Modal.task")}</Text>
-              <Text style={styles.modalText}>-</Text>
+              <Text style={styles.modalText}>{task ? task : "-"}</Text>
               <Text style={styles.modalLead}>初段{i18n.t("Modal.stage")}</Text>
               <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
               <TouchableOpacity

@@ -6,6 +6,7 @@ import { setAge } from "../store/profileSlice";
 import { setKenNumber } from "../store/profileSlice";
 import { setBirthday } from "../store/profileSlice";
 import { setProfileImage } from "../store/profileSlice";
+import { setTask } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -17,8 +18,12 @@ type Hooks = {
   currentBirthday: number;
   onChangeBirthday: (text: number) => void;
   onPressSave: () => void;
+  onPressSaveTask: () => void;
+  onPressDeleteTask: () => void;
   currentImage: string;
   onChangeImage: (text: string) => void;
+  currentTask: string;
+  onChangeTask: (text: string) => void;
 };
 
 export const useProfileForm = (): Hooks => {
@@ -31,6 +36,7 @@ export const useProfileForm = (): Hooks => {
   const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
   const birthday = useSelector((state: RootState) => state.profile.birthday);
   const image = useSelector((state: RootState) => state.profile.profileImage);
+  const task = useSelector((state: RootState) => state.profile.task);
   // currentNameは編集中の一時的な氏名です
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
@@ -40,6 +46,7 @@ export const useProfileForm = (): Hooks => {
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
   const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
   const [currentImage, setCurrentImage] = useState<string>(image);
+  const [currentTask, setCurrentTask] = useState<string>(task);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeName = (text: string) => {
@@ -62,6 +69,10 @@ export const useProfileForm = (): Hooks => {
     setCurrentImage(text);
   };
 
+  const onChangeTask = (text: string) => {
+    setCurrentTask(text);
+  };
+
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSave = () => {
@@ -72,17 +83,30 @@ export const useProfileForm = (): Hooks => {
     dispatch(setProfileImage(currentImage));
   };
 
+  const onPressSaveTask = () => {
+    dispatch(setTask(currentTask));
+    console.log("a");
+  };
+
+  const onPressDeleteTask = () => {
+    dispatch(setTask(""));
+  };
+
   return {
     currentName,
     currentAge,
     currentKenNumber,
     currentBirthday,
     currentImage,
+    currentTask,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
     onChangeBirthday,
     onPressSave,
+    onPressSaveTask,
+    onPressDeleteTask,
     onChangeImage,
+    onChangeTask,
   };
 };
