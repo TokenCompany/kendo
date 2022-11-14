@@ -147,15 +147,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     setShow16(false);
   };
 
-  // 誕生日から年齢算出
-  // const calcAge = () => {
-  //   const dateTo = dayjs(currentBirthday.toString(), "YYYYMMDD");
-  //   const dateFrom = dayjs();
-  //   const baseAge = dateFrom.year() - dateTo.year();
-  //   const thisBirthday = dayjs(`${dateFrom.year()}-${dateTo.month() + 1}-${dateTo.date()}`);
-  //   const nowAge = Number(dateFrom.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
-  //   currentAge = nowAge;
-  // };
   // 年齢が14歳以上なら合格日審査日を入力できる
   const [open, setOpen] = useState<boolean>(false);
   useEffect(() => {
@@ -194,7 +185,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
                   if (date) {
                     const birthday = Number(dayjs(date).format("YYYYMMDD"));
                     onChangeBirthday(birthday);
-                    // calcAge();
+                    // 誕生日から年齢算出
                     const dateTo = dayjs(currentBirthday.toString(), "YYYYMMDD");
                     const dateFrom = dayjs();
                     const baseAge = dateFrom.year() - dateTo.year();
@@ -204,9 +195,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
                     const nowAge = Number(dateFrom.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
                     currentAge = nowAge;
                     onChangeAge(nowAge);
-
-                    console.log(nowAge);
-                    console.log(currentAge);
                   }
                 }}
               />
@@ -250,6 +238,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             }}
             onPressClose={onPressClose}
           />
+
           <LevelForm
             label="弐段"
             visiblePassed={show03}
