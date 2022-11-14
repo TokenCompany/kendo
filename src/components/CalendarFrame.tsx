@@ -3,12 +3,16 @@ import dayjs from "dayjs";
 import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
-
+import { RootState } from "../store";
+import { useSelector, useDispatch } from "react-redux";
 type Props = {
   onPressDay: (day: string) => void;
 };
 
 export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
+  const reservations = useSelector((state: RootState) => state.reservation);
+  const [allReservations, setAllReservations] = useState(reservations);
+  console.log(allReservations);
   const [currentDate, setCurrentDate] = useState<string>(dayjs());
   const [show, setShow] = useState(false);
   const onChangeDate = (Date) => {
@@ -129,7 +133,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
                   onPressDay(date.dateString);
                 }
               }}
-              style={styles.button}
+              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
             >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
@@ -193,8 +197,16 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
   },
+  buttonSelected: {
+    height: 23,
+    width: 23,
+    marginBottom: 17,
+    backgroundColor: "#fff",
+    borderRadius: "50%",
+  },
   button: {
-    height: 40,
+    height: 20,
+    marginBottom: 20,
   },
   dayInput: {
     flex: 1,
