@@ -41,13 +41,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   ];
 
   const renderCategory = () => {
-    for (const key in object) {
-      if (key == "exam") {
+    for (const key in profile) {
+      if (key == "exam01") {
         return (
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>{object[key]}</Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>{rankData[1]}</Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>{rankData[2]}</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>初段</Text>
+            <Text style={[styles.tableData, styles.secondColumn]}>〇</Text>
+            <Text style={[styles.tableData, styles.thirdColumn]}>{profile[key]}</Text>
           </View>
         );
       }
@@ -76,13 +76,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             <Text style={[styles.tableData, styles.secondColumn]}>合格</Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>合格日/審査までの日数</Text>
           </View>
-          {rankTableData.map((rankData) => (
-            <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>{rankData[0]}</Text>
-              <Text style={[styles.tableData, styles.secondColumn]}>{rankData[1]}</Text>
-              <Text style={[styles.tableData, styles.thirdColumn]}>{rankData[2]}</Text>
-            </View>
-          ))}
+          {renderCategory()}
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />
