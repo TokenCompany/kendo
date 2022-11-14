@@ -176,6 +176,7 @@ export const useProfileForm = (): Hooks => {
   };
   const onChangePassedDate07 = (passed07: number) => {
     setCurrentPassedDate07(passed07);
+    setCurrentExamDate10(passed07 + 20000);
   };
   const onChangePassedDate08 = (passed08: number) => {
     setCurrentPassedDate08(passed08);

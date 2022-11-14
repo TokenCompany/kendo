@@ -380,6 +380,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date1) {
                 const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate06(passed06);
+                setOpenRenshi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
@@ -404,6 +405,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date1) {
                 const passed07 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate07(passed07);
+                setOpenKyoushi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}

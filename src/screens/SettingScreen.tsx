@@ -4,10 +4,15 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import i18n from "../lang/localization";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const profile = useSelector((state: RootState) => state.profile);
+  console.log(profile);
+
   const onPressTask = () => {
     navigation.navigate("TaskEdit");
   };
@@ -34,6 +39,20 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     ["七段", "-", "残り1945日(5年4か月)"],
     ["八段", "-", "残り5596日(15年4か月)"],
   ];
+
+  const renderCategory = () => {
+    for (const key in object) {
+      if (key == "exam") {
+        return (
+          <View style={styles.tableRow}>
+            <Text style={[styles.tableData, styles.firstColumn]}>{object[key]}</Text>
+            <Text style={[styles.tableData, styles.secondColumn]}>{rankData[1]}</Text>
+            <Text style={[styles.tableData, styles.thirdColumn]}>{rankData[2]}</Text>
+          </View>
+        );
+      }
+    }
+  };
 
   return (
     <ScrollView>
