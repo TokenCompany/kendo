@@ -12,7 +12,6 @@ type Props = {
 export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const [allReservations, setAllReservations] = useState(reservations);
-  console.log(allReservations);
   const [currentDate, setCurrentDate] = useState<string>(dayjs());
   const [show, setShow] = useState(false);
   const onChangeDate = (Date) => {
@@ -128,7 +127,6 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                // console.log(date.dateString);
                 if (date) {
                   onPressDay(date.dateString);
                 }
@@ -198,15 +196,20 @@ const styles = StyleSheet.create({
     margin: 10,
   },
   buttonSelected: {
-    height: 23,
-    width: 23,
-    marginBottom: 17,
+    height: 34,
+    width: 34,
+    marginBottom: 6,
+    padding: 5,
+    paddingLeft: 4,
     backgroundColor: "#fff",
     borderRadius: "50%",
   },
   button: {
-    height: 20,
-    marginBottom: 20,
+    marginBottom: 6,
+    height: 34,
+    width: 34,
+    padding: 5,
+    paddingLeft: 4,
   },
   dayInput: {
     flex: 1,
