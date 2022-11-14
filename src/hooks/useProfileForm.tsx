@@ -26,7 +26,7 @@ type Hooks = {
   currentName: string;
   onChangeName: (text: string) => void;
   currentAge: number;
-  onChangeAge: (text: string) => void;
+  onChangeAge: (text: number) => void;
   currentKenNumber: string;
   onChangeKenNumber: (text: string) => void;
   currentBirthday: number;
