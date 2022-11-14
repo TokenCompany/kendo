@@ -95,7 +95,7 @@ export const useProfileForm = (): Hooks => {
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
   // useStateの初期値にnameを入れることで,端末に永続化された氏名をフォーム初期値にします
   const [currentName, setCurrentName] = useState<string>(name);
-  const [currentAge, setCurrentAge] = useState<string>(age);
+  let [currentAge, setCurrentAge] = useState<string>(age);
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
   const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
   const [currentPassedDate01, setCurrentPassedDate01] = useState<number>(passed01);

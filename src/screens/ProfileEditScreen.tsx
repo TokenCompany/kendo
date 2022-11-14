@@ -13,7 +13,7 @@ type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
 export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   // useProfileFormというカスタムフックにフォーム編集に関わるロジックを分離しています
-  const {
+  let {
     currentName,
     currentBirthday,
     currentAge,
@@ -147,6 +147,16 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     setShow16(false);
   };
 
+  // 誕生日から年齢算出
+  const calcAge = () => {
+    const dateTo = dayjs(currentBirthday.toString(), "YYYYMMDD");
+    const dateFrom = dayjs();
+    const baseAge = dateFrom.year() - dateTo.year();
+    const thisBirthday = dayjs(`${dateFrom.year()}-${dateTo.month() + 1}-${dateTo.date()}`);
+    const nowAge = Number(dateFrom.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
+    currentAge = nowAge;
+  };
+
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
@@ -175,6 +185,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
                   if (date) {
                     const birthday = Number(dayjs(date).format("YYYYMMDD"));
                     onChangeBirthday(birthday);
+                    calcAge();
                   }
                 }}
               />
@@ -188,6 +199,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         </View>
         <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
       </View>
+
       <LevelForm
         label="初段"
         visiblePassed={show01}
