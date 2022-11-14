@@ -186,13 +186,13 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
                     const birthday = Number(dayjs(date).format("YYYYMMDD"));
                     onChangeBirthday(birthday);
                     // 誕生日から年齢算出
-                    const dateTo = dayjs(currentBirthday.toString(), "YYYYMMDD");
-                    const dateFrom = dayjs();
-                    const baseAge = dateFrom.year() - dateTo.year();
+                    const dateBirthday = dayjs(currentBirthday.toString(), "YYYYMMDD");
+                    const dateToday = dayjs();
+                    const baseAge = dateToday.year() - dateBirthday.year();
                     const thisBirthday = dayjs(
-                      `${dateFrom.year()}-${dateTo.month() + 1}-${dateTo.date()}`,
+                      `${dateToday.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
                     );
-                    const nowAge = Number(dateFrom.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
+                    const nowAge = Number(dateToday.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
                     currentAge = nowAge;
                     onChangeAge(nowAge);
                   }
