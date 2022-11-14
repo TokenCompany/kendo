@@ -26,6 +26,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentPassedDate06,
     currentPassedDate07,
     currentPassedDate08,
+    currentPassedDate09,
+    currentPassedDate10,
     currentExamDate01,
     currentExamDate02,
     currentExamDate03,
@@ -34,6 +36,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentExamDate06,
     currentExamDate07,
     currentExamDate08,
+    currentExamDate09,
+    currentExamDate10,
     onChangeName,
     onChangeBirthday,
     onChangePassedDate01,
@@ -44,6 +48,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangePassedDate06,
     onChangePassedDate07,
     onChangePassedDate08,
+    onChangePassedDate09,
+    onChangePassedDate10,
     onChangeExamDate01,
     onChangeExamDate02,
     onChangeExamDate03,
@@ -52,6 +58,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeExamDate06,
     onChangeExamDate07,
     onChangeExamDate08,
+    onChangeExamDate09,
+    onChangeExamDate10,
     onChangeAge,
     onChangeKenNumber,
     onPressSave,
@@ -75,6 +83,10 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const [show14, setShow14] = useState<boolean>(false);
   const [show15, setShow15] = useState<boolean>(false);
   const [show16, setShow16] = useState<boolean>(false);
+  const [show17, setShow17] = useState<boolean>(false);
+  const [show18, setShow18] = useState<boolean>(false);
+  const [show19, setShow19] = useState<boolean>(false);
+  const [show20, setShow20] = useState<boolean>(false);
 
   const showDatepicker = () => {
     setShow(true);
@@ -127,6 +139,18 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const showDatepicker16 = () => {
     setShow16(true);
   };
+  const showDatepicker17 = () => {
+    setShow17(true);
+  };
+  const showDatepicker18 = () => {
+    setShow18(true);
+  };
+  const showDatepicker19 = () => {
+    setShow19(true);
+  };
+  const showDatepicker20 = () => {
+    setShow20(true);
+  };
   const onPressClose = () => {
     setShow(false);
     setShow01(false);
@@ -145,6 +169,10 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     setShow14(false);
     setShow15(false);
     setShow16(false);
+    setShow17(false);
+    setShow18(false);
+    setShow19(false);
+    setShow20(false);
   };
 
   // 年齢が14歳以上なら合格日審査日を入力できる
@@ -156,6 +184,10 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       setOpen(false);
     }
   });
+
+  // 練士、教士の表示
+  const [openRenshi, setOpenRenshi] = useState<boolean>(false);
+  const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -403,6 +435,62 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date2) {
                 const exam08 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate08(exam08);
+              }
+            }}
+            onPressClose={onPressClose}
+          />
+        </View>
+      )}
+      {openRenshi && (
+        <View>
+          <LevelForm
+            label="錬士"
+            visiblePassed={show17}
+            visibleExam={show18}
+            showDatepickerPassed={showDatepicker17}
+            showDatepickerExam={showDatepicker18}
+            currentPassedDateText={currentPassedDate09}
+            currentExamDateText={currentExamDate09}
+            passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
+            onChangePassed={(event, date1) => {
+              if (date1) {
+                const passed09 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate09(passed09);
+              }
+            }}
+            examDateValue={dayjs(currentExamDate09.toString(), "YYYYMMDD").toDate()}
+            onChangeExam={(event, date2) => {
+              if (date2) {
+                const exam09 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate09(exam09);
+              }
+            }}
+            onPressClose={onPressClose}
+          />
+        </View>
+      )}
+      {openKyoushi && (
+        <View>
+          <LevelForm
+            label="錬士"
+            visiblePassed={show19}
+            visibleExam={show20}
+            showDatepickerPassed={showDatepicker19}
+            showDatepickerExam={showDatepicker20}
+            currentPassedDateText={currentPassedDate10}
+            currentExamDateText={currentExamDate10}
+            passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
+            onChangePassed={(event, date1) => {
+              if (date1) {
+                const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate10(passed10);
+              }
+            }}
+            examDateValue={dayjs(currentExamDate10.toString(), "YYYYMMDD").toDate()}
+            onChangeExam={(event, date2) => {
+              if (date2) {
+                const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate10(exam10);
               }
             }}
             onPressClose={onPressClose}

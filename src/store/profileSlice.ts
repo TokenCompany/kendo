@@ -17,6 +17,8 @@ export interface ProfileState {
   passed06: number;
   passed07: number;
   passed08: number;
+  passed09: number;
+  passed10: number;
   exam01: number;
   exam02: number;
   exam03: number;
@@ -25,6 +27,8 @@ export interface ProfileState {
   exam06: number;
   exam07: number;
   exam08: number;
+  exam09: number;
+  exam10: number;
 }
 
 // デフォルトの値
@@ -41,6 +45,8 @@ const initialState: ProfileState = {
   passed06: 19900101,
   passed07: 19900101,
   passed08: 19900101,
+  passed09: 19900101,
+  passed10: 19900101,
   exam01: 19900101, // 審査日
   exam02: 19900101,
   exam03: 19900101,
@@ -49,6 +55,8 @@ const initialState: ProfileState = {
   exam06: 19900101,
   exam07: 19900101,
   exam08: 19900101,
+  exam09: 19900101,
+  exam10: 19900101,
 };
 
 export const counterSlice = createSlice({
@@ -92,6 +100,12 @@ export const counterSlice = createSlice({
     setPassed08: (state, action: PayloadAction<number>) => {
       state.passed08 = action.payload;
     },
+    setPassed09: (state, action: PayloadAction<number>) => {
+      state.passed09 = action.payload;
+    },
+    setPassed10: (state, action: PayloadAction<number>) => {
+      state.passed10 = action.payload;
+    },
     setExam01: (state, action: PayloadAction<number>) => {
       state.exam01 = action.payload;
     },
@@ -116,6 +130,12 @@ export const counterSlice = createSlice({
     setExam08: (state, action: PayloadAction<number>) => {
       state.exam08 = action.payload;
     },
+    setExam09: (state, action: PayloadAction<number>) => {
+      state.exam09 = action.payload;
+    },
+    setExam10: (state, action: PayloadAction<number>) => {
+      state.exam10 = action.payload;
+    },
   },
 });
 
@@ -132,6 +152,8 @@ export const { setPassed05 } = counterSlice.actions;
 export const { setPassed06 } = counterSlice.actions;
 export const { setPassed07 } = counterSlice.actions;
 export const { setPassed08 } = counterSlice.actions;
+export const { setPassed09 } = counterSlice.actions;
+export const { setPassed10 } = counterSlice.actions;
 export const { setExam01 } = counterSlice.actions;
 export const { setExam02 } = counterSlice.actions;
 export const { setExam03 } = counterSlice.actions;
@@ -140,5 +162,7 @@ export const { setExam05 } = counterSlice.actions;
 export const { setExam06 } = counterSlice.actions;
 export const { setExam07 } = counterSlice.actions;
 export const { setExam08 } = counterSlice.actions;
+export const { setExam09 } = counterSlice.actions;
+export const { setExam10 } = counterSlice.actions;
 
 export default counterSlice.reducer;

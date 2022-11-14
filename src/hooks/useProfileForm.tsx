@@ -13,6 +13,8 @@ import { setPassed05 } from "../store/profileSlice";
 import { setPassed06 } from "../store/profileSlice";
 import { setPassed07 } from "../store/profileSlice";
 import { setPassed08 } from "../store/profileSlice";
+import { setPassed09 } from "../store/profileSlice";
+import { setPassed10 } from "../store/profileSlice";
 import { setExam01 } from "../store/profileSlice";
 import { setExam02 } from "../store/profileSlice";
 import { setExam03 } from "../store/profileSlice";
@@ -21,6 +23,8 @@ import { setExam05 } from "../store/profileSlice";
 import { setExam06 } from "../store/profileSlice";
 import { setExam07 } from "../store/profileSlice";
 import { setExam08 } from "../store/profileSlice";
+import { setExam09 } from "../store/profileSlice";
+import { setExam10 } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -39,6 +43,8 @@ type Hooks = {
   currentPassedDate06: number;
   currentPassedDate07: number;
   currentPassedDate08: number;
+  currentPassedDate09: number;
+  currentPassedDate10: number;
   onChangePassedDate01: (passed01: number) => void;
   onChangePassedDate02: (passed02: number) => void;
   onChangePassedDate03: (passed03: number) => void;
@@ -47,6 +53,8 @@ type Hooks = {
   onChangePassedDate06: (passed06: number) => void;
   onChangePassedDate07: (passed07: number) => void;
   onChangePassedDate08: (passed08: number) => void;
+  onChangePassedDate09: (passed09: number) => void;
+  onChangePassedDate10: (passed10: number) => void;
   currentExamDate01: number;
   currentExamDate02: number;
   currentExamDate03: number;
@@ -55,6 +63,8 @@ type Hooks = {
   currentExamDate06: number;
   currentExamDate07: number;
   currentExamDate08: number;
+  currentExamDate09: number;
+  currentExamDate10: number;
   onChangeExamDate01: (exam01: number) => void;
   onChangeExamDate02: (exam02: number) => void;
   onChangeExamDate03: (exam03: number) => void;
@@ -63,6 +73,8 @@ type Hooks = {
   onChangeExamDate06: (exam06: number) => void;
   onChangeExamDate07: (exam07: number) => void;
   onChangeExamDate08: (exam08: number) => void;
+  onChangeExamDate09: (exam09: number) => void;
+  onChangeExamDate10: (exam10: number) => void;
   onPressSave: () => void;
 };
 
@@ -83,6 +95,8 @@ export const useProfileForm = (): Hooks => {
   const passed06 = useSelector((state: RootState) => state.profile.passed06);
   const passed07 = useSelector((state: RootState) => state.profile.passed07);
   const passed08 = useSelector((state: RootState) => state.profile.passed08);
+  const passed09 = useSelector((state: RootState) => state.profile.passed09);
+  const passed10 = useSelector((state: RootState) => state.profile.passed10);
   const exam01 = useSelector((state: RootState) => state.profile.exam01);
   const exam02 = useSelector((state: RootState) => state.profile.exam02);
   const exam03 = useSelector((state: RootState) => state.profile.exam03);
@@ -91,6 +105,8 @@ export const useProfileForm = (): Hooks => {
   const exam06 = useSelector((state: RootState) => state.profile.exam06);
   const exam07 = useSelector((state: RootState) => state.profile.exam07);
   const exam08 = useSelector((state: RootState) => state.profile.exam08);
+  const exam09 = useSelector((state: RootState) => state.profile.exam09);
+  const exam10 = useSelector((state: RootState) => state.profile.exam10);
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
   // useStateの初期値にnameを入れることで,端末に永続化された氏名をフォーム初期値にします
@@ -106,6 +122,8 @@ export const useProfileForm = (): Hooks => {
   const [currentPassedDate06, setCurrentPassedDate06] = useState<number>(passed06);
   const [currentPassedDate07, setCurrentPassedDate07] = useState<number>(passed07);
   const [currentPassedDate08, setCurrentPassedDate08] = useState<number>(passed08);
+  const [currentPassedDate09, setCurrentPassedDate09] = useState<number>(passed09);
+  const [currentPassedDate10, setCurrentPassedDate10] = useState<number>(passed10);
   const [currentExamDate01, setCurrentExamDate01] = useState<number>(exam01);
   const [currentExamDate02, setCurrentExamDate02] = useState<number>(exam02);
   const [currentExamDate03, setCurrentExamDate03] = useState<number>(exam03);
@@ -114,6 +132,8 @@ export const useProfileForm = (): Hooks => {
   const [currentExamDate06, setCurrentExamDate06] = useState<number>(exam06);
   const [currentExamDate07, setCurrentExamDate07] = useState<number>(exam07);
   const [currentExamDate08, setCurrentExamDate08] = useState<number>(exam08);
+  const [currentExamDate09, setCurrentExamDate09] = useState<number>(exam09);
+  const [currentExamDate10, setCurrentExamDate10] = useState<number>(exam10);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeName = (text: string) => {
@@ -152,12 +172,19 @@ export const useProfileForm = (): Hooks => {
   };
   const onChangePassedDate06 = (passed06: number) => {
     setCurrentPassedDate06(passed06);
+    setCurrentExamDate09(passed06 + 10000);
   };
   const onChangePassedDate07 = (passed07: number) => {
     setCurrentPassedDate07(passed07);
   };
   const onChangePassedDate08 = (passed08: number) => {
     setCurrentPassedDate08(passed08);
+  };
+  const onChangePassedDate09 = (passed09: number) => {
+    setCurrentPassedDate09(passed09);
+  };
+  const onChangePassedDate10 = (passed10: number) => {
+    setCurrentPassedDate10(passed10);
   };
   const onChangeExamDate01 = (exam01: number) => {
     setCurrentExamDate01(exam01);
@@ -183,6 +210,12 @@ export const useProfileForm = (): Hooks => {
   const onChangeExamDate08 = (exam08: number) => {
     setCurrentExamDate08(exam08);
   };
+  const onChangeExamDate09 = (exam09: number) => {
+    setCurrentExamDate09(exam09);
+  };
+  const onChangeExamDate10 = (exam10: number) => {
+    setCurrentExamDate10(exam10);
+  };
 
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
@@ -199,6 +232,8 @@ export const useProfileForm = (): Hooks => {
     dispatch(setPassed06(currentPassedDate06));
     dispatch(setPassed07(currentPassedDate07));
     dispatch(setPassed08(currentPassedDate08));
+    dispatch(setPassed09(currentPassedDate09));
+    dispatch(setPassed10(currentPassedDate10));
     dispatch(setExam01(currentExamDate01));
     dispatch(setExam02(currentExamDate02));
     dispatch(setExam03(currentExamDate03));
@@ -207,6 +242,8 @@ export const useProfileForm = (): Hooks => {
     dispatch(setExam06(currentExamDate06));
     dispatch(setExam07(currentExamDate07));
     dispatch(setExam08(currentExamDate08));
+    dispatch(setExam09(currentExamDate09));
+    dispatch(setExam10(currentExamDate10));
   };
 
   return {
@@ -222,6 +259,8 @@ export const useProfileForm = (): Hooks => {
     currentPassedDate06,
     currentPassedDate07,
     currentPassedDate08,
+    currentPassedDate09,
+    currentPassedDate10,
     currentExamDate01,
     currentExamDate02,
     currentExamDate03,
@@ -230,6 +269,8 @@ export const useProfileForm = (): Hooks => {
     currentExamDate06,
     currentExamDate07,
     currentExamDate08,
+    currentExamDate09,
+    currentExamDate10,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
@@ -242,6 +283,8 @@ export const useProfileForm = (): Hooks => {
     onChangePassedDate06,
     onChangePassedDate07,
     onChangePassedDate08,
+    onChangePassedDate09,
+    onChangePassedDate10,
     onChangeExamDate01,
     onChangeExamDate02,
     onChangeExamDate03,
@@ -250,6 +293,8 @@ export const useProfileForm = (): Hooks => {
     onChangeExamDate06,
     onChangeExamDate07,
     onChangeExamDate08,
+    onChangeExamDate09,
+    onChangeExamDate10,
     onPressSave,
   };
 };
