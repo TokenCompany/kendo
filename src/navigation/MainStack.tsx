@@ -45,7 +45,10 @@ export const MainStack: React.FC<Props> = () => {
       <Stack.Screen
         name="ResultEdit"
         component={ResultEditScreen}
-        options={{ title: "実績入力" }}
+        options={({ navigation }) => ({
+          title: "実績入力",
+          headerRight: () => renderMenuButton(navigation),
+        })}
       />
       <Stack.Screen
         name="TaskEdit"
