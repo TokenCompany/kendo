@@ -163,6 +163,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const showDatepicker22 = () => {
     setShow22(true);
   };
+
   const onPressClose = () => {
     setShow(false);
     setShow01(false);
@@ -202,6 +203,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   // 練士、教士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
   const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
+  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
@@ -413,6 +415,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
                 const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate06(passed06);
                 setOpenRenshi(true);
+                setOpenHanshi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
@@ -545,14 +548,14 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onChangePassed={(event, date1) => {
               if (date1) {
                 const passed11 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate10(passed11);
+                onChangePassedDate11(passed11);
               }
             }}
             examDateValue={dayjs(currentExamDate11.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
                 const exam11 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate10(exam11);
+                onChangeExamDate11(exam11);
               }
             }}
             onPressClose={onPressClose}
