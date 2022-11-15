@@ -202,7 +202,24 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
   // 練士、教士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
+  useEffect(() => {
+    if (currentPassedDate06 !== 19900000) {
+      setOpenRenshi(true);
+      setOpenHanshi(true);
+    } else {
+      setOpenRenshi(false);
+      setOpenHanshi(false);
+    }
+  });
   const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
+  useEffect(() => {
+    if (currentPassedDate07 !== 19900000) {
+      setOpenKyoushi(true);
+    } else {
+      setOpenKyoushi(false);
+    }
+  });
+
   const [openHanshi, setOpenHanshi] = useState<boolean>(false);
 
   // 日付表示変換
@@ -414,8 +431,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date1) {
                 const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate06(passed06);
-                setOpenRenshi(true);
-                setOpenHanshi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
@@ -440,7 +455,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date1) {
                 const passed07 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate07(passed07);
-                setOpenKyoushi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
@@ -509,7 +523,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       {openKyoushi && (
         <View>
           <LevelForm
-            label="錬士"
+            label="教士"
             visiblePassed={show19}
             visibleExam={show20}
             showDatepickerPassed={showDatepicker19}
