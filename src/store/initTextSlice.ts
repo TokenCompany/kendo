@@ -16,7 +16,6 @@ export const counterSlice = createSlice({
   reducers: {
     setInitText: (state, action: PayloadAction<string>) => {
       state.initText = action.payload;
-      // console.log(state);
     },
   },
 });
