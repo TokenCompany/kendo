@@ -123,7 +123,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
             <Text style={styles.profileText02}>
-              {profile.birthday ? profile.birthday : "生年月日が入ります"}
+              {profile.birthday !== 19900000 ? profile.birthday : "生年月日が入ります"}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
             <Text style={styles.profileText02}>{profile.age ? profile.age : "年齢が入ります"}</Text>
@@ -132,11 +132,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {profile.kenNumber ? profile.kenNumber : "全剣連番号が入ります"}
             </Text>
             <Text style={styles.profileText01}>課題</Text>
-            <Text style={styles.profileText02}>テキストテキストテキスト</Text>
+            <Text style={styles.profileText02}>
+              {profile.task ? profile.task : "課題が入ります"}
+            </Text>
           </View>
-          {profile.image ? (
+          {profile.profileImage ? (
             <Image
-              source={{ uri: "data:image/jpeg;base64," + profile.image }}
+              source={{ uri: "data:image/jpeg;base64," + profile.profileImage }}
               style={styles.profileImage}
             />
           ) : (
@@ -158,7 +160,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed01)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed01, profile.exam01)}
+              {profile.passed01 !== 19900000
+                ? renderPassedDate(profile.passed01, profile.exam01)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -167,7 +171,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed02)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed02, profile.exam02)}
+              {profile.passed02 !== 19900000
+                ? renderPassedDate(profile.passed02, profile.exam02)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -176,7 +182,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed03)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed03, profile.exam03)}
+              {profile.passed03 !== 19900000
+                ? renderPassedDate(profile.passed03, profile.exam03)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -185,7 +193,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed04)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed04, profile.exam04)}
+              {profile.passed04 !== 19900000
+                ? renderPassedDate(profile.passed04, profile.exam04)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -194,7 +204,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed05)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed05, profile.exam05)}
+              {profile.passed05 !== 19900000
+                ? renderPassedDate(profile.passed05, profile.exam05)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -203,7 +215,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed06)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed06, profile.exam06)}
+              {profile.passed06 !== 19900000
+                ? renderPassedDate(profile.passed06, profile.exam06)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -212,7 +226,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed07)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed07, profile.exam07)}
+              {profile.passed07 !== 19900000
+                ? renderPassedDate(profile.passed07, profile.exam07)
+                : "-"}
             </Text>
           </View>
           <View style={styles.tableRow}>
@@ -221,7 +237,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed08)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {renderPassedDate(profile.passed08, profile.exam08)}
+              {profile.passed08 !== 19900000
+                ? renderPassedDate(profile.passed08, profile.exam08)
+                : "-"}
             </Text>
           </View>
           {openRenshi && (
@@ -231,7 +249,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {renderPassedCheck(profile.passed09)}
               </Text>
               <Text style={[styles.tableData, styles.thirdColumn]}>
-                {renderPassedDate(profile.passed09, profile.exam09)}
+                {profile.passed09 !== 19900000
+                  ? renderPassedDate(profile.passed09, profile.exam09)
+                  : "-"}
               </Text>
             </View>
           )}
@@ -242,18 +262,25 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {renderPassedCheck(profile.passed10)}
               </Text>
               <Text style={[styles.tableData, styles.thirdColumn]}>
-                {renderPassedDate(profile.passed10, profile.exam10)}
+                {profile.passed10 !== 19900000
+                  ? renderPassedDate(profile.passed10, profile.exam10)
+                  : "-"}
               </Text>
             </View>
           )}
           {openHanshi && (
             <View style={styles.tableRow}>
               <Text style={[styles.tableData, styles.firstColumn]}>範士</Text>
-              <Text style={[styles.tableData, styles.secondColumn]}>-</Text>
-              <Text style={[styles.tableData, styles.thirdColumn]}>-</Text>
+              <Text style={[styles.tableData, styles.secondColumn]}>
+                {renderPassedCheck(profile.passed11)}
+              </Text>
+              <Text style={[styles.tableData, styles.thirdColumn]}>
+                {profile.passed11 !== 19900000
+                  ? renderPassedDate(profile.passed11, profile.exam11)
+                  : "-"}
+              </Text>
             </View>
           )}
-          {/* {renderCategory()} */}
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />
@@ -281,7 +308,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
   },
   buttonContainer: {
     marginBottom: 20,
@@ -289,15 +316,16 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
   },
   profileBody: {
     flexGrow: 1,
-    paddingRight: 20,
+    paddingLeft: 10,
   },
   profileImage: {
     width: 100,
     height: 100,
+    marginRight: 30,
   },
   profileText01: {
     marginBottom: 3,
@@ -329,6 +357,6 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   thirdColumn: {
-    width: "50%",
+    width: "55%",
   },
 });

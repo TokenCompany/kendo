@@ -32,6 +32,7 @@ export interface ProfileState {
   exam10: number;
   exam11: number;
   profileImage: string;
+  task: string;
 }
 
 // デフォルトの値
@@ -63,6 +64,7 @@ const initialState: ProfileState = {
   exam10: 19900000,
   exam11: 19900000,
   profileImage: "", // プロフィール画像
+  task: "", // 課題
 };
 
 export const counterSlice = createSlice({
@@ -147,10 +149,12 @@ export const counterSlice = createSlice({
     },
     setExam11: (state, action: PayloadAction<number>) => {
       state.exam11 = action.payload;
-
+    },
     setProfileImage: (state, action: PayloadAction<string>) => {
       state.profileImage = action.payload;
-      // console.log(state);
+    },
+    setTask: (state, action: PayloadAction<string>) => {
+      state.task = action.payload;
     },
   },
 });
@@ -183,4 +187,5 @@ export const { setExam09 } = counterSlice.actions;
 export const { setExam10 } = counterSlice.actions;
 export const { setExam11 } = counterSlice.actions;
 export const { setProfileImage } = counterSlice.actions;
+export const { setTask } = counterSlice.actions;
 export default counterSlice.reducer;

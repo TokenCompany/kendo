@@ -684,7 +684,6 @@ const styles = StyleSheet.create({
     width: 100,
     height: 100,
   },
-<<<<<<< HEAD
   label: {
     fontSize: 18,
     color: "#000",
@@ -698,10 +697,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     paddingVertical: 10,
     marginBottom: 10,
-=======
+  },
   profileImageImg: {
     width: 100,
     height: 100,
->>>>>>> feature/#54_ScheduleScreen
   },
 });

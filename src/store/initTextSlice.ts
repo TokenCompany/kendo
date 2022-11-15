@@ -11,7 +11,7 @@ const initialState: InitTextState = {
 };
 
 export const counterSlice = createSlice({
-  name: "profile",
+  name: "initText",
   initialState,
   reducers: {
     setInitText: (state, action: PayloadAction<string>) => {

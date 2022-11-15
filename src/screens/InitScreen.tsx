@@ -10,21 +10,16 @@ import { useSelector } from "react-redux";
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
 export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const profile = useSelector((state: RootState) => state.profile);
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
   });
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
-<<<<<<< HEAD
-    // setInterval(() => {
-    //   hiddenModal();
-    // }, 5000);
-=======
     setTimeout(() => {
       hiddenModal();
     }, 5000);
->>>>>>> feature/#54_ScheduleScreen
   };
 
   const hiddenModal = () => {
@@ -68,7 +63,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalLead}>{i18n.t("Modal.task")}</Text>
-              <Text style={styles.modalText}>-</Text>
+              <Text style={styles.modalText}>{profile.task ? profile.task : "-"}</Text>
               <Text style={styles.modalLead}>初段{i18n.t("Modal.stage")}</Text>
               <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
               <TouchableOpacity
