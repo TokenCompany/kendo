@@ -6,6 +6,7 @@ import { MainStackParamList } from "../types/navigation";
 import i18n from "../lang/localization";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
+import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
@@ -34,6 +35,64 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const initText = useSelector((state: RootState) => state.initText.initText);
   const splitText = initText.split("");
+
+  // 段数を表示
+  const renderLevel = () => {
+    if (profile.passed01 === 19900000) {
+      return <Text>初段</Text>;
+    } else if (profile.passed02 === 19900000) {
+      return <Text>弐段</Text>;
+    } else if (profile.passed03 === 19900000) {
+      return <Text>参段</Text>;
+    } else if (profile.passed04 === 19900000) {
+      return <Text>四段</Text>;
+    } else if (profile.passed05 === 19900000) {
+      return <Text>五段</Text>;
+    } else if (profile.passed06 === 19900000) {
+      return <Text>六段</Text>;
+    } else if (profile.passed07 === 19900000) {
+      return <Text>七段</Text>;
+    } else if (profile.passed08 === 19900000) {
+      return <Text>八段</Text>;
+    } else if (profile.passed09 === 19900000) {
+      return <Text>錬士</Text>;
+    } else if (profile.passed10 === 19900000) {
+      return <Text>教士</Text>;
+    }
+  };
+
+  // 審査日までの残り日数
+  let profileExam = () => {
+    if (profile.passed01 === 19900000) {
+      return profile.exam01;
+    } else if (profile.passed02 === 19900000) {
+      return profile.exam02;
+    } else if (profile.passed03 === 19900000) {
+      return profile.exam03;
+    } else if (profile.passed04 === 19900000) {
+      return profile.exam04;
+    } else if (profile.passed05 === 19900000) {
+      return profile.exam05;
+    } else if (profile.passed06 === 19900000) {
+      return profile.exam06;
+    } else if (profile.passed07 === 19900000) {
+      return profile.exam07;
+    } else if (profile.passed08 === 19900000) {
+      return profile.exam08;
+    } else if (profile.passed09 === 19900000) {
+      return profile.exam09;
+    } else if (profile.passed10 === 19900000) {
+      return profile.exam10;
+    }
+  };
+
+  const renderExamDate = (exam: number) => {
+    const examDate = exam;
+    const today = Number(dayjs().format("YYYYMMDD"));
+    let diffDate = (examDate - today) / 27.3972603;
+    let diffRoundDate = Math.round(diffDate);
+    return diffRoundDate;
+  };
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
@@ -64,8 +123,14 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
             <View style={styles.modalView}>
               <Text style={styles.modalLead}>{i18n.t("Modal.task")}</Text>
               <Text style={styles.modalText}>{profile.task ? profile.task : "-"}</Text>
-              <Text style={styles.modalLead}>初段{i18n.t("Modal.stage")}</Text>
-              <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
+              <Text style={styles.modalLead}>
+                {renderLevel()}
+                {i18n.t("Modal.stage")}
+              </Text>
+              <Text style={styles.modalText}>
+                {renderExamDate(profileExam())}
+                {i18n.t("Modal.day")}
+              </Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => onPressClose()}
