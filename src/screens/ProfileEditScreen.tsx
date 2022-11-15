@@ -189,6 +189,23 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
   const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
 
+  // 日付表示変換
+  const renderBirthdayText = (date) => {
+    let test = date.toString().split("");
+    let birthdayText = "";
+    test.forEach((element, index) => {
+      if (index == 4) {
+        birthdayText += "年";
+      } else if (index == 6) {
+        birthdayText += "月";
+      }
+      birthdayText += element;
+      if (index == test.length - 1) {
+        birthdayText += "日";
+      }
+    });
+    return birthdayText;
+  };
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
@@ -198,7 +215,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>誕生日設定</Text>
             </TouchableOpacity>
-            <Text style={styles.birthdayText}>{currentBirthday}</Text>
+            <Text style={styles.birthdayText}>{renderBirthdayText(currentBirthday)}</Text>
           </View>
           <Modal
             animationType="fade"
@@ -252,8 +269,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show02}
             showDatepickerPassed={showDatepicker01}
             showDatepickerExam={showDatepicker02}
-            currentPassedDateText={currentPassedDate01}
-            currentExamDateText={currentExamDate01}
+            currentPassedDateText={renderBirthdayText(currentPassedDate01)}
+            currentExamDateText={renderBirthdayText(currentExamDate01)}
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -277,8 +294,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show04}
             showDatepickerPassed={showDatepicker03}
             showDatepickerExam={showDatepicker04}
-            currentPassedDateText={currentPassedDate02}
-            currentExamDateText={currentExamDate02}
+            currentPassedDateText={renderBirthdayText(currentPassedDate02)}
+            currentExamDateText={renderBirthdayText(currentExamDate02)}
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -301,8 +318,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show06}
             showDatepickerPassed={showDatepicker05}
             showDatepickerExam={showDatepicker06}
-            currentPassedDateText={currentPassedDate03}
-            currentExamDateText={currentExamDate03}
+            currentPassedDateText={renderBirthdayText(currentPassedDate03)}
+            currentExamDateText={renderBirthdayText(currentExamDate03)}
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -325,8 +342,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show08}
             showDatepickerPassed={showDatepicker07}
             showDatepickerExam={showDatepicker08}
-            currentPassedDateText={currentPassedDate04}
-            currentExamDateText={currentExamDate04}
+            currentPassedDateText={renderBirthdayText(currentPassedDate04)}
+            currentExamDateText={renderBirthdayText(currentExamDate04)}
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -349,8 +366,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show10}
             showDatepickerPassed={showDatepicker09}
             showDatepickerExam={showDatepicker10}
-            currentPassedDateText={currentPassedDate05}
-            currentExamDateText={currentExamDate05}
+            currentPassedDateText={renderBirthdayText(currentPassedDate05)}
+            currentExamDateText={renderBirthdayText(currentExamDate05)}
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -373,8 +390,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show12}
             showDatepickerPassed={showDatepicker11}
             showDatepickerExam={showDatepicker12}
-            currentPassedDateText={currentPassedDate06}
-            currentExamDateText={currentExamDate06}
+            currentPassedDateText={renderBirthdayText(currentPassedDate06)}
+            currentExamDateText={renderBirthdayText(currentExamDate06)}
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -398,8 +415,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show14}
             showDatepickerPassed={showDatepicker13}
             showDatepickerExam={showDatepicker14}
-            currentPassedDateText={currentPassedDate07}
-            currentExamDateText={currentExamDate07}
+            currentPassedDateText={renderBirthdayText(currentPassedDate07)}
+            currentExamDateText={renderBirthdayText(currentExamDate07)}
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -423,8 +440,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show16}
             showDatepickerPassed={showDatepicker15}
             showDatepickerExam={showDatepicker16}
-            currentPassedDateText={currentPassedDate08}
-            currentExamDateText={currentExamDate08}
+            currentPassedDateText={renderBirthdayText(currentPassedDate08)}
+            currentExamDateText={renderBirthdayText(currentExamDate08)}
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -451,8 +468,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show18}
             showDatepickerPassed={showDatepicker17}
             showDatepickerExam={showDatepicker18}
-            currentPassedDateText={currentPassedDate09}
-            currentExamDateText={currentExamDate09}
+            currentPassedDateText={renderBirthdayText(currentPassedDate09)}
+            currentExamDateText={renderBirthdayText(currentExamDate09)}
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
@@ -479,8 +496,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show20}
             showDatepickerPassed={showDatepicker19}
             showDatepickerExam={showDatepicker20}
-            currentPassedDateText={currentPassedDate10}
-            currentExamDateText={currentExamDate10}
+            currentPassedDateText={renderBirthdayText(currentPassedDate10)}
+            currentExamDateText={renderBirthdayText(currentExamDate10)}
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
