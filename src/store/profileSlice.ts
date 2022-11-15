@@ -34,29 +34,29 @@ export interface ProfileState {
 // デフォルトの値
 const initialState: ProfileState = {
   name: "", // 氏名
-  birthday: 19900101, // 誕生日
+  birthday: 19900000, // 誕生日
   age: 0, // 年齢
   kenNumber: "", // 全剣連番号
-  passed01: 19900101, // 合格日
-  passed02: 19900101,
-  passed03: 19900101,
-  passed04: 19900101,
-  passed05: 19900101,
-  passed06: 19900101,
-  passed07: 19900101,
-  passed08: 19900101,
-  passed09: 19900101,
-  passed10: 19900101,
-  exam01: 19900101, // 審査日
-  exam02: 19900101,
-  exam03: 19900101,
-  exam04: 19900101,
-  exam05: 19900101,
-  exam06: 19900101,
-  exam07: 19900101,
-  exam08: 19900101,
-  exam09: 19900101,
-  exam10: 19900101,
+  passed01: 19900000, // 合格日
+  passed02: 19900000,
+  passed03: 19900000,
+  passed04: 19900000,
+  passed05: 19900000,
+  passed06: 19900000,
+  passed07: 19900000,
+  passed08: 19900000,
+  passed09: 19900000,
+  passed10: 19900000,
+  exam01: 19900000, // 審査日
+  exam02: 19900000,
+  exam03: 19900000,
+  exam04: 19900000,
+  exam05: 19900000,
+  exam06: 19900000,
+  exam07: 19900000,
+  exam08: 19900000,
+  exam09: 19900000,
+  exam10: 19900000,
 };
 
 export const counterSlice = createSlice({
