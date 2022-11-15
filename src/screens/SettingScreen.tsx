@@ -133,7 +133,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {profile.kenNumber ? profile.kenNumber : "全剣連番号が入ります"}
             </Text>
             <Text style={styles.profileText01}>課題</Text>
-            {profile.task ? <Text style={styles.profileText02}>{profile.task}</Text> : ""}
+            <Text style={styles.profileText02}>
+              {profile.task ? profile.task : "課題が入ります"}
+            </Text>
           </View>
           {profile.profileImage ? (
             <Image
@@ -307,7 +309,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
   },
   buttonContainer: {
     marginBottom: 20,
@@ -315,15 +317,16 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
   },
   profileBody: {
     flexGrow: 1,
-    paddingRight: 20,
+    paddingLeft: 10,
   },
   profileImage: {
     width: 100,
     height: 100,
+    marginRight: 30,
   },
   profileText01: {
     marginBottom: 3,
@@ -355,6 +358,6 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   thirdColumn: {
-    width: "50%",
+    width: "55%",
   },
 });
