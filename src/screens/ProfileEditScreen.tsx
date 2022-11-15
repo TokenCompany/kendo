@@ -28,6 +28,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentPassedDate08,
     currentPassedDate09,
     currentPassedDate10,
+    currentPassedDate11,
     currentExamDate01,
     currentExamDate02,
     currentExamDate03,
@@ -38,6 +39,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentExamDate08,
     currentExamDate09,
     currentExamDate10,
+    currentExamDate11,
     onChangeName,
     onChangeBirthday,
     onChangePassedDate01,
@@ -50,6 +52,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangePassedDate08,
     onChangePassedDate09,
     onChangePassedDate10,
+    onChangePassedDate11,
     onChangeExamDate01,
     onChangeExamDate02,
     onChangeExamDate03,
@@ -60,6 +63,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeExamDate08,
     onChangeExamDate09,
     onChangeExamDate10,
+    onChangeExamDate11,
     onChangeAge,
     onChangeKenNumber,
     onPressSave,
@@ -87,6 +91,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const [show18, setShow18] = useState<boolean>(false);
   const [show19, setShow19] = useState<boolean>(false);
   const [show20, setShow20] = useState<boolean>(false);
+  const [show21, setShow21] = useState<boolean>(false);
+  const [show22, setShow22] = useState<boolean>(false);
 
   const showDatepicker = () => {
     setShow(true);
@@ -151,6 +157,12 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   const showDatepicker20 = () => {
     setShow20(true);
   };
+  const showDatepicker21 = () => {
+    setShow21(true);
+  };
+  const showDatepicker22 = () => {
+    setShow22(true);
+  };
   const onPressClose = () => {
     setShow(false);
     setShow01(false);
@@ -173,6 +185,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     setShow18(false);
     setShow19(false);
     setShow20(false);
+    setShow21(false);
+    setShow22(false);
   };
 
   // 年齢が14歳以上なら合格日審査日を入力できる
@@ -511,6 +525,34 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date2) {
                 const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate10(exam10);
+              }
+            }}
+            onPressClose={onPressClose}
+          />
+        </View>
+      )}
+      {openHanshi && (
+        <View>
+          <LevelForm
+            label="範士"
+            visiblePassed={show21}
+            visibleExam={show22}
+            showDatepickerPassed={showDatepicker21}
+            showDatepickerExam={showDatepicker22}
+            currentPassedDateText={renderChangeText(currentPassedDate11)}
+            currentExamDateText={renderChangeText(currentExamDate11)}
+            passedDateValue={dayjs(currentPassedDate11.toString(), "YYYYMMDD").toDate()}
+            onChangePassed={(event, date1) => {
+              if (date1) {
+                const passed11 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate10(passed11);
+              }
+            }}
+            examDateValue={dayjs(currentExamDate11.toString(), "YYYYMMDD").toDate()}
+            onChangeExam={(event, date2) => {
+              if (date2) {
+                const exam11 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate10(exam11);
               }
             }}
             onPressClose={onPressClose}
