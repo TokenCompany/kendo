@@ -122,7 +122,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
             <Text style={styles.profileText02}>
-              {profile.birthday !== 19900000 ? profile.birthday : "生年月日が入ります"}
+              {profile.birthday !== 19900000
+                ? renderChangeText(profile.birthday)
+                : "生年月日が入ります"}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
             <Text style={styles.profileText02}>{profile.age ? profile.age : "年齢が入ります"}</Text>
