@@ -21,7 +21,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   // reduxからデータの取得
   const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
-  console.log(subCategoryData);
+  // console.log(subCategoryData);
   
   // reduxのデータにtimesのキー名追加
   let initSubCategory = [...subCategoryData.teacherSubCategories];
@@ -36,10 +36,20 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [show, setShow] = useState(false);
   const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
-  const onChangeCountByTeacher = (count:number, index:number) => {
-    const newCurrentTargets = [...currentTargets];
-    newCurrentTargets[index].times = count;
-    setCurrentTargets(newCurrentTargets)
+  const onChangeCountByTeacher = (count:number, id:string) => {
+    let newCurrentTargets = [];
+    for (const target of currentTargets) {
+      if (target.id === id) {
+        newCurrentTargets.push({
+          ...target,
+          times: count
+        })
+      }else{
+        newCurrentTargets.push(target);
+      }
+    }
+    setCurrentTargets(newCurrentTargets);
+    sumAllYearGoal();
   }
 
   const onPressPlace = () => {
@@ -92,10 +102,13 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressTarget = () => {
     showTargetSetting();
   };
-
+  let sum = 0;
   // 合計数を出すための関数
-  const sumAllYearGoal = (num: string) => {
-    // setCurrentYearGoal(text);
+  const sumAllYearGoal = () => {
+    currentTargets.forEach((target) => {
+      sum += target.times;
+    });
+    setCurrentYearGoal(sum);
   };
 
   const showTargetSetting = () => {
@@ -103,14 +116,14 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const onPressTargetSubmit = () => {
-    if (Number(currentYearGoal) > 365) {
-       // アラートの記述追加
-       Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
-        {text: "戻る",}
-      ]);
-    }else{
-      console.log(currentTargets);
-    }
+      if (currentYearGoal > 365) {
+        // アラートの記述追加
+        Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
+         {text: "戻る",}
+       ]);
+      }else{
+        // console.log(currentTargets);
+      }
   }
   
   return (
@@ -134,7 +147,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           />
 
           {show && (
-            <KeyboardAvoidingView  behavior="padding">
+            <KeyboardAvoidingView>
               <View style={styles.objectiveContainer}>
                 <Text style={styles.objectiveLabel}>年間稽古目標</Text>
                 <View style={styles.objectiveInputArea}>
@@ -150,7 +163,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                         style={styles.objectiveInput}
                         keyboardType="numeric"
                         onChangeText={(count)=>{
-                          onChangeCountByTeacher(Number(count),index);
+                          onChangeCountByTeacher(Number(count),currentTarget.id);
                         }}
                         // value={currentTarget[index].times}
                         key={index}
@@ -190,7 +203,7 @@ const styles = StyleSheet.create({
   },
   objectiveContainer: {
     marginTop: 30,
-    marginBottom: 20,
+    marginBottom: 200,
     // flex:3,
     // paddingRight: 60,
   },

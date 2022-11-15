@@ -67,7 +67,7 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      const newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
+      let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
         id: action.payload.id,
         text: action.payload.text,
       }]
