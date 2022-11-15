@@ -195,8 +195,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             }}
             text02="削除"
           />
-          {console.log(allReservations)}
-          {console.log(selectedDate)}
         </View>
       ) : (
         ""

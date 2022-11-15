@@ -12,7 +12,6 @@ type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const profile = useSelector((state: RootState) => state.profile);
-  console.log(profile);
 
   const onPressTask = () => {
     navigation.navigate("TaskEdit");
