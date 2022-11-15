@@ -27,6 +27,8 @@ import { setExam08 } from "../store/profileSlice";
 import { setExam09 } from "../store/profileSlice";
 import { setExam10 } from "../store/profileSlice";
 import { setExam11 } from "../store/profileSlice";
+import { setProfileImage } from "../store/profileSlice";
+import { setTask } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -82,6 +84,12 @@ type Hooks = {
   onChangeExamDate10: (exam10: number) => void;
   onChangeExamDate11: (exam10: number) => void;
   onPressSave: () => void;
+  onPressSaveTask: () => void;
+  onPressDeleteTask: () => void;
+  currentImage: string;
+  onChangeImage: (text: string) => void;
+  currentTask: string;
+  onChangeTask: (text: string) => void;
 };
 
 export const useProfileForm = (): Hooks => {
@@ -115,6 +123,9 @@ export const useProfileForm = (): Hooks => {
   const exam09 = useSelector((state: RootState) => state.profile.exam09);
   const exam10 = useSelector((state: RootState) => state.profile.exam10);
   const exam11 = useSelector((state: RootState) => state.profile.exam11);
+  const image = useSelector((state: RootState) => state.profile.profileImage);
+  const task = useSelector((state: RootState) => state.profile.task);
+  // currentNameは編集中の一時的な氏名です
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
   // useStateの初期値にnameを入れることで,端末に永続化された氏名をフォーム初期値にします
@@ -144,6 +155,8 @@ export const useProfileForm = (): Hooks => {
   const [currentExamDate09, setCurrentExamDate09] = useState<number>(exam09);
   const [currentExamDate10, setCurrentExamDate10] = useState<number>(exam10);
   const [currentExamDate11, setCurrentExamDate11] = useState<number>(exam11);
+  const [currentImage, setCurrentImage] = useState<string>(image);
+  const [currentTask, setCurrentTask] = useState<string>(task);
 
   // フォームの文字が変更されたときに呼ばれます
   const onChangeName = (text: string) => {
@@ -234,6 +247,14 @@ export const useProfileForm = (): Hooks => {
     setCurrentExamDate11(exam11);
   };
 
+  const onChangeImage = (text: string) => {
+    setCurrentImage(text);
+  };
+
+  const onChangeTask = (text: string) => {
+    setCurrentTask(text);
+  };
+
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
   const onPressSave = () => {
@@ -263,6 +284,16 @@ export const useProfileForm = (): Hooks => {
     dispatch(setExam09(currentExamDate09));
     dispatch(setExam10(currentExamDate10));
     dispatch(setExam11(currentExamDate11));
+    dispatch(setProfileImage(currentImage));
+  };
+
+  const onPressSaveTask = () => {
+    dispatch(setTask(currentTask));
+    console.log("a");
+  };
+
+  const onPressDeleteTask = () => {
+    dispatch(setTask(""));
   };
 
   return {
@@ -292,6 +323,8 @@ export const useProfileForm = (): Hooks => {
     currentExamDate09,
     currentExamDate10,
     currentExamDate11,
+    currentImage,
+    currentTask,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
@@ -319,5 +352,9 @@ export const useProfileForm = (): Hooks => {
     onChangeExamDate10,
     onChangeExamDate11,
     onPressSave,
+    onPressSaveTask,
+    onPressDeleteTask,
+    onChangeImage,
+    onChangeTask,
   };
 };

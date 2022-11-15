@@ -7,7 +7,7 @@ import { Button } from "../components/Button";
 import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
 import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
-import { KeikoTeacherInput } from "../components/KeikoTeacherInput";
+import { KeikoKakariInput } from "../components/KeikoKakariInput";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
@@ -24,8 +24,9 @@ export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
       <KeikoTrainingInput textTraining="素振り" textTrainingUnit="本" />
       <KeikoTrainingInput textTraining="足さばき" textTrainingUnit="分" />
       <KeikoTrainingInput textTraining="基本打ち" textTrainingUnit="本" />
-      <KeikoTrainingInput textTraining="地稽古" textTrainingUnit="本" />
-      <KeikoTeacherInput textTeacher="先生との稽古" />
+      <KeikoTrainingInput textTraining="先生との稽古" textTrainingUnit="分" />
+      <KeikoKakariInput textTeacher="地稽古" />
+      <KeikoKakariInput textTeacher="掛稽古" />
       <View style={styles.buttonContainer}>
         <Button text="稽古実績登録" onPress={onPressSave} />
       </View>

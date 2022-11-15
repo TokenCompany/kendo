@@ -18,30 +18,37 @@ export interface ReservationState {
 // これはからオブジェクトでOKです
 const initialState: ReservationState = {};
 
+type BookReservationItemPayload = {
+  date: string;
+  startTime: string;
+  endTime: string;
+  place: string;
+};
+type DeleteReservationItemPayload = {
+  date: string;
+};
+
 export const counterSlice = createSlice({
   name: "reservation",
   initialState,
   reducers: {
-    // 予約情報を新規追加するアクションです
-    addReservationItem: (state, action: PayloadAction<ReservationState>) => {
-      state = action.payload;
-    },
-    // 予約情報を更新するアクションです
-    updateReservationItem: (state, action: PayloadAction<ReservationItem>) => {
-      state.startTime = action.payload;
-      state.endTime = action.payload;
-      state.place = action.payload;
+    // 予約情報を新規追加(更新)するアクションです
+    bookReservationItem: (state, action: PayloadAction<BookReservationItemPayload>) => {
+      state[action.payload.date] = {
+        startTime: action.payload.startTime,
+        endTime: action.payload.endTime,
+        place: action.payload.place,
+      };
     },
     // 予約情報を削除するアクションです
-    deleteReservationItem: (state, action: PayloadAction<ReservationItem>) => {
-      state = {};
+    deleteReservationItem: (state, action: PayloadAction<DeleteReservationItemPayload>) => {
+      delete state[action.payload.date];
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { addReservationItem } = counterSlice.actions;
-export const { updateReservationItem } = counterSlice.actions;
+export const { bookReservationItem } = counterSlice.actions;
 export const { deleteReservationItem } = counterSlice.actions;
 
 export default counterSlice.reducer;
