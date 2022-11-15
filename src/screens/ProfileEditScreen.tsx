@@ -9,6 +9,7 @@ import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
+import profileSlice from "../store/profileSlice";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
@@ -205,7 +206,23 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
   // 練士、教士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
+  useEffect(() => {
+    if (currentPassedDate06 !== 19900000) {
+      setOpenRenshi(true);
+      setOpenHanshi(true);
+    } else {
+      setOpenRenshi(false);
+      setOpenHanshi(false);
+    }
+  });
   const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
+  useEffect(() => {
+    if (currentPassedDate07 !== 19900000) {
+      setOpenKyoushi(true);
+    } else {
+      setOpenKyoushi(false);
+    }
+  });
   const [openHanshi, setOpenHanshi] = useState<boolean>(false);
 
   // 日付表示変換
@@ -542,7 +559,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       {openKyoushi && (
         <View>
           <LevelForm
-            label="錬士"
+            label="教士"
             visiblePassed={show19}
             visibleExam={show20}
             showDatepickerPassed={showDatepicker19}

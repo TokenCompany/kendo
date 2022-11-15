@@ -160,7 +160,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed01)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed01 !== 19900000
+              {profile.exam01 !== 19900000
                 ? renderPassedDate(profile.passed01, profile.exam01)
                 : "-"}
             </Text>
@@ -171,7 +171,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed02)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed02 !== 19900000
+              {profile.exam02 !== 19900000
                 ? renderPassedDate(profile.passed02, profile.exam02)
                 : "-"}
             </Text>
@@ -182,7 +182,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed03)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed03 !== 19900000
+              {profile.exam03 !== 19900000
                 ? renderPassedDate(profile.passed03, profile.exam03)
                 : "-"}
             </Text>
@@ -193,7 +193,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed04)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed04 !== 19900000
+              {profile.exam04 !== 19900000
                 ? renderPassedDate(profile.passed04, profile.exam04)
                 : "-"}
             </Text>
@@ -204,7 +204,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed05)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed05 !== 19900000
+              {profile.exam05 !== 19900000
                 ? renderPassedDate(profile.passed05, profile.exam05)
                 : "-"}
             </Text>
@@ -215,7 +215,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed06)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed06 !== 19900000
+              {profile.exam06 !== 19900000
                 ? renderPassedDate(profile.passed06, profile.exam06)
                 : "-"}
             </Text>
@@ -226,7 +226,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed07)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed07 !== 19900000
+              {profile.exam07 !== 19900000
                 ? renderPassedDate(profile.passed07, profile.exam07)
                 : "-"}
             </Text>
@@ -237,7 +237,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
               {renderPassedCheck(profile.passed08)}
             </Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.passed08 !== 19900000
+              {profile.exam08 !== 19900000
                 ? renderPassedDate(profile.passed08, profile.exam08)
                 : "-"}
             </Text>
@@ -249,7 +249,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {renderPassedCheck(profile.passed09)}
               </Text>
               <Text style={[styles.tableData, styles.thirdColumn]}>
-                {profile.passed09 !== 19900000
+                {profile.exam09 !== 19900000
                   ? renderPassedDate(profile.passed09, profile.exam09)
                   : "-"}
               </Text>
@@ -262,7 +262,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {renderPassedCheck(profile.passed10)}
               </Text>
               <Text style={[styles.tableData, styles.thirdColumn]}>
-                {profile.passed10 !== 19900000
+                {profile.exam10 !== 19900000
                   ? renderPassedDate(profile.passed10, profile.exam10)
                   : "-"}
               </Text>
@@ -275,7 +275,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {renderPassedCheck(profile.passed11)}
               </Text>
               <Text style={[styles.tableData, styles.thirdColumn]}>
-                {profile.passed11 !== 19900000
+                {profile.exam11 !== 19900000
                   ? renderPassedDate(profile.passed11, profile.exam11)
                   : "-"}
               </Text>
