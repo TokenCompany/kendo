@@ -21,6 +21,8 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   // reduxからデータの取得
   const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
+  console.log(subCategoryData);
+  
   // reduxのデータにtimesのキー名追加
   let initSubCategory = [...subCategoryData.teacherSubCategories];
   initSubCategory.forEach((element)=>{

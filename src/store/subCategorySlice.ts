@@ -67,10 +67,11 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      state[action.payload.mainCategoryName as keyof SubCategoryState].push({
+      const newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
         id: action.payload.id,
         text: action.payload.text,
-      });
+      }]
+      state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
     },
     deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
