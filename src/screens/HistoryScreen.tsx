@@ -33,7 +33,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
         <TextButton
           text01={i18n.t("History.input")}
           text02={i18n.t("History.ncw")}
-          onPress={onPress}
+          onPress01={onPress}
         />
       </View>
     </ScrollView>

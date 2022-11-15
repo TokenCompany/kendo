@@ -12,12 +12,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
 
   return (
     <View style={styles.inputWrap}>
-      <Checkbox
-        status={checked ? "checked" : "unchecked"}
-        onPress={() => {
-          setChecked(!checked);
-        }}
-      />
+      <View style={styles.check}>
+        <Checkbox
+          status={checked ? "checked" : "unchecked"}
+          onPress={() => {
+            setChecked(!checked);
+          }}
+        />
+      </View>
+
       <View style={styles.inputArea}>
         <Text style={styles.label}>{textTraining}</Text>
         {!!checked && (
@@ -54,7 +57,15 @@ const styles = StyleSheet.create({
     margin: 10,
     flexDirection: "row",
   },
-
+  check: {
+    justifyContent: "center",
+    alignItems: "center",
+    height: 35,
+    width: 35,
+    marginRight: 10,
+    borderColor: "#aaa",
+    borderWidth: 1,
+  },
   inputArea: {
     flex: 1,
     marginTop: 6,

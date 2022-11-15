@@ -1,8 +1,9 @@
-import React from "react";
-import { View, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
+import { useSubCategory } from "../hooks/useSubCategory";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -28,13 +29,10 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       subCategoryType: "beat",
     });
   };
-  // const onPressResponse = () => {
-  //   navigation.navigate("SubCategory", {
-  //     subCategoryType: "response",
-  //   });
-  // };
   const onPressResponse = () => {
-    navigation.navigate("SubCategory");
+    navigation.navigate("SubCategory", {
+      subCategoryType: "response",
+    });
   };
   const onPressJigeiko = () => {
     navigation.navigate("SubCategory", {
@@ -52,15 +50,21 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
   };
   const onPressTarget = () => {
-    navigation.navigate("SubCategory", {
-      subCategoryType: "target",
-    });
+    showTargetSetting();
   };
 
+  const [show, setShow] = useState(false);
+  const [currentText, setCurrentText] = useState<string>("");
+  const onChangeText = (text: string) => {
+    setCurrentText(text);
+  };
+  const showTargetSetting = () => {
+    setShow(true);
+  };
   return (
     <View style={styles.container}>
       <View style={styles.buttonContainer}>
-        <MajorItem text="練習場所" onPress={onPressPlace} />
+        <MajorItem text="稽古場所" onPress={onPressPlace} />
         <MajorItem text="素振り" onPress={onPressSwing} />
         <MajorItem text="足さばき" onPress={onPressFootwork} />
         <MajorItem text="基本打ち" onPress={onPressBeat} />
@@ -69,6 +73,52 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         <MajorItem text="先生との稽古" onPress={onPressTeacher} />
         <MajorItem text="掛稽古" onPress={onPressKakari} />
         <MajorItem text="年間稽古目標" onPress={onPressTarget} />
+
+        {show && (
+          <View style={styles.objectiveContainer}>
+            <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>合計</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>〇〇〇 先生</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+            <View style={styles.objectiveInputArea}>
+              <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
+              <TextInput
+                style={styles.objectiveInput}
+                keyboardType="numeric"
+                onChangeText={onChangeText}
+                // value={objectiveNum}
+              ></TextInput>
+              <Text style={styles.objectiveText}>回</Text>
+            </View>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -86,5 +136,31 @@ const styles = StyleSheet.create({
   buttonContainer: {
     alignItems: "center",
     marginBottom: 50,
+  },
+  objectiveContainer: {
+    marginTop: 30,
+    marginBottom: 20,
+    paddingRight: 60,
+  },
+  objectiveLabel: {
+    fontSize: 18,
+    color: "#000",
+  },
+  objectiveInputArea: {
+    marginTop: 10,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  objectiveInput: {
+    width: 100,
+    height: 40,
+    marginHorizontal: 10,
+    fontSize: 18,
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#aaa",
+  },
+  objectiveText: {
+    fontSize: 18,
   },
 });

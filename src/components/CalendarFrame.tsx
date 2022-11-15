@@ -1,17 +1,85 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { View, StyleSheet, Text, TouchableOpacity } from "react-native";
-import type { NativeStackScreenProps } from "@react-navigation/native-stack";
-import { MainStackParamList } from "../types/navigation";
+import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
 import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
+import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
+import { RootState } from "../store";
+import { useSelector, useDispatch } from "react-redux";
+type Props = {
+  onPressDay: (day: string) => void;
+};
 
-type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
+export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
+  const reservations = useSelector((state: RootState) => state.reservation);
+  const [allReservations, setAllReservations] = useState(reservations);
+  const [currentDate, setCurrentDate] = useState<string>(dayjs());
+  const [show, setShow] = useState(false);
+  const onChangeDate = (Date) => {
+    setCurrentDate(Date);
+  };
+  const showDatepicker = () => {
+    setShow(true);
+  };
 
-export const CalendarFrame: React.FC<Props> = ({}: Props) => {
-  const [currentDate, setCurrentDate] = useState(dayjs());
+  const hideDatePicker = () => {
+    setShow(false);
+  };
+  const onPressArrowLeft = () => {
+    setCurrentDate(currentDate.add(-1, "month"));
+  };
+  const onPressArrowRight = () => {
+    setCurrentDate(currentDate.add(1, "month"));
+  };
+
+  class CalendarHeader extends React.PureComponent {
+    render() {
+      return (
+        <View>
+          <View style={styles.dayInput}>
+            <TouchableOpacity onPress={onPressArrowLeft}>
+              <Text>＜</Text>
+            </TouchableOpacity>
+            <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
+              <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={onPressArrowRight}>
+              <Text>＞</Text>
+            </TouchableOpacity>
+          </View>
+          <Modal
+            animationType="fade"
+            visible={show}
+            transparent={true}
+            onRequestClose={() => {
+              setShow(false);
+            }}
+          >
+            <View style={styles.modalView}>
+              <DateTimePicker
+                value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
+                mode="date"
+                display={"spinner"}
+                onChange={(event, date) => {
+                  if (date) {
+                    const Date = Number(dayjs(date).format("YYYYMMDD"));
+                    onChangeDate(Date);
+                  }
+                }}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
+      );
+    }
+  }
+
   return (
     <View style={styles.container}>
       <Calendar
+        // customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",
@@ -57,7 +125,14 @@ export const CalendarFrame: React.FC<Props> = ({}: Props) => {
         }}
         dayComponent={({ date }) => {
           return (
-            <TouchableOpacity onPress={() => {}} style={styles.button}>
+            <TouchableOpacity
+              onPress={() => {
+                if (date) {
+                  onPressDay(date.dateString);
+                }
+              }}
+              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
+            >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
           );
@@ -120,7 +195,75 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
   },
+  buttonSelected: {
+    height: 34,
+    width: 34,
+    marginBottom: 6,
+    padding: 5,
+    paddingLeft: 4,
+    backgroundColor: "#fff",
+    borderRadius: "50%",
+  },
   button: {
+    marginBottom: 6,
+    height: 34,
+    width: 34,
+    padding: 5,
+    paddingLeft: 4,
+  },
+  dayInput: {
+    flex: 1,
+    flexDirection: "row",
+    marginTop: 10,
+    marginBottom: 30,
+    height: 25,
+    borderColor: "#aaa",
+    color: "#000",
+    fontWeight: "600",
+    fontSize: 20,
+  },
+  dateButton: {
+    height: 40,
+    backgroundColor: "#a53010",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#fff",
+  },
+  modalView: {
+    position: "relative",
+    top: "40%",
+    backgroundColor: "#fff",
+    paddingVertical: 20,
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 7,
+    width: 50,
+    elevation: 2,
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  textStyle: {
+    fontSize: 26,
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  dayText: {
+    fontSize: 18,
+    flex: 1,
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#aaa",
+    paddingLeft: 5,
+    paddingRight: 120,
+    marginLeft: 10,
     height: 40,
   },
 });

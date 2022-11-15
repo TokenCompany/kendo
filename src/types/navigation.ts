@@ -8,8 +8,9 @@ export type MainStackParamList = {
   Setting: undefined;
   Statistics: undefined;
   TaskEdit: undefined;
+  InitEdit: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
-  SubCategory: undefined;
+  SubCategory: { subCategoryType: string };
   ResultEdit: undefined;
 };

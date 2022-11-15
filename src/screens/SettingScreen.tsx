@@ -12,12 +12,13 @@ type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const profile = useSelector((state: RootState) => state.profile);
+  console.log(profile);
 
   const onPressTask = () => {
     navigation.navigate("TaskEdit");
   };
   const onPressInitial = () => {
-    navigation.navigate("TrainingEdit");
+    navigation.navigate("InitEdit");
   };
   const onPressProfile = () => {
     navigation.navigate("ProfileEdit");
@@ -117,15 +118,33 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
         <View style={styles.profileContainer}>
           <View style={styles.profileBody}>
             <Text style={styles.profileText01}>{i18n.t("Setting.name")}</Text>
-            <Text style={styles.profileText02}>{profile.name}</Text>
+            <Text style={styles.profileText02}>
+              {profile.name ? profile.name : "名前が入ります"}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
-            <Text style={styles.profileText02}>{renderChangeText(profile.birthday)}</Text>
+            <Text style={styles.profileText02}>
+              {profile.birthday ? profile.birthday : "生年月日が入ります"}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
-            <Text style={styles.profileText02}>{profile.age}</Text>
+            <Text style={styles.profileText02}>{profile.age ? profile.age : "年齢が入ります"}</Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
-            <Text style={styles.profileText02}>{profile.kenNumber}</Text>
+            <Text style={styles.profileText02}>
+              {profile.kenNumber ? profile.kenNumber : "全剣連番号が入ります"}
+            </Text>
+            <Text style={styles.profileText01}>課題</Text>
+            <Text style={styles.profileText02}>テキストテキストテキスト</Text>
           </View>
-          <Image style={styles.profileImage} source={require("../../assets/images/profile.png")} />
+          {profile.image ? (
+            <Image
+              source={{ uri: "data:image/jpeg;base64," + profile.image }}
+              style={styles.profileImage}
+            />
+          ) : (
+            <Image
+              style={styles.profileImage}
+              source={require("../../assets/images/profile.png")}
+            />
+          )}
         </View>
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>

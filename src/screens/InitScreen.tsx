@@ -1,9 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } from "react-native";
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import i18n from "../lang/localization";
+import { RootState } from "../store";
+import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
@@ -14,45 +16,41 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
+<<<<<<< HEAD
     // setInterval(() => {
     //   hiddenModal();
     // }, 5000);
+=======
+    setTimeout(() => {
+      hiddenModal();
+    }, 5000);
+>>>>>>> feature/#54_ScheduleScreen
   };
 
   const hiddenModal = () => {
-    setModalVisible(!modalVisible);
+    setModalVisible(false);
     navigation.navigate("Menu");
   };
 
-  const onPressMenu = () => {
-    setModalVisible(!modalVisible);
+  const onPressClose = () => {
+    setModalVisible(false);
     navigation.navigate("Menu");
   };
 
-  // const modalHiddenTimer = () => {
-  //   const [count, setCount] = useState(0);
-
-  //   useEffect(() => {
-  //     const time = setInterval(() => {
-  //       setCount((prevCount) => prevCount + 1);
-  //     }, 1000);
-  //     return () => clearInterval(time);
-  //   }, []);
-
-  //   if (count === 5) {
-  //     hiddenModal();
-  //   }
-  // };
+  const initText = useSelector((state: RootState) => state.initText.initText);
+  const splitText = initText.split("");
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
         <View>
-          <Text style={styles.text}>八</Text>
-          <Text style={styles.text}>段</Text>
-          <Text style={styles.text}>へ</Text>
-          <Text style={styles.text}>の</Text>
-          <Text style={styles.text}>道</Text>
+          {splitText.map((data) => {
+            return (
+              <Text key={data} style={styles.text}>
+                {data}
+              </Text>
+            );
+          })}
         </View>
       ) : (
         <ActivityIndicator size={"large"} />
@@ -75,7 +73,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
               <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
-                onPress={() => onPressMenu()}
+                onPress={() => onPressClose()}
               >
                 <Text style={styles.textStyle}>×</Text>
               </TouchableOpacity>

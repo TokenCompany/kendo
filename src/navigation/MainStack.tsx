@@ -10,6 +10,7 @@ import { ResultEditScreen } from "../screens/ResultEditScreen";
 import { SettingScreen } from "../screens/SettingScreen";
 import { StatisticsScreen } from "../screens/StatisticsScreen";
 import { TaskEditScreen } from "../screens/TaskEditScreen";
+import { InitEditScreen } from "../screens/InitEditScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
 import { SubCategoryScreen } from "../screens/SubCategoryScreen";
@@ -55,6 +56,14 @@ export const MainStack: React.FC<Props> = () => {
         })}
       />
       <Stack.Screen
+        name="InitEdit"
+        component={InitEditScreen}
+        options={({ navigation }) => ({
+          headerTitle: "初期画面設定",
+          headerRight: () => renderMenuButton(navigation),
+        })}
+      />
+      <Stack.Screen
         name="ProfileEdit"
         component={ProfileEditScreen}
         options={({ navigation }) => ({
@@ -73,7 +82,7 @@ export const MainStack: React.FC<Props> = () => {
       <Stack.Screen
         name="SubCategory"
         component={SubCategoryScreen}
-        options={({ navigation }) => ({
+        options={({ route, navigation }) => ({
           title: "練習内容項目編集",
           headerRight: () => renderMenuButton(navigation),
         })}
