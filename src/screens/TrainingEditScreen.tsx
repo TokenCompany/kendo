@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react";
-import { View, StyleSheet, Text, TextInput, ScrollView } from "react-native";
+import { View, StyleSheet, Text, TextInput, ScrollView, Alert,KeyboardAvoidingView } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
@@ -8,20 +8,38 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { Button } from "../components/Button";
 import dayjs from "dayjs";
-// import { Button } from "react-native-paper";
-
-// import { useSubCategory } from "../hooks/useSubCategory";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
+export type SubCategory = {
+  id: string;
+  text: string;
+  times: number;
+};
+
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
+  // reduxからデータの取得
   const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
+  // reduxのデータにtimesのキー名追加
+  let initSubCategory = [...subCategoryData.teacherSubCategories];
+  initSubCategory.forEach((element)=>{
+    element.times = 0;
+  }) 
+  // refの定義
+  const scrollViewRef = useRef<ScrollView>(null);
+  // stateの定義
+  const [currentTargets, setCurrentTargets] = useState<SubCategory[]>(initSubCategory);
   const [currentYear, setCurrentDate] = useState(dayjs().year());
-  let teachers: string[] = [];
-  subCategoryData["teacherSubCategories"].forEach((element: any) => {
-    teachers.push(element.text);
-  });
+  const [show, setShow] = useState(false);
+  const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
+  // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
+  const onChangeCountByTeacher = (count:number, index:number) => {
+    const newCurrentTargets = [...currentTargets];
+    newCurrentTargets[index].times = count;
+    setCurrentTargets(newCurrentTargets)
+  }
+
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -64,7 +82,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
   };
   // 年間目標の入力UIが出てから自動スクロールさせるための記述
-  const scrollViewRef = useRef<ScrollView>(null);
   const goToBottom = () => {
     if (scrollViewRef.current) {
       scrollViewRef.current.scrollToEnd();
@@ -73,26 +90,26 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressTarget = () => {
     showTargetSetting();
   };
-  const [show, setShow] = useState(false);
-  const [currentText, setcurrentText] = useState<string>();
-  const [currentYearGoal, setCurrentYearGoal] = useState<string>();
-  const onChangeText = (text: string) => {
-    // console.log(text);
-    setcurrentText(text);
-  };
-  const onChangeYearGoal = (text: string) => {
-    // console.log(text);
-    setCurrentYearGoal(text);
+
+  // 合計数を出すための関数
+  const sumAllYearGoal = (num: string) => {
+    // setCurrentYearGoal(text);
   };
 
   const showTargetSetting = () => {
     setShow(true);
   };
 
-  let targetData = {
-    [currentYear]:[]
+  const onPressTargetSubmit = () => {
+    if (Number(currentYearGoal) > 365) {
+       // アラートの記述追加
+       Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
+        {text: "戻る",}
+      ]);
+    }else{
+      console.log(currentTargets);
+    }
   }
-  // console.log(targetData);
   
   return (
     <View style={styles.container}>
@@ -115,41 +132,38 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           />
 
           {show && (
-            <View style={styles.objectiveContainer}>
-              <Text style={styles.objectiveLabel}>年間稽古目標</Text>
-              <View style={styles.objectiveInputArea}>
-                <Text style={styles.objectiveText}>合計</Text>
-                <TextInput
-                  style={styles.objectiveInput}
-                  keyboardType="numeric"
-                  onChangeText={onChangeYearGoal}
-                  // value={objectiveNum}
-                ></TextInput>
-                <Text style={styles.objectiveText}>回</Text>
+            <KeyboardAvoidingView  behavior="padding">
+              <View style={styles.objectiveContainer}>
+                <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+                <View style={styles.objectiveInputArea}>
+                  <Text style={styles.objectiveText}>合計</Text>
+                  <Text style={styles.objectiveAll}>{currentYearGoal}</Text>
+                  <Text style={styles.objectiveText}>回</Text>
+                </View>
+                {currentTargets.map((currentTarget: any, index:number) => {
+                  return (
+                    <View style={styles.objectiveInputArea}>
+                      <Text style={styles.objectiveText}>{currentTarget.text}先生</Text>
+                      <TextInput
+                        style={styles.objectiveInput}
+                        keyboardType="numeric"
+                        onChangeText={(count)=>{
+                          onChangeCountByTeacher(Number(count),index);
+                        }}
+                        // value={currentTarget[index].times}
+                        key={index}
+                      ></TextInput>
+                      <Text style={styles.objectiveText}>回</Text>
+                    </View>
+                  );
+                })}
+                <View style={styles.submitButtonContainer}>
+                  <Button text="目標登録" onPress={()=>{
+                    onPressTargetSubmit()
+                  }} />
+                </View>
               </View>
-              {teachers.map((teacher: string) => {
-                return (
-                  <View style={styles.objectiveInputArea}>
-                    <Text style={styles.objectiveText}>{teacher}先生</Text>
-                    <TextInput
-                      style={styles.objectiveInput}
-                      keyboardType="numeric"
-                      onChangeText={onChangeText}
-                      onSubmitEditing={()=>{
-                        console.log(teacher);
-                      }}
-                      // value={objectiveNum}
-                    ></TextInput>
-                    <Text style={styles.objectiveText}>回</Text>
-                  </View>
-                );
-              })}
-              <View style={styles.submitButtonContainer}>
-                <Button text="目標登録" onPress={()=>{
-                  console.log(currentText);
-                }} />
-              </View>
-            </View>
+            </KeyboardAvoidingView>
           )}
         </View>
       </ScrollView>
@@ -175,6 +189,7 @@ const styles = StyleSheet.create({
   objectiveContainer: {
     marginTop: 30,
     marginBottom: 20,
+    // flex:3,
     // paddingRight: 60,
   },
   objectiveLabel: {
@@ -190,10 +205,20 @@ const styles = StyleSheet.create({
     width: 100,
     height: 40,
     marginHorizontal: 10,
+    padding: 10,
     fontSize: 18,
+    textAlign: 'center',
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
+  },
+  objectiveAll: {
+    width: 100,
+    height: 40,
+    marginHorizontal: 10,
+    padding: 10,
+    fontSize: 18,
+    textAlign: 'center',
   },
   objectiveText: {
     fontSize: 18,
