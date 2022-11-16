@@ -31,7 +31,6 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   class CalendarHeader extends React.PureComponent {
     render() {
       return (
-        //render what you want
         <View>
           <View style={styles.dayInput}>
             <TouchableOpacity onPress={onPressArrowLeft}>
@@ -77,7 +76,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   return (
     <View style={styles.container}>
       <Calendar
-        customHeader={CalendarHeader}
+        // customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",

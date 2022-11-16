@@ -1,41 +1,103 @@
-import React from "react";
-import { View, StyleSheet, TextInput, Text } from "react-native";
+import React, { useState } from "react";
+import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
+import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 
 type Props = {
   label: string;
-  value: string;
-  onChangePassingDay: (text: string) => void;
-  onChangeExamDay: (text: string) => void;
-  placeholder?: string;
+  currentPassedDateText: any;
+  currentExamDateText: any;
+  passedDateValue: any;
+  examDateValue: any;
+  onChangePassed: (event: DateTimePickerEvent, date1?: Date) => void;
+  onChangeExam: (event: DateTimePickerEvent, date2?: Date) => void;
+  showDatepickerPassed: () => void;
+  showDatepickerExam: () => void;
+  visiblePassed: any;
+  visibleExam: any;
+  onPressClose: () => void;
 };
 
 export const LevelForm: React.FC<Props> = ({
   label,
-  value,
-  onChangePassingDay,
-  onChangeExamDay,
-  placeholder = "",
+  currentPassedDateText,
+  currentExamDateText,
+  passedDateValue,
+  examDateValue,
+  onChangePassed,
+  onChangeExam,
+  visiblePassed,
+  visibleExam,
+  showDatepickerPassed,
+  showDatepickerExam,
+  onPressClose,
 }) => {
+  const [show01, setShow01] = useState<boolean>(false);
+  const [show02, setShow02] = useState<boolean>(false);
+
   return (
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>
       <View style={styles.displayRow}>
         <Text style={styles.dayLavel}>合格日</Text>
-        <TextInput
-          style={styles.dayInput}
-          onChangeText={onChangePassingDay}
-          value={value}
-          placeholder={placeholder}
-        />
+        <View>
+          <View style={styles.dayInput}>
+            <TouchableOpacity style={styles.button} onPress={showDatepickerPassed}>
+              <Text style={styles.buttonText}>設定</Text>
+            </TouchableOpacity>
+            <Text style={styles.dayText}>{currentPassedDateText}</Text>
+          </View>
+          <Modal
+            animationType="fade"
+            visible={visiblePassed}
+            transparent={true}
+            onRequestClose={() => {
+              setShow01(false);
+            }}
+          >
+            <View style={styles.modalView}>
+              <DateTimePicker
+                value={passedDateValue}
+                mode="date"
+                display={"spinner"}
+                onChange={onChangePassed}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
       </View>
       <View style={styles.displayRow}>
         <Text style={styles.dayLavel}>審査日</Text>
-        <TextInput
-          style={styles.dayInput}
-          onChangeText={onChangeExamDay}
-          value={value}
-          placeholder={placeholder}
-        />
+        <View>
+          <View style={styles.dayInput}>
+            <TouchableOpacity style={styles.button} onPress={showDatepickerExam}>
+              <Text style={styles.buttonText}>設定</Text>
+            </TouchableOpacity>
+            <Text style={styles.dayText}>{currentExamDateText}</Text>
+          </View>
+          <Modal
+            animationType="fade"
+            visible={visibleExam}
+            transparent={true}
+            onRequestClose={() => {
+              setShow02(false);
+            }}
+          >
+            <View style={styles.modalView}>
+              <DateTimePicker
+                value={examDateValue}
+                mode="date"
+                display={"spinner"}
+                onChange={onChangeExam}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        </View>
       </View>
     </View>
   );
@@ -45,28 +107,76 @@ const styles = StyleSheet.create({
   levelContainer: {
     marginTop: 30,
   },
-  displayRow: {
-    flexDirection: "row",
-  },
   levelLavel: {
     fontSize: 18,
     color: "#000",
+  },
+  displayRow: {
+    flexDirection: "row",
+    alignItems: "center",
     marginBottom: 5,
   },
   dayLavel: {
     fontSize: 18,
-    marginTop: 5,
+    marginRight: 10,
   },
   dayInput: {
     flex: 1,
-    justifyContent: "space-between",
-    alignItems: "center",
+    flexDirection: "row",
+    marginTop: 10,
+    marginBottom: 30,
+    height: 25,
+    borderColor: "#aaa",
+    color: "#000",
+    fontWeight: "600",
+    fontSize: 20,
+  },
+  button: {
     height: 40,
-    marginLeft: 15,
-    marginBottom: 20,
+    backgroundColor: "#a53010",
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 10,
+  },
+  buttonText: {
+    fontSize: 16,
+    color: "#fff",
+  },
+  modalView: {
+    position: "relative",
+    top: "40%",
+    backgroundColor: "#fff",
+    paddingVertical: 20,
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 7,
+    width: 50,
+    elevation: 2,
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  textStyle: {
+    fontSize: 26,
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  dayText: {
     fontSize: 18,
+    flex: 1,
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
+    paddingLeft: 5,
+    paddingRight: 145,
+    marginLeft: 10,
+    height: 40,
+  },
+  buttonContainer: {
+    alignItems: "center",
+    marginBottom: 50,
   },
 });

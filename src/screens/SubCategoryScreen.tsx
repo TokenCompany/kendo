@@ -6,47 +6,59 @@ import { FAB, Provider as PaperProvider } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
 import { SwipeItem } from "../components/SwipeItem";
 import uuid from "react-native-uuid";
+import { addSubCategory, deleteSubCategory } from "../store/subCategorySlice";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
 export type SubCategory = {
+  mainCategoryName: string;
+  id: string;
   text: string;
-  id: string; // uuid
 };
 
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
+  const dispatch = useDispatch();
+  const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const subCategoryType = route.params.subCategoryType;
 
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
-    if (subCategoryType === "place") {
+    if (subCategoryType === "placeSubCategories") {
       return <Text style={styles.MajorText}>稽古場所</Text>;
-    } else if (subCategoryType === "swing") {
+    } else if (subCategoryType === "suburiSubCategories") {
       return <Text style={styles.MajorText}>素振り</Text>;
-    } else if (subCategoryType === "footwork") {
+    } else if (subCategoryType === "ashiSabakiSubCategories") {
       return <Text style={styles.MajorText}>足さばき</Text>;
-    } else if (subCategoryType === "beat") {
+    } else if (subCategoryType === "kihonUchiSubCategories") {
       return <Text style={styles.MajorText}>基本打ち</Text>;
-    } else if (subCategoryType === "response") {
+    } else if (subCategoryType === "oujiwazaSubCategories") {
       return <Text style={styles.MajorText}>応じ技</Text>;
-    } else if (subCategoryType === "jigeiko") {
+    } else if (subCategoryType === "jigeikoSubCategories") {
       return <Text style={styles.MajorText}>地稽古</Text>;
-    } else if (subCategoryType === "teacher") {
+    } else if (subCategoryType === "teacherSubCategories") {
       return <Text style={styles.MajorText}>先生との稽古</Text>;
-    } else if (subCategoryType === "kakari") {
+    } else if (subCategoryType === "kakarigeikoSubCategories") {
       return <Text style={styles.MajorText}>掛稽古</Text>;
     }
   };
-
   const [visible, setVisible] = useState(false);
   const [currentText, setCurrentText] = useState<string>("");
-  const [subCategories, setSubCategories] = useState<SubCategory[]>([]);
-
+  // REDUXの中身を取り出して表示
+  const [subCategories, setSubCategories] = useState<SubCategory[]>(
+    subCategoryData[subCategoryType],
+  );
   // 項目消去
-  const onPressDelete = (id: string) => {
-    const newSubCategory = subCategories.filter((item) => item.id !== id);
+  const onPressDelete = (id: string, mainCategoryName: string) => {
+    const newSubCategory: SubCategory[] = subCategories.filter((item) => item.id !== id);
+    const deleteObj = {
+      categoryName: mainCategoryName,
+      id: id,
+    };
+    dispatch(deleteSubCategory(deleteObj));
     setSubCategories(newSubCategory);
   };
 
@@ -60,14 +72,18 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
     const newSubCategories: SubCategory[] = [
       ...subCategories,
       {
+        mainCategoryName: subCategoryType,
         text: currentText,
-        id: uuid.v4(),
+        id: uuid.v4().toString(),
       } as SubCategory,
     ];
     setSubCategories(newSubCategories);
     setCurrentText("");
-    // TODO: reduxに保存
-    // TODO: subCategoryTypeによってredux保存先を切り替える
+    // 一番最後(最新)のものを取得
+    let lastNum: number = newSubCategories.length - 1;
+    // TODO: reduxに保存,newSubCategoriesのmainCategoryNameによってredux保存先を切り替える
+    dispatch(addSubCategory(newSubCategories[lastNum]));
+    // TODO:
   };
 
   return (
@@ -94,8 +110,8 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeItem
         subCategories={subCategories}
-        onPressDelete={(id: string) => {
-          onPressDelete(id);
+        onPressDelete={(id: string, mainCategoryName: string) => {
+          onPressDelete(id, subCategoryType);
         }}
       />
     </View>
