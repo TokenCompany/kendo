@@ -5,20 +5,25 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 // 練習内容項目設定の小項目に関わるredux
 //
 export interface SubCategoryState {
-  placeSubCategories: subcategory[];
-  suburiSubCategories: subcategory[];
-  ashiSabakiSubCategories: subcategory[];
-  kihonUchiSubCategories: subcategory[];
-  oujiwazaSubCategories: subcategory[];
-  jigeikoSubCategories: subcategory[];
-  teacherSubCategories: subcategory[];
-  kakarigeikoSubCategories: subcategory[];
-  targetSubCategories: subcategory[];
+  placeSubCategories: subCategory[];
+  suburiSubCategories: subCategory[];
+  ashiSabakiSubCategories: subCategory[];
+  kihonUchiSubCategories: subCategory[];
+  oujiwazaSubCategories: subCategory[];
+  jigeikoSubCategories: subCategory[];
+  teacherSubCategories: subCategory[];
+  kakarigeikoSubCategories: subCategory[];
+  targetSubCategories: subCategory[];
 }
 
-interface subcategory {
-  text: string;
+interface TotalResults {
+  [year: string]: number;
+}
+
+interface subCategory {
   id: string;
+  text: string;
+  // totalResults:TotalResults;
 }
 
 // デフォルトの値
@@ -34,18 +39,39 @@ const initialState: SubCategoryState = {
   targetSubCategories: [],
 };
 
+type SubCategoryPayload = {
+  mainCategoryName: string;
+  id: string;
+  text: string;
+};
+
+type deleteSubCategory = {
+  categoryName: string;
+  id: string;
+};
+
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
   reducers: {
-    // subcategoryを更新するアクションです
-    setPlace: (state, action: PayloadAction<string>) => {
-      state.placeSubCategories.text = action.payload;
+    // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
+    addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
+      state[action.payload.mainCategoryName as keyof SubCategoryState].push({
+        id: action.payload.id,
+        text: action.payload.text,
+      });
+    },
+    deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
+      const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
+        (item) => item.id !== action.payload.id,
+      );
+      state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
   },
 });
 
 // Action creators are generated for each case reducer function
-export const { setPlace } = counterSlice.actions;
+export const { addSubCategory } = counterSlice.actions;
+export const { deleteSubCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;

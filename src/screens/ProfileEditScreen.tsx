@@ -223,6 +223,10 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       setOpenKyoushi(false);
     }
   });
+<<<<<<< HEAD
+=======
+
+>>>>>>> main
   const [openHanshi, setOpenHanshi] = useState<boolean>(false);
 
   // 日付表示変換
@@ -244,10 +248,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const [image, setImage] = useState(currentImage);
-  // const [visible, setVisible] = useState(true);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0,
@@ -256,7 +258,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
     if (!result.cancelled) {
       setImage(result.base64);
-      // setVisible(false);
       onChangeImage(result.base64);
     }
   };
@@ -464,8 +465,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date1) {
                 const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate06(passed06);
-                setOpenRenshi(true);
-                setOpenHanshi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
@@ -490,7 +489,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date1) {
                 const passed07 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate07(passed07);
-                setOpenKyoushi(true);
               }
             }}
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}

@@ -188,4 +188,5 @@ export const { setExam10 } = counterSlice.actions;
 export const { setExam11 } = counterSlice.actions;
 export const { setProfileImage } = counterSlice.actions;
 export const { setTask } = counterSlice.actions;
+
 export default counterSlice.reducer;

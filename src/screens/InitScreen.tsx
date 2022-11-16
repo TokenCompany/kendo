@@ -35,6 +35,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const initText = useSelector((state: RootState) => state.initText.initText);
   const splitText = initText.split("");
+  const task = useSelector((state: RootState) => state.profile.task);
 
   // 段数を表示
   const renderLevel = () => {

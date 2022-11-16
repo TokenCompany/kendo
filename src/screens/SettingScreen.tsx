@@ -72,13 +72,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let changeText = "";
     originDate.forEach((element, index) => {
       if (index == 4) {
-        changeText += "年";
+        changeText += i18n.t("Setting.year");
       } else if (index == 6) {
-        changeText += "月";
+        changeText += i18n.t("Setting.month");
       }
       changeText += element;
       if (index == originDate.length - 1) {
-        changeText += "日";
+        changeText += i18n.t("Setting.day");
       }
     });
     return changeText;
@@ -107,7 +107,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     if (date !== 19900000) {
       return <Text>{renderChangeText(date)}</Text>;
     } else {
-      return <Text>{`${"残り"}` + `${renderExamDate(exam)}` + `${"日"}`}</Text>;
+      return (
+        <Text>
+          {`${i18n.t("Setting.remain")}` + `${renderExamDate(exam)}` + `${i18n.t("Setting.day")}`}
+        </Text>
+      );
     }
   };
 
@@ -118,21 +122,25 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.profileBody}>
             <Text style={styles.profileText01}>{i18n.t("Setting.name")}</Text>
             <Text style={styles.profileText02}>
-              {profile.name ? profile.name : "名前が入ります"}
+              {profile.name ? profile.name : i18n.t("Setting.intoName")}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
             <Text style={styles.profileText02}>
-              {profile.birthday !== 19900000 ? profile.birthday : "生年月日が入ります"}
+              {profile.birthday !== 19900000
+                ? renderChangeText(profile.birthday)
+                : i18n.t("Setting.intoBirthday")}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
-            <Text style={styles.profileText02}>{profile.age ? profile.age : "年齢が入ります"}</Text>
+            <Text style={styles.profileText02}>
+              {profile.age ? profile.age : i18n.t("Setting.intoAge")}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
             <Text style={styles.profileText02}>
-              {profile.kenNumber ? profile.kenNumber : "全剣連番号が入ります"}
+              {profile.kenNumber ? profile.kenNumber : i18n.t("Setting.intoNumber")}
             </Text>
-            <Text style={styles.profileText01}>課題</Text>
+            <Text style={styles.profileText01}>{i18n.t("Setting.task")}</Text>
             <Text style={styles.profileText02}>
-              {profile.task ? profile.task : "課題が入ります"}
+              {profile.task ? profile.task : i18n.t("Setting.intoTask")}
             </Text>
           </View>
           {profile.profileImage ? (
@@ -149,12 +157,14 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
         </View>
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>階級</Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>合格</Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>合格日/審査までの日数</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>{i18n.t("Setting.th01")}</Text>
+            <Text style={[styles.tableData, styles.secondColumn]}>{i18n.t("Setting.th02")}</Text>
+            <Text style={[styles.tableData, styles.thirdColumn]}>{i18n.t("Setting.th03")}</Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>初段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage01")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed01)}
             </Text>
@@ -165,7 +175,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>弐段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage02")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed02)}
             </Text>
@@ -176,7 +188,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>三段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage03")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed03)}
             </Text>
@@ -187,7 +201,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>四段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage04")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed04)}
             </Text>
@@ -198,7 +214,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>五段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage05")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed05)}
             </Text>
@@ -209,7 +227,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>六段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage06")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed06)}
             </Text>
@@ -220,7 +240,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>七段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage07")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed07)}
             </Text>
@@ -231,7 +253,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
           </View>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>八段</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>
+              {i18n.t("ProfileEdit.stage08")}
+            </Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed08)}
             </Text>
@@ -243,7 +267,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           </View>
           {openRenshi && (
             <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>錬士</Text>
+              <Text style={[styles.tableData, styles.firstColumn]}>
+                {i18n.t("ProfileEdit.stage09")}
+              </Text>
               <Text style={[styles.tableData, styles.secondColumn]}>
                 {renderPassedCheck(profile.passed09)}
               </Text>
@@ -256,7 +282,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           )}
           {openKyoushi && (
             <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>教士</Text>
+              <Text style={[styles.tableData, styles.firstColumn]}>
+                {i18n.t("ProfileEdit.stage10")}
+              </Text>
               <Text style={[styles.tableData, styles.secondColumn]}>
                 {renderPassedCheck(profile.passed10)}
               </Text>

@@ -84,10 +84,10 @@ type Hooks = {
   onChangeExamDate10: (exam10: number) => void;
   onChangeExamDate11: (exam10: number) => void;
   onPressSave: () => void;
-  currentImage: string;
-  onChangeImage: (text: string) => void;
   onPressSaveTask: () => void;
   onPressDeleteTask: () => void;
+  currentImage: string;
+  onChangeImage: (text: string) => void;
   currentTask: string;
   onChangeTask: (text: string) => void;
 };
