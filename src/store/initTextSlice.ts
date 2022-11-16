@@ -11,12 +11,11 @@ const initialState: InitTextState = {
 };
 
 export const counterSlice = createSlice({
-  name: "InitText",
+  name: "initText",
   initialState,
   reducers: {
     setInitText: (state, action: PayloadAction<string>) => {
       state.initText = action.payload;
-      // console.log(state);
     },
   },
 });
