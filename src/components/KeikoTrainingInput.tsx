@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
+import { Picker } from "@react-native-community/picker";
 
 type Props = {
   textTraining: string;
@@ -11,6 +12,8 @@ type Props = {
 export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories }) => {
   const [checked, setChecked] = React.useState(false);
   const [checked2, setChecked2] = React.useState(false);
+  const [place, setPlace] = React.useState<string>();
+
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
@@ -77,6 +80,34 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
         "text": "test5",
       },
     ],
+    "placeSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "test3",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test4",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test5",
+      },
+    ],
+    "teacherSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "test3",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test4",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test5",
+      },
+    ]
   }
 
   if (textTraining === "稽古場所") {
@@ -90,11 +121,17 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
   let subCategoriesData: any = [];
 
   for (const key in subCategories) {
-    if(key === textTrainingCategories) {
+    if (key === textTrainingCategories) {
       for (const data of subCategories[key]) {
         subCategoriesData.push([data.text])
       }
     }
+  }
+  let inputSelected = true;
+  if (place === "input") {
+    inputSelected = true;
+  } else {
+    inputSelected = false;
   }
 
   return (
@@ -147,8 +184,20 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
             )}
             {!!input3 && (
               <View>
-                <View style={styles.inputGroup}>
-                  <TextInput style={styles.inputFull} />
+                <View style={styles.inputpicker}>
+                  <Picker
+                    selectedValue={place}
+                    onValueChange={(itemValue, itemIndex) => setPlace(itemValue.toString())}
+                    itemStyle={{ height: 60 }}>
+                    {subCategoriesData.map((data) =>(
+                      <Picker.Item label={data[0]} value={data[0]} />
+                    ))}
+                    <Picker.Item label="直接入力" value="input" />
+                  </Picker>
+                  {!!inputSelected &&(
+                    <TextInput style={styles.inputFull} />
+                    )
+                  }
                 </View>
               </View>
             )}
@@ -174,6 +223,7 @@ const styles = StyleSheet.create({
     margin: 10,
     flexDirection: "row",
   },
+  
   check: {
     justifyContent: "center",
     alignItems: "center",
@@ -205,6 +255,7 @@ const styles = StyleSheet.create({
     color: "#000",
     marginBottom: 5,
   },
+
   labelWrap: {
     flexDirection: "row",
     alignItems: "center",
@@ -238,6 +289,11 @@ const styles = StyleSheet.create({
     backgroundColor: "#fff",
     borderColor: "#aaa",
     paddingHorizontal: 5,
-    margin: 5,
+    marginTop: 5,
+    marginRight: 5,
+    marginBottom: 5,
   },
+  inputpicker: {
+    flexGrow: 1,
+  }
 });
