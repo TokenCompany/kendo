@@ -5,6 +5,7 @@ import { MainStackParamList } from "../types/navigation";
 import { colors } from "../styles";
 import { TextForm } from "../components/TextForm";
 import { useProfileForm } from "../hooks/useProfileForm";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TaskEdit">;
 
@@ -17,13 +18,13 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
   const createAlert = () =>
-    Alert.alert("Alert Title", "本当に削除しますか？", [
+    Alert.alert("Alert Title", i18n.t("TaskEdit.alert04"), [
       {
-        text: "いいえ",
+        text: i18n.t("TaskEdit.cancel"),
         style: "cancel",
       },
       {
-        text: "はい",
+        text: i18n.t("TaskEdit.ok"),
         onPress: () => onSettingDelete(),
       },
     ]);
@@ -35,10 +36,10 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <TextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
+      <TextForm label={i18n.t("TaskEdit.myTask")} value={currentTask} onChangeText={onChangeTask} />
       <View style={styles.display}>
         <TouchableOpacity style={styles.button} onPress={onChangeDelete}>
-          <Text style={styles.text}>消去</Text>
+          <Text style={styles.text}>{i18n.t("TaskEdit.delete")}</Text>
         </TouchableOpacity>
         <TouchableOpacity
           style={[styles.button, styles.color]}
@@ -47,7 +48,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onChangeSetting();
           }}
         >
-          <Text style={styles.text}>設定</Text>
+          <Text style={styles.text}>{i18n.t("TaskEdit.setting")}</Text>
         </TouchableOpacity>
       </View>
     </View>

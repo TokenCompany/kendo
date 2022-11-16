@@ -123,11 +123,6 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.centeredView}>
             <View style={styles.modalView}>
               <Text style={styles.modalLead}>{i18n.t("Modal.task")}</Text>
-<<<<<<< HEAD
-              <Text style={styles.modalText}>{task ? task : "-"}</Text>
-              <Text style={styles.modalLead}>初段{i18n.t("Modal.stage")}</Text>
-              <Text style={styles.modalText}>-{i18n.t("Modal.day")}</Text>
-=======
               <Text style={styles.modalText}>{profile.task ? profile.task : "-"}</Text>
               <Text style={styles.modalLead}>
                 {renderLevel()}
@@ -137,7 +132,6 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {renderExamDate(profileExam())}
                 {i18n.t("Modal.day")}
               </Text>
->>>>>>> telop
               <TouchableOpacity
                 style={[styles.button, styles.buttonClose]}
                 onPress={() => onPressClose()}

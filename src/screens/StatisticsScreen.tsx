@@ -4,6 +4,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import dayjs from "dayjs";
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
@@ -65,7 +66,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: 0,
             frontColor: "#61A68A",
-            label: "稽古回数",
+            label: i18n.t("Statistics.label01"),
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
             ),
@@ -73,7 +74,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: 0,
             frontColor: "#61A68A",
-            label: "稽古目標",
+            label: i18n.t("Statistics.label02"),
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
             ),

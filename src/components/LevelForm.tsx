@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import i18n from "../lang/localization";
 
 type Props = {
   label: string;
@@ -38,11 +39,11 @@ export const LevelForm: React.FC<Props> = ({
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>
       <View style={styles.displayRow}>
-        <Text style={styles.dayLavel}>合格日</Text>
+        <Text style={styles.dayLavel}>{i18n.t("ProfileEdit.passingDate")}</Text>
         <View>
           <View style={styles.dayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepickerPassed}>
-              <Text style={styles.buttonText}>設定</Text>
+              <Text style={styles.buttonText}>{i18n.t("ProfileEdit.setting")}</Text>
             </TouchableOpacity>
             <Text style={styles.dayText}>{currentPassedDateText}</Text>
           </View>
@@ -69,11 +70,11 @@ export const LevelForm: React.FC<Props> = ({
         </View>
       </View>
       <View style={styles.displayRow}>
-        <Text style={styles.dayLavel}>審査日</Text>
+        <Text style={styles.dayLavel}>{i18n.t("ProfileEdit.examinationDate")}</Text>
         <View>
           <View style={styles.dayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepickerExam}>
-              <Text style={styles.buttonText}>設定</Text>
+              <Text style={styles.buttonText}>{i18n.t("ProfileEdit.setting")}</Text>
             </TouchableOpacity>
             <Text style={styles.dayText}>{currentExamDateText}</Text>
           </View>

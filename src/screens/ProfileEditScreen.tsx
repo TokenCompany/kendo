@@ -9,7 +9,7 @@ import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
-import profileSlice from "../store/profileSlice";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
@@ -232,13 +232,13 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     let changeText = "";
     originDate.forEach((element, index) => {
       if (index == 4) {
-        changeText += "年";
+        changeText += i18n.t("ProfileEdit.year");
       } else if (index == 6) {
-        changeText += "月";
+        changeText += i18n.t("ProfileEdit.month");
       }
       changeText += element;
       if (index == originDate.length - 1) {
-        changeText += "日";
+        changeText += i18n.t("ProfileEdit.day");
       }
     });
     return changeText;
@@ -263,10 +263,14 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
         <View style={styles.profileBody}>
-          <TextForm label="氏名" value={currentName} onChangeText={onChangeName} />
+          <TextForm
+            label={i18n.t("ProfileEdit.name")}
+            value={currentName}
+            onChangeText={onChangeName}
+          />
           <View style={styles.birthdayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>誕生日設定</Text>
+              <Text style={styles.buttonText}>{i18n.t("ProfileEdit.birthday")}</Text>
             </TouchableOpacity>
             <Text style={styles.birthdayText}>{renderChangeText(currentBirthday)}</Text>
           </View>
@@ -306,10 +310,14 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             </View>
           </Modal>
           <View>
-            <Text style={styles.label}>年齢</Text>
+            <Text style={styles.label}>{i18n.t("ProfileEdit.age")}</Text>
             <Text style={styles.input}>{String(currentAge)}</Text>
           </View>
-          <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
+          <TextForm
+            label={i18n.t("ProfileEdit.number")}
+            value={currentKenNumber}
+            onChangeText={onChangeKenNumber}
+          />
         </View>
         <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
           {image ? (
@@ -329,7 +337,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       {open && (
         <View>
           <LevelForm
-            label="初段"
+            label={i18n.t("ProfileEdit.stage01")}
             visiblePassed={show01}
             visibleExam={show02}
             showDatepickerPassed={showDatepicker01}
@@ -354,7 +362,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           />
 
           <LevelForm
-            label="弐段"
+            label={i18n.t("ProfileEdit.stage02")}
             visiblePassed={show03}
             visibleExam={show04}
             showDatepickerPassed={showDatepicker03}
@@ -378,7 +386,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="参段"
+            label={i18n.t("ProfileEdit.stage03")}
             visiblePassed={show05}
             visibleExam={show06}
             showDatepickerPassed={showDatepicker05}
@@ -402,7 +410,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="四段"
+            label={i18n.t("ProfileEdit.stage04")}
             visiblePassed={show07}
             visibleExam={show08}
             showDatepickerPassed={showDatepicker07}
@@ -426,7 +434,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="五段"
+            label={i18n.t("ProfileEdit.stage05")}
             visiblePassed={show09}
             visibleExam={show10}
             showDatepickerPassed={showDatepicker09}
@@ -450,7 +458,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="六段"
+            label={i18n.t("ProfileEdit.stage06")}
             visiblePassed={show11}
             visibleExam={show12}
             showDatepickerPassed={showDatepicker11}
@@ -474,7 +482,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="七段"
+            label={i18n.t("ProfileEdit.stage07")}
             visiblePassed={show13}
             visibleExam={show14}
             showDatepickerPassed={showDatepicker13}
@@ -498,7 +506,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="八段"
+            label={i18n.t("ProfileEdit.stage08")}
             visiblePassed={show15}
             visibleExam={show16}
             showDatepickerPassed={showDatepicker15}
@@ -526,7 +534,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       {openRenshi && (
         <View>
           <LevelForm
-            label="錬士"
+            label={i18n.t("ProfileEdit.stage09")}
             visiblePassed={show17}
             visibleExam={show18}
             showDatepickerPassed={showDatepicker17}
@@ -554,7 +562,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       {openKyoushi && (
         <View>
           <LevelForm
-            label="教士"
+            label={i18n.t("ProfileEdit.stage10")}
             visiblePassed={show19}
             visibleExam={show20}
             showDatepickerPassed={showDatepicker19}
@@ -582,7 +590,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       {openHanshi && (
         <View>
           <LevelForm
-            label="範士"
+            label={i18n.t("ProfileEdit.stage11")}
             visiblePassed={show21}
             visibleExam={show22}
             showDatepickerPassed={showDatepicker21}
@@ -608,7 +616,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         </View>
       )}
       <View style={styles.buttonContainer}>
-        <Button text="プロフィール登録" onPress={onPressSave} />
+        <Button text={i18n.t("ProfileEdit.registerButton")} onPress={onPressSave} />
       </View>
     </ScrollView>
   );
