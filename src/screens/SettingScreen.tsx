@@ -7,6 +7,7 @@ import i18n from "../lang/localization";
 import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import { render } from "react-dom";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
@@ -111,6 +112,51 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
+  // 合格日抽出
+  const passedObject = Object.keys(profile).filter(function (item) {
+    return item.indexOf("passed") !== -1;
+  });
+
+  // 審査日抽出
+  const examObject = Object.keys(profile).filter(function (item) {
+    return item.indexOf("exam") !== -1;
+  });
+
+  // 階級
+  const kendoLevel = [
+    "初段",
+    "弐段",
+    "参段",
+    "四段",
+    "五段",
+    "六段",
+    "七段",
+    "八段",
+    "錬士",
+    "教士",
+    "範士",
+  ];
+
+  console.log(profile);
+
+  const renderLevelTable = () => {
+    kendoLevel.map((data, index) => {
+      console.log(profile[`passed0${index + 1}`]);
+    });
+    // return kendoLevel.map((data, index) => (
+    //   <View style={styles.tableRow}>
+    //     <Text style={[styles.tableData, styles.firstColumn]}>{data}</Text>
+    //     <Text style={[styles.tableData, styles.secondColumn]}>
+    //       {renderPassedCheck(profile[`passed0${index + 1}`])}
+    //     </Text>
+    //     <Text style={[styles.tableData, styles.thirdColumn]}>
+    //       a
+    //       {/* {profile[`exam0${index}`] !== 19900000 ? renderPassedDate(profile[`passed0${index}`], profile[`exam0${index}`]) : "-"} */}
+    //     </Text>
+    //   </View>
+    // ));
+  };
+
   return (
     <ScrollView>
       <View style={styles.container}>
@@ -147,24 +193,15 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             />
           )}
         </View>
+
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
             <Text style={[styles.tableData, styles.firstColumn]}>階級</Text>
             <Text style={[styles.tableData, styles.secondColumn]}>合格</Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>合格日/審査までの日数</Text>
           </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>初段</Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed01)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam01 !== 19900000
-                ? renderPassedDate(profile.passed01, profile.exam01)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
+          {renderLevelTable()}
+          {/* <View style={styles.tableRow}>
             <Text style={[styles.tableData, styles.firstColumn]}>弐段</Text>
             <Text style={[styles.tableData, styles.secondColumn]}>
               {renderPassedCheck(profile.passed02)}
@@ -279,7 +316,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
                   : "-"}
               </Text>
             </View>
-          )}
+          )} */}
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />

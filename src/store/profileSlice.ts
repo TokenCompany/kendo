@@ -9,6 +9,9 @@ export interface ProfileState {
   birthday: number;
   age: number;
   kenNumber: string;
+  profileImage: string;
+  task: string;
+  passed00: number;
   passed01: number;
   passed02: number;
   passed03: number;
@@ -19,7 +22,7 @@ export interface ProfileState {
   passed08: number;
   passed09: number;
   passed10: number;
-  passed11: number;
+  exam00: number;
   exam01: number;
   exam02: number;
   exam03: number;
@@ -30,9 +33,6 @@ export interface ProfileState {
   exam08: number;
   exam09: number;
   exam10: number;
-  exam11: number;
-  profileImage: string;
-  task: string;
 }
 
 // デフォルトの値
@@ -41,7 +41,10 @@ const initialState: ProfileState = {
   birthday: 19900000, // 誕生日
   age: 0, // 年齢
   kenNumber: "", // 全剣連番号
-  passed01: 19900000, // 合格日
+  profileImage: "", // プロフィール画像
+  task: "", // 課題
+  passed00: 19900000, // 合格日
+  passed01: 19900000,
   passed02: 19900000,
   passed03: 19900000,
   passed04: 19900000,
@@ -51,8 +54,8 @@ const initialState: ProfileState = {
   passed08: 19900000,
   passed09: 19900000,
   passed10: 19900000,
-  passed11: 19900000,
-  exam01: 19900000, // 審査日
+  exam00: 19900000, // 審査日
+  exam01: 19900000,
   exam02: 19900000,
   exam03: 19900000,
   exam04: 19900000,
@@ -62,9 +65,6 @@ const initialState: ProfileState = {
   exam08: 19900000,
   exam09: 19900000,
   exam10: 19900000,
-  exam11: 19900000,
-  profileImage: "", // プロフィール画像
-  task: "", // 課題
 };
 
 export const counterSlice = createSlice({
@@ -83,6 +83,15 @@ export const counterSlice = createSlice({
     },
     setBirthday: (state, action: PayloadAction<number>) => {
       state.birthday = action.payload;
+    },
+    setProfileImage: (state, action: PayloadAction<string>) => {
+      state.profileImage = action.payload;
+    },
+    setTask: (state, action: PayloadAction<string>) => {
+      state.task = action.payload;
+    },
+    setPassed00: (state, action: PayloadAction<number>) => {
+      state.passed00 = action.payload;
     },
     setPassed01: (state, action: PayloadAction<number>) => {
       state.passed01 = action.payload;
@@ -114,8 +123,8 @@ export const counterSlice = createSlice({
     setPassed10: (state, action: PayloadAction<number>) => {
       state.passed10 = action.payload;
     },
-    setPassed11: (state, action: PayloadAction<number>) => {
-      state.passed11 = action.payload;
+    setExam00: (state, action: PayloadAction<number>) => {
+      state.exam00 = action.payload;
     },
     setExam01: (state, action: PayloadAction<number>) => {
       state.exam01 = action.payload;
@@ -147,15 +156,6 @@ export const counterSlice = createSlice({
     setExam10: (state, action: PayloadAction<number>) => {
       state.exam10 = action.payload;
     },
-    setExam11: (state, action: PayloadAction<number>) => {
-      state.exam11 = action.payload;
-    },
-    setProfileImage: (state, action: PayloadAction<string>) => {
-      state.profileImage = action.payload;
-    },
-    setTask: (state, action: PayloadAction<string>) => {
-      state.task = action.payload;
-    },
   },
 });
 
@@ -164,6 +164,9 @@ export const { setName } = counterSlice.actions;
 export const { setAge } = counterSlice.actions;
 export const { setKenNumber } = counterSlice.actions;
 export const { setBirthday } = counterSlice.actions;
+export const { setProfileImage } = counterSlice.actions;
+export const { setTask } = counterSlice.actions;
+export const { setPassed00 } = counterSlice.actions;
 export const { setPassed01 } = counterSlice.actions;
 export const { setPassed02 } = counterSlice.actions;
 export const { setPassed03 } = counterSlice.actions;
@@ -174,7 +177,7 @@ export const { setPassed07 } = counterSlice.actions;
 export const { setPassed08 } = counterSlice.actions;
 export const { setPassed09 } = counterSlice.actions;
 export const { setPassed10 } = counterSlice.actions;
-export const { setPassed11 } = counterSlice.actions;
+export const { setExam00 } = counterSlice.actions;
 export const { setExam01 } = counterSlice.actions;
 export const { setExam02 } = counterSlice.actions;
 export const { setExam03 } = counterSlice.actions;
@@ -185,8 +188,5 @@ export const { setExam07 } = counterSlice.actions;
 export const { setExam08 } = counterSlice.actions;
 export const { setExam09 } = counterSlice.actions;
 export const { setExam10 } = counterSlice.actions;
-export const { setExam11 } = counterSlice.actions;
-export const { setProfileImage } = counterSlice.actions;
-export const { setTask } = counterSlice.actions;
 
 export default counterSlice.reducer;

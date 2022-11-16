@@ -19,6 +19,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentBirthday,
     currentAge,
     currentKenNumber,
+    currentPassedDate00,
     currentPassedDate01,
     currentPassedDate02,
     currentPassedDate03,
@@ -29,7 +30,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentPassedDate08,
     currentPassedDate09,
     currentPassedDate10,
-    currentPassedDate11,
+    currentExamDate00,
     currentExamDate01,
     currentExamDate02,
     currentExamDate03,
@@ -40,10 +41,10 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     currentExamDate08,
     currentExamDate09,
     currentExamDate10,
-    currentExamDate11,
     currentImage,
     onChangeName,
     onChangeBirthday,
+    onChangePassedDate00,
     onChangePassedDate01,
     onChangePassedDate02,
     onChangePassedDate03,
@@ -54,7 +55,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangePassedDate08,
     onChangePassedDate09,
     onChangePassedDate10,
-    onChangePassedDate11,
+    onChangeExamDate00,
     onChangeExamDate01,
     onChangeExamDate02,
     onChangeExamDate03,
@@ -65,7 +66,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     onChangeExamDate08,
     onChangeExamDate09,
     onChangeExamDate10,
-    onChangeExamDate11,
     onChangeAge,
     onChangeKenNumber,
     onChangeImage,
@@ -333,6 +333,31 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             visibleExam={show02}
             showDatepickerPassed={showDatepicker01}
             showDatepickerExam={showDatepicker02}
+            currentPassedDateText={renderChangeText(currentPassedDate00)}
+            currentExamDateText={renderChangeText(currentExamDate00)}
+            passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
+            onChangePassed={(event, date1) => {
+              if (date1) {
+                const passed00 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate00(passed00);
+              }
+            }}
+            examDateValue={dayjs(currentExamDate00.toString(), "YYYYMMDD").toDate()}
+            onChangeExam={(event, date2) => {
+              if (date2) {
+                const exam00 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate00(exam00);
+              }
+            }}
+            onPressClose={onPressClose}
+          />
+
+          <LevelForm
+            label="弐段"
+            visiblePassed={show03}
+            visibleExam={show04}
+            showDatepickerPassed={showDatepicker03}
+            showDatepickerExam={showDatepicker04}
             currentPassedDateText={renderChangeText(currentPassedDate01)}
             currentExamDateText={renderChangeText(currentExamDate01)}
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
@@ -351,13 +376,12 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             }}
             onPressClose={onPressClose}
           />
-
           <LevelForm
-            label="弐段"
-            visiblePassed={show03}
-            visibleExam={show04}
-            showDatepickerPassed={showDatepicker03}
-            showDatepickerExam={showDatepicker04}
+            label="参段"
+            visiblePassed={show05}
+            visibleExam={show06}
+            showDatepickerPassed={showDatepicker05}
+            showDatepickerExam={showDatepicker06}
             currentPassedDateText={renderChangeText(currentPassedDate02)}
             currentExamDateText={renderChangeText(currentExamDate02)}
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
@@ -377,11 +401,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="参段"
-            visiblePassed={show05}
-            visibleExam={show06}
-            showDatepickerPassed={showDatepicker05}
-            showDatepickerExam={showDatepicker06}
+            label="四段"
+            visiblePassed={show07}
+            visibleExam={show08}
+            showDatepickerPassed={showDatepicker07}
+            showDatepickerExam={showDatepicker08}
             currentPassedDateText={renderChangeText(currentPassedDate03)}
             currentExamDateText={renderChangeText(currentExamDate03)}
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
@@ -401,11 +425,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="四段"
-            visiblePassed={show07}
-            visibleExam={show08}
-            showDatepickerPassed={showDatepicker07}
-            showDatepickerExam={showDatepicker08}
+            label="五段"
+            visiblePassed={show09}
+            visibleExam={show10}
+            showDatepickerPassed={showDatepicker09}
+            showDatepickerExam={showDatepicker10}
             currentPassedDateText={renderChangeText(currentPassedDate04)}
             currentExamDateText={renderChangeText(currentExamDate04)}
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
@@ -425,11 +449,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="五段"
-            visiblePassed={show09}
-            visibleExam={show10}
-            showDatepickerPassed={showDatepicker09}
-            showDatepickerExam={showDatepicker10}
+            label="六段"
+            visiblePassed={show11}
+            visibleExam={show12}
+            showDatepickerPassed={showDatepicker11}
+            showDatepickerExam={showDatepicker12}
             currentPassedDateText={renderChangeText(currentPassedDate05)}
             currentExamDateText={renderChangeText(currentExamDate05)}
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
@@ -449,11 +473,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="六段"
-            visiblePassed={show11}
-            visibleExam={show12}
-            showDatepickerPassed={showDatepicker11}
-            showDatepickerExam={showDatepicker12}
+            label="七段"
+            visiblePassed={show13}
+            visibleExam={show14}
+            showDatepickerPassed={showDatepicker13}
+            showDatepickerExam={showDatepicker14}
             currentPassedDateText={renderChangeText(currentPassedDate06)}
             currentExamDateText={renderChangeText(currentExamDate06)}
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
@@ -473,11 +497,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="七段"
-            visiblePassed={show13}
-            visibleExam={show14}
-            showDatepickerPassed={showDatepicker13}
-            showDatepickerExam={showDatepicker14}
+            label="八段"
+            visiblePassed={show15}
+            visibleExam={show16}
+            showDatepickerPassed={showDatepicker15}
+            showDatepickerExam={showDatepicker16}
             currentPassedDateText={renderChangeText(currentPassedDate07)}
             currentExamDateText={renderChangeText(currentExamDate07)}
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
@@ -496,12 +520,16 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             }}
             onPressClose={onPressClose}
           />
+        </View>
+      )}
+      {openRenshi && (
+        <View>
           <LevelForm
-            label="八段"
-            visiblePassed={show15}
-            visibleExam={show16}
-            showDatepickerPassed={showDatepicker15}
-            showDatepickerExam={showDatepicker16}
+            label="錬士"
+            visiblePassed={show17}
+            visibleExam={show18}
+            showDatepickerPassed={showDatepicker17}
+            showDatepickerExam={showDatepicker18}
             currentPassedDateText={renderChangeText(currentPassedDate08)}
             currentExamDateText={renderChangeText(currentExamDate08)}
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
@@ -522,14 +550,14 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           />
         </View>
       )}
-      {openRenshi && (
+      {openKyoushi && (
         <View>
           <LevelForm
-            label="錬士"
-            visiblePassed={show17}
-            visibleExam={show18}
-            showDatepickerPassed={showDatepicker17}
-            showDatepickerExam={showDatepicker18}
+            label="教士"
+            visiblePassed={show19}
+            visibleExam={show20}
+            showDatepickerPassed={showDatepicker19}
+            showDatepickerExam={showDatepicker20}
             currentPassedDateText={renderChangeText(currentPassedDate09)}
             currentExamDateText={renderChangeText(currentExamDate09)}
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
@@ -550,14 +578,14 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
           />
         </View>
       )}
-      {openKyoushi && (
+      {openHanshi && (
         <View>
           <LevelForm
-            label="教士"
-            visiblePassed={show19}
-            visibleExam={show20}
-            showDatepickerPassed={showDatepicker19}
-            showDatepickerExam={showDatepicker20}
+            label="範士"
+            visiblePassed={show21}
+            visibleExam={show22}
+            showDatepickerPassed={showDatepicker21}
+            showDatepickerExam={showDatepicker22}
             currentPassedDateText={renderChangeText(currentPassedDate10)}
             currentExamDateText={renderChangeText(currentExamDate10)}
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
@@ -572,34 +600,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
               if (date2) {
                 const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate10(exam10);
-              }
-            }}
-            onPressClose={onPressClose}
-          />
-        </View>
-      )}
-      {openHanshi && (
-        <View>
-          <LevelForm
-            label="範士"
-            visiblePassed={show21}
-            visibleExam={show22}
-            showDatepickerPassed={showDatepicker21}
-            showDatepickerExam={showDatepicker22}
-            currentPassedDateText={renderChangeText(currentPassedDate11)}
-            currentExamDateText={renderChangeText(currentExamDate11)}
-            passedDateValue={dayjs(currentPassedDate11.toString(), "YYYYMMDD").toDate()}
-            onChangePassed={(event, date1) => {
-              if (date1) {
-                const passed11 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate11(passed11);
-              }
-            }}
-            examDateValue={dayjs(currentExamDate11.toString(), "YYYYMMDD").toDate()}
-            onChangeExam={(event, date2) => {
-              if (date2) {
-                const exam11 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate11(exam11);
               }
             }}
             onPressClose={onPressClose}
