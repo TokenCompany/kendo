@@ -223,10 +223,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
       setOpenKyoushi(false);
     }
   });
-<<<<<<< HEAD
-=======
 
->>>>>>> main
   const [openHanshi, setOpenHanshi] = useState<boolean>(false);
 
   // 日付表示変換
