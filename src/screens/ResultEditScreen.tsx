@@ -2,12 +2,8 @@ import React from "react";
 import { View, ScrollView, Text, StyleSheet, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
-import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
-import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
-import { KeikoKakariInput } from "../components/KeikoKakariInput";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
