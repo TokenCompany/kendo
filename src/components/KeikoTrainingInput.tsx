@@ -1,62 +1,102 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
 
 type Props = {
   textTraining: string;
-  trainingKey: string;
+  textTrainingUnit: string;
+  textTrainingCategories: string;
 };
 
-export const KeikoTrainingInput: React.FC<Props> = ({ textTraining,trainingKey}) => {
+export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories }) => {
   const [checked, setChecked] = React.useState(false);
+  const [checked2, setChecked2] = React.useState(false);
+  let input1: boolean = false;
+  let input2: boolean = false;
+  let input3: boolean = false;
   const subCategories = {
-    ashiSabakiSubCategories: {
-      unit: '分',
-      subCategoryNames:["すり足","歩み足"],
-    },
-    kakarigeikoSubCategories: {
-      unit: '分',
-      subCategoryNames:["すり足","歩み足"],
-    },
-    kihonUchiSubCategories: {
-      unit: '本',
-      subCategoryNames:["切り返し","歩み足"],
-    },
-    oujiwazaSubCategories: {
-      unit: '本',
-      subCategoryNames:["すり足","歩み足"],
-    },
-    placeSubCategories: {
-      subCategoryNames:["横浜アリーナ","与那国道場","アグレ体育館"],
-    },
-    suburiSubCategories: {
-      unit: '本',
-      subCategoryNames:["上下素振り","正面内","左右面","素振り"],
-    },
-    targetSubCategories: {
-      unit: '回',
-      subCategoryNames:["12","13"],
-    },
-    jigeikoSubCategories: {
-      unit:"本",
-      subCategoryNames:["あり"]
-    },
+    "ashiSabakiSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "足さばき",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "上下素振り",
+      },
+    ],
+    "kihonUchiSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "test",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test2",
+      },
+    ],
+    "oujiwazaSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "test3",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test4",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test5",
+      },
+    ],
+    "suburiSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "test3",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test4",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test5",
+      },
+    ],
+    "teacherSubCategories": [
+      {
+        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        "text": "test3",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test4",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "test5",
+      },
+    ],
   }
-  const mainCategories = {
-    ashiSabakiSubCategories: "足さばき",
-    jigeikoSubCategories: "地稽古",
-    kakarigeikoSubCategories: "掛稽古",
-    kihonUchiSubCategories: "基本打ち",
-    oujiwazaSubCategories: "応じ技",
-    placeSubCategories: "稽古場所",
-    suburiSubCategories: "素振り",
-    targetSubCategories: "",
-    teacherSubCategories: "先生との稽古",
+
+  if (textTraining === "稽古場所") {
+    input3 = true;
+  } else if (textTraining === "地稽古" || textTraining === "掛稽古") {
+    input2 = true;
+  } else {
+    input1 = true;
   }
-  // tokyo に対応する値を取得する（find() メソッドを使用）
-  const arrayResult1 = mainCategories.find(e => e.key === textTraining)?.value;
-  console.log(arrayResult1);
-  
+
+  let subCategoriesData: any = [];
+
+  for (const key in subCategories) {
+    if(key === textTrainingCategories) {
+      for (const data of subCategories[key]) {
+        subCategoriesData.push([data.text])
+      }
+    }
+  }
+
   return (
     <View style={styles.inputWrap}>
       <View style={styles.check}>
@@ -72,13 +112,47 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining,trainingKey})
         <Text style={styles.label}>{textTraining}</Text>
         {!!checked && (
           <View>
-            <View style={styles.inputGroup}>
-              <Text style={styles.inputText}>{textSubTraining}</Text>
-              <TextInput style={styles.input} />
-              <Text style={styles.inputText}>{textTrainingUnit}</Text>
-            </View>
+            {!!input1 && (
+              <View>
+                {subCategoriesData.map((data) =>(
+                  <View style={styles.inputGroup}>
+                    <Text style={styles.inputText}>{data[0]}</Text>
+                    <TextInput style={styles.input} keyboardType="numeric" />
+                    <Text style={styles.inputText}>{textTrainingUnit}</Text>
+                  </View>
+                ))}
+              </View>
+            )}
+            {!!input2 && (
+              <View>
+                <View style={styles.inputGroup}>
+                  <View style={styles.inputGroup}>
+                    <Checkbox
+                      status={checked2 ? "checked" : "unchecked"}
+                      onPress={() => {
+                        setChecked2(!checked2);
+                      }}
+                    />
+                    <Text style={styles.inputText}>あり</Text>
+                  </View>
+                  {!!checked2 && (
+                    <View style={styles.inputGroup}>
+                      <TextInput style={styles.input} keyboardType="numeric" />
+                      <Text style={styles.inputText}>{textTrainingUnit}</Text>
+                    </View>
+                  )}
+
+                </View>
+              </View>
+            )}
+            {!!input3 && (
+              <View>
+                <View style={styles.inputGroup}>
+                  <TextInput style={styles.inputFull} />
+                </View>
+              </View>
+            )}
           </View>
-          // {subCategoriesArray.map((category,index)=> (<KeikoTrainingInput textTraining={category} trainingKey={mainCategorieskeys[index]}/>))}
         )}
       </View>
     </View>

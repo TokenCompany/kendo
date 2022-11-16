@@ -8,34 +8,58 @@ import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
 import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { KeikoKakariInput } from "../components/KeikoKakariInput";
-import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
 export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
   const { onPressSave } = useProfileForm();
-  
-  let mainCategoriesArray = [];
-  let mainCategorieskeys:any = [];
-  for (const key in mainCategories) {
-    mainCategoriesArray.push(mainCategories[key]);
-    mainCategorieskeys.push(key);
+
+  const mainCategories = {
+    placeSubCategories: {
+      text:'稽古場所',
+      unit:''
+    },
+    suburiSubCategories: {
+      text:'素振り',
+      unit:'本'
+    },
+    ashiSabakiSubCategories: {
+      text:'足さばき',
+      unit:'本'
+    },
+    kihonUchiSubCategories: {
+      text:'基本打ち',
+      unit:'本'
+    },
+    oujiwazaSubCategories: {
+      text:'応じ技',
+      unit:'本'
+    },
+    jigeikoSubCategories: {
+      text:'地稽古',
+      unit:'回'
+    },
+    teacherSubCategories: {
+      text:'先生との稽古',
+      unit:'分'
+    },
   }
+
+  let mainCategoriesData: any = [];
+
+  Object.keys(mainCategories).forEach(keyX => {
+    mainCategoriesData.push([mainCategories[keyX].text, mainCategories[keyX].unit, keyX]);
+    console.log(keyX);
+  })
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.dateWrap}>
         <Text style={styles.date}>2022年4月22日(金)</Text>
       </View>
-      <KeikoPlaceInput textPlace="稽古場所" />
-      <KeikoTimeInput textTime="稽古時間" />
-      {/* {mainCategoriesArray.map((category,index)=> (<KeikoTrainingInput textTraining={category} trainingKey={mainCategorieskeys[index]}/>))} */}
-      <KeikoTrainingInput textTraining="素振り" />
-      <KeikoTrainingInput textTraining="足さばき" />
-      <KeikoTrainingInput textTraining="基本打ち" />
-      <KeikoTrainingInput textTraining="先生との稽古" />
-      <KeikoKakariInput textTeacher="地稽古" />
-      <KeikoKakariInput textTeacher="掛稽古" />
+      {mainCategoriesData.map((data) =>(
+        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]}/>
+      ))}
       <View style={styles.buttonContainer}>
         <Button text="稽古実績登録" onPress={onPressSave} />
       </View>

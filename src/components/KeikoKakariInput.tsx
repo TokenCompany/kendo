@@ -24,19 +24,23 @@ export const KeikoKakariInput: React.FC<Props> = ({ textTeacher }) => {
         <Text style={styles.label}>{textTeacher}</Text>
         {!!checked && (
           <View>
-            <View style={styles.inputGroup}>
+            {!!checked && (
+            <View>
               <View style={styles.inputGroup}>
-                <Checkbox
-                  status={checked2 ? "checked" : "unchecked"}
-                  onPress={() => {
-                    setChecked2(!checked2);
-                  }}
-                />
-                <Text style={styles.inputText}>あり</Text>
+                <View style={styles.inputGroup}>
+                  <Checkbox
+                    status={checked2 ? "checked" : "unchecked"}
+                    onPress={() => {
+                      setChecked2(!checked2);
+                    }}
+                  />
+                  <Text style={styles.inputText}>あり</Text>
+                </View>
+                <TextInput style={styles.input} />
+                <Text style={styles.inputText}>分</Text>
               </View>
-              <TextInput style={styles.input} />
-              <Text style={styles.inputText}>分</Text>
             </View>
+            )}
           </View>
         )}
       </View>
