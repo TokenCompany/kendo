@@ -20,10 +20,8 @@ export type SubCategory = {
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   // reduxからデータの取得
-  const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
-  // console.log(subCategoryData);
-  
-  // reduxのデータにtimesのキー名追加
+  let subCategoryData: any = useSelector((state: RootState) => state.subCategory);
+  // reduxのコピーデータにtimesのキー名追加
   let initSubCategory = [...subCategoryData.teacherSubCategories];
   initSubCategory.forEach((element)=>{
     element.times = 0;
@@ -32,7 +30,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const scrollViewRef = useRef<ScrollView>(null);
   // stateの定義
   const [currentTargets, setCurrentTargets] = useState<SubCategory[]>(initSubCategory);
-  const [currentYear, setCurrentDate] = useState(dayjs().year());
   const [show, setShow] = useState(false);
   const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
@@ -49,7 +46,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       }
     }
     setCurrentTargets(newCurrentTargets);
-    sumAllYearGoal();
+    // sumAllYearGoal();
   }
 
   const onPressPlace = () => {
@@ -102,14 +99,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressTarget = () => {
     showTargetSetting();
   };
-  let sum = 0;
-  // 合計数を出すための関数
-  const sumAllYearGoal = () => {
-    currentTargets.forEach((target) => {
-      sum += target.times;
-    });
-    setCurrentYearGoal(sum);
-  };
 
   const showTargetSetting = () => {
     setShow(true);
@@ -122,7 +111,12 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
          {text: "戻る",}
        ]);
       }else{
-        // console.log(currentTargets);
+        // reduxへの保存
+        let currentYear = dayjs().year()
+        const saveTargets = {
+          [currentYear]:currentTargets
+        }
+        dispatch(addTargetCategory(saveTargets))
       }
   }
   
@@ -152,7 +146,14 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 <Text style={styles.objectiveLabel}>年間稽古目標</Text>
                 <View style={styles.objectiveInputArea}>
                   <Text style={styles.objectiveText}>合計</Text>
-                  <Text style={styles.objectiveAll}>{currentYearGoal}</Text>
+                  <TextInput
+                   style={styles.objectiveInput}
+                   keyboardType="numeric"
+                   onChangeText={(num)=>{
+                    setCurrentYearGoal(Number(num));
+                  }}
+                  ></TextInput>
+                  {/* <Text style={styles.objectiveAll}>{currentYearGoal}</Text> */}
                   <Text style={styles.objectiveText}>回</Text>
                 </View>
                 {currentTargets.map((currentTarget: any, index:number) => {

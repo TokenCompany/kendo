@@ -13,11 +13,7 @@ export interface SubCategoryState {
   jigeikoSubCategories: subCategory[];
   teacherSubCategories: subCategory[];
   kakarigeikoSubCategories: subCategory[];
-  targetSubCategories: targetCategory;
-}
-
-interface TotalResults {
-  [year: string]: number;
+  targetSubCategories: TargetCategory;
 }
 
 interface subCategory {
@@ -27,14 +23,14 @@ interface subCategory {
 }
 
 // 年間目標のtype宣言
-interface targetCategories {
+interface TargetCategories {
   id: string;
   text: string;
   times: number;
 }
 
-interface targetCategory {
-  [date: number]:targetCategories[]
+interface TargetCategory {
+  [year: string]:TargetCategories[]
 }
 
 // デフォルトの値
@@ -61,6 +57,7 @@ type deleteSubCategory = {
   id: string;
 };
 
+
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
@@ -79,8 +76,10 @@ export const counterSlice = createSlice({
       );
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
-    addTargetCategory:(state,action) => {
-      console.log(action.payload);
+    addTargetCategory:(state,action:PayloadAction<TargetCategory>) => {
+      state.targetSubCategories = action.payload;
+      console.log(state);
+      
     }
   },
 });
