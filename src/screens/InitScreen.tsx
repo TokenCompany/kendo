@@ -26,10 +26,8 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
     if (modalVisible === false) {
       clearTimeout(time);
-      console.log("aaa");
     }
   };
-  console.log(modalVisible);
 
   const onPressClose = () => {
     setModalVisible(false);
@@ -98,6 +96,9 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     return diffRoundDate;
   };
 
+  console.log(renderExamDate(profileExam()));
+  console.log(profileExam());
+
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
@@ -132,7 +133,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {i18n.t("Modal.stage")}
               </Text>
               <Text style={styles.modalText}>
-                {renderExamDate(profileExam())}
+                {renderExamDate(profileExam()) !== -11721 ? renderExamDate(profileExam()) : "-"}
                 {i18n.t("Modal.day")}
               </Text>
               <TouchableOpacity
