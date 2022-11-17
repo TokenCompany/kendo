@@ -15,7 +15,6 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-  // console.log(reservations);
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
@@ -23,6 +22,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
+  const showButton:boolean = true;
 
   return (
     <ScrollView style={styles.container}>
@@ -121,6 +121,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             }
           }}
           text02="削除"
+          judge={showButton}
         />
       </View>
     </ScrollView>

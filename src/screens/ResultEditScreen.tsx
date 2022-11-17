@@ -11,9 +11,12 @@ import { KeikoKakariInput } from "../components/KeikoKakariInput";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
-export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
+export const ResultEditScreen: React.FC<Props> = ({route}: Props) => {
   const { onPressSave } = useProfileForm();
-
+  /* 2. Get the param */
+  // ここで遷移元から渡されたパラメータを取得する
+  const date = route.params.date;
+  
   const mainCategories = {
     placeSubCategories: {
       text:'稽古場所',
@@ -49,13 +52,13 @@ export const ResultEditScreen: React.FC<Props> = ({}: Props) => {
 
   Object.keys(mainCategories).forEach(keyX => {
     mainCategoriesData.push([mainCategories[keyX].text, mainCategories[keyX].unit, keyX]);
-    console.log(keyX);
+    // console.log(keyX);
   })
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.dateWrap}>
-        <Text style={styles.date}>2022年4月22日(金)</Text>
+        <Text style={styles.date}>{date}</Text>
       </View>
       {mainCategoriesData.map((data) =>(
         <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]}/>
