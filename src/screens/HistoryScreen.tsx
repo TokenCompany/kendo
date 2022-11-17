@@ -14,6 +14,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPress = () => {
     navigation.navigate("ResultEdit",{
       date: selectedDateText,
+      place:place,
     });
   };
   // reduxからの情報取得

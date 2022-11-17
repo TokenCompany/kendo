@@ -14,6 +14,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) =
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const date = route.params.date;
+  const place = route.params.place;
+  
   const onPressBtn = () => {
     createAlert();
   };
@@ -72,7 +74,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) =
         <Text style={styles.date}>{date}</Text>
       </View>
       {mainCategoriesData.map((data) =>(
-        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]}/>
+        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]} reservedPlace={place}/>
       ))}
       <View style={styles.buttonContainer}>
         <Button text="稽古実績登録" onPress={onPressBtn} />

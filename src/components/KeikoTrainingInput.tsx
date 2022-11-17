@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useState} from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { Picker } from "@react-native-community/picker";
@@ -7,12 +7,36 @@ type Props = {
   textTraining: string;
   textTrainingUnit: string;
   textTrainingCategories: string;
+  reservedPlace: string;
 };
 
-export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories }) => {
-  const [checked, setChecked] = React.useState(false);
-  const [checked2, setChecked2] = React.useState(false);
-  const [place, setPlace] = React.useState<string>();
+export type SubCategories = [
+  {
+    id: string,
+    text: string,
+    result: number,
+  }
+] 
+
+export type Results = {
+  [date: string]:{
+    place: string,
+    time: number,
+    suburiSubCategories:SubCategories[],
+    ashiSabakiSubCategories:SubCategories[],
+    kihonUchiSubCategories:SubCategories[],
+    oujiwazaSubCategories:SubCategories[],
+    jigeikoSubCategories:SubCategories[],
+    teacherSubCategories:SubCategories[],
+    kakarigeikoSubCategories:SubCategories[],
+  }
+};
+
+export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories,reservedPlace }) => {
+  const [checked, setChecked] = useState(false);
+  const [checked2, setChecked2] = useState(false);
+  const [place, setPlace] = useState<string>(reservedPlace);
+  const [results, setResults] = useState<Results>();
 
   let input1: boolean = false;
   let input2: boolean = false;
@@ -92,6 +116,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
       {
         "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
         "text": "test5",
+      },
+      {
+        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        "text": "横浜アリーナ",
       },
     ],
     "targetSubCategories": [
