@@ -96,9 +96,6 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     return diffRoundDate;
   };
 
-  console.log(renderExamDate(profileExam()));
-  console.log(profileExam());
-
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
