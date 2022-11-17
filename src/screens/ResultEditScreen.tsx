@@ -10,7 +10,7 @@ import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
-export const ResultEditScreen: React.FC<Props> = ({ navigation }: Props) => {
+export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) => {
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const date = route.params.date;
@@ -29,6 +29,10 @@ export const ResultEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     placeSubCategories: {
       text:'稽古場所',
       unit:''
+    },
+    trainingTime: {
+      text:'稽古時間',
+      unit: '時間'
     },
     suburiSubCategories: {
       text:'素振り',

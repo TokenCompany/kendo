@@ -94,7 +94,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
         "text": "test5",
       },
     ],
-    "teacherSubCategories": [
+    "targetSubCategories": [
       {
         "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
         "text": "test3",
@@ -120,13 +120,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
 
   let subCategoriesData: any = [];
 
-  for (const key in subCategories) {
-    if (key === textTrainingCategories) {
-      for (const data of subCategories[key]) {
-        subCategoriesData.push([data.text])
-      }
+  // subcategoriesに登録がない稽古時間の条件分岐
+  if (textTrainingCategories in subCategories) {
+    for (const data of subCategories[textTrainingCategories]) {
+      subCategoriesData.push([data.text])
     }
+  }else{
+    subCategoriesData.push('')
   }
+  
   let inputSelected = true;
   if (place === "input") {
     inputSelected = true;
@@ -154,7 +156,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                 {subCategoriesData.map((data) =>(
                   <View style={styles.inputGroup}>
                     <Text style={styles.inputText}>{data[0]}</Text>
-                    <TextInput style={styles.input} keyboardType="numeric" />
+                    <TextInput
+                     style={styles.input}
+                     keyboardType="numeric" 
+                     />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>
                 ))}
@@ -178,7 +183,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                       <Text style={styles.inputText}>{textTrainingUnit}</Text>
                     </View>
                   )}
-
                 </View>
               </View>
             )}
