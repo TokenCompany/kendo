@@ -15,18 +15,21 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
   });
+
   const [modalVisible, setModalVisible] = useState(false);
   const onPress = () => {
     setModalVisible(true);
-    setTimeout(() => {
-      hiddenModal();
-    }, 5000);
-  };
 
-  const hiddenModal = () => {
-    setModalVisible(false);
-    navigation.navigate("Menu");
+    let time = setTimeout(() => {
+      onPressClose();
+    }, 5000);
+
+    if (modalVisible === false) {
+      clearTimeout(time);
+      console.log("aaa");
+    }
   };
+  console.log(modalVisible);
 
   const onPressClose = () => {
     setModalVisible(false);
