@@ -2,17 +2,19 @@ import React from "react";
 import { View, ScrollView, Text, StyleSheet, TextInput } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import { useProfileForm } from "../hooks/useProfileForm";
+// import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
 import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
 import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { KeikoKakariInput } from "../components/KeikoKakariInput";
+import { useSelector} from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
 export const ResultEditScreen: React.FC<Props> = ({route}: Props) => {
-  const { onPressSave } = useProfileForm();
+  // const { onPressSave } = useProfileForm();
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const date = route.params.date;
@@ -64,7 +66,7 @@ export const ResultEditScreen: React.FC<Props> = ({route}: Props) => {
         <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]}/>
       ))}
       <View style={styles.buttonContainer}>
-        <Button text="稽古実績登録" onPress={onPressSave} />
+        <Button text="稽古実績登録" />
       </View>
     </ScrollView>
   );
