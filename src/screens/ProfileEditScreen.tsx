@@ -227,6 +227,8 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
+    console.log(typeof date);
+
     let originDate = date.toString().split("");
     let changeText = "";
     originDate.forEach((element, index) => {
@@ -338,15 +340,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed00 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate00(passed00);
+                const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate00(passed0);
               }
             }}
             examDateValue={dayjs(currentExamDate00.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam00 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate00(exam00);
+                const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate00(exam0);
               }
             }}
             onPressClose={onPressClose}
@@ -363,15 +365,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed01 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate01(passed01);
+                const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate01(passed1);
               }
             }}
             examDateValue={dayjs(currentExamDate01.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam01 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate01(exam01);
+                const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate01(exam1);
               }
             }}
             onPressClose={onPressClose}
@@ -387,15 +389,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed02 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate02(passed02);
+                const passed2 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate02(passed2);
               }
             }}
             examDateValue={dayjs(currentExamDate02.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam02 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate02(exam02);
+                const exam2 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate02(exam2);
               }
             }}
             onPressClose={onPressClose}
@@ -411,15 +413,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed03 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate03(passed03);
+                const passed3 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate03(passed3);
               }
             }}
             examDateValue={dayjs(currentExamDate03.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam03 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate03(exam03);
+                const exam3 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate03(exam3);
               }
             }}
             onPressClose={onPressClose}
@@ -435,15 +437,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed04 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate04(passed04);
+                const passed4 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate04(passed4);
               }
             }}
             examDateValue={dayjs(currentExamDate04.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam04 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate04(exam04);
+                const exam4 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate04(exam4);
               }
             }}
             onPressClose={onPressClose}
@@ -459,15 +461,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed05 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate05(passed05);
+                const passed5 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate05(passed5);
               }
             }}
             examDateValue={dayjs(currentExamDate05.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam05 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate05(exam05);
+                const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate05(exam5);
               }
             }}
             onPressClose={onPressClose}
@@ -483,15 +485,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed06 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate06(passed06);
+                const passed6 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate06(passed6);
               }
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam06 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate06(exam06);
+                const exam6 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate06(exam6);
               }
             }}
             onPressClose={onPressClose}
@@ -507,15 +509,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed07 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate07(passed07);
+                const passed7 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate07(passed7);
               }
             }}
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam07 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate07(exam07);
+                const exam7 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate07(exam7);
               }
             }}
             onPressClose={onPressClose}
@@ -535,15 +537,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed08 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate08(passed08);
+                const passed8 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate08(passed8);
               }
             }}
             examDateValue={dayjs(currentExamDate08.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam08 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate08(exam08);
+                const exam8 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate08(exam8);
               }
             }}
             onPressClose={onPressClose}
@@ -563,15 +565,15 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               if (date1) {
-                const passed09 = Number(dayjs(date1).format("YYYYMMDD"));
-                onChangePassedDate09(passed09);
+                const passed9 = Number(dayjs(date1).format("YYYYMMDD"));
+                onChangePassedDate09(passed9);
               }
             }}
             examDateValue={dayjs(currentExamDate09.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               if (date2) {
-                const exam09 = Number(dayjs(date2).format("YYYYMMDD"));
-                onChangeExamDate09(exam09);
+                const exam9 = Number(dayjs(date2).format("YYYYMMDD"));
+                onChangeExamDate09(exam9);
               }
             }}
             onPressClose={onPressClose}
