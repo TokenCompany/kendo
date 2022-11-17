@@ -11,58 +11,67 @@ export const ResultEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressBtn = () => {
     createAlert();
   };
-  
+
   const createAlert = () =>
     Alert.alert("", "登録しました", [
-      { text: "OK", onPress: () => {
-        navigation.navigate("History");
-      } },
+      {
+        text: "OK",
+        onPress: () => {
+          navigation.navigate("History");
+        },
+      },
     ]);
-    
-  const mainCategories = {
+
+  const mainCategories: any = {
     placeSubCategories: {
-      text:'稽古場所',
-      unit:''
+      text: "稽古場所",
+      unit: "",
     },
     suburiSubCategories: {
-      text:'素振り',
-      unit:'本'
+      text: "素振り",
+      unit: "本",
     },
     ashiSabakiSubCategories: {
-      text:'足さばき',
-      unit:'本'
+      text: "足さばき",
+      unit: "本",
     },
     kihonUchiSubCategories: {
-      text:'基本打ち',
-      unit:'本'
+      text: "基本打ち",
+      unit: "本",
     },
     oujiwazaSubCategories: {
-      text:'応じ技',
-      unit:'本'
+      text: "応じ技",
+      unit: "本",
     },
     jigeikoSubCategories: {
-      text:'地稽古',
-      unit:'回'
+      text: "地稽古",
+      unit: "回",
     },
     teacherSubCategories: {
-      text:'先生との稽古',
-      unit:'分'
+      text: "先生との稽古",
+      unit: "分",
     },
-  }
+  };
 
   let mainCategoriesData: any = [];
 
-  Object.keys(mainCategories).forEach(keyX => {
+  Object.keys(mainCategories).forEach((keyX) => {
+    console.log(mainCategories.placeSubCategories.text);
     mainCategoriesData.push([mainCategories[keyX].text, mainCategories[keyX].unit, keyX]);
-  })
+  });
 
   return (
     <ScrollView style={styles.container}>
       <View style={styles.dateWrap}>
         <Text style={styles.date}>2022年4月22日(金)</Text>
       </View>
-      {mainCategoriesData.map((data) =>(
-        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]}/>
+      {mainCategoriesData.map((data: any) => (
+        <KeikoTrainingInput
+          key={data[0]}
+          textTraining={data[0]}
+          textTrainingUnit={data[1]}
+          textTrainingCategories={data[2]}
+        />
       ))}
       <View style={styles.buttonContainer}>
         <Button text="稽古実績登録" onPress={onPressBtn} />
