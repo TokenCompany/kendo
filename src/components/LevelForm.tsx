@@ -4,16 +4,16 @@ import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/dat
 
 type Props = {
   label: string;
-  currentPassedDateText: any;
-  currentExamDateText: any;
-  passedDateValue: any;
-  examDateValue: any;
+  currentPassedDateText: string;
+  currentExamDateText: string;
+  passedDateValue: Date;
+  examDateValue: Date;
   onChangePassed: (event: DateTimePickerEvent, date1?: Date) => void;
   onChangeExam: (event: DateTimePickerEvent, date2?: Date) => void;
   showDatepickerPassed: () => void;
   showDatepickerExam: () => void;
-  visiblePassed: any;
-  visibleExam: any;
+  visiblePassed: boolean;
+  visibleExam: boolean;
   onPressClose: () => void;
 };
 
@@ -31,9 +31,6 @@ export const LevelForm: React.FC<Props> = ({
   showDatepickerExam,
   onPressClose,
 }) => {
-  const [show01, setShow01] = useState<boolean>(false);
-  const [show02, setShow02] = useState<boolean>(false);
-
   return (
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>
@@ -50,9 +47,7 @@ export const LevelForm: React.FC<Props> = ({
             animationType="fade"
             visible={visiblePassed}
             transparent={true}
-            onRequestClose={() => {
-              setShow01(false);
-            }}
+            onRequestClose={() => {}}
           >
             <View style={styles.modalView}>
               <DateTimePicker
@@ -81,9 +76,7 @@ export const LevelForm: React.FC<Props> = ({
             animationType="fade"
             visible={visibleExam}
             transparent={true}
-            onRequestClose={() => {
-              setShow02(false);
-            }}
+            onRequestClose={() => {}}
           >
             <View style={styles.modalView}>
               <DateTimePicker

@@ -9,6 +9,7 @@ import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
+import profileSlice from "../store/profileSlice";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 

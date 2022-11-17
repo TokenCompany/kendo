@@ -1,11 +1,8 @@
 import React from "react";
-import { View, ScrollView, Text, StyleSheet, TextInput } from "react-native";
+import { View, ScrollView, Text, StyleSheet, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-// import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
-import { KeikoPlaceInput } from "../components/KeikoPlaceInput";
-import { KeikoTimeInput } from "../components/KeikoTimeInput";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { KeikoKakariInput } from "../components/KeikoKakariInput";
 import { useSelector} from "react-redux";
@@ -13,12 +10,21 @@ import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 
-export const ResultEditScreen: React.FC<Props> = ({route}: Props) => {
-  // const { onPressSave } = useProfileForm();
+export const ResultEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const date = route.params.date;
+  const onPressBtn = () => {
+    createAlert();
+  };
   
+  const createAlert = () =>
+    Alert.alert("", "登録しました", [
+      { text: "OK", onPress: () => {
+        navigation.navigate("History");
+      } },
+    ]);
+
   const mainCategories = {
     placeSubCategories: {
       text:'稽古場所',
@@ -54,7 +60,6 @@ export const ResultEditScreen: React.FC<Props> = ({route}: Props) => {
 
   Object.keys(mainCategories).forEach(keyX => {
     mainCategoriesData.push([mainCategories[keyX].text, mainCategories[keyX].unit, keyX]);
-    // console.log(keyX);
   })
 
   return (
@@ -66,7 +71,7 @@ export const ResultEditScreen: React.FC<Props> = ({route}: Props) => {
         <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]}/>
       ))}
       <View style={styles.buttonContainer}>
-        <Button text="稽古実績登録" />
+        <Button text="稽古実績登録" onPress={onPressBtn} />
       </View>
     </ScrollView>
   );
