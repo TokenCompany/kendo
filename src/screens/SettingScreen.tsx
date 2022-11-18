@@ -30,17 +30,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
 
-  const rankTableData = [
-    ["初段", "〇", "2006年11月20日"],
-    ["弐段", "〇", "2007年11月13日"],
-    ["参段 ", "〇", "2009年11月12日"],
-    ["四段 ", "〇", "2011年11月1日"],
-    ["五段", "〇", "2015年11月17日"],
-    ["六段 ", "〇", "2020年11月22日"],
-    ["七段", "-", "残り1945日(5年4か月)"],
-    ["八段", "-", "残り5596日(15年4か月)"],
-  ];
-
   // 練士、教士、範士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
   useEffect(() => {
