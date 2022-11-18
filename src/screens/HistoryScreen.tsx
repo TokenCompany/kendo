@@ -15,7 +15,12 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <ScrollView style={styles.container}>
-      <CalendarFrame />
+      <CalendarFrame 
+      onPressDay={(day)=>{
+        console.log(day);
+        
+      }}
+      />
       <View style={styles.box}>
         <Text style={styles.boxTitle}>2022年4月15日(金)</Text>
         <View style={styles.boxInputArea}>

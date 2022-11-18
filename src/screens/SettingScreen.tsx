@@ -62,13 +62,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let changeText = "";
     originDate.forEach((element, index) => {
       if (index == 4) {
-        changeText += "年";
+        changeText += i18n.t("Setting.year");
       } else if (index == 6) {
-        changeText += "月";
+        changeText += i18n.t("Setting.month");
       }
       changeText += element;
       if (index == originDate.length - 1) {
-        changeText += "日";
+        changeText += i18n.t("Setting.day");
       }
     });
     return changeText;
@@ -101,7 +101,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     } else {
       return (
         <Text>
-          {renderExamDate(exam) >= 0 ? `${"残り"}` + `${renderExamDate(exam)}` + `${"日"}` : "-"}
+          {renderExamDate(exam) >= 0
+            ? `${i18n.t("Setting.remain")}` + `${renderExamDate(exam)}` + `${i18n.t("Setting.day")}`
+            : "-"}
         </Text>
       );
     }
@@ -160,22 +162,26 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.profileBody}>
             <Text style={styles.profileText01}>{i18n.t("Setting.name")}</Text>
             <Text style={styles.profileText02}>
-              {profile.name ? profile.name : "名前が入ります"}
+              {profile.name ? profile.name : i18n.t("Setting.intoName")}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
             <Text style={styles.profileText02}>
               {profile.birthday !== 19900000
                 ? renderChangeText(profile.birthday)
-                : "生年月日が入ります"}
+                : i18n.t("Setting.intoBirthday")}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
-            <Text style={styles.profileText02}>{profile.age ? profile.age : "年齢が入ります"}</Text>
+            <Text style={styles.profileText02}>
+              {profile.age ? profile.age : i18n.t("Setting.intoAge")}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
             <Text style={styles.profileText02}>
-              {profile.kenNumber ? profile.kenNumber : "全剣連番号が入ります"}
+              {profile.kenNumber ? profile.kenNumber : i18n.t("Setting.intoNumber")}
             </Text>
-            <Text style={styles.profileText01}>課題</Text>
-            {profile.task ? <Text style={styles.profileText02}>{profile.task}</Text> : ""}
+            <Text style={styles.profileText01}>{i18n.t("Setting.task")}</Text>
+            <Text style={styles.profileText02}>
+              {profile.task ? profile.task : i18n.t("Setting.intoTask")}
+            </Text>
           </View>
           {profile.profileImage ? (
             <Image
@@ -192,9 +198,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>階級</Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>合格</Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>合格日/審査までの日数</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>{i18n.t("Setting.th01")}</Text>
+            <Text style={[styles.tableData, styles.secondColumn]}>{i18n.t("Setting.th02")}</Text>
+            <Text style={[styles.tableData, styles.thirdColumn]}>{i18n.t("Setting.th03")}</Text>
           </View>
           {renderLevelTable()}
         </View>
@@ -224,7 +230,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
   },
   buttonContainer: {
     marginBottom: 20,
@@ -232,15 +238,16 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     paddingBottom: 20,
-    paddingHorizontal: 20,
+    paddingHorizontal: 30,
   },
   profileBody: {
     flexGrow: 1,
-    paddingRight: 20,
+    paddingLeft: 10,
   },
   profileImage: {
     width: 100,
     height: 100,
+    marginRight: 30,
   },
   profileText01: {
     marginBottom: 3,
@@ -272,6 +279,6 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   thirdColumn: {
-    width: "50%",
+    width: "55%",
   },
 });
