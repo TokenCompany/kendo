@@ -38,7 +38,7 @@
   "Setting": {
     "title": "設定",
     "name": "名前",
-    "birthday": "誕生日設定",
+    "birthday": "生年月日",
     "age": "年齢",
     "task": "課題",
     "number": "全剣連番号",
@@ -53,6 +53,7 @@
     "year": "年",
     "month": "月",
     "day": "日",
+    "old": "歳",
     "remain": "残り",
     "intoName": "名前が入ります",
     "intoBirthday": "生年月日が入ります",

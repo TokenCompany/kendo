@@ -172,7 +172,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
             <Text style={styles.profileText02}>
-              {profile.age ? profile.age : i18n.t("Setting.intoAge")}
+              {profile.age ? profile.age + `${i18n.t("Setting.old")}` : i18n.t("Setting.intoAge")}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
             <Text style={styles.profileText02}>
