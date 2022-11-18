@@ -236,14 +236,11 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     let changeText = "";
     originDate.forEach((element, index) => {
       if (index == 4) {
-        changeText += "年";
+        changeText += "/";
       } else if (index == 6) {
-        changeText += "月";
+        changeText += "/";
       }
       changeText += element;
-      if (index == originDate.length - 1) {
-        changeText += "日";
-      }
     });
     return changeText;
   };
@@ -352,6 +349,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               if (date2) {
                 const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate00(exam0);
+                console.log(exam0);
+                console.log(exam0);
               }
             }}
             onPressClose={onPressClose}
