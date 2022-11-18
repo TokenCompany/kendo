@@ -143,7 +143,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
           {renderPassedCheck(profile[`passed${index}`])}
         </Text>
         <Text style={[styles.tableData, styles.thirdColumn]}>
-          {profile[`exam${index}`] !== 19900000
+          {profile[`exam${index}`] !== 19900000 || profile[`passed${index}`] !== 19900000
             ? renderPassedDate(profile[`passed${index}`], profile[`exam${index}`])
             : "-"}
         </Text>
