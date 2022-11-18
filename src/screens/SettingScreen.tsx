@@ -62,14 +62,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let changeText = "";
     originDate.forEach((element, index) => {
       if (index == 4) {
-        changeText += i18n.t("Setting.year");
+        changeText += "/";
       } else if (index == 6) {
-        changeText += i18n.t("Setting.month");
+        changeText += "/";
       }
       changeText += element;
-      if (index == originDate.length - 1) {
-        changeText += i18n.t("Setting.day");
-      }
     });
     return changeText;
   };
