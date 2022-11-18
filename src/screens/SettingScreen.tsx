@@ -7,7 +7,6 @@ import i18n from "../lang/localization";
 import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { render } from "react-dom";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
@@ -107,14 +106,14 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // 合格日抽出
-  const passedObject = Object.keys(profile).filter(function (item) {
-    return item.indexOf("passed") !== -1;
-  });
+  // const passedObject = Object.keys(profile).filter(function (item) {
+  //   return item.indexOf("passed") !== -1;
+  // });
 
   // 審査日抽出
-  const examObject = Object.keys(profile).filter(function (item) {
-    return item.indexOf("exam") !== -1;
-  });
+  // const examObject = Object.keys(profile).filter(function (item) {
+  //   return item.indexOf("exam") !== -1;
+  // });
 
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
