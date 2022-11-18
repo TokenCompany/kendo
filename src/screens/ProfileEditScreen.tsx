@@ -13,7 +13,7 @@ import profileSlice from "../store/profileSlice";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
-export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
+export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   // useProfileFormというカスタムフックにフォーム編集に関わるロジックを分離しています
   let {
     currentName,
@@ -192,6 +192,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     setShow20(false);
     setShow21(false);
     setShow22(false);
+  };
+  // 設定ボタン
+  const onSetting = () => {
+    onPressSave();
+    navigation.navigate("Setting");
   };
 
   // 年齢が14歳以上なら合格日審査日を入力できる
@@ -607,7 +612,7 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
         </View>
       )}
       <View style={styles.buttonContainer}>
-        <Button text="プロフィール登録" onPress={onPressSave} />
+        <Button text="プロフィール登録" onPress={onSetting} />
       </View>
     </ScrollView>
   );
