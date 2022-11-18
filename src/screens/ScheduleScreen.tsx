@@ -15,7 +15,6 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-  // console.log(reservations);
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();

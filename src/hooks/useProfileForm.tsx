@@ -310,7 +310,6 @@ export const useProfileForm = (): Hooks => {
 
   const onPressSaveTask = () => {
     dispatch(setTask(currentTask));
-    console.log("a");
   };
 
   const onPressDeleteTask = () => {

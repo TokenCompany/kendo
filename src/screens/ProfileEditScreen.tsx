@@ -227,8 +227,6 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
-    console.log(typeof date);
-
     let originDate = date.toString().split("");
     let changeText = "";
     originDate.forEach((element, index) => {

@@ -124,7 +124,6 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           return (
             <TouchableOpacity
               onPress={() => {
-                // console.log(date.dateString);
                 if (date) {
                   onPressDay(date.dateString);
                 }
