@@ -76,20 +76,21 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number) => {
-    // if (passed !== 19900000) {
-    //   return <Text>〇</Text>;
-    // } else {
-    //   if () {
-    //   } else {
-    //   return <Text>-</Text>;
-    //   }
-    // }
+    if (passed !== 19900000) {
+      return <Text>〇</Text>;
+    } else {
+      // if () {
+      // } else {
+      return <Text>-</Text>;
+      // }
+    }
   };
 
   // 審査までの日数
   const renderExamDate = (exam: number) => {
     const today = dayjs().format("YYYYMMDD");
-    const diffDate = dayjs(today).diff(Date(exam), "day");
+    const examDay = String(exam);
+    const diffDate = dayjs(examDay).diff(today, "day");
     return diffDate;
   };
 
@@ -98,7 +99,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     if (passed !== 19900000) {
       return <Text>{renderChangeText(passed)}</Text>;
     } else {
-      return <Text>{`${"残り"}` + `${renderExamDate(exam)}` + `${"日"}`}</Text>;
+      return (
+        <Text>
+          {renderExamDate(exam) >= 0 ? `${"残り"}` + `${renderExamDate(exam)}` + `${"日"}` : "-"}
+        </Text>
+      );
     }
   };
 
