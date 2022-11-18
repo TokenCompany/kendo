@@ -40,26 +40,28 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 段数を表示
   const renderLevel = () => {
-    if (profile.passed01 === 19900000) {
+    if (profile.passed1 === 19900000) {
       return <Text>初段</Text>;
-    } else if (profile.passed02 === 19900000) {
+    } else if (profile.passed2 === 19900000) {
       return <Text>弐段</Text>;
-    } else if (profile.passed03 === 19900000) {
+    } else if (profile.passed3 === 19900000) {
       return <Text>参段</Text>;
-    } else if (profile.passed04 === 19900000) {
+    } else if (profile.passed4 === 19900000) {
       return <Text>四段</Text>;
-    } else if (profile.passed05 === 19900000) {
+    } else if (profile.passed5 === 19900000) {
       return <Text>五段</Text>;
-    } else if (profile.passed06 === 19900000) {
+    } else if (profile.passed6 === 19900000) {
       return <Text>六段</Text>;
-    } else if (profile.passed07 === 19900000) {
+    } else if (profile.passed7 === 19900000) {
       return <Text>七段</Text>;
-    } else if (profile.passed08 === 19900000) {
+    } else if (profile.passed8 === 19900000) {
       return <Text>八段</Text>;
-    } else if (profile.passed09 === 19900000) {
+    } else if (profile.passed9 === 19900000) {
       return <Text>錬士</Text>;
     } else if (profile.passed10 === 19900000) {
       return <Text>教士</Text>;
+    } else {
+      return <Text>初段</Text>;
     }
   };
 
