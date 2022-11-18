@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } from "react-native";
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -17,21 +17,27 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   });
 
   const [modalVisible, setModalVisible] = useState(false);
-  const onPress = () => {
+  const [onPressJudge, setOnPressJudge] = useState(false);
+
+  let time: any;
+  const onPress = (time: any) => {
+    setOnPressJudge(true);
     setModalVisible(true);
 
-    let time = setTimeout(() => {
-      onPressClose();
+    time = setTimeout(() => {
+      onPressClose(time);
     }, 5000);
-
-    if (modalVisible === false) {
-      clearTimeout(time);
-    }
   };
 
-  const onPressClose = () => {
+  useEffect(() => {
+    if (!modalVisible && onPressJudge) {
+      navigation.navigate("Menu");
+    }
+  });
+
+  const onPressClose = (time: any) => {
     setModalVisible(false);
-    navigation.navigate("Menu");
+    clearTimeout(time);
   };
 
   const initText = useSelector((state: RootState) => state.initText.initText);
