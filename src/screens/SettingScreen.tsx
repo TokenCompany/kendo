@@ -238,7 +238,6 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     paddingBottom: 20,
-    paddingHorizontal: 30,
   },
   profileBody: {
     flexGrow: 1,
@@ -258,6 +257,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingLeft: 16,
     fontSize: 16,
+    width: 200,
   },
   tableContainer: {
     marginBottom: 20,
