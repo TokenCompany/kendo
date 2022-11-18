@@ -214,13 +214,12 @@ export const useProfileForm = (): Hooks => {
   };
   const onChangePassedDate05 = (passed5: number) => {
     setCurrentPassedDate05(passed5);
-    setCurrentExamDate06(passed5 + 10000);
-    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate08(passed5 + 10000);
   };
   const onChangePassedDate06 = (passed6: number) => {
     setCurrentPassedDate06(passed6);
     setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
-    setCurrentExamDate10(passed7 + 20000);
+    setCurrentExamDate10(passed6 + 20000);
   };
   const onChangePassedDate07 = (passed7: number) => {
     setCurrentPassedDate07(passed7);
@@ -235,7 +234,7 @@ export const useProfileForm = (): Hooks => {
     setCurrentPassedDate10(passed10);
   };
   const onChangeExamDate00 = (exam0: number) => {
-    setCurrentExamDate00(exam0);
+    setCurrentExamDate01(exam0);
   };
   const onChangeExamDate01 = (exam1: number) => {
     setCurrentExamDate01(exam1);

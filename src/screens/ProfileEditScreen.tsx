@@ -203,10 +203,11 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
     }
   });
 
-  // 練士、教士の表示
+  // 練士、教士、範士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
+  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
   useEffect(() => {
-    if (currentPassedDate06 !== 19900000) {
+    if (currentPassedDate05 !== 19900000) {
       setOpenRenshi(true);
       setOpenHanshi(true);
     } else {
@@ -216,14 +217,12 @@ export const ProfileEditScreen: React.FC<Props> = ({}: Props) => {
   });
   const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
   useEffect(() => {
-    if (currentPassedDate07 !== 19900000) {
+    if (currentPassedDate06 !== 19900000) {
       setOpenKyoushi(true);
     } else {
       setOpenKyoushi(false);
     }
   });
-
-  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
 
   // 日付表示変換
   const renderChangeText = (date: number) => {

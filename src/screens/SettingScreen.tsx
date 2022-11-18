@@ -118,19 +118,22 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   });
 
   // 階級
-  const kendoLevel = [
-    "初段",
-    "弐段",
-    "参段",
-    "四段",
-    "五段",
-    "六段",
-    "七段",
-    "八段",
-    "錬士",
-    "教士",
-    "範士",
-  ];
+  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
+
+  // 条件を満たした時に錬士,教士,範士の追加
+  const addLevel = () => {
+    if (profile.passed5 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
+      kendoLevel[kendoLevel.length] = "範士";
+    }
+
+    if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "教士";
+    }
+  };
+  {
+    addLevel();
+  }
 
   console.log(profile);
 
