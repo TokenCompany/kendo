@@ -133,8 +133,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     addLevel();
   }
 
-  console.log(profile);
-
   const renderLevelTable = () => {
     return kendoLevel.map((data, index) => (
       <View style={styles.tableRow}>

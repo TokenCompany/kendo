@@ -349,8 +349,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               if (date2) {
                 const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate00(exam0);
-                console.log(exam0);
-                console.log(exam0);
               }
             }}
             onPressClose={onPressClose}
