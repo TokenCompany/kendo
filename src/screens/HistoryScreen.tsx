@@ -19,14 +19,12 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   // reduxからの情報取得
   const reservations = useSelector((state: RootState) => state.reservation);
-  
-  console.log(reservations);
   // ステートの定義
   const [selectedDateText, setSelectedDateText] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>();
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
-  const [place, setPlace] = useState<string>();
+  const [place, setPlace] = useState<string>("");
   const [showBox, setshowBox] = useState(false);
   const [showButton, setShowButton] = useState(true);
   const showingBox = (judge:boolean) => {

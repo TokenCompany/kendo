@@ -4,11 +4,30 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
-import { KeikoKakariInput } from "../components/KeikoKakariInput";
 import { useSelector} from "react-redux";
 import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
+export type SubCategories = [
+  {
+    id: string,
+    text: string,
+    result: number,
+  }
+]
+export type Results = {
+  [date: string]:{
+    place: string,
+    time: number,
+    suburiSubCategories:SubCategories[],
+    ashiSabakiSubCategories:SubCategories[],
+    kihonUchiSubCategories:SubCategories[],
+    oujiwazaSubCategories:SubCategories[],
+    jigeikoSubCategories:SubCategories[],
+    teacherSubCategories:SubCategories[],
+    kakarigeikoSubCategories:SubCategories[],
+  }
+};
 
 export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) => {
   /* 2. Get the param */
@@ -73,8 +92,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) =
       <View style={styles.dateWrap}>
         <Text style={styles.date}>{date}</Text>
       </View>
-      {mainCategoriesData.map((data) =>(
-        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]} reservedPlace={place}/>
+      {mainCategoriesData.map((data,index:number) =>(
+        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]} reservedPlace={place} key={index}/>
       ))}
       <View style={styles.buttonContainer}>
         <Button text="稽古実績登録" onPress={onPressBtn} />

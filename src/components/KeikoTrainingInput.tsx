@@ -19,7 +19,6 @@ export type SubCategories = [
 ] 
 
 export type Results = {
-  [date: string]:{
     place: string,
     time: number,
     suburiSubCategories:SubCategories[],
@@ -29,15 +28,43 @@ export type Results = {
     jigeikoSubCategories:SubCategories[],
     teacherSubCategories:SubCategories[],
     kakarigeikoSubCategories:SubCategories[],
-  }
 };
 
 export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories,reservedPlace }) => {
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
-  const [results, setResults] = useState<Results>();
-
+  const initResults = {
+    place: "",
+    time: 0,
+    suburiSubCategories:[],
+    ashiSabakiSubCategories:[],
+    kihonUchiSubCategories:[],
+    oujiwazaSubCategories:[],
+    jigeikoSubCategories:[],
+    teacherSubCategories:[],
+    kakarigeikoSubCategories:[],
+  }
+  const [results, setResults] = useState<Results>(initResults);
+  // 入力された数字をstateに保存するための関数
+  const onChangeCountResults = (count:number, id:string,mainCategory:string) => {
+    let newResults = {...results}
+    let obj = newResults[mainCategory];
+    console.log(obj);
+    // for (const target of currentTargets) {
+    //   if (target.id === id) {
+    //     newCurrentTargets.push({
+    //       ...target,
+    //       times: count
+    //     })
+    //   }else{
+    //     newCurrentTargets.push(target);
+    //   }
+    // }
+    // setResults(newCurrentTargets);
+    // sumAllYearGoal();
+  }
+  // サブカテゴリ―によって出すinput形式を変更
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
@@ -151,11 +178,19 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
   // subcategoriesに登録がない稽古時間の条件分岐
   if (textTrainingCategories in subCategories) {
     for (const data of subCategories[textTrainingCategories]) {
-      subCategoriesData.push([data.text])
+      subCategoriesData.push({
+        id: data.id,
+        text : data.text,
+        mainCategory: textTrainingCategories
+      })
     }
   }else{
-    subCategoriesData.push('')
-  }
+    subCategoriesData.push({
+      id: "",
+      text : "",
+      mainCategory: textTrainingCategories,
+    })
+  }  
   
   let inputSelected = true;
   if (place === "input") {
@@ -181,12 +216,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
           <View>
             {!!input1 && (
               <View>
-                {subCategoriesData.map((data) =>(
-                  <View style={styles.inputGroup}>
-                    <Text style={styles.inputText}>{data[0]}</Text>
+                {subCategoriesData.map((data:any,index:number) =>(
+                  <View style={styles.inputGroup} key={index}>
+                    <Text style={styles.inputText}>{data.text}</Text>
                     <TextInput
                      style={styles.input}
-                     keyboardType="numeric" 
+                     keyboardType="numeric"
+                     onChangeText={()=>{
+
+                     }}
                      />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>
@@ -221,8 +259,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                     selectedValue={place}
                     onValueChange={(itemValue, itemIndex) => setPlace(itemValue.toString())}
                     itemStyle={{ height: 60 }}>
-                    {subCategoriesData.map((data) =>(
-                      <Picker.Item label={data[0]} value={data[0]} />
+                    {subCategoriesData.map((data:any,index:number) =>(
+                      <Picker.Item label={data.text} value={data.text} key={index}/>
                     ))}
                     <Picker.Item label="直接入力" value="input" />
                   </Picker>
