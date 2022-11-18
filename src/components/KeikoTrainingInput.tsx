@@ -10,17 +10,15 @@ type Props = {
   reservedPlace: string;
 };
 
-export type SubCategories = [
-  {
+export type SubCategories = {
     id: string,
     text: string,
     result: number,
   }
-] 
 
 export type Results = {
-    place: string,
-    time: number,
+    place:string,
+    time:number,
     suburiSubCategories:SubCategories[],
     ashiSabakiSubCategories:SubCategories[],
     kihonUchiSubCategories:SubCategories[],
@@ -33,137 +31,136 @@ export type Results = {
 export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories,reservedPlace }) => {
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
-  const [place, setPlace] = useState<string>(reservedPlace);
-  const initResults = {
-    place: "",
+  // const [place, setPlace] = useState<string>(reservedPlace);
+  const initResults:Results = {
+    place: reservedPlace,
     time: 0,
-    suburiSubCategories:[],
-    ashiSabakiSubCategories:[],
-    kihonUchiSubCategories:[],
-    oujiwazaSubCategories:[],
-    jigeikoSubCategories:[],
-    teacherSubCategories:[],
-    kakarigeikoSubCategories:[],
+    suburiSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "test3",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test4",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d89e",
+        text: "test5",
+        result: 0
+      },
+    ],
+    ashiSabakiSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "足さばき",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "上下素振り",
+        result: 0
+      },
+    ],
+    kihonUchiSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "test",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test2",
+        result: 0
+      },
+    ],
+    oujiwazaSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "test3",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test4",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test5",
+        result: 0
+      },
+    ],
+    jigeikoSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "あり",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test4",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test5",
+        result: 0
+      },
+    ],
+    teacherSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "test3",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test4",
+        result: 0
+      },
+      {
+        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
+        text: "test5",
+        result: 0
+      },
+    ],
+    kakarigeikoSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "あり",
+        result: 0
+      },
+    ],
   }
   const [results, setResults] = useState<Results>(initResults);
   // 入力された数字をstateに保存するための関数
-  const onChangeCountResults = (count:number, id:string,mainCategory:string) => {
+  const onChangeCountResults = (count:number, id:string, mainCategory:string) => {
     let newResults = {...results}
-    let obj = newResults[mainCategory];
-    console.log(obj);
-    // for (const target of currentTargets) {
-    //   if (target.id === id) {
-    //     newCurrentTargets.push({
-    //       ...target,
-    //       times: count
-    //     })
-    //   }else{
-    //     newCurrentTargets.push(target);
-    //   }
-    // }
-    // setResults(newCurrentTargets);
-    // sumAllYearGoal();
+    for (const subCategory of newResults[mainCategory]) {
+      // console.log(subCategory);
+      if (subCategory.id === id ) {
+        // console.log('atari');
+        let newObj:any = {...subCategory,result:count};
+        // console.log(newObj);       
+        newResults[mainCategory].push(newObj);
+     // console.log(newResults);
+      }else{
+        newResults[mainCategory].push(subCategory);
+      }
+    }
+    setResults(newResults)
   }
+
   // サブカテゴリ―によって出すinput形式を変更
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
-  const subCategories = {
-    "ashiSabakiSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "足さばき",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "上下素振り",
-      },
-    ],
-    "kihonUchiSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "test",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test2",
-      },
-    ],
-    "oujiwazaSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "test3",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test4",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test5",
-      },
-    ],
-    "suburiSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "test3",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test4",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test5",
-      },
-    ],
-    "teacherSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "test3",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test4",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test5",
-      },
-    ],
-    "placeSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "test3",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test4",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test5",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "横浜アリーナ",
-      },
-    ],
-    "targetSubCategories": [
-      {
-        "id": "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        "text": "test3",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test4",
-      },
-      {
-        "id": "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        "text": "test5",
-      },
-    ]
-  }
+  // const subCategories = {
+    
+  // }
 
   if (textTraining === "稽古場所") {
     input3 = true;
@@ -176,8 +173,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
   let subCategoriesData: any = [];
 
   // subcategoriesに登録がない稽古時間の条件分岐
-  if (textTrainingCategories in subCategories) {
-    for (const data of subCategories[textTrainingCategories]) {
+  if (textTrainingCategories in results) {
+    for (const data of results[textTrainingCategories]) {
       subCategoriesData.push({
         id: data.id,
         text : data.text,
@@ -193,7 +190,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
   }  
   
   let inputSelected = true;
-  if (place === "input") {
+  if (results.place === "input") {
     inputSelected = true;
   } else {
     inputSelected = false;
@@ -222,8 +219,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                     <TextInput
                      style={styles.input}
                      keyboardType="numeric"
-                     onChangeText={()=>{
-
+                     onChangeText={(text)=>{
+                      onChangeCountResults(Number(text),data.id,data.mainCategory);
+                      console.log(results);
                      }}
                      />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
