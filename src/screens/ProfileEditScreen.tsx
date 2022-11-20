@@ -203,7 +203,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setShow22(false);
   };
 
-  // 設定ボタン
+  // プロフィール登録ボタン
+  // navigation.navigate("Setting");が効かない状態です（何もプロフィールに変更がない場合は効く）
   const onSetting = () => {
     navigation.navigate("Setting");
     onPressSave();

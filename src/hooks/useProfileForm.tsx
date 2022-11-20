@@ -277,6 +277,7 @@ export const useProfileForm = (): Hooks => {
 
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
+  // 画面遷移の記述はないが、mメニュー画面へ遷移してしまう
   const onPressSave = () => {
     dispatch(setName(currentName));
     dispatch(setAge(currentAge));
