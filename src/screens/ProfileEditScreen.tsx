@@ -202,10 +202,12 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setShow21(false);
     setShow22(false);
   };
+  console.log(show02);
+
   // 設定ボタン
   const onSetting = () => {
-    onPressSave();
     navigation.navigate("Setting");
+    onPressSave();
   };
 
   // 年齢が14歳以上なら合格日審査日を入力できる
@@ -381,6 +383,9 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate00)}
             passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
+              if (Platform.OS === "android") {
+                setShow01(false);
+              }
               if (date1) {
                 const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate00(passed0);
@@ -388,6 +393,9 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate00.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
+              if (Platform.OS === "android") {
+                setShow02(false);
+              }
               if (date2) {
                 const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate00(exam0);
@@ -395,18 +403,19 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             onPressClose={onPressClose}
           />
-
           <LevelForm
             label="弐段"
             visiblePassed={show03}
             visibleExam={show04}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker03}
             showDatepickerExam={showDatepicker04}
             currentPassedDateText={renderChangeText(currentPassedDate01)}
             currentExamDateText={renderChangeText(currentExamDate01)}
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow03(false);
+              Platform.OS === "android" && setShow03(false);
               if (date1) {
                 const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate01(passed1);
@@ -414,7 +423,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate01.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow04(false);
+              Platform.OS === "android" && setShow04(false);
               if (date2) {
                 const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate01(exam1);
@@ -426,6 +435,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="参段"
             visiblePassed={show05}
             visibleExam={show06}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker05}
             showDatepickerExam={showDatepicker06}
             currentPassedDateText={renderChangeText(currentPassedDate02)}
@@ -452,6 +463,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="四段"
             visiblePassed={show07}
             visibleExam={show08}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker07}
             showDatepickerExam={showDatepicker08}
             currentPassedDateText={renderChangeText(currentPassedDate03)}
@@ -478,6 +491,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="五段"
             visiblePassed={show09}
             visibleExam={show10}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker09}
             showDatepickerExam={showDatepicker10}
             currentPassedDateText={renderChangeText(currentPassedDate04)}
@@ -504,6 +519,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="六段"
             visiblePassed={show11}
             visibleExam={show12}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker11}
             showDatepickerExam={showDatepicker12}
             currentPassedDateText={renderChangeText(currentPassedDate05)}
@@ -530,6 +547,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="七段"
             visiblePassed={show13}
             visibleExam={show14}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker13}
             showDatepickerExam={showDatepicker14}
             currentPassedDateText={renderChangeText(currentPassedDate06)}
@@ -556,6 +575,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="八段"
             visiblePassed={show15}
             visibleExam={show16}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker15}
             showDatepickerExam={showDatepicker16}
             currentPassedDateText={renderChangeText(currentPassedDate07)}
@@ -586,6 +607,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="錬士"
             visiblePassed={show17}
             visibleExam={show18}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker17}
             showDatepickerExam={showDatepicker18}
             currentPassedDateText={renderChangeText(currentPassedDate08)}
@@ -616,6 +639,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="教士"
             visiblePassed={show19}
             visibleExam={show20}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker19}
             showDatepickerExam={showDatepicker20}
             currentPassedDateText={renderChangeText(currentPassedDate09)}
@@ -646,6 +671,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             label="範士"
             visiblePassed={show21}
             visibleExam={show22}
+            closePassed={onPressClose}
+            closeExam={onPressClose}
             showDatepickerPassed={showDatepicker21}
             showDatepickerExam={showDatepicker22}
             currentPassedDateText={renderChangeText(currentPassedDate10)}

@@ -114,7 +114,7 @@ export const LevelForm: React.FC<Props> = ({
                 value={passedDateValue}
                 mode="date"
                 display={"default"}
-                onChange={onChangePassed}
+                onChange={onChangeExam}
               />
             )}
           </Modal>
