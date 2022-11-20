@@ -1,14 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  ScrollView,
-  Modal,
-  Platform,
-} from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, Modal } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { TextForm } from "../components/TextForm";
@@ -209,7 +200,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // 年齢が14歳以上なら合格日審査日を入力できる
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState<boolean>(false);
   useEffect(() => {
     if (currentAge > 14) {
       setOpen(true);
@@ -280,72 +271,41 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             </TouchableOpacity>
             <Text style={styles.birthdayText}>{renderChangeText(currentBirthday)}</Text>
           </View>
-          {Platform.OS === "ios" && (
-            <Modal
-              animationType="fade"
-              visible={show}
-              transparent={true}
-              onRequestClose={() => {
-                setShow(false);
-              }}
-            >
-              <View style={styles.modalView}>
-                <DateTimePicker
-                  value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
-                  mode="date"
-                  display={"spinner"}
-                  onChange={(event, date) => {
-                    if (date) {
-                      const birthday = Number(dayjs(date).format("YYYYMMDD"));
-                      onChangeBirthday(birthday);
-                      // 誕生日から年齢算出
-                      const dateBirthday = dayjs(currentBirthday.toString(), "YYYYMMDD");
-                      const dateToday = dayjs();
-                      const baseAge = dateToday.year() - dateBirthday.year();
-                      const thisBirthday = dayjs(
-                        `${dateToday.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
-                      );
-                      currentAge = Number(dateToday.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
-                      onChangeAge(currentAge);
-                    }
-                  }}
-                />
-                <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
-                  <Text style={styles.textStyle}>×</Text>
-                </TouchableOpacity>
-              </View>
-            </Modal>
-          )}
-          {Platform.OS === "android" && (
-            <View>
-              {show && (
-                <DateTimePicker
-                  value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
-                  mode="date"
-                  display={"default"}
-                  onChange={(event, date) => {
-                    if (date) {
-                      setShow(false);
-                      const birthday = Number(dayjs(date).format("YYYYMMDD"));
-                      onChangeBirthday(birthday);
-                      // 誕生日から年齢算出
-                      const dateBirthday = dayjs(currentBirthday.toString(), "YYYYMMDD");
-                      const dateToday = dayjs();
-                      const baseAge = dateToday.year() - dateBirthday.year();
-                      const thisBirthday = dayjs(
-                        `${dateToday.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
-                      );
-                      const nowAge = Number(
-                        dateToday.isBefore(thisBirthday) ? baseAge - 1 : baseAge,
-                      );
-                      onChangeAge(nowAge);
-                      currentAge = nowAge;
-                    }
-                  }}
-                />
-              )}
+          <Modal
+            animationType="fade"
+            visible={show}
+            transparent={true}
+            onRequestClose={() => {
+              setShow(false);
+            }}
+          >
+            <View style={styles.modalView}>
+              <DateTimePicker
+                value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
+                mode="date"
+                display={"spinner"}
+                onChange={(event, date) => {
+                  if (date) {
+                    const birthday = Number(dayjs(date).format("YYYYMMDD"));
+                    onChangeBirthday(birthday);
+                    // 誕生日から年齢算出
+                    const dateBirthday = dayjs(currentBirthday.toString(), "YYYYMMDD");
+                    const dateToday = dayjs();
+                    const baseAge = dateToday.year() - dateBirthday.year();
+                    const thisBirthday = dayjs(
+                      `${dateToday.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
+                    );
+                    const nowAge = Number(dateToday.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
+                    currentAge = nowAge;
+                    onChangeAge(nowAge);
+                  }
+                }}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={() => onPressClose()}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
             </View>
-          )}
+          </Modal>
           <View>
             <Text style={styles.label}>年齢</Text>
             <Text style={styles.input}>{String(currentAge)}</Text>
@@ -379,7 +339,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate00)}
             passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow01(false);
               if (date1) {
                 const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate00(passed0);
@@ -387,7 +346,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate00.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow02(false);
               if (date2) {
                 const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate00(exam0);
@@ -406,7 +364,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate01)}
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow03(false);
               if (date1) {
                 const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate01(passed1);
@@ -414,7 +371,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate01.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow04(false);
               if (date2) {
                 const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate01(exam1);
@@ -432,7 +388,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate02)}
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow05(false);
               if (date1) {
                 const passed2 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate02(passed2);
@@ -440,7 +395,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate02.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow06(false);
               if (date2) {
                 const exam2 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate02(exam2);
@@ -458,7 +412,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate03)}
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow07(false);
               if (date1) {
                 const passed3 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate03(passed3);
@@ -466,7 +419,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate03.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow08(false);
               if (date2) {
                 const exam3 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate03(exam3);
@@ -484,7 +436,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate04)}
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow09(false);
               if (date1) {
                 const passed4 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate04(passed4);
@@ -492,7 +443,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate04.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow10(false);
               if (date2) {
                 const exam4 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate04(exam4);
@@ -510,7 +460,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate05)}
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow11(false);
               if (date1) {
                 const passed5 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate05(passed5);
@@ -518,7 +467,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate05.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow12(false);
               if (date2) {
                 const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate05(exam5);
@@ -536,7 +484,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate06)}
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow13(false);
               if (date1) {
                 const passed6 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate06(passed6);
@@ -544,7 +491,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow14(false);
               if (date2) {
                 const exam6 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate06(exam6);
@@ -562,7 +508,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate07)}
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow15(false);
               if (date1) {
                 const passed7 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate07(passed7);
@@ -570,7 +515,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow16(false);
               if (date2) {
                 const exam7 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate07(exam7);
@@ -592,7 +536,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate08)}
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow17(false);
               if (date1) {
                 const passed8 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate08(passed8);
@@ -600,7 +543,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate08.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow18(false);
               if (date2) {
                 const exam8 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate08(exam8);
@@ -622,7 +564,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate09)}
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow19(false);
               if (date1) {
                 const passed9 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate09(passed9);
@@ -630,7 +571,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate09.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow20(false);
               if (date2) {
                 const exam9 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate09(exam9);
@@ -652,7 +592,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             currentExamDateText={renderChangeText(currentExamDate10)}
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
-              setShow21(false);
               if (date1) {
                 const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
                 onChangePassedDate10(passed10);
@@ -660,7 +599,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             }}
             examDateValue={dayjs(currentExamDate10.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
-              setShow22(false);
               if (date2) {
                 const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
                 onChangeExamDate10(exam10);
@@ -731,7 +669,7 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   button: {
-    width: 80,
+    width: 67,
     height: 40,
     backgroundColor: "#a53010",
     borderRadius: 10,
