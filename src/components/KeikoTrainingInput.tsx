@@ -8,17 +8,18 @@ type Props = {
   textTrainingUnit: string;
   textTrainingCategories: string;
   reservedPlace: string;
+  onChangeSendInput: (changedResults:SubCategories[],mainCategory:string) => void;
 };
 
 export type SubCategories = {
-    id: string,
-    text: string,
-    result: number,
+    id: string;
+    text: string;
+    result: number | boolean;
   }
 
 export type Results = {
-    place:string,
-    time:number,
+    placeSubCategories:SubCategories[],
+    trainingTime:SubCategories[],
     suburiSubCategories:SubCategories[],
     ashiSabakiSubCategories:SubCategories[],
     kihonUchiSubCategories:SubCategories[],
@@ -28,13 +29,35 @@ export type Results = {
     kakarigeikoSubCategories:SubCategories[],
 };
 
-export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories,reservedPlace }) => {
+export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTrainingUnit, textTrainingCategories,reservedPlace,onChangeSendInput}) => {
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
-  // const [place, setPlace] = useState<string>(reservedPlace);
+  const [place, setPlace] = useState<string>(reservedPlace);
   const initResults:Results = {
-    place: reservedPlace,
-    time: 0,
+    placeSubCategories: [
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "横浜アリーナ",
+        result: true
+      },
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "沖縄アリーナ",
+        result: false
+      },
+      {
+        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
+        text: "北谷体育館",
+        result: false
+      },
+    ],
+    trainingTime: [
+      {
+        id: "none",
+        text: "",
+        result: 0
+      }
+    ],
     suburiSubCategories: [
       {
         id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
@@ -98,17 +121,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
         id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
         text: "あり",
         result: 0
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test4",
-        result: 0
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test5",
-        result: 0
-      },
+      }
     ],
     teacherSubCategories: [
       {
@@ -136,22 +149,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
     ],
   }
   const [results, setResults] = useState<Results>(initResults);
-  // 入力された数字をstateに保存するための関数
+  // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count:number, id:string, mainCategory:string) => {
     let newResults = {...results}
     for (const subCategory of newResults[mainCategory]) {
-      // console.log(subCategory);
       if (subCategory.id === id ) {
-        // console.log('atari');
-        let newObj:any = {...subCategory,result:count};
-        // console.log(newObj);       
-        newResults[mainCategory].push(newObj);
-     // console.log(newResults);
-      }else{
-        newResults[mainCategory].push(subCategory);
+        subCategory.result = count;
       }
     }
-    setResults(newResults)
+    setResults(newResults);
   }
 
   // サブカテゴリ―によって出すinput形式を変更
@@ -182,6 +188,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
       })
     }
   }else{
+    // ここが時間の表示
     subCategoriesData.push({
       id: "",
       text : "",
@@ -190,7 +197,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
   }  
   
   let inputSelected = true;
-  if (results.place === "input") {
+  if (place === "input") {
     inputSelected = true;
   } else {
     inputSelected = false;
@@ -221,8 +228,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                      keyboardType="numeric"
                      onChangeText={(text)=>{
                       onChangeCountResults(Number(text),data.id,data.mainCategory);
-                      console.log(results);
+                      onChangeSendInput(results[data.mainCategory],data.mainCategory);
+                      
                      }}
+                    //  value={results[data.mainCategory][index]["result"]}
                      />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>
@@ -242,10 +251,19 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                     <Text style={styles.inputText}>あり</Text>
                   </View>
                   {!!checked2 && (
-                    <View style={styles.inputGroup}>
-                      <TextInput style={styles.input} keyboardType="numeric" />
-                      <Text style={styles.inputText}>{textTrainingUnit}</Text>
-                    </View>
+                    subCategoriesData.map((data:any,index:number) =>(
+                      <View style={styles.inputGroup}>
+                        <TextInput
+                          style={styles.input}
+                          keyboardType="numeric"
+                          onChangeText={(text)=>{
+                            onChangeCountResults(Number(text),data.id,data.mainCategory);
+                            onChangeSendInput(results[data.mainCategory],data.mainCategory);
+                          }}
+                          />
+                        <Text style={styles.inputText}>{textTrainingUnit}</Text>
+                      </View>
+                    ))
                   )}
                 </View>
               </View>
@@ -255,7 +273,22 @@ export const KeikoTrainingInput: React.FC<Props> = ({ textTraining, textTraining
                 <View style={styles.inputpicker}>
                   <Picker
                     selectedValue={place}
-                    onValueChange={(itemValue, itemIndex) => setPlace(itemValue.toString())}
+                    onValueChange={(itemValue, itemIndex) =>{
+                      if (itemValue !== "input") {
+                        let newResults= {...results}
+                        for (const place of newResults["placeSubCategories"]) {
+                          if (place["result"]) {
+                            place["result"] = false;
+                          }
+                        }
+                        newResults["placeSubCategories"][itemIndex]["result"] = true;
+                        setResults(newResults);
+                        setPlace(newResults["placeSubCategories"][itemIndex]["text"])
+                      }else{
+                        setPlace("input");
+                      }
+                      onChangeSendInput(results["placeSubCategories"],"placeSubCategories");
+                    }}
                     itemStyle={{ height: 60 }}>
                     {subCategoriesData.map((data:any,index:number) =>(
                       <Picker.Item label={data.text} value={data.text} key={index}/>

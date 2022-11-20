@@ -1,10 +1,11 @@
-import React from "react";
+import React,{useState} from "react";
 import { View, ScrollView, Text, StyleSheet, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
-import { useSelector} from "react-redux";
+import { addResults} from "../store/resultsSlice";
+import { useSelector,useDispatch} from "react-redux";
 import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
@@ -12,32 +13,61 @@ export type SubCategories = [
   {
     id: string,
     text: string,
-    result: number,
+    result: number | boolean,
   }
 ]
 export type Results = {
-  [date: string]:{
-    place: string,
-    time: number,
-    suburiSubCategories:SubCategories[],
-    ashiSabakiSubCategories:SubCategories[],
-    kihonUchiSubCategories:SubCategories[],
-    oujiwazaSubCategories:SubCategories[],
-    jigeikoSubCategories:SubCategories[],
-    teacherSubCategories:SubCategories[],
-    kakarigeikoSubCategories:SubCategories[],
-  }
+    trainingDate: string,
+    resultsSum:{
+      placeSubCategories:SubCategories[],
+      trainingTime:SubCategories[],
+      suburiSubCategories:SubCategories[],
+      ashiSabakiSubCategories:SubCategories[],
+      kihonUchiSubCategories:SubCategories[],
+      oujiwazaSubCategories:SubCategories[],
+      jigeikoSubCategories:SubCategories[],
+      teacherSubCategories:SubCategories[],
+      kakarigeikoSubCategories:SubCategories[],
+    }
 };
 
 export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) => {
+  const dispatch = useDispatch();
+  const orgResults = useSelector((state: RootState) => state.results);
+  // console.log(orgResults);
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
+  const dateText = route.params.dateText;
   const date = route.params.date;
   const place = route.params.place;
-  
+  const initAllResults = {
+    trainingDate: date,
+    resultsSum:{
+      placeSubCategories:[],
+      trainingTime:[],
+      suburiSubCategories:[],
+      ashiSabakiSubCategories:[],
+      kihonUchiSubCategories:[],
+      oujiwazaSubCategories:[],
+      jigeikoSubCategories:[],
+      teacherSubCategories:[],
+      kakarigeikoSubCategories:[],
+    }
+  }
+  const [allResults,setAllResults] = useState<Results>(initAllResults);
   const onPressBtn = () => {
-    createAlert();
+    createAlert();    
+    // REDUXへの保存
+    dispatch(addResults(allResults))
   };
+
+  const onChangeResults = (results:SubCategories[],mainCategory:string) => {
+    let newAllResults = {...allResults};
+    newAllResults["resultsSum"][mainCategory] = results;
+    // console.log(newAllResults);
+    
+    setAllResults(newAllResults)
+  }
   
   const createAlert = () =>
     Alert.alert("", "登録しました", [
@@ -79,6 +109,10 @@ export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) =
       text:'先生との稽古',
       unit:'分'
     },
+    kakarigeikoSubCategories:{
+      text:'掛稽古',
+      unit:'回'
+    }
   }
 
   let mainCategoriesData: any = [];
@@ -90,10 +124,18 @@ export const ResultEditScreen: React.FC<Props> = ({ route,navigation }: Props) =
   return (
     <ScrollView style={styles.container}>
       <View style={styles.dateWrap}>
-        <Text style={styles.date}>{date}</Text>
+        <Text style={styles.date}>{dateText}</Text>
       </View>
       {mainCategoriesData.map((data,index:number) =>(
-        <KeikoTrainingInput textTraining={data[0]} textTrainingUnit={data[1]} textTrainingCategories={data[2]} reservedPlace={place} key={index}/>
+        <KeikoTrainingInput 
+          textTraining={data[0]}
+          textTrainingUnit={data[1]} 
+          textTrainingCategories={data[2]}
+          reservedPlace={place}
+          key={index}
+          onChangeSendInput={(changedResults,mainCategory)=>{
+            onChangeResults(changedResults,mainCategory)
+          }}/>
       ))}
       <View style={styles.buttonContainer}>
         <Button text="稽古実績登録" onPress={onPressBtn} />

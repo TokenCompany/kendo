@@ -13,7 +13,8 @@ type Props = NativeStackScreenProps<MainStackParamList, "History">;
 export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPress = () => {
     navigation.navigate("ResultEdit",{
-      date: selectedDateText,
+      dateText: selectedDateText,
+      date:selectedDate,
       place:place,
     });
   };
