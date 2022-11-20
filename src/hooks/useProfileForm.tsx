@@ -38,7 +38,7 @@ type Hooks = {
   currentKenNumber: string;
   onChangeKenNumber: (text: string) => void;
   currentBirthday: number;
-  onChangeBirthday: (data: number) => void;
+  onChangeBirthday: (date: number) => void;
   onPressSaveTask: () => void;
   onPressDeleteTask: () => void;
   currentImage: string;
@@ -169,8 +169,8 @@ export const useProfileForm = (): Hooks => {
   const onChangeKenNumber = (text: string) => {
     setCurrentKenNumber(text);
   };
-  const onChangeBirthday = (data: number) => {
-    setCurrentBirthday(data);
+  const onChangeBirthday = (date: number) => {
+    setCurrentBirthday(date);
   };
   const onChangePassedDate00 = (passed0: number) => {
     setCurrentPassedDate00(passed0);
