@@ -26,7 +26,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
   const onPressLanguage = () => {
-    navigation.navigate("TrainingEdit");
+    navigation.navigate("Language");
   };
 
   // 練士、教士、範士の表示
