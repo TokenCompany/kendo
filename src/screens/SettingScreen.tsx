@@ -70,18 +70,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return changeText;
   };
 
-  // 合格済みかどうか
-  const renderPassedCheck = (passed: number) => {
-    if (passed !== 19900000) {
-      return <Text>〇</Text>;
-    } else {
-      // if () {
-      // } else {
-      return <Text>-</Text>;
-      // }
-    }
-  };
-
   // 審査までの日数
   const renderExamDate = (exam: number) => {
     const today = dayjs().format("YYYYMMDD");
@@ -106,14 +94,29 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // 合格日抽出
-  // const passedObject = Object.keys(profile).filter(function (item) {
-  //   return item.indexOf("passed") !== -1;
-  // });
+  const passedObject1 = () => {
+    let object = {};
+    Object.keys(profile).forEach((key) => {
+      if (key.indexOf("passed") !== -1) {
+        object[key] = profile[key];
+      }
+    });
+    return object;
+  };
+  const test = passedObject1();
 
-  // 審査日抽出
-  // const examObject = Object.keys(profile).filter(function (item) {
-  //   return item.indexOf("exam") !== -1;
-  // });
+  const passedObject2 = () => {
+    let object = {};
+    Object.keys(test).some((key) => {
+      object[key] = profile[key];
+      if (profile[key] !== 19900000) {
+        return true;
+      }
+    });
+    return object;
+  };
+  const test2 = passedObject2();
+  console.log(test2);
 
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
@@ -133,12 +136,21 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     addLevel();
   }
 
+  // 合格済みかどうか
+  const renderPassedCheck = (passed: number, index: number) => {
+    if (index <= Object.keys(test2).length) {
+      return "〇";
+    } else {
+      return "-";
+    }
+  };
+
   const renderLevelTable = () => {
     return kendoLevel.map((data, index) => (
       <View style={styles.tableRow}>
         <Text style={[styles.tableData, styles.firstColumn]}>{data}</Text>
         <Text style={[styles.tableData, styles.secondColumn]}>
-          {renderPassedCheck(profile[`passed${index}`])}
+          {renderPassedCheck(profile[`passed${index}`], index)}
         </Text>
         <Text style={[styles.tableData, styles.thirdColumn]}>
           {profile[`exam${index}`] !== 19900000 || profile[`passed${index}`] !== 19900000
