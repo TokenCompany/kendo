@@ -103,11 +103,10 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
     return object;
   };
-  const test = passedObject1();
-
+  const onlyPassedObject = passedObject1();
   const passedObject2 = () => {
     let object = {};
-    Object.keys(test).some((key) => {
+    Object.keys(onlyPassedObject).some((key) => {
       object[key] = profile[key];
       if (profile[key] !== 19900000) {
         return true;
@@ -115,8 +114,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
     return object;
   };
-  const test2 = passedObject2();
-  console.log(test2);
+  const onlyPassed = passedObject2();
 
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
@@ -138,7 +136,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (index <= Object.keys(test2).length) {
+    if (index <= Object.keys(onlyPassed).length || passed !== 19900000) {
       return "〇";
     } else {
       return "-";
