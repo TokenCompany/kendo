@@ -23,7 +23,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
-  const showButton:boolean = true;
+  const showButton: boolean = true;
   const [allReservations, setAllReservations] = useState(reservations);
   const [form, setForm] = useState(false);
   const timeErrorAlert = () => {
@@ -47,6 +47,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     { label: "横浜アリーナ", value: "横浜アリーナ" },
     { label: "直接入力", value: showForm },
   ]);
+  const onChangeValue = () => {
+    setPlace(value);
+    if (value !== showForm) {
+      setForm(false);
+    }
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -129,7 +135,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                 style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
                 dropDownStyle={{ backgroundColor: "#F4F4F5" }}
-                onChangeValue={(value) => setPlace(value)}
+                onChangeValue={onChangeValue}
                 placeholder={place}
                 placeholderStyle={{
                   textAlign: "center",
