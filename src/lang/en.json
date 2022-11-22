@@ -141,5 +141,8 @@
     "myTask": "自分の課題",
     "delete": "消去",
     "setting": "設定"
+  },
+  "Lang": {
+    "lang": "en"
   }
 }

@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Modal, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import i18n from "../lang/localization";
 
 type Props = {
   label: string;
@@ -58,7 +59,7 @@ export const LevelForm: React.FC<Props> = ({
             {Platform.OS === "ios" && (
               <View style={styles.modalView}>
                 <DateTimePicker
-                  locale="ja"
+                  locale={i18n.t("Lang.lang")}
                   value={passedDateValue}
                   mode="date"
                   display={"spinner"}
@@ -71,7 +72,7 @@ export const LevelForm: React.FC<Props> = ({
             )}
             {Platform.OS === "android" && (
               <DateTimePicker
-                locale="ja"
+                locale={i18n.t("Lang.lang")}
                 value={passedDateValue}
                 mode="date"
                 display={"default"}
@@ -101,7 +102,7 @@ export const LevelForm: React.FC<Props> = ({
             {Platform.OS === "ios" && (
               <View style={styles.modalView}>
                 <DateTimePicker
-                  locale="ja"
+                  locale="aa"
                   value={examDateValue}
                   mode="date"
                   display={"spinner"}
@@ -114,7 +115,7 @@ export const LevelForm: React.FC<Props> = ({
             )}
             {Platform.OS === "android" && (
               <DateTimePicker
-                locale="ja"
+                locale={i18n.t("Lang.lang")}
                 value={passedDateValue}
                 mode="date"
                 display={"default"}

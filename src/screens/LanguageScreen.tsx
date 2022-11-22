@@ -10,16 +10,12 @@ export const LanguageScreen: React.FC<Props> = ({ navigation }: Props) => {
   // console.log(i18n.locale);
 
   const langChengeJP = () => {
-    console.log("a");
     i18n.locale = "ja-JP";
-    console.log(i18n.locale);
     navigation.navigate("Setting");
   };
 
   const langChengeEN = () => {
-    console.log("b");
     i18n.locale = "en";
-    console.log(i18n.locale);
     navigation.navigate("Setting");
   };
 

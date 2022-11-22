@@ -18,7 +18,7 @@ import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
-import profileSlice from "../store/profileSlice";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
@@ -292,7 +292,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             >
               <View style={styles.modalView}>
                 <DateTimePicker
-                  locale="ja"
+                  locale={i18n.t("Lang.lang")}
                   value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
                   mode="date"
                   display={"spinner"}
@@ -322,7 +322,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             <View>
               {show && (
                 <DateTimePicker
-                  locale="ja"
+                  locale={i18n.t("Lang.lang")}
                   value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
                   mode="date"
                   display={"default"}
