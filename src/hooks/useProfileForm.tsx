@@ -219,7 +219,7 @@ export const useProfileForm = (): Hooks => {
   const onChangePassedDate06 = (passed6: number) => {
     setCurrentPassedDate06(passed6);
     setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
-    setCurrentExamDate10(passed6 + 20000);
+    setCurrentExamDate09(passed6 + 20000);
   };
   const onChangePassedDate07 = (passed7: number) => {
     setCurrentPassedDate07(passed7);

@@ -47,33 +47,35 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 段数を表示
   const renderLevel = () => {
     if (profile.passed1 === 19900000) {
-      return <Text>初段</Text>;
+      return "初段";
     } else if (profile.passed2 === 19900000) {
-      return <Text>弐段</Text>;
+      return "弐段";
     } else if (profile.passed3 === 19900000) {
-      return <Text>参段</Text>;
+      return "参段";
     } else if (profile.passed4 === 19900000) {
-      return <Text>四段</Text>;
+      return "四段";
     } else if (profile.passed5 === 19900000) {
-      return <Text>五段</Text>;
+      return "五段";
     } else if (profile.passed6 === 19900000) {
-      return <Text>六段</Text>;
+      return "六段";
     } else if (profile.passed7 === 19900000) {
-      return <Text>七段</Text>;
+      return "七段";
     } else if (profile.passed8 === 19900000) {
-      return <Text>八段</Text>;
+      return "八段";
     } else if (profile.passed9 === 19900000) {
-      return <Text>錬士</Text>;
+      return "錬士";
     } else if (profile.passed10 === 19900000) {
-      return <Text>教士</Text>;
+      return "教士";
     } else {
-      return <Text>初段</Text>;
+      return "初段";
     }
   };
 
   // 審査日までの残り日数
   let profileExam = () => {
-    if (profile.passed1 === 19900000) {
+    if (profile.passed0 === 19900000) {
+      return profile.exam0;
+    } else if (profile.passed1 === 19900000) {
       return profile.exam1;
     } else if (profile.passed2 === 19900000) {
       return profile.exam2;
@@ -97,11 +99,10 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const renderExamDate = (exam: number) => {
-    const examDate = exam;
-    const today = Number(dayjs().format("YYYYMMDD"));
-    let diffDate = (examDate - today) / 27.397263;
-    let diffRoundDate = Math.round(diffDate);
-    return diffRoundDate;
+    const today = dayjs().format("YYYYMMDD");
+    const examDay = String(exam);
+    const diffDate = dayjs(examDay).diff(today, "day");
+    return diffDate;
   };
 
   return (
@@ -138,7 +139,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {i18n.t("Modal.stage")}
               </Text>
               <Text style={styles.modalText}>
-                {renderExamDate(profileExam()) !== -11721 ? renderExamDate(profileExam()) : "-"}
+                {renderExamDate(profileExam()) > 0 ? renderExamDate(profileExam()) : "-"}
                 {i18n.t("Modal.day")}
               </Text>
               <TouchableOpacity
