@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
+import dayjs from "dayjs";
 //
 // 練習内容項目設定の小項目に関わるredux
 //
@@ -70,19 +70,29 @@ export const counterSlice = createSlice({
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
       if (action.payload.mainCategoryName === "teacherSubCategories") {
-        let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
-          id: action.payload.id,
-          text: action.payload.text,
-          times:0,
-        }]
-        state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
-      }else{
-        let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
-          id: action.payload.id,
-          text: action.payload.text,
-        }]
-        state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
+        // targetSubCategoriesも同時にセット
+        let currentYear = dayjs().year();
+        let newTargetSubCategories = {...state["targetSubCategories"]};
+        if (currentYear in newTargetSubCategories) {
+          newTargetSubCategories[currentYear] = [...newTargetSubCategories[currentYear],{
+            id: action.payload.id,
+            text: action.payload.text,
+            times: 0,
+          }]
+        }else{
+          newTargetSubCategories[currentYear] = [{
+            id: action.payload.id,
+            text: action.payload.text,
+            times: 0,
+          }]
+        }
+        state["targetSubCategories"] = newTargetSubCategories;
       }
+      let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
+        id: action.payload.id,
+        text: action.payload.text,
+      }]
+      state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
     },
     deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(

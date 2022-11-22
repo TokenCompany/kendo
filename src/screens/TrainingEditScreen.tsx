@@ -19,9 +19,14 @@ export type SubCategory = {
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
+   // 今年の取得
+   const currentYear = dayjs().year();
   // reduxからデータの取得
-  let teacherData: any = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
-
+  let teacherData: any = useSelector((state: RootState) => state.subCategory.targetSubCategories[currentYear]);
+  // reduxデータのバリデーション
+  if(!teacherData){
+    teacherData = [];
+  }
   // refの定義
   const scrollViewRef = useRef<ScrollView>(null);
   // stateの定義
@@ -108,11 +113,13 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
        ]);
       }else{
         // reduxへの保存
-        let currentYear = dayjs().year()
         const saveTargets = {
           [currentYear]:currentTargets
         }
-        dispatch(addTargetCategory(saveTargets))
+        dispatch(addTargetCategory(saveTargets));
+        Alert.alert("稽古目標が登録されました", "", [
+          {text: "戻る",}
+        ]);
       }
   }
   
@@ -154,7 +161,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 </View>
                 {currentTargets.map((currentTarget: any, index:number) => {
                   return (
-                    <View style={styles.objectiveInputArea}>
+                    <View style={styles.objectiveInputArea} key={index}>
                       <Text style={styles.objectiveText}>{currentTarget.text}先生</Text>
                       <TextInput
                         style={styles.objectiveInput}
@@ -163,7 +170,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           onChangeCountByTeacher(Number(count),currentTarget.id);
                         }}
                         // value={currentTarget[index].times}
-                        key={index}
                       ></TextInput>
                       <Text style={styles.objectiveText}>回</Text>
                     </View>
