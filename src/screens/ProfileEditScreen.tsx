@@ -355,7 +355,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           )}
           <View>
             <Text style={styles.label}>年齢</Text>
-            <Text style={styles.input}>{String(currentAge)}</Text>
+            <Text style={styles.input}>{String(currentAge) != "0" ? String(currentAge) : ""}</Text>
           </View>
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
