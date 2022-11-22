@@ -33,7 +33,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     if (!modalVisible && onPressJudge) {
       navigation.navigate("Menu");
     }
-  });
+  }, [modalVisible, navigation, onPressJudge]);
 
   const onPressClose = (time: any) => {
     setModalVisible(false);
