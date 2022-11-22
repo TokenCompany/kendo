@@ -35,7 +35,7 @@ interface TargetCategories {
 }
 
 interface TargetCategory {
-  [year: string]:TargetCategories[]
+  [year: string]: TargetCategories[];
 }
 
 // デフォルトの値
@@ -62,7 +62,6 @@ type deleteSubCategory = {
   id: string;
 };
 
-
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
@@ -72,39 +71,46 @@ export const counterSlice = createSlice({
       if (action.payload.mainCategoryName === "teacherSubCategories") {
         // targetSubCategoriesも同時にセット
         let currentYear = dayjs().year();
-        let newTargetSubCategories = {...state["targetSubCategories"]};
+        let newTargetSubCategories = { ...state["targetSubCategories"] };
         if (currentYear in newTargetSubCategories) {
-          newTargetSubCategories[currentYear] = [...newTargetSubCategories[currentYear],{
-            id: action.payload.id,
-            text: action.payload.text,
-            times: 0,
-          }]
-        }else{
-          newTargetSubCategories[currentYear] = [{
-            id: action.payload.id,
-            text: action.payload.text,
-            times: 0,
-          }]
+          newTargetSubCategories[currentYear] = [
+            ...newTargetSubCategories[currentYear],
+            {
+              id: action.payload.id,
+              text: action.payload.text,
+              times: 0,
+            },
+          ];
+        } else {
+          newTargetSubCategories[currentYear] = [
+            {
+              id: action.payload.id,
+              text: action.payload.text,
+              times: 0,
+            },
+          ];
         }
         state["targetSubCategories"] = newTargetSubCategories;
       }
-      let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
-        id: action.payload.id,
-        text: action.payload.text,
-      }]
+      let newSubcategory = [
+        ...state[action.payload.mainCategoryName as keyof SubCategoryState],
+        {
+          id: action.payload.id,
+          text: action.payload.text,
+        },
+      ];
       state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
     },
     deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
-        (item) => item.id !== action.payload.id,
+        (item: any) => item.id !== action.payload.id,
       );
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
-    addTargetCategory:(state,action:PayloadAction<TargetCategory>) => {
+    addTargetCategory: (state, action: PayloadAction<TargetCategory>) => {
       state.targetSubCategories = action.payload;
       console.log(state);
-      
-    }
+    },
   },
 });
 

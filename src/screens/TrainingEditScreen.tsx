@@ -1,5 +1,13 @@
 import React, { useState, useRef } from "react";
-import { View, StyleSheet, Text, TextInput, ScrollView, Alert,KeyboardAvoidingView } from "react-native";
+import {
+  View,
+  StyleSheet,
+  Text,
+  TextInput,
+  ScrollView,
+  Alert,
+  KeyboardAvoidingView,
+} from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { MajorItem } from "../components/MajorItem";
@@ -16,15 +24,16 @@ export type SubCategory = {
   times: number;
 };
 
-
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
-   // 今年の取得
-   const currentYear = dayjs().year();
+  // 今年の取得
+  const currentYear = dayjs().year();
   // reduxからデータの取得
-  let teacherData: any = useSelector((state: RootState) => state.subCategory.targetSubCategories[currentYear]);
+  let teacherData: any = useSelector(
+    (state: RootState) => state.subCategory.targetSubCategories[currentYear],
+  );
   // reduxデータのバリデーション
-  if(!teacherData){
+  if (!teacherData) {
     teacherData = [];
   }
   // refの定義
@@ -34,21 +43,21 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [show, setShow] = useState(false);
   const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
-  const onChangeCountByTeacher = (count:number, id:string) => {
+  const onChangeCountByTeacher = (count: number, id: string) => {
     let newCurrentTargets = [];
     for (const target of currentTargets) {
       if (target.id === id) {
         newCurrentTargets.push({
           ...target,
-          times: count
-        })
-      }else{
+          times: count,
+        });
+      } else {
         newCurrentTargets.push(target);
       }
     }
     setCurrentTargets(newCurrentTargets);
     // sumAllYearGoal();
-  }
+  };
 
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
@@ -106,23 +115,21 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const onPressTargetSubmit = () => {
-      if (currentYearGoal > 365) {
-        // アラートの記述追加
-        Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
-         {text: "戻る",}
-       ]);
-      }else{
-        // reduxへの保存
-        const saveTargets = {
-          [currentYear]:currentTargets
-        }
-        dispatch(addTargetCategory(saveTargets));
-        Alert.alert("稽古目標が登録されました", "", [
-          {text: "戻る",}
-        ]);
-      }
-  }
-  
+    if (currentYearGoal > 365) {
+      // アラートの記述追加
+      Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
+        { text: "戻る" },
+      ]);
+    } else {
+      // reduxへの保存
+      const saveTargets = {
+        [currentYear]: currentTargets,
+      };
+      dispatch(addTargetCategory(saveTargets));
+      Alert.alert("稽古目標が登録されました", "", [{ text: "戻る" }]);
+    }
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
@@ -150,24 +157,24 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 <View style={styles.objectiveInputArea}>
                   <Text style={styles.objectiveText}>合計</Text>
                   <TextInput
-                   style={styles.objectiveInput}
-                   keyboardType="numeric"
-                   onChangeText={(num)=>{
-                    setCurrentYearGoal(Number(num));
-                  }}
+                    style={styles.objectiveInput}
+                    keyboardType="numeric"
+                    onChangeText={(num) => {
+                      setCurrentYearGoal(Number(num));
+                    }}
                   ></TextInput>
                   {/* <Text style={styles.objectiveAll}>{currentYearGoal}</Text> */}
                   <Text style={styles.objectiveText}>回</Text>
                 </View>
-                {currentTargets.map((currentTarget: any, index:number) => {
+                {currentTargets.map((currentTarget: any, index: number) => {
                   return (
                     <View style={styles.objectiveInputArea} key={index}>
                       <Text style={styles.objectiveText}>{currentTarget.text}先生</Text>
                       <TextInput
                         style={styles.objectiveInput}
                         keyboardType="numeric"
-                        onChangeText={(count)=>{
-                          onChangeCountByTeacher(Number(count),currentTarget.id);
+                        onChangeText={(count) => {
+                          onChangeCountByTeacher(Number(count), currentTarget.id);
                         }}
                         // value={currentTarget[index].times}
                       ></TextInput>
@@ -176,9 +183,12 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                   );
                 })}
                 <View style={styles.submitButtonContainer}>
-                  <Button text="目標登録" onPress={()=>{
-                    onPressTargetSubmit()
-                  }} />
+                  <Button
+                    text="目標登録"
+                    onPress={() => {
+                      onPressTargetSubmit();
+                    }}
+                  />
                 </View>
               </View>
             </KeyboardAvoidingView>
@@ -225,7 +235,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 10,
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
@@ -236,16 +246,16 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
     padding: 10,
     fontSize: 18,
-    textAlign: 'center',
+    textAlign: "center",
   },
   objectiveText: {
     fontSize: 18,
   },
   submitButtonContainer: {
     marginTop: 20,
-    width: '100%',
+    width: "100%",
     // height: '30%',
     // justifyContent: 'center',
-    alignItems: 'center'
-  }
+    alignItems: "center",
+  },
 });
