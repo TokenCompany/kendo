@@ -1,17 +1,15 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { colors } from "../styles";
 import { TextForm } from "../components/TextForm";
+import { useProfileForm } from "../hooks/useProfileForm";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TaskEdit">;
 
 export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const [currentTask, setCurrentTask] = useState<string>("");
-  const onChangeTask = (text: string) => {
-    setCurrentTask(text);
-  };
+  const { currentTask, onChangeTask, onPressSaveTask, onPressDeleteTask } = useProfileForm();
   const onChangeDelete = () => {
     createAlert();
   };
@@ -19,13 +17,25 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
   const createAlert = () =>
-    Alert.alert("Alert Title", "本当に削除しますか？", [
+    Alert.alert("本当に削除しますか？", "", [
       {
         text: "いいえ",
         style: "cancel",
       },
-      { text: "はい", onPress: () => setCurrentTask("") },
+      {
+        text: "はい",
+        onPress: () => onSettingDelete(),
+      },
     ]);
+  const onSettingDelete = () => {
+    onChangeTask("");
+    onPressDeleteTask();
+    navigation.navigate("Setting");
+  };
+
+  // 5行まで制限
+  const numberOfLineBreaks = (currentTask.match(/\n/g) || []).length;
+
   return (
     <View style={styles.container}>
       <TextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
@@ -33,7 +43,21 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         <TouchableOpacity style={styles.button} onPress={onChangeDelete}>
           <Text style={styles.text}>消去</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[styles.button, styles.color]} onPress={onChangeSetting}>
+        <TouchableOpacity
+          style={[styles.button, styles.color]}
+          onPress={() => {
+            if (numberOfLineBreaks < 5) {
+              onPressSaveTask();
+              onChangeSetting();
+            } else {
+              Alert.alert("課題は５行まででお願いします", "", [
+                {
+                  text: "はい",
+                },
+              ]);
+            }
+          }}
+        >
           <Text style={styles.text}>設定</Text>
         </TouchableOpacity>
       </View>

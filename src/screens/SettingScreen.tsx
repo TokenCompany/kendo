@@ -1,15 +1,18 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { View, ScrollView, StyleSheet, Text, Image } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import i18n from "../lang/localization";
+import dayjs from "dayjs";
+import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import { useSelector } from "react-redux";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const profile = useSelector((state: RootState) => state.profile);
+
   const onPressTask = () => {
     navigation.navigate("TaskEdit");
   };
@@ -23,25 +26,142 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
   const onPressLanguage = () => {
-    navigation.navigate("TrainingEdit");
+    navigation.navigate("Language");
   };
 
-  const rankTableData = [
-    ["初段", "〇", "2006年11月20日"],
-    ["弐段", "〇", "2007年11月13日"],
-    ["参段 ", "〇", "2009年11月12日"],
-    ["四段 ", "〇", "2011年11月1日"],
-    ["五段", "〇", "2015年11月17日"],
-    ["六段 ", "〇", "2020年11月22日"],
-    ["七段", "-", "残り1945日(5年4か月)"],
-    ["八段", "-", "残り5596日(15年4か月)"],
-  ];
+  // 練士、教士、範士の表示
+  const [openRenshi, setOpenRenshi] = useState<boolean>(false);
+  useEffect(() => {
+    if (profile.passed5 !== 19900000) {
+      setOpenRenshi(true);
+    } else {
+      setOpenRenshi(false);
+    }
+  });
+  const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
+  useEffect(() => {
+    if (profile.passed6 !== 19900000) {
+      setOpenKyoushi(true);
+    } else {
+      setOpenKyoushi(false);
+    }
+  });
+  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
+  useEffect(() => {
+    if (profile.passed5 !== 19900000) {
+      setOpenHanshi(true);
+    } else {
+      setOpenHanshi(false);
+    }
+  });
 
-  const name = useSelector((state: RootState) => state.profile.name);
-  const age = useSelector((state: RootState) => state.profile.age);
-  const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
-  const birthday = useSelector((state: RootState) => state.profile.birthday);
-  const image = useSelector((state: RootState) => state.profile.profileImage);
+  // 日付表示変換
+  const renderChangeText = (date: number) => {
+    let originDate = date.toString().split("");
+    let changeText = "";
+    originDate.forEach((element, index) => {
+      if (index == 4) {
+        changeText += "/";
+      } else if (index == 6) {
+        changeText += "/";
+      }
+      changeText += element;
+    });
+    return changeText;
+  };
+
+  // 審査までの日数
+  const renderExamDate = (exam: number) => {
+    const today = dayjs().format("YYYYMMDD");
+    const examDay = String(exam);
+    const diffDate = dayjs(examDay).diff(today, "day");
+    return diffDate;
+  };
+
+  // 合格日出力 or 審査びまでの日曹を出力
+  const renderPassedDate = (passed: number, exam: number) => {
+    if (passed !== 19900000) {
+      return <Text>{renderChangeText(passed)}</Text>;
+    } else {
+      return (
+        <Text>
+          {renderExamDate(exam) >= 0
+            ? `${i18n.t("Setting.remain")}` + `${renderExamDate(exam)}` + `${i18n.t("Setting.day")}`
+            : "-"}
+        </Text>
+      );
+    }
+  };
+
+  // 合格日抽出
+  const passedObject1 = () => {
+    let object = {};
+    Object.keys(profile).forEach((key) => {
+      if (key.indexOf("passed") !== -1) {
+        object[key] = profile[key];
+      }
+    });
+    return object;
+  };
+  const onlyPassedObject = passedObject1();
+  const passedObject2 = () => {
+    let object = {};
+    Object.keys(onlyPassedObject).some((key) => {
+      object[key] = profile[key];
+      if (profile[key] !== 19900000) {
+        return true;
+      }
+    });
+    return object;
+  };
+  const onlyPassed = passedObject2();
+
+  // 階級
+  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
+
+  // 条件を満たした時に錬士,教士,範士の追加
+  const addLevel = () => {
+    if (profile.passed5 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
+      kendoLevel[kendoLevel.length] = "範士";
+    }
+
+    if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "教士";
+    }
+  };
+  {
+    addLevel();
+  }
+
+  // 合格済みかどうか
+  const renderPassedCheck = (passed: number, index: number) => {
+    if (Object.keys(onlyPassed).length !== 11) {
+      if (index < Object.keys(onlyPassed).length || passed !== 19900000) {
+        return "〇";
+      } else {
+        return "-";
+      }
+    } else {
+      return "-";
+    }
+  };
+
+  const renderLevelTable = () => {
+    return kendoLevel.map((data, index) => (
+      <View style={styles.tableRow}>
+        <Text style={[styles.tableData, styles.firstColumn]}>{data}</Text>
+        <Text style={[styles.tableData, styles.secondColumn]}>
+          {renderPassedCheck(profile[`passed${index}`], index)}
+        </Text>
+        <Text style={[styles.tableData, styles.thirdColumn]}>
+          {profile[`exam${index}`] !== 19900000 || profile[`passed${index}`] !== 19900000
+            ? renderPassedDate(profile[`passed${index}`], profile[`exam${index}`])
+            : "-"}
+        </Text>
+      </View>
+    ));
+  };
 
   return (
     <ScrollView>
@@ -49,21 +169,31 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
         <View style={styles.profileContainer}>
           <View style={styles.profileBody}>
             <Text style={styles.profileText01}>{i18n.t("Setting.name")}</Text>
-            <Text style={styles.profileText02}>{name ? name : "名前が入ります"}</Text>
+            <Text style={styles.profileText02}>
+              {profile.name ? profile.name : i18n.t("Setting.intoName")}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.birthday")}</Text>
-            <Text style={styles.profileText02}>{birthday ? birthday : "生年月日が入ります"}</Text>
+            <Text style={styles.profileText02}>
+              {profile.birthday !== 19900000
+                ? renderChangeText(profile.birthday)
+                : i18n.t("Setting.intoBirthday")}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
-            <Text style={styles.profileText02}>{age ? age : "年齢が入ります"}</Text>
+            <Text style={styles.profileText02}>
+              {profile.age ? profile.age + `${i18n.t("Setting.old")}` : i18n.t("Setting.intoAge")}
+            </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
             <Text style={styles.profileText02}>
-              {kenNumber ? kenNumber : "全剣連番号が入ります"}
+              {profile.kenNumber ? profile.kenNumber : i18n.t("Setting.intoNumber")}
             </Text>
-            <Text style={styles.profileText01}>課題</Text>
-            <Text style={styles.profileText02}>テキストテキストテキスト</Text>
+            <Text style={styles.profileText01}>{i18n.t("Setting.task")}</Text>
+            <Text style={styles.profileText02}>
+              {profile.task ? profile.task : i18n.t("Setting.intoTask")}
+            </Text>
           </View>
-          {image ? (
+          {profile.profileImage ? (
             <Image
-              source={{ uri: "data:image/jpeg;base64," + image }}
+              source={{ uri: "data:image/jpeg;base64," + profile.profileImage }}
               style={styles.profileImage}
             />
           ) : (
@@ -73,19 +203,14 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             />
           )}
         </View>
+
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>階級</Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>合格</Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>合格日/審査までの日数</Text>
+            <Text style={[styles.tableData, styles.firstColumn]}>{i18n.t("Setting.th01")}</Text>
+            <Text style={[styles.tableData, styles.secondColumn]}>{i18n.t("Setting.th02")}</Text>
+            <Text style={[styles.tableData, styles.thirdColumn]}>{i18n.t("Setting.th03")}</Text>
           </View>
-          {rankTableData.map((rankData) => (
-            <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>{rankData[0]}</Text>
-              <Text style={[styles.tableData, styles.secondColumn]}>{rankData[1]}</Text>
-              <Text style={[styles.tableData, styles.thirdColumn]}>{rankData[2]}</Text>
-            </View>
-          ))}
+          {renderLevelTable()}
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />
@@ -113,7 +238,7 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     alignItems: "center",
     paddingVertical: 20,
-    paddingHorizontal: 10,
+    paddingHorizontal: 40,
   },
   buttonContainer: {
     marginBottom: 20,
@@ -121,15 +246,15 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     paddingBottom: 20,
-    paddingHorizontal: 20,
   },
   profileBody: {
     flexGrow: 1,
-    paddingRight: 20,
+    paddingLeft: 10,
   },
   profileImage: {
     width: 100,
     height: 100,
+    marginRight: 30,
   },
   profileText01: {
     marginBottom: 3,
@@ -140,6 +265,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingLeft: 16,
     fontSize: 16,
+    width: 200,
   },
   tableContainer: {
     marginBottom: 20,
@@ -161,6 +287,6 @@ const styles = StyleSheet.create({
     width: "25%",
   },
   thirdColumn: {
-    width: "50%",
+    width: "55%",
   },
 });

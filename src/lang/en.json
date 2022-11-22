@@ -1,6 +1,6 @@
 {
   "ScheduleScreen": {
-    "title": "Schedule",
+    "title": "稽古予定",
     "time": "時間",
     "place": "稽古場所",
     "entry": "登録",
@@ -38,8 +38,9 @@
   "Setting": {
     "title": "設定",
     "name": "名前",
-    "birthday": "誕生日設定",
+    "birthday": "生年月日",
     "age": "年齢",
+    "task": "課題",
     "number": "全剣連番号",
     "button01": "プロフィール編集",
     "button02": "練習内容項目設定",
@@ -48,7 +49,17 @@
     "button05": "表示言語切り替え",
     "th01": "階級",
     "th02": "合格",
-    "th03": "合格日/審査までの日数"
+    "th03": "合格日/審査までの日数",
+    "year": "年",
+    "month": "月",
+    "day": "日",
+    "old": "歳",
+    "remain": "残り",
+    "intoName": "名前が入ります",
+    "intoBirthday": "生年月日が入ります",
+    "intoAge": "年齢が入ります",
+    "intoNumber": "全剣連番号が入ります",
+    "intoTask": "課題が入ります"
   },
   "ResultEdit": {
     "title": "実績入力",
@@ -91,9 +102,16 @@
     "stage06": "六段",
     "stage07": "七段",
     "stage08": "八段",
+    "stage09": "錬士",
+    "stage10": "教士",
+    "stage11": "範士",
     "passingDate": "合格日",
     "examinationDate": "審査日",
-    "registerButton": "プロフィール登録"
+    "registerButton": "プロフィール登録",
+    "setting": "設定",
+    "year": "年",
+    "month": "月",
+    "day": "日"
   },
   "TrainingEdit": {
     "title": "練習内容項目編集",
@@ -113,12 +131,18 @@
     "day": "日",
     "registered": "登録しました"
   },
-  "Alert": {
+  "TaskEdit": {
     "alert01": "終了時間は開始時間より遅い時間を入力してください",
     "alert02": "稽古予定を修正しますか？",
     "alert03": "稽古予定を削除しますか？",
     "alert04": "本当に削除しますか？",
-    "ok": "OK",
-    "cancel": "キャンセル"
+    "ok": "はい",
+    "cancel": "いいえ",
+    "myTask": "自分の課題",
+    "delete": "消去",
+    "setting": "設定"
+  },
+  "Lang": {
+    "lang": "en"
   }
 }
