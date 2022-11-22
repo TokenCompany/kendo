@@ -395,7 +395,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 14 || passed0 - currentExamDate00 < 0){
+                if(diffDate < 14 || passed0 - currentExamDate00 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -421,7 +421,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate01(exam0);
+                  onChangeExamDate00(exam0);
                 }
               }
             }}
@@ -448,7 +448,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 15 || passed1 - currentExamDate01 < 0){
+                if(diffDate < 15 || passed1 - currentExamDate01 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -498,7 +498,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 16 || passed2 - currentExamDate02 < 0){
+                if(diffDate < 16 || passed2 - currentExamDate02 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -547,7 +547,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 17 || passed3 - currentExamDate03 < 0){
+                if(diffDate < 17 || passed3 - currentExamDate03 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -570,7 +570,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam3);
+                  onChangeExamDate03(exam3);
                 }
               }
             }}
@@ -596,7 +596,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 18 || passed4 - currentExamDate04 < 0){
+                if(diffDate < 18 || passed4 - currentExamDate04 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -619,7 +619,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam4);
+                  onChangeExamDate04(exam4);
                 }
               }
             }}
@@ -645,7 +645,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 19 || passed5 - currentExamDate05 < 0){
+                if(diffDate < 19 || passed5 - currentExamDate05 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -661,14 +661,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               Platform.OS === "android" && setShow12(false);
               if (date2) {
                 const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
-                if(exam5 - currentPassedDate05 > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
+                if(currentPassedDate05 === 19900000){
+                  onChangeExamDate05(exam5);
                 }else{
-                  onChangeExamDate02(exam5);
+                  if(exam5 - currentPassedDate05 > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate05(exam5);
+                  }
                 }
               }
             }}
@@ -694,7 +698,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 20 || passed6 - currentExamDate06 < 0){
+                if(diffDate < 20 || passed6 - currentExamDate06 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -717,7 +721,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam6);
+                  onChangeExamDate06(exam6);
                 }
               }
             }}
@@ -743,7 +747,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 24 || passed7 - currentExamDate07 < 0){
+                if(diffDate < 24 || passed7 - currentExamDate07 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -766,7 +770,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam7);
+                  onChangeExamDate07(exam7);
                 }
               }
             }}
@@ -796,7 +800,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 20 || passed8 - currentExamDate08 < 0){
+                if(diffDate < 20 || passed8 - currentExamDate08 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -819,7 +823,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam8);
+                  onChangeExamDate08(exam8);
                 }
               }
             }}
@@ -849,7 +853,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
                 const diffDate = dayjs(calcPassed).diff(calcCurrentBirthday, "year");
 
-                if(diffDate < 21 || passed9 - currentExamDate09 < 0){
+                if(diffDate < 21 || passed9 - currentExamDate09 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -872,7 +876,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam9);
+                  onChangeExamDate09(exam9);
                 }
               }
             }}
@@ -897,7 +901,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               Platform.OS === "android" && setShow21(false);
               if (date1) {
                 const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
-                if(passed10 - currentExamDate10 < 0){
+                const calcPassed = dayjs(passed10.toString(),"YYYYMMDD").toDate()
+                if(passed10 - currentExamDate10 < 0 || dayjs(calcPassed).diff(dayjs(), "year") > 0){
                   Alert.alert("この日付は設定できません", "", [
                     {
                       text: "はい",
@@ -920,7 +925,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }
                   ]);
                 }else{
-                  onChangeExamDate02(exam10);
+                  onChangeExamDate10(exam10);
                 }
               }
             }}
