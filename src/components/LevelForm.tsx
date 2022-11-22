@@ -58,6 +58,7 @@ export const LevelForm: React.FC<Props> = ({
             {Platform.OS === "ios" && (
               <View style={styles.modalView}>
                 <DateTimePicker
+                  locale="ja"
                   value={passedDateValue}
                   mode="date"
                   display={"spinner"}
@@ -70,6 +71,7 @@ export const LevelForm: React.FC<Props> = ({
             )}
             {Platform.OS === "android" && (
               <DateTimePicker
+                locale="ja"
                 value={passedDateValue}
                 mode="date"
                 display={"default"}
@@ -99,6 +101,7 @@ export const LevelForm: React.FC<Props> = ({
             {Platform.OS === "ios" && (
               <View style={styles.modalView}>
                 <DateTimePicker
+                  locale="ja"
                   value={examDateValue}
                   mode="date"
                   display={"spinner"}
@@ -111,6 +114,7 @@ export const LevelForm: React.FC<Props> = ({
             )}
             {Platform.OS === "android" && (
               <DateTimePicker
+                locale="ja"
                 value={passedDateValue}
                 mode="date"
                 display={"default"}
@@ -168,7 +172,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "40%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {

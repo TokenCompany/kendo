@@ -292,6 +292,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             >
               <View style={styles.modalView}>
                 <DateTimePicker
+                  locale="ja"
                   value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
                   mode="date"
                   display={"spinner"}
@@ -321,6 +322,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             <View>
               {show && (
                 <DateTimePicker
+                  locale="ja"
                   value={dayjs(currentBirthday.toString(), "YYYYMMDD").toDate()}
                   mode="date"
                   display={"default"}
@@ -714,7 +716,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "40%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
