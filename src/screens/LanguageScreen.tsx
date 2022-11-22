@@ -7,7 +7,6 @@ import i18n from "../lang/localization";
 type Props = NativeStackScreenProps<MainStackParamList, "Language">;
 
 export const LanguageScreen: React.FC<Props> = ({ navigation }: Props) => {
-  // console.log(i18n.locale);
 
   const langChengeJP = () => {
     i18n.locale = "ja-JP";

@@ -127,7 +127,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
 
     if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "教士";
+      kendoLevel[kendoLevel.length] = "範士";
     }
   };
   {
