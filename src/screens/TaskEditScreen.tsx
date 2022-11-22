@@ -17,7 +17,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
   const createAlert = () =>
-    Alert.alert("Alert Title", "本当に削除しますか？", [
+    Alert.alert("本当に削除しますか？", "", [
       {
         text: "いいえ",
         style: "cancel",
