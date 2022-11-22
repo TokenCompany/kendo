@@ -136,8 +136,12 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (index <= Object.keys(onlyPassed).length || passed !== 19900000) {
-      return "〇";
+    if (Object.keys(onlyPassed).length !== 11) {
+      if (index < Object.keys(onlyPassed).length || passed !== 19900000) {
+        return "〇";
+      } else {
+        return "-";
+      }
     } else {
       return "-";
     }
