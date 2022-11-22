@@ -20,29 +20,12 @@ export type SubCategory = {
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   // reduxからデータの取得
-  let subCategoryData: any = useSelector((state: RootState) => state.subCategory);
-  console.log(subCategoryData);
-  
-  // reduxのコピーデータにtimesのキー名追加
-  let orgSubCategory = [...subCategoryData.teacherSubCategories];
-  // console.log(orgSubCategory);
-  // let test = [];
-  // console.log(orgSubCategory);
-  
-  // const newSubCategories = orgSubCategory.map((element)=>{
-  //   element.times = 0;
-  // });
-  // console.log(newSubCategories);
-  
-  // initSubCategory.forEach((element)=>{
-  //   element.times = 0;
-  // }) 
-  // console.log(initSubCategory);
-  
+  let teacherData: any = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
+
   // refの定義
   const scrollViewRef = useRef<ScrollView>(null);
   // stateの定義
-  // const [currentTargets, setCurrentTargets] = useState<SubCategory[]>(initSubCategory);
+  const [currentTargets, setCurrentTargets] = useState(teacherData);
   const [show, setShow] = useState(false);
   const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新

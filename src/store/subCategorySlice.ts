@@ -11,7 +11,7 @@ export interface SubCategoryState {
   kihonUchiSubCategories: subCategory[];
   oujiwazaSubCategories: subCategory[];
   jigeikoSubCategories: subCategory[];
-  teacherSubCategories: subCategory[];
+  teacherSubCategories: teacherSubcategory[];
   kakarigeikoSubCategories: subCategory[];
   targetSubCategories: TargetCategory;
 }
@@ -19,7 +19,12 @@ export interface SubCategoryState {
 interface subCategory {
   id: string;
   text: string;
-  // totalResults:TotalResults;
+}
+
+interface teacherSubcategory {
+  id: string;
+  text: string;
+  times: number;
 }
 
 // 年間目標のtype宣言
@@ -64,11 +69,20 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
-        id: action.payload.id,
-        text: action.payload.text,
-      }]
-      state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
+      if (action.payload.mainCategoryName === "teacherSubCategories") {
+        let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
+          id: action.payload.id,
+          text: action.payload.text,
+          times:0,
+        }]
+        state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
+      }else{
+        let newSubcategory = [...state[action.payload.mainCategoryName as keyof SubCategoryState],{
+          id: action.payload.id,
+          text: action.payload.text,
+        }]
+        state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
+      }
     },
     deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
