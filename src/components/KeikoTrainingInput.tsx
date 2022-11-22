@@ -2,6 +2,8 @@ import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { Picker } from "@react-native-community/picker";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 type Props = {
   textTraining: string;
@@ -40,130 +42,28 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
   const [value, setValue] = useState<number | boolean>();
-  const initResults: Results = {
-    placeSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "横浜アリーナ",
-        result: true,
-      },
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "沖縄アリーナ",
-        result: false,
-      },
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "北谷体育館",
-        result: false,
-      },
-    ],
-    trainingTime: [
-      {
-        id: "none",
-        text: "",
-        result: 0,
-      },
-    ],
-    suburiSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "test3",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test4",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d89e",
-        text: "test5",
-        result: 0,
-      },
-    ],
-    ashiSabakiSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "足さばき",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "上下素振り",
-        result: 0,
-      },
-    ],
-    kihonUchiSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "test",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test2",
-        result: 0,
-      },
-    ],
-    oujiwazaSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "test3",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test4",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test5",
-        result: 0,
-      },
-    ],
-    jigeikoSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "あり",
-        result: 0,
-      },
-    ],
-    teacherSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "test3",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test4",
-        result: 0,
-      },
-      {
-        id: "576b9c5d-46ce-4980-a90a-079a5083d80e",
-        text: "test5",
-        result: 0,
-      },
-    ],
-    kakarigeikoSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "あり",
-        result: 0,
-      },
-    ],
-  };
+  const subCategories = useSelector((state: RootState) => state.subCategory);
+  const initResults: Results = {...subCategories};
   const [results, setResults] = useState<Results>(initResults);
   // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count: number, id: string, mainCategory: string) => {
     let newResults = { ...results };
-    for (const subCategory of newResults[mainCategory]) {
-      if (subCategory.id === id) {
-        subCategory.result = count;
+    if (mainCategory in newResults) {
+      for (const subCategory of newResults[mainCategory]) {
+        if (subCategory.id === id) {
+          subCategory.result = count;
+        }
       }
+    } else {
+      newResults[mainCategory] = [
+        {
+          id: "none",
+          text: "",
+          result: count,
+        },
+      ];
     }
+
     setResults(newResults);
   };
 
@@ -171,9 +71,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
-  // const subCategories = {
 
-  // }
 
   if (textTraining === "稽古場所") {
     input3 = true;
@@ -195,7 +93,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       });
     }
   } else {
-    // ここが時間の表示
+    // ここが稽古時間の表示
     subCategoriesData.push({
       id: "",
       text: "",
@@ -237,7 +135,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                         onChangeCountResults(Number(text), data.id, data.mainCategory);
                         onChangeSendInput(results[data.mainCategory], data.mainCategory);
                       }}
-                      value={results[data.mainCategory][index]["result"]}
                     />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>

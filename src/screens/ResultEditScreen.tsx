@@ -33,9 +33,9 @@ export type Results = {
 
 export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
-  const orgResults = useSelector((state: RootState) => state.results);
+  // const orgPlaces = useSelector((state: RootState) => state.subCategory);
 
-  // console.log(orgResults);
+  // // console.log(orgPlaces);
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
