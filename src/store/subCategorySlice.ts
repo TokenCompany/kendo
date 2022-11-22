@@ -13,7 +13,7 @@ export interface SubCategoryState {
   jigeikoSubCategories: subCategory[];
   teacherSubCategories: teacherSubcategory[];
   kakarigeikoSubCategories: subCategory[];
-  targetSubCategories: TargetCategory;
+  targetSubCategories: TargetCategories;
 }
 
 interface subCategory {
@@ -28,14 +28,14 @@ interface teacherSubcategory {
 }
 
 // 年間目標のtype宣言
-interface TargetCategories {
+interface TargetCategory {
   id: string;
   text: string;
   times: number;
 }
 
-interface TargetCategory {
-  [year: string]: TargetCategories[];
+interface TargetCategories {
+  [year: string]: TargetCategory[];
 }
 
 // デフォルトの値
@@ -107,9 +107,8 @@ export const counterSlice = createSlice({
       );
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
-    addTargetCategory: (state, action: PayloadAction<TargetCategory>) => {
+    addTargetCategory: (state, action: PayloadAction<TargetCategories>) => {
       state.targetSubCategories = action.payload;
-      console.log(state);
     },
   },
 });

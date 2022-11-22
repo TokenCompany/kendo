@@ -27,11 +27,11 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   const subCategoryType = route.params.subCategoryType;
   // 登録できる数をsubCategoryTypeで制限
   let max: number = 0;
-  if (subCategoryType == "placeSubCategories") {
+  if (subCategoryType === "placeSubCategories") {
     max = 5 - 1;
   } else if (
-    subCategoryType == "jigeikoSubCategories" ||
-    subCategoryType == "kakarigeikoSubCategories"
+    subCategoryType === "jigeikoSubCategories" ||
+    subCategoryType === "kakarigeikoSubCategories"
   ) {
     max = 0;
   } else {
@@ -64,7 +64,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   const [subCategories, setSubCategories] = useState<SubCategory[]>(
     subCategoryData[subCategoryType],
   );
-  const [plusButton, setPlussButton] = useState(() => {
+  const [plusButton, setPlusButton] = useState(() => {
     if (subCategories.length > max) {
       return styles.offFab;
     } else {
@@ -80,9 +80,9 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
     };
     dispatch(deleteSubCategory(deleteObj));
     if (newSubCategory.length > max) {
-      setPlussButton(styles.offFab);
+      setPlusButton(styles.offFab);
     } else {
-      setPlussButton(styles.fab);
+      setPlusButton(styles.fab);
     }
     setSubCategories(newSubCategory);
   };
@@ -100,7 +100,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
         {
           mainCategoryName: subCategoryType,
           text: currentText,
-          id: uuid.v4().toString(),
+          id: uuid.v4(),
         } as SubCategory,
       ];
       setSubCategories(newSubCategories);
@@ -146,9 +146,9 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
           onPressSubmitKeiko={() => {
             onPressSubmitKeiko();
             if (subCategories.length > max) {
-              setPlussButton(styles.offFab);
+              setPlusButton(styles.offFab);
             } else {
-              setPlussButton(styles.fab);
+              setPlusButton(styles.fab);
             }
             setVisible(false);
           }}
@@ -165,9 +165,9 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
           onPressSubmit={() => {
             onPressSubmit();
             if (subCategories.length > max) {
-              setPlussButton(styles.offFab);
+              setPlusButton(styles.offFab);
             } else {
-              setPlussButton(styles.fab);
+              setPlusButton(styles.fab);
             }
             setVisible(false);
           }}
@@ -187,10 +187,10 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
           onPress={() => {
             if (subCategories.length > max) {
               setVisible(false);
-              setPlussButton(styles.offFab);
+              setPlusButton(styles.offFab);
             } else {
               setVisible(true);
-              setPlussButton(styles.fab);
+              setPlusButton(styles.fab);
             }
           }}
         />
