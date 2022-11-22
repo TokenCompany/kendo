@@ -102,7 +102,7 @@ export const LevelForm: React.FC<Props> = ({
             {Platform.OS === "ios" && (
               <View style={styles.modalView}>
                 <DateTimePicker
-                  locale="aa"
+                  locale={i18n.t("Lang.lang")}
                   value={examDateValue}
                   mode="date"
                   display={"spinner"}

@@ -279,7 +279,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>誕生日設定</Text>
             </TouchableOpacity>
-            <Text style={styles.birthdayText}>{renderChangeText(currentBirthday)}</Text>
+            <Text style={styles.birthdayText}>{renderChangeText(currentBirthday) !== "1990/00/00" ? renderChangeText(currentBirthday) : ""}</Text>
           </View>
           {Platform.OS === "ios" && (
             <Modal
@@ -384,8 +384,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker01}
             showDatepickerExam={showDatepicker02}
-            currentPassedDateText={renderChangeText(currentPassedDate00)}
-            currentExamDateText={renderChangeText(currentExamDate00)}
+            currentPassedDateText={renderChangeText(currentPassedDate00) !== "1990/00/00" ? renderChangeText(currentPassedDate00) : ""}
+            currentExamDateText={renderChangeText(currentExamDate00) !== "1990/00/00" ? renderChangeText(currentExamDate00) : ""}
             passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow01(false);
@@ -414,8 +414,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker03}
             showDatepickerExam={showDatepicker04}
-            currentPassedDateText={renderChangeText(currentPassedDate01)}
-            currentExamDateText={renderChangeText(currentExamDate01)}
+            currentPassedDateText={renderChangeText(currentPassedDate01) !== "1990/00/00" ? renderChangeText(currentPassedDate01) : ""}
+            currentExamDateText={renderChangeText(currentExamDate01) !== "1990/00/00" ? renderChangeText(currentExamDate01) : ""}
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow03(false);
@@ -442,8 +442,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker05}
             showDatepickerExam={showDatepicker06}
-            currentPassedDateText={renderChangeText(currentPassedDate02)}
-            currentExamDateText={renderChangeText(currentExamDate02)}
+            currentPassedDateText={renderChangeText(currentPassedDate02) !== "1990/00/00" ? renderChangeText(currentPassedDate02) : ""}
+            currentExamDateText={renderChangeText(currentExamDate02) !== "1990/00/00" ? renderChangeText(currentExamDate02) : ""}
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow05(false);
@@ -470,8 +470,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker07}
             showDatepickerExam={showDatepicker08}
-            currentPassedDateText={renderChangeText(currentPassedDate03)}
-            currentExamDateText={renderChangeText(currentExamDate03)}
+            currentPassedDateText={renderChangeText(currentPassedDate03) !== "1990/00/00" ? renderChangeText(currentPassedDate03) : ""}
+            currentExamDateText={renderChangeText(currentExamDate03) !== "1990/00/00" ? renderChangeText(currentExamDate03) : ""}
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow07(false);
@@ -498,8 +498,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker09}
             showDatepickerExam={showDatepicker10}
-            currentPassedDateText={renderChangeText(currentPassedDate04)}
-            currentExamDateText={renderChangeText(currentExamDate04)}
+            currentPassedDateText={renderChangeText(currentPassedDate04) !== "1990/00/00" ? renderChangeText(currentPassedDate04) : ""}
+            currentExamDateText={renderChangeText(currentExamDate04) !== "1990/00/00" ? renderChangeText(currentExamDate04) : ""}
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow09(false);
@@ -526,8 +526,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker11}
             showDatepickerExam={showDatepicker12}
-            currentPassedDateText={renderChangeText(currentPassedDate05)}
-            currentExamDateText={renderChangeText(currentExamDate05)}
+            currentPassedDateText={renderChangeText(currentPassedDate05) !== "1990/00/00" ? renderChangeText(currentPassedDate05) : ""}
+            currentExamDateText={renderChangeText(currentExamDate05) !== "1990/00/00" ? renderChangeText(currentExamDate05) : ""}
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow11(false);
@@ -554,8 +554,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker13}
             showDatepickerExam={showDatepicker14}
-            currentPassedDateText={renderChangeText(currentPassedDate06)}
-            currentExamDateText={renderChangeText(currentExamDate06)}
+            currentPassedDateText={renderChangeText(currentPassedDate06) !== "1990/00/00" ? renderChangeText(currentPassedDate06) : ""}
+            currentExamDateText={renderChangeText(currentExamDate06) !== "1990/00/00" ? renderChangeText(currentExamDate06) : ""}
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow13(false);
@@ -582,8 +582,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker15}
             showDatepickerExam={showDatepicker16}
-            currentPassedDateText={renderChangeText(currentPassedDate07)}
-            currentExamDateText={renderChangeText(currentExamDate07)}
+            currentPassedDateText={renderChangeText(currentPassedDate07) !== "1990/00/00" ? renderChangeText(currentPassedDate07) : ""}
+            currentExamDateText={renderChangeText(currentExamDate07) !== "1990/00/00" ? renderChangeText(currentExamDate07) : ""}
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow15(false);
@@ -614,8 +614,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker17}
             showDatepickerExam={showDatepicker18}
-            currentPassedDateText={renderChangeText(currentPassedDate08)}
-            currentExamDateText={renderChangeText(currentExamDate08)}
+            currentPassedDateText={renderChangeText(currentPassedDate08) !== "1990/00/00" ? renderChangeText(currentPassedDate08) : ""}
+            currentExamDateText={renderChangeText(currentExamDate08) !== "1990/00/00" ? renderChangeText(currentExamDate08) : ""}
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow17(false);
@@ -646,8 +646,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker19}
             showDatepickerExam={showDatepicker20}
-            currentPassedDateText={renderChangeText(currentPassedDate09)}
-            currentExamDateText={renderChangeText(currentExamDate09)}
+            currentPassedDateText={renderChangeText(currentPassedDate09) !== "1990/00/00" ? renderChangeText(currentPassedDate09) : ""}
+            currentExamDateText={renderChangeText(currentExamDate09) !== "1990/00/00" ? renderChangeText(currentExamDate09) : ""}
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow19(false);
@@ -678,8 +678,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker21}
             showDatepickerExam={showDatepicker22}
-            currentPassedDateText={renderChangeText(currentPassedDate10)}
-            currentExamDateText={renderChangeText(currentExamDate10)}
+            currentPassedDateText={renderChangeText(currentPassedDate10) !== "1990/00/00" ? renderChangeText(currentPassedDate10) : ""}
+            currentExamDateText={renderChangeText(currentExamDate10) !== "1990/00/00" ? renderChangeText(currentExamDate10) : ""}
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow21(false);
