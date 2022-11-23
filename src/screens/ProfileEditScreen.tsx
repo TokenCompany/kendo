@@ -278,7 +278,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const pickCamera = async () => {
     const permissions = Permissions.CAMERA;
     const { status } = await Permissions.askAsync(permissions);
-    if(status !== 'granted'){
+    if(status !== granted){
       let resultCamera = await ImagePicker.launchCameraAsync({
         mediaTypes:ImagePicker.MediaTypeOptions.Images,
         allowsEditing:true,
