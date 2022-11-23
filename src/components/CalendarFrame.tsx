@@ -12,10 +12,10 @@ type Props = {
 export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const [allReservations, setAllReservations] = useState(reservations);
-  const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs()); // ここがおかしいかも
+  const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
-  const onChangeDate = (Date) => {
-    setCurrentDate(Date);
+  const onChangeDate = (dateNumber: any) => {
+    setCurrentDate(dateNumber);
   };
   const showDatepicker = () => {
     setShow(true);
@@ -60,8 +60,8 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
               display={"spinner"}
               onChange={(event, date) => {
                 if (date) {
-                  const Date = Number(dayjs(date).format("YYYYMMDD"));
-                  onChangeDate(Date);
+                  const dateNumber = dayjs(date.toString(), "YYYYMMDD");
+                  onChangeDate(dateNumber);
                 }
               }}
             />
