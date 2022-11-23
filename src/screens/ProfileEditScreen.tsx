@@ -276,25 +276,16 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const pickCamera = async () => {
-    const permissions = Permissions.CAMERA;
-    const { status } = await Permissions.askAsync(permissions);
-    if(status !== granted){
-      let resultCamera = await ImagePicker.launchCameraAsync({
-        mediaTypes:ImagePicker.MediaTypeOptions.Images,
-        allowsEditing:true,
-        aspect:[1,1],
-        quality:0,
-        base64: true,
-      });
-
-      if (!resultCamera.cancelled) {
-        setImage(resultCamera.base64);
-        onChangeImage(resultCamera.base64);
-      }
-    }else{
-      Alert.alert("you need to give up permission to work")
+    let resultCamera = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.Images,
+      quality: 0,
+      base64: true,
+    });
+    if (!resultCamera.cancelled) {
+      setImage(resultCamera.base64);
+      onChangeImage(resultCamera.base64);
     }
-  };
+  }
 
   const optionCamera = () => {
     Alert.alert("設定方法を選択してください", "", [
