@@ -263,17 +263,52 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [image, setImage] = useState(currentImage);
 
   const pickImage = async () => {
-    let result = await ImagePicker.launchImageLibraryAsync({
+    let resultImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0,
       base64: true,
     });
 
-    if (!result.cancelled) {
-      setImage(result.base64);
-      onChangeImage(result.base64);
+    if (!resultImage.cancelled) {
+      setImage(resultImage.base64);
+      onChangeImage(resultImage.base64);
     }
   };
+
+  const pickCamera = async () => {
+    const permissions = Permissions.CAMERA;
+    const { status } = await Permissions.askAsync(permissions);
+    if(status !== 'granted'){
+      let resultCamera = await ImagePicker.launchCameraAsync({
+        mediaTypes:ImagePicker.MediaTypeOptions.Images,
+        allowsEditing:true,
+        aspect:[1,1],
+        quality:0,
+        base64: true,
+      });
+
+      if (!resultCamera.cancelled) {
+        setImage(resultCamera.base64);
+        onChangeImage(resultCamera.base64);
+      }
+    }else{
+      Alert.alert("you need to give up permission to work")
+    }
+  };
+
+  const optionCamera = () => {
+    Alert.alert("設定方法を選択してください", "", [
+      {
+        text: "アルバムから選択",
+        onPress: () => pickImage()
+      },
+      {
+        text: "カメラ撮影",
+        onPress: () => pickCamera(),
+      },
+    ]);
+  };
+
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
@@ -360,7 +395,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           </View>
           <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
-        <TouchableOpacity style={styles.profileImage} onPress={pickImage}>
+        <TouchableOpacity style={styles.profileImage} onPress={optionCamera}>
           {image ? (
             <Image
               source={{ uri: "data:image/jpeg;base64," + image }}
