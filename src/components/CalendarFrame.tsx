@@ -74,51 +74,6 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     );
   };
 
-  // class CalendarHeader extends React.PureComponent {
-  //   render() {
-  //     return (
-  //       <View>
-  //         <View style={styles.dayInput}>
-  //           <TouchableOpacity onPress={onPressArrowLeft}>
-  //             <Text>＜</Text>
-  //           </TouchableOpacity>
-  //           <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-  //             <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
-  //           </TouchableOpacity>
-  //           <TouchableOpacity onPress={onPressArrowRight}>
-  //             <Text>＞</Text>
-  //           </TouchableOpacity>
-  //         </View>
-  //         <Modal
-  //           animationType="fade"
-  //           visible={show}
-  //           transparent={true}
-  //           onRequestClose={() => {
-  //             setShow(false);
-  //           }}
-  //         >
-  //           <View style={styles.modalView}>
-  //             <DateTimePicker
-  //               value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
-  //               mode="date"
-  //               display={"spinner"}
-  //               onChange={(event, date) => {
-  //                 if (date) {
-  //                   const Date = Number(dayjs(date).format("YYYYMMDD"));
-  //                   onChangeDate(Date);
-  //                 }
-  //               }}
-  //             />
-  //             <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-  //               <Text style={styles.textStyle}>×</Text>
-  //             </TouchableOpacity>
-  //           </View>
-  //         </Modal>
-  //       </View>
-  //     );
-  //   }
-  // }
-
   return (
     <View style={styles.container}>
       <Calendar
