@@ -42,7 +42,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     { label: "text1", value: "text1" },
     { label: "text2", value: "text2" },
     { label: "text3", value: "text3" },
-    { label: "text4", value: "text4" },
     { label: "横浜アリーナ", value: "横浜アリーナ" },
     { label: "直接入力", value: showForm },
   ]);
@@ -138,7 +137,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               />
             </View>
           </View>
-          {form && <TextInput style={styles.form} onChangeText={place} />}
+          {form && <TextInput style={styles.form} onChangeText={setPlace} />}
           <TextButton
             text01="登録"
             onPress01={() => {
