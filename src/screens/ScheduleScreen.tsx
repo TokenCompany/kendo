@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text, TextInput, Alert } from "react-native";
+import { View, ScrollView, StyleSheet, Text, TextInput, Alert, Button } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
@@ -9,13 +9,26 @@ import { bookReservationItem, deleteReservationItem } from "../store/reservation
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
+import * as Notifications from "expo-notifications";
 // import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
+
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
+
+  React.useEffect(() => {
+    requestPermissionsAsync();
+  });
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
@@ -46,6 +59,59 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     { label: "横浜アリーナ", value: "横浜アリーナ" },
     { label: "直接入力", value: showForm },
   ]);
+  const scheduleNotificationAsync = async () => {
+    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId == selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+    const date = selectedDate.split("-");
+    const hour = startTime.split(":");
+    const alartTime = Number(date[2]) - 1;
+    let unixDate = new Date(
+      Number(date[0]),
+      Number(date[1]),
+      Number(date[2]),
+      alartTime,
+      Number(hour[1]),
+    );
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        body: "test",
+        title: "a",
+      },
+      trigger: {
+        channelId: selectedDate,
+        date: unixDate,
+      },
+    });
+    console.log(notifications);
+  };
+
+  const scheduledelete = async () => {
+    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId === selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+    console.log(notifications);
+  };
+
+  const requestPermissionsAsync = async () => {
+    const { granted } = await Notifications.getPermissionsAsync();
+    if (granted) {
+      return;
+    }
+
+    await Notifications.requestPermissionsAsync();
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -171,6 +237,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       place: place,
                     }),
                   );
+                  scheduleNotificationAsync();
                 }
               }
             }}
@@ -183,12 +250,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   },
                   {
                     text: "はい",
-                    onPress: () =>
+                    onPress: () => {
                       dispatch(
                         deleteReservationItem({
                           date: selectedDate,
                         }),
-                      ),
+                      );
+                      scheduledelete();
+                    },
                   },
                 ]);
               }
