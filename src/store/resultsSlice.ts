@@ -31,7 +31,7 @@ export const counterSlice = createSlice({
   name: "results",
   initialState,
   reducers: {
-    // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
+    // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―の配列が格納される
     addResults: (state, action) => {
       state[action.payload.trainingDate] = action.payload.resultsSum;
     },

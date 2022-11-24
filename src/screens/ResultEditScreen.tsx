@@ -35,16 +35,18 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const dispatch = useDispatch();
   // reduxからサブカテゴリ―ズの情報を取得
   const subCategories = useSelector((state: RootState) => state.subCategory);
-  const all = useSelector((state: RootState) => state.results);
-  // console.log(all);
-  // console.log(subCategories);
-  
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
   const date = route.params.date;
+  const resultsData = useSelector((state: RootState) => state.results);
+  if (date in resultsData) {
+    // console.log('bingo');
+  } else {
+    // console.log('miss');
+  }
   const place = route.params.place;
-    // 稽古場所の情報をコピーし、予約場所で選択された場所にtrueを代入,それ以外にはfalseを指定
+  // 稽古場所の情報をコピーし、予約場所で選択された場所にtrueを代入,それ以外にはfalseを指定
   const places = JSON.parse(JSON.stringify(subCategories.placeSubCategories));
   for (const item of places) {
     if (item.text === place) {
@@ -69,7 +71,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     },
   };
   const [allResults, setAllResults] = useState<Results>(initAllResults);
-  
+
   const onPressBtn = () => {
     createAlert();
     // REDUXへの保存
@@ -92,7 +94,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       },
     ]);
 
-  const mainCategories = {
+  const mainCategories:any = {
     placeSubCategories: {
       text: "稽古場所",
       unit: "",
@@ -142,16 +144,17 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       <View style={styles.dateWrap}>
         <Text style={styles.date}>{dateText}</Text>
       </View>
-      {mainCategoriesData.map((data:any, index: number) => (
+      {mainCategoriesData.map((data: any, index: number) => (
         <KeikoTrainingInput
           textTraining={data[0]}
           textTrainingUnit={data[1]}
           textTrainingCategories={data[2]}
           reservedPlace={place}
           key={index}
-          onChangeSendInput={(changedResults, mainCategory) => {
+          onChangeSendInput={(changedResults:any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
           }}
+          resultsData={date in resultsData ? resultsData[date] : {}}
         />
       ))}
       <View style={styles.buttonContainer}>

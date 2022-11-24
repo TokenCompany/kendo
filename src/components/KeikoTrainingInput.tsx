@@ -11,6 +11,7 @@ type Props = {
   textTrainingCategories: string;
   reservedPlace: string;
   onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
+  resultsData: any;
 };
 
 export type SubCategories = {
@@ -36,20 +37,34 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   textTrainingUnit,
   textTrainingCategories,
   reservedPlace,
+  resultsData,
   onChangeSendInput,
 }) => {
+  // 既に実績を入力した場合にvaluesに表示をする
+  let initValues: string[] = [];
+  if (textTrainingCategories in resultsData) {
+    for (const result of resultsData[textTrainingCategories]) {
+      initValues.push(result.result);
+    }
+  }
+  const [values, setValues] = useState<string[]>(initValues);
+  // ローカルのstateでinputの入力情報を保持
+  const onChangeValues = (text: string, index: number) => {
+    let newValues = [...values];
+    newValues[index] = text;
+    setValues(newValues);
+  };
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
   const subCategories = useSelector((state: RootState) => state.subCategory);
-  
-  const initResults: Results = JSON.parse(JSON.stringify(subCategories));
+  // reduxからの情報を複製し、設定小項目を表示するために活用
+  const initResults = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
   // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count: number, id: string, mainCategory: string) => {
-    let newResults = { ...results };
+    let newResults: any = { ...results };
     // 時間がsubcategoryの中にないため条件分岐で時間の処理を書いてます。
-    // console.log(newResults);
     if (mainCategory in newResults) {
       for (const subCategory of newResults[mainCategory]) {
         if (subCategory.id === id) {
@@ -64,8 +79,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
           result: count,
         },
       ];
-      // console.log(newResults);
-      
     }
     setResults(newResults);
     onChangeSendInput(newResults[mainCategory], mainCategory);
@@ -75,7 +88,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
-
 
   if (textTraining === "稽古場所") {
     input3 = true;
@@ -89,13 +101,13 @@ export const KeikoTrainingInput: React.FC<Props> = ({
 
   // subcategoriesに登録がない稽古時間の条件分岐
   if (textTrainingCategories in results) {
-    for (const data of results[textTrainingCategories]) {
+    for (const data of results[textTrainingCategories as keyof Results]) {
       subCategoriesData.push({
         id: data.id,
         text: data.text,
         mainCategory: textTrainingCategories,
       });
-    }    
+    }
   } else {
     // ここが稽古時間の表示
     subCategoriesData.push({
@@ -137,7 +149,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       keyboardType="numeric"
                       onChangeText={(text) => {
                         onChangeCountResults(Number(text), data.id, data.mainCategory);
+                        onChangeValues(text, index);
                       }}
+                      value={values[index]}
                     />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>
@@ -164,7 +178,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           keyboardType="numeric"
                           onChangeText={(text) => {
                             onChangeCountResults(Number(text), data.id, data.mainCategory);
+                            onChangeValues(text, index);
                           }}
+                          value={values[index]}
                         />
                         <Text style={styles.inputText}>{textTrainingUnit}</Text>
                       </View>
