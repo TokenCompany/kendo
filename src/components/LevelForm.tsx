@@ -1,6 +1,7 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Modal, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import i18n from "../lang/localization";
 
 type Props = {
   label: string;
@@ -14,6 +15,8 @@ type Props = {
   showDatepickerExam: () => void;
   visiblePassed: boolean;
   visibleExam: boolean;
+  closePassed: () => void;
+  closeExam: () => void;
   onPressClose: () => void;
 };
 
@@ -27,6 +30,8 @@ export const LevelForm: React.FC<Props> = ({
   onChangeExam,
   visiblePassed,
   visibleExam,
+  closePassed,
+  closeExam,
   showDatepickerPassed,
   showDatepickerExam,
   onPressClose,
@@ -35,60 +40,88 @@ export const LevelForm: React.FC<Props> = ({
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>
       <View style={styles.displayRow}>
-        <Text style={styles.dayLavel}>合格日</Text>
+        <Text style={styles.dayLavel}>{i18n.t("ProfileEdit.passingDate")}</Text>
         <View>
           <View style={styles.dayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepickerPassed}>
-              <Text style={styles.buttonText}>設定</Text>
+              <Text style={styles.buttonText}>{i18n.t("ProfileEdit.setting")}</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{currentPassedDateText}</Text>
+            <View style={styles.dayTextWrap}>
+              <Text style={styles.dayText}>{currentPassedDateText}</Text>
+            </View>
           </View>
           <Modal
             animationType="fade"
             visible={visiblePassed}
             transparent={true}
-            onRequestClose={() => {}}
+            onRequestClose={closePassed}
           >
-            <View style={styles.modalView}>
+            {Platform.OS === "ios" && (
+              <View style={styles.modalView}>
+                <DateTimePicker
+                  locale={i18n.t("Lang.lang")}
+                  value={passedDateValue}
+                  mode="date"
+                  display={"spinner"}
+                  onChange={onChangePassed}
+                />
+                <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
+                  <Text style={styles.textStyle}>×</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {Platform.OS === "android" && (
               <DateTimePicker
+                locale={i18n.t("Lang.lang")}
                 value={passedDateValue}
                 mode="date"
-                display={"spinner"}
+                display={"default"}
                 onChange={onChangePassed}
               />
-              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
+            )}
           </Modal>
         </View>
       </View>
       <View style={styles.displayRow}>
-        <Text style={styles.dayLavel}>審査日</Text>
+        <Text style={styles.dayLavel}>{i18n.t("ProfileEdit.examinationDate")}</Text>
         <View>
           <View style={styles.dayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepickerExam}>
-              <Text style={styles.buttonText}>設定</Text>
+              <Text style={styles.buttonText}>{i18n.t("ProfileEdit.setting")}</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{currentExamDateText}</Text>
+            <View style={styles.dayTextWrap}>
+              <Text style={styles.dayText}>{currentExamDateText}</Text>
+            </View>
           </View>
           <Modal
             animationType="fade"
             visible={visibleExam}
             transparent={true}
-            onRequestClose={() => {}}
+            onRequestClose={closeExam}
           >
-            <View style={styles.modalView}>
+            {Platform.OS === "ios" && (
+              <View style={styles.modalView}>
+                <DateTimePicker
+                  locale={i18n.t("Lang.lang")}
+                  value={examDateValue}
+                  mode="date"
+                  display={"spinner"}
+                  onChange={onChangeExam}
+                />
+                <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
+                  <Text style={styles.textStyle}>×</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {Platform.OS === "android" && (
               <DateTimePicker
-                value={examDateValue}
+                locale={i18n.t("Lang.lang")}
+                value={passedDateValue}
                 mode="date"
-                display={"spinner"}
+                display={"default"}
                 onChange={onChangeExam}
               />
-              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
+            )}
           </Modal>
         </View>
       </View>
@@ -118,6 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     marginBottom: 30,
+    width: 200,
     height: 25,
     borderColor: "#aaa",
     color: "#000",
@@ -139,7 +173,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "40%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
@@ -156,17 +190,20 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "bold",
     textAlign: "center",
+    elevation: 999,
   },
-  dayText: {
-    fontSize: 18,
+  dayTextWrap: {
     flex: 1,
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
     paddingLeft: 5,
-    paddingRight: 145,
+    width: 145,
     marginLeft: 10,
     height: 40,
+  },
+  dayText: {
+    fontSize: 18,
   },
   buttonContainer: {
     alignItems: "center",

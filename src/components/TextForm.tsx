@@ -17,6 +17,9 @@ export const TextForm: React.FC<Props> = ({ label, value, onChangeText, placehol
         onChangeText={onChangeText}
         value={value}
         placeholder={placeholder}
+        maxLength={60}
+        multiline={true}
+        blurOnSubmit={false}
       />
     </View>
   );

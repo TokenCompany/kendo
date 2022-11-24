@@ -17,7 +17,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
   const createAlert = () =>
-    Alert.alert("Alert Title", "本当に削除しますか？", [
+    Alert.alert("本当に削除しますか？", "", [
       {
         text: "いいえ",
         style: "cancel",
@@ -33,6 +33,9 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
 
+  // 5行まで制限
+  const numberOfLineBreaks = (currentTask.match(/\n/g) || []).length;
+
   return (
     <View style={styles.container}>
       <TextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
@@ -43,8 +46,16 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         <TouchableOpacity
           style={[styles.button, styles.color]}
           onPress={() => {
-            onPressSaveTask();
-            onChangeSetting();
+            if (numberOfLineBreaks < 5) {
+              onPressSaveTask();
+              onChangeSetting();
+            } else {
+              Alert.alert("課題は５行まででお願いします", "", [
+                {
+                  text: "はい",
+                },
+              ]);
+            }
           }}
         >
           <Text style={styles.text}>設定</Text>

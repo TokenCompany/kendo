@@ -7,7 +7,7 @@ export interface InitTextState {
 
 // デフォルトの値
 const initialState: InitTextState = {
-  initText: "",
+  initText: "八段への道",
 };
 
 export const counterSlice = createSlice({

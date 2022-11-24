@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } from "react-native";
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -15,22 +15,29 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
   });
+
   const [modalVisible, setModalVisible] = useState(false);
-  const onPress = () => {
+  const [onPressJudge, setOnPressJudge] = useState(false);
+
+  let time: any;
+  const onPress = (time: any) => {
+    setOnPressJudge(true);
     setModalVisible(true);
-    setTimeout(() => {
-      hiddenModal();
+
+    time = setTimeout(() => {
+      onPressClose(time);
     }, 5000);
   };
 
-  const hiddenModal = () => {
-    setModalVisible(false);
-    navigation.navigate("Menu");
-  };
+  useEffect(() => {
+    if (!modalVisible && onPressJudge) {
+      navigation.navigate("Menu");
+    }
+  }, [modalVisible, navigation, onPressJudge]);
 
-  const onPressClose = () => {
+  const onPressClose = (time: any) => {
     setModalVisible(false);
-    navigation.navigate("Menu");
+    clearTimeout(time);
   };
 
   const initText = useSelector((state: RootState) => state.initText.initText);
@@ -39,60 +46,63 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 段数を表示
   const renderLevel = () => {
-    if (profile.passed01 === 19900000) {
-      return <Text>初段</Text>;
-    } else if (profile.passed02 === 19900000) {
-      return <Text>弐段</Text>;
-    } else if (profile.passed03 === 19900000) {
-      return <Text>参段</Text>;
-    } else if (profile.passed04 === 19900000) {
-      return <Text>四段</Text>;
-    } else if (profile.passed05 === 19900000) {
-      return <Text>五段</Text>;
-    } else if (profile.passed06 === 19900000) {
-      return <Text>六段</Text>;
-    } else if (profile.passed07 === 19900000) {
-      return <Text>七段</Text>;
-    } else if (profile.passed08 === 19900000) {
-      return <Text>八段</Text>;
-    } else if (profile.passed09 === 19900000) {
-      return <Text>錬士</Text>;
+    if (profile.passed1 === 19900000) {
+      return "初段";
+    } else if (profile.passed2 === 19900000) {
+      return "弐段";
+    } else if (profile.passed3 === 19900000) {
+      return "参段";
+    } else if (profile.passed4 === 19900000) {
+      return "四段";
+    } else if (profile.passed5 === 19900000) {
+      return "五段";
+    } else if (profile.passed6 === 19900000) {
+      return "六段";
+    } else if (profile.passed7 === 19900000) {
+      return "七段";
+    } else if (profile.passed8 === 19900000) {
+      return "八段";
+    } else if (profile.passed9 === 19900000) {
+      return "錬士";
     } else if (profile.passed10 === 19900000) {
-      return <Text>教士</Text>;
+      return "教士";
+    } else {
+      return "初段";
     }
   };
 
   // 審査日までの残り日数
   let profileExam = () => {
-    if (profile.passed01 === 19900000) {
-      return profile.exam01;
-    } else if (profile.passed02 === 19900000) {
-      return profile.exam02;
-    } else if (profile.passed03 === 19900000) {
-      return profile.exam03;
-    } else if (profile.passed04 === 19900000) {
-      return profile.exam04;
-    } else if (profile.passed05 === 19900000) {
-      return profile.exam05;
-    } else if (profile.passed06 === 19900000) {
-      return profile.exam06;
-    } else if (profile.passed07 === 19900000) {
-      return profile.exam07;
-    } else if (profile.passed08 === 19900000) {
-      return profile.exam08;
-    } else if (profile.passed09 === 19900000) {
-      return profile.exam09;
+    if (profile.passed0 === 19900000) {
+      return profile.exam0;
+    } else if (profile.passed1 === 19900000) {
+      return profile.exam1;
+    } else if (profile.passed2 === 19900000) {
+      return profile.exam2;
+    } else if (profile.passed3 === 19900000) {
+      return profile.exam3;
+    } else if (profile.passed4 === 19900000) {
+      return profile.exam4;
+    } else if (profile.passed5 === 19900000) {
+      return profile.exam5;
+    } else if (profile.passed6 === 19900000) {
+      return profile.exam6;
+    } else if (profile.passed7 === 19900000) {
+      return profile.exam7;
+    } else if (profile.passed8 === 19900000) {
+      return profile.exam8;
+    } else if (profile.passed9 === 19900000) {
+      return profile.exam9;
     } else if (profile.passed10 === 19900000) {
       return profile.exam10;
     }
   };
 
   const renderExamDate = (exam: number) => {
-    const examDate = exam;
-    const today = Number(dayjs().format("YYYYMMDD"));
-    let diffDate = (examDate - today) / 27.3972603;
-    let diffRoundDate = Math.round(diffDate);
-    return diffRoundDate;
+    const today = dayjs().format("YYYYMMDD");
+    const examDay = String(exam);
+    const diffDate = dayjs(examDay).diff(today, "day");
+    return diffDate;
   };
 
   return (
@@ -129,7 +139,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {i18n.t("Modal.stage")}
               </Text>
               <Text style={styles.modalText}>
-                {renderExamDate(profileExam())}
+                {renderExamDate(profileExam()) > 0 ? renderExamDate(profileExam()) : "-"}
                 {i18n.t("Modal.day")}
               </Text>
               <TouchableOpacity

@@ -26,24 +26,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
   const onPressLanguage = () => {
-    navigation.navigate("TrainingEdit");
+    navigation.navigate("Language");
   };
-
-  const rankTableData = [
-    ["初段", "〇", "2006年11月20日"],
-    ["弐段", "〇", "2007年11月13日"],
-    ["参段 ", "〇", "2009年11月12日"],
-    ["四段 ", "〇", "2011年11月1日"],
-    ["五段", "〇", "2015年11月17日"],
-    ["六段 ", "〇", "2020年11月22日"],
-    ["七段", "-", "残り1945日(5年4か月)"],
-    ["八段", "-", "残り5596日(15年4か月)"],
-  ];
 
   // 練士、教士、範士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
   useEffect(() => {
-    if (profile.passed06 !== 19900000) {
+    if (profile.passed5 !== 19900000) {
       setOpenRenshi(true);
     } else {
       setOpenRenshi(false);
@@ -51,7 +40,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   });
   const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
   useEffect(() => {
-    if (profile.passed07 !== 19900000) {
+    if (profile.passed6 !== 19900000) {
       setOpenKyoushi(true);
     } else {
       setOpenKyoushi(false);
@@ -59,7 +48,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   });
   const [openHanshi, setOpenHanshi] = useState<boolean>(false);
   useEffect(() => {
-    if (profile.passed06 !== 19900000) {
+    if (profile.passed5 !== 19900000) {
       setOpenHanshi(true);
     } else {
       setOpenHanshi(false);
@@ -72,47 +61,108 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let changeText = "";
     originDate.forEach((element, index) => {
       if (index == 4) {
-        changeText += i18n.t("Setting.year");
+        changeText += "/";
       } else if (index == 6) {
-        changeText += i18n.t("Setting.month");
+        changeText += "/";
       }
       changeText += element;
-      if (index == originDate.length - 1) {
-        changeText += i18n.t("Setting.day");
-      }
     });
     return changeText;
   };
 
-  // 合格済みかどうか
-  const renderPassedCheck = (date: number) => {
-    if (date !== 19900000) {
-      return <Text>〇</Text>;
-    } else {
-      return <Text>-</Text>;
-    }
-  };
-
   // 審査までの日数
   const renderExamDate = (exam: number) => {
-    const examDate = exam;
-    const today = Number(dayjs().format("YYYYMMDD"));
-    let diffDate = (examDate - today) / 27.3972603;
-    let diffRoundDate = Math.round(diffDate);
-    return diffRoundDate;
+    const today = dayjs().format("YYYYMMDD");
+    const examDay = String(exam);
+    const diffDate = dayjs(examDay).diff(today, "day");
+    return diffDate;
   };
 
   // 合格日出力 or 審査びまでの日曹を出力
-  const renderPassedDate = (date: number, exam: number) => {
-    if (date !== 19900000) {
-      return <Text>{renderChangeText(date)}</Text>;
+  const renderPassedDate = (passed: number, exam: number) => {
+    if (passed !== 19900000) {
+      return <Text>{renderChangeText(passed)}</Text>;
     } else {
       return (
         <Text>
-          {`${i18n.t("Setting.remain")}` + `${renderExamDate(exam)}` + `${i18n.t("Setting.day")}`}
+          {renderExamDate(exam) >= 0
+            ? `${i18n.t("Setting.remain")}` + `${renderExamDate(exam)}` + `${i18n.t("Setting.day")}`
+            : "-"}
         </Text>
       );
     }
+  };
+
+  // 合格日抽出
+  const passedObject1 = () => {
+    let object = {};
+    Object.keys(profile).forEach((key) => {
+      if (key.indexOf("passed") !== -1) {
+        object[key] = profile[key];
+      }
+    });
+    return object;
+  };
+  const onlyPassedObject = passedObject1();
+  const passedObject2 = () => {
+    let object = {};
+    Object.keys(onlyPassedObject).some((key) => {
+      object[key] = profile[key];
+      if (profile[key] !== 19900000) {
+        return true;
+      }
+    });
+    return object;
+  };
+  const onlyPassed = passedObject2();
+
+  // 階級
+  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
+
+  // 条件を満たした時に錬士,教士,範士の追加
+  const addLevel = () => {
+    if (profile.passed5 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
+      kendoLevel[kendoLevel.length] = "範士";
+    }
+
+    if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
+      kendoLevel[kendoLevel.length] = "教士";
+      kendoLevel[kendoLevel.length] = "範士";
+    }
+  };
+  {
+    addLevel();
+  }
+
+  // 合格済みかどうか
+  const renderPassedCheck = (passed: number, index: number) => {
+    if (Object.keys(onlyPassed).length !== 11) {
+      if (index < Object.keys(onlyPassed).length || passed !== 19900000) {
+        return "〇";
+      } else {
+        return "-";
+      }
+    } else {
+      return "-";
+    }
+  };
+
+  const renderLevelTable = () => {
+    return kendoLevel.map((data, index) => (
+      <View style={styles.tableRow}>
+        <Text style={[styles.tableData, styles.firstColumn]}>{data}</Text>
+        <Text style={[styles.tableData, styles.secondColumn]}>
+          {renderPassedCheck(profile[`passed${index}`], index)}
+        </Text>
+        <Text style={[styles.tableData, styles.thirdColumn]}>
+          {profile[`exam${index}`] !== 19900000 || profile[`passed${index}`] !== 19900000
+            ? renderPassedDate(profile[`passed${index}`], profile[`exam${index}`])
+            : "-"}
+        </Text>
+      </View>
+    ));
   };
 
   return (
@@ -132,7 +182,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.age")}</Text>
             <Text style={styles.profileText02}>
-              {profile.age ? profile.age : i18n.t("Setting.intoAge")}
+              {profile.age ? profile.age + `${i18n.t("Setting.old")}` : i18n.t("Setting.intoAge")}
             </Text>
             <Text style={styles.profileText01}>{i18n.t("Setting.number")}</Text>
             <Text style={styles.profileText02}>
@@ -155,159 +205,14 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
             />
           )}
         </View>
+
         <View style={styles.tableContainer}>
           <View style={styles.tableRow}>
             <Text style={[styles.tableData, styles.firstColumn]}>{i18n.t("Setting.th01")}</Text>
             <Text style={[styles.tableData, styles.secondColumn]}>{i18n.t("Setting.th02")}</Text>
             <Text style={[styles.tableData, styles.thirdColumn]}>{i18n.t("Setting.th03")}</Text>
           </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage01")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed01)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam01 !== 19900000
-                ? renderPassedDate(profile.passed01, profile.exam01)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage02")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed02)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam02 !== 19900000
-                ? renderPassedDate(profile.passed02, profile.exam02)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage03")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed03)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam03 !== 19900000
-                ? renderPassedDate(profile.passed03, profile.exam03)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage04")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed04)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam04 !== 19900000
-                ? renderPassedDate(profile.passed04, profile.exam04)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage05")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed05)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam05 !== 19900000
-                ? renderPassedDate(profile.passed05, profile.exam05)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage06")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed06)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam06 !== 19900000
-                ? renderPassedDate(profile.passed06, profile.exam06)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage07")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed07)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam07 !== 19900000
-                ? renderPassedDate(profile.passed07, profile.exam07)
-                : "-"}
-            </Text>
-          </View>
-          <View style={styles.tableRow}>
-            <Text style={[styles.tableData, styles.firstColumn]}>
-              {i18n.t("ProfileEdit.stage08")}
-            </Text>
-            <Text style={[styles.tableData, styles.secondColumn]}>
-              {renderPassedCheck(profile.passed08)}
-            </Text>
-            <Text style={[styles.tableData, styles.thirdColumn]}>
-              {profile.exam08 !== 19900000
-                ? renderPassedDate(profile.passed08, profile.exam08)
-                : "-"}
-            </Text>
-          </View>
-          {openRenshi && (
-            <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>
-                {i18n.t("ProfileEdit.stage09")}
-              </Text>
-              <Text style={[styles.tableData, styles.secondColumn]}>
-                {renderPassedCheck(profile.passed09)}
-              </Text>
-              <Text style={[styles.tableData, styles.thirdColumn]}>
-                {profile.exam09 !== 19900000
-                  ? renderPassedDate(profile.passed09, profile.exam09)
-                  : "-"}
-              </Text>
-            </View>
-          )}
-          {openKyoushi && (
-            <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>
-                {i18n.t("ProfileEdit.stage10")}
-              </Text>
-              <Text style={[styles.tableData, styles.secondColumn]}>
-                {renderPassedCheck(profile.passed10)}
-              </Text>
-              <Text style={[styles.tableData, styles.thirdColumn]}>
-                {profile.exam10 !== 19900000
-                  ? renderPassedDate(profile.passed10, profile.exam10)
-                  : "-"}
-              </Text>
-            </View>
-          )}
-          {openHanshi && (
-            <View style={styles.tableRow}>
-              <Text style={[styles.tableData, styles.firstColumn]}>範士</Text>
-              <Text style={[styles.tableData, styles.secondColumn]}>
-                {renderPassedCheck(profile.passed11)}
-              </Text>
-              <Text style={[styles.tableData, styles.thirdColumn]}>
-                {profile.exam11 !== 19900000
-                  ? renderPassedDate(profile.passed11, profile.exam11)
-                  : "-"}
-              </Text>
-            </View>
-          )}
+          {renderLevelTable()}
         </View>
         <View style={styles.buttonContainer}>
           <Button text={i18n.t("Setting.button03")} onPress={onPressTask} />
@@ -343,7 +248,6 @@ const styles = StyleSheet.create({
   profileContainer: {
     flexDirection: "row",
     paddingBottom: 20,
-    paddingHorizontal: 30,
   },
   profileBody: {
     flexGrow: 1,
@@ -363,6 +267,7 @@ const styles = StyleSheet.create({
     marginBottom: 16,
     paddingLeft: 16,
     fontSize: 16,
+    width: 200,
   },
   tableContainer: {
     marginBottom: 20,

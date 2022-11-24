@@ -147,7 +147,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               />
             </View>
           </View>
-          {form && <TextInput style={styles.form} onChangeText={place} />}
+          {form && <TextInput style={styles.form} onChangeText={setPlace} />}
           <TextButton
             text01="登録"
             onPress01={() => {
