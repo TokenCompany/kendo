@@ -42,14 +42,14 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
   const subCategories = useSelector((state: RootState) => state.subCategory);
+  
   const initResults: Results = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
   // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count: number, id: string, mainCategory: string) => {
     let newResults = { ...results };
     // 時間がsubcategoryの中にないため条件分岐で時間の処理を書いてます。
-    console.log(newResults);
-    
+    // console.log(newResults);
     if (mainCategory in newResults) {
       for (const subCategory of newResults[mainCategory]) {
         if (subCategory.id === id) {
@@ -64,8 +64,11 @@ export const KeikoTrainingInput: React.FC<Props> = ({
           result: count,
         },
       ];
+      // console.log(newResults);
+      
     }
     setResults(newResults);
+    onChangeSendInput(newResults[mainCategory], mainCategory);
   };
 
   // サブカテゴリ―によって出すinput形式を変更
@@ -134,7 +137,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       keyboardType="numeric"
                       onChangeText={(text) => {
                         onChangeCountResults(Number(text), data.id, data.mainCategory);
-                        onChangeSendInput(results[data.mainCategory], data.mainCategory);
                       }}
                     />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
@@ -162,7 +164,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           keyboardType="numeric"
                           onChangeText={(text) => {
                             onChangeCountResults(Number(text), data.id, data.mainCategory);
-                            onChangeSendInput(results[data.mainCategory], data.mainCategory);
                           }}
                         />
                         <Text style={styles.inputText}>{textTrainingUnit}</Text>
@@ -180,9 +181,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       if (itemValue !== "input") {
                         let newResults = { ...results };
                         for (const place of newResults["placeSubCategories"]) {
-                          if (place["result"]) {
-                            place["result"] = false;
-                          }
+                          place["result"] = false;
                         }
                         newResults["placeSubCategories"][itemIndex]["result"] = true;
                         setResults(newResults);

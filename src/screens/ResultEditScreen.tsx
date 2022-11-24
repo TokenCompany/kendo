@@ -35,6 +35,10 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const dispatch = useDispatch();
   // reduxからサブカテゴリ―ズの情報を取得
   const subCategories = useSelector((state: RootState) => state.subCategory);
+  const all = useSelector((state: RootState) => state.results);
+  // console.log(all);
+  // console.log(subCategories);
+  
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
@@ -65,12 +69,11 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     },
   };
   const [allResults, setAllResults] = useState<Results>(initAllResults);
+  
   const onPressBtn = () => {
     createAlert();
     // REDUXへの保存
-    // dispatch(addResults(allResults));
-    // console.log(subCategories);
-    // console.log(allResults);
+    dispatch(addResults(allResults));
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
@@ -147,10 +150,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           reservedPlace={place}
           key={index}
           onChangeSendInput={(changedResults, mainCategory) => {
-            console.log(changedResults);
-            
             onChangeResults(changedResults, mainCategory);
-
           }}
         />
       ))}

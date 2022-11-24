@@ -34,7 +34,6 @@ export const counterSlice = createSlice({
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addResults: (state, action) => {
       state[action.payload.trainingDate] = action.payload.resultsSum;
-      console.log(state);
     },
   },
 });
