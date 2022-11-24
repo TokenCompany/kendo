@@ -18,13 +18,25 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-
+  const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const showForm = () => {
+    setForm(true);
+  };
+  let initItems = [];
+  for (const place of places) {
+    initItems.push({
+      label: place.text,
+      value: place.text
+    })
+  }
+  initItems.push({ label: "直接入力", value: showForm },)
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
+  const showButton: boolean = true;
   const [allReservations, setAllReservations] = useState(reservations);
   const [form, setForm] = useState(false);
   const timeErrorAlert = () => {
@@ -35,26 +47,21 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   {
     timeErrorAlert();
   }
-  const showForm = () => {
-    setForm(true);
-  };
+  
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "text1", value: "text1" },
-    { label: "text2", value: "text2" },
-    { label: "text3", value: "text3" },
-    { label: "横浜アリーナ", value: "横浜アリーナ" },
-    { label: "直接入力", value: showForm },
-  ]);
-  console.log(startTime);
-  console.log(endTime);
-
   const [showDatePicker, setShowDatePicker] = useState(false);
   const onPressShowDatePicker = () => {
     setShowDatePicker(true)
   }
 
+  const [items, setItems] = useState(initItems);
+  const onChangeValue = () => {
+    setPlace(value);
+    if (value !== showForm) {
+      setForm(false);
+    }
+  }; feature/#25_redux
 
   return (
     <ScrollView style={styles.container}>
@@ -152,7 +159,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                 style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
                 dropDownStyle={{ backgroundColor: "#F4F4F5" }}
-                onChangeValue={(value) => setPlace(value)}
+                onChangeValue={onChangeValue}
                 placeholder={place}
                 placeholderStyle={{
                   textAlign: "center",
@@ -218,6 +225,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               }
             }}
             text02="削除"
+            judge={true}
           />
         </View>
       ) : (
