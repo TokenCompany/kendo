@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text, TextInput, Alert, } from "react-native";
+import { View, ScrollView, StyleSheet, Text, TextInput, Alert, Platform, TouchableOpacity, } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
@@ -50,6 +50,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   console.log(startTime);
   console.log(endTime);
 
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const onPressShowDatePicker = () => {
+    setShowDatePicker(true)
+  }
 
 
   return (
@@ -83,6 +87,26 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <View style={styles.boxInputTime}>
               <View style={styles.boxInputTimeFlex}>
                 <View style={styles.timeStart}>
+                {Platform.OS === "android" && (
+                <View>
+                  <TouchableOpacity onPress={() => onPressShowDatePicker()}>
+                    <Text>{startTime}</Text>
+                  </TouchableOpacity>
+                  {showDatePicker && (
+                  <DateTimePicker
+                  locale={i18n.t("Lang.lang")}
+                    style={{ height: 60 }}
+                    value={dayjs(startTime).toDate()}
+                    mode="time"
+                    display={"default"}
+                    onChange={(event, date1) =>  {
+                      setStartTime(dayjs(date1.toString(), "HH:MM"))
+                    }}
+                  />
+                  )}
+                </View>
+                )}
+                {Platform.OS === "ios" && (
                   <DateTimePicker
                     style={{ height: 60 }}
                     value={dayjs(startTime).toDate()}
@@ -92,9 +116,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       setStartTime(date1.toString())
                     }}
                   />
+                )}
                 </View>
                 <Text style={styles.timeText}>~</Text>
                 <View style={styles.timeEnd}>
+                {Platform.OS === "ios" && (
                   <DateTimePicker
                     style={{ height: 60 }}
                     value={dayjs(endTime).toDate()}
@@ -104,6 +130,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       setEndTime(date2.toString())
                     }}
                   />
+                )}
                 </View>
               </View>
             </View>
