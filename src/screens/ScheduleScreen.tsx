@@ -16,7 +16,18 @@ type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
-
+  const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const showForm = () => {
+    setForm(true);
+  };
+  let initItems = [];
+  for (const place of places) {
+    initItems.push({
+      label: place.text,
+      value: place.text
+    })
+  }
+  initItems.push({ label: "直接入力", value: showForm },)
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
@@ -34,19 +45,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   {
     timeErrorAlert();
   }
-  const showForm = () => {
-    setForm(true);
-  };
+  
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
-  const [items, setItems] = useState([
-    { label: "text1", value: "text1" },
-    { label: "text2", value: "text2" },
-    { label: "text3", value: "text3" },
-    { label: "text4", value: "text4" },
-    { label: "横浜アリーナ", value: "横浜アリーナ" },
-    { label: "直接入力", value: showForm },
-  ]);
+  const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
     setPlace(value);
     if (value !== showForm) {
