@@ -33,41 +33,27 @@ export type Results = {
 
 export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) => {
   const dispatch = useDispatch();
-  // const orgPlaces = useSelector((state: RootState) => state.subCategory);
-
-  // // console.log(orgPlaces);
+  // reduxからサブカテゴリ―ズの情報を取得
+  const subCategories = useSelector((state: RootState) => state.subCategory);
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
   const date = route.params.date;
   const place = route.params.place;
-  const places = {
-    placeSubCategories: [
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "横浜アリーナ",
-      },
-      {
-        id: "3c8dd78b-ad72-49e2-000c-9d6663af289b",
-        text: "沖縄アリーナ",
-      },
-      {
-        id: "3c8dd78b-ad72-49e2-995c-9d6663af289b",
-        text: "北谷体育館",
-      },
-    ],
-  };
-  for (const item of places.placeSubCategories) {
+    // 稽古場所の情報をコピーし、予約場所で選択された場所にtrueを代入,それ以外にはfalseを指定
+  const places = JSON.parse(JSON.stringify(subCategories.placeSubCategories));
+  for (const item of places) {
     if (item.text === place) {
       item.result = true;
     } else {
       item.result = false;
     }
   }
+  // 練習結果の初期化
   const initAllResults = {
     trainingDate: date,
     resultsSum: {
-      placeSubCategories: places["placeSubCategories"],
+      placeSubCategories: places,
       trainingTime: [],
       suburiSubCategories: [],
       ashiSabakiSubCategories: [],
@@ -82,7 +68,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const onPressBtn = () => {
     createAlert();
     // REDUXへの保存
-    dispatch(addResults(allResults));
+    // dispatch(addResults(allResults));
+    // console.log(subCategories);
+    // console.log(allResults);
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
@@ -151,7 +139,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       <View style={styles.dateWrap}>
         <Text style={styles.date}>{dateText}</Text>
       </View>
-      {mainCategoriesData.map((data, index: number) => (
+      {mainCategoriesData.map((data:any, index: number) => (
         <KeikoTrainingInput
           textTraining={data[0]}
           textTrainingUnit={data[1]}
@@ -159,7 +147,10 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           reservedPlace={place}
           key={index}
           onChangeSendInput={(changedResults, mainCategory) => {
+            console.log(changedResults);
+            
             onChangeResults(changedResults, mainCategory);
+
           }}
         />
       ))}

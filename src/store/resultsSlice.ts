@@ -35,7 +35,6 @@ export const counterSlice = createSlice({
     addResults: (state, action) => {
       state[action.payload.trainingDate] = action.payload.resultsSum;
       console.log(state);
-      
     },
   },
 });

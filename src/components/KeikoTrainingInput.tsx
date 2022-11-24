@@ -41,13 +41,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
-  const [value, setValue] = useState<number | boolean>();
   const subCategories = useSelector((state: RootState) => state.subCategory);
-  const initResults: Results = {...subCategories};
+  const initResults: Results = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
   // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count: number, id: string, mainCategory: string) => {
     let newResults = { ...results };
+    // 時間がsubcategoryの中にないため条件分岐で時間の処理を書いてます。
+    console.log(newResults);
+    
     if (mainCategory in newResults) {
       for (const subCategory of newResults[mainCategory]) {
         if (subCategory.id === id) {
@@ -63,7 +65,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
         },
       ];
     }
-
     setResults(newResults);
   };
 
@@ -91,11 +92,11 @@ export const KeikoTrainingInput: React.FC<Props> = ({
         text: data.text,
         mainCategory: textTrainingCategories,
       });
-    }
+    }    
   } else {
     // ここが稽古時間の表示
     subCategoriesData.push({
-      id: "",
+      id: "none",
       text: "",
       mainCategory: textTrainingCategories,
     });
@@ -155,7 +156,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   </View>
                   {!!checked2 &&
                     subCategoriesData.map((data: any, index: number) => (
-                      <View style={styles.inputGroup}>
+                      <View style={styles.inputGroup} key={index}>
                         <TextInput
                           style={styles.input}
                           keyboardType="numeric"
