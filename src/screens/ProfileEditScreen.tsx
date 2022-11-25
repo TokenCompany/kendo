@@ -260,8 +260,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     return changeText;
   };
 
+  // プロフィール画像登録
   const [image, setImage] = useState(currentImage);
-
   const pickImage = async () => {
     let resultImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
