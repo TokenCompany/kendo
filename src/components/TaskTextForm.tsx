@@ -8,7 +8,7 @@ type Props = {
   placeholder?: string;
 };
 
-export const TextForm: React.FC<Props> = ({ label, value, onChangeText, placeholder = "" }) => {
+export const TaskTextForm: React.FC<Props> = ({ label, value, onChangeText, placeholder = "" }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

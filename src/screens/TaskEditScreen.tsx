@@ -1,9 +1,8 @@
-import { useState } from "react";
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { colors } from "../styles";
-import { TextForm } from "../components/TextForm";
+import { TaskTextForm } from "../components/TaskTextForm";
 import { useProfileForm } from "../hooks/useProfileForm";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TaskEdit">;
@@ -38,7 +37,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <TextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
+      <TaskTextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
       <View style={styles.display}>
         <TouchableOpacity style={styles.button} onPress={onChangeDelete}>
           <Text style={styles.text}>消去</Text>
