@@ -61,7 +61,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     if (value !== showForm) {
       setForm(false);
     }
-  }; feature/#25_redux
+  };
 
   return (
     <ScrollView style={styles.container}>
