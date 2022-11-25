@@ -24,14 +24,13 @@ interface subCategory {
 interface teacherSubcategory {
   id: string;
   text: string;
-  times: number;
 }
 
 // 年間目標のtype宣言
 interface TargetCategory {
   id: string;
   text: string;
-  times: number;
+  goal: number;
 }
 
 interface TargetCategories {
@@ -57,7 +56,7 @@ type SubCategoryPayload = {
   text: string;
 };
 
-type deleteSubCategory = {
+type DeleteSubCategory = {
   categoryName: string;
   id: string;
 };
@@ -78,7 +77,7 @@ export const counterSlice = createSlice({
             {
               id: action.payload.id,
               text: action.payload.text,
-              times: 0,
+              goal: 0,
             },
           ];
         } else {
@@ -86,7 +85,7 @@ export const counterSlice = createSlice({
             {
               id: action.payload.id,
               text: action.payload.text,
-              times: 0,
+              goal: 0,
             },
           ];
         }
@@ -101,7 +100,7 @@ export const counterSlice = createSlice({
       ];
       state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
     },
-    deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
+    deleteSubCategory: (state, action: PayloadAction<DeleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
         (item: any) => item.id !== action.payload.id,
       );

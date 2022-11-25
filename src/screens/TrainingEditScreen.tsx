@@ -21,7 +21,7 @@ type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 export type SubCategory = {
   id: string;
   text: string;
-  times: number;
+  goal: number;
 };
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
@@ -39,24 +39,27 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   // refの定義
   const scrollViewRef = useRef<ScrollView>(null);
   // stateの定義
+  const [currentValues, setCurrentValues] = useState<string[]>([""]);
   const [currentTargets, setCurrentTargets] = useState(teacherData);
   const [show, setShow] = useState(false);
   const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
-  const onChangeCountByTeacher = (count: number, id: string) => {
+  const onChangeCountByTeacher = (count: number, id: string, index:number) => {
     let newCurrentTargets = [];
     for (const target of currentTargets) {
       if (target.id === id) {
         newCurrentTargets.push({
           ...target,
-          times: count,
+          goal: count,
         });
       } else {
         newCurrentTargets.push(target);
       }
     }
     setCurrentTargets(newCurrentTargets);
-    // sumAllYearGoal();
+    let newCurrentValues:string[] = [...currentValues]
+    newCurrentValues[index] = count.toString();
+    setCurrentValues(newCurrentValues);
   };
 
   const onPressPlace = () => {
@@ -121,9 +124,15 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         { text: "戻る" },
       ]);
     } else {
+      // allYearのデータも格納
+      let newCurrentTargets = [...currentTargets,{
+        id: "none",
+        text: "年間稽古目標",
+        goal: currentYearGoal,
+      }];
       // reduxへの保存
       const saveTargets = {
-        [currentYear]: currentTargets,
+        [currentYear]: newCurrentTargets,
       };
       dispatch(addTargetCategory(saveTargets));
       Alert.alert("稽古目標が登録されました", "", [{ text: "戻る" }]);
@@ -174,11 +183,11 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                         style={styles.objectiveInput}
                         keyboardType="numeric"
                         onChangeText={(count) => {
-                          onChangeCountByTeacher(Number(count), currentTarget.id);
+                          onChangeCountByTeacher(Number(count), currentTarget.id,index);
                         }}
-                        // value={currentTarget[index].times}
+                        value={currentValues[index]}
                       ></TextInput>
-                      <Text style={styles.objectiveText}>回</Text>
+                      <Text style={styles.objectiveText}>時間</Text>
                     </View>
                   );
                 })}
