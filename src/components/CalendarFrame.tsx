@@ -211,6 +211,7 @@ const styles = StyleSheet.create({
   dayInput: {
     flex: 1,
     flexDirection: "row",
+    justifyContent:"space-evenly",
     marginTop: 10,
     marginBottom: 30,
     height: 25,
@@ -220,16 +221,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   dateButton: {
-    height: 40,
-    backgroundColor: "#a53010",
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    position:"relative",
+    bottom:5,
   },
   buttonText: {
-    fontSize: 16,
-    color: "#fff",
+    fontSize: 20,
+    color: "#000",
   },
   modalView: {
     position: "relative",
