@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import { TextForm } from "../components/TextForm";
+import { ProfileTextForm } from "../components/ProfileTextForm";
 import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
 import { LevelForm } from "../components/LevelForm";
@@ -260,8 +260,8 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     return changeText;
   };
 
+  // プロフィール画像登録
   const [image, setImage] = useState(currentImage);
-
   const pickImage = async () => {
     let resultImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -305,7 +305,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
         <View style={styles.profileBody}>
-          <TextForm label="氏名" value={currentName} onChangeText={onChangeName} />
+          <ProfileTextForm label="氏名" value={currentName} onChangeText={onChangeName} />
           <View style={styles.birthdayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>誕生日設定</Text>
@@ -384,7 +384,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             <Text style={styles.label}>年齢</Text>
             <Text style={styles.input}>{String(currentAge) != "0" ? String(currentAge) : ""}</Text>
           </View>
-          <TextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
+          <ProfileTextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
         <TouchableOpacity style={styles.profileImage} onPress={optionCamera}>
           {image ? (

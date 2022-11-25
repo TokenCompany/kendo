@@ -29,32 +29,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Language");
   };
 
-  // 練士、教士、範士の表示
-  const [openRenshi, setOpenRenshi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed5 !== 19900000) {
-      setOpenRenshi(true);
-    } else {
-      setOpenRenshi(false);
-    }
-  });
-  const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed6 !== 19900000) {
-      setOpenKyoushi(true);
-    } else {
-      setOpenKyoushi(false);
-    }
-  });
-  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed5 !== 19900000) {
-      setOpenHanshi(true);
-    } else {
-      setOpenHanshi(false);
-    }
-  });
-
   // 日付表示変換
   const renderChangeText = (date: number) => {
     let originDate = date.toString().split("");
@@ -78,7 +52,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return diffDate;
   };
 
-  // 合格日出力 or 審査びまでの日曹を出力
+  // 合格日出力 or 審査日までの日数を出力
   const renderPassedDate = (passed: number, exam: number) => {
     if (passed !== 19900000) {
       return <Text>{renderChangeText(passed)}</Text>;
@@ -139,7 +113,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
     if (Object.keys(onlyPassed).length !== 11) {
-      if (index < Object.keys(onlyPassed).length || passed !== 19900000) {
+      if (passed !== 19900000 || index < Object.keys(onlyPassed).length) {
         return "〇";
       } else {
         return "-";
