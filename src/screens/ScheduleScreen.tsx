@@ -27,14 +27,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [place, setPlace] = useState<string>();
   const [allReservations, setAllReservations] = useState(reservations);
   const [form, setForm] = useState(false);
-  const timeErrorAlert = () => {
-    if (startTime > endTime) {
-      Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
-    }
-  };
-  {
-    timeErrorAlert();
-  }
   const showForm = () => {
     setForm(true);
   };
@@ -47,14 +39,26 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     { label: "横浜アリーナ", value: "横浜アリーナ" },
     { label: "直接入力", value: showForm },
   ]);
-  console.log(startTime);
-  console.log(endTime);
 
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const onPressShowDatePicker = () => {
-    setShowDatePicker(true)
+  const [showStartTimePicker, setShowStartTimePicker] = useState(false);
+  const [showEndTimePicker, setShowEndTimePicker] = useState(false);
+  const onPressShowStartTimePicker = () => {
+    setShowStartTimePicker(true)
+  }
+  const onPressShowEndTimePicker = () => {
+    setShowEndTimePicker(true)
   }
 
+  // 時間分解
+  const renderChangeText = (date: string) => {
+    let originDate = date.toString().split("");
+    originDate.splice(2,1)
+    let changeText = "";
+    originDate.forEach((element) => {
+      changeText += element;
+    });
+    return changeText;
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -89,18 +93,71 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 <View style={styles.timeStart}>
                 {Platform.OS === "android" && (
                 <View>
-                  <TouchableOpacity onPress={() => onPressShowDatePicker()}>
-                    <Text>{startTime}</Text>
+                  <TouchableOpacity style={styles.timeStartAndroid} onPress={() => onPressShowStartTimePicker()}>
+                    <Text style={styles.timeStartTextAndroid}>{dayjs(startTime).format("HH:mm").toString()}</Text>
                   </TouchableOpacity>
-                  {showDatePicker && (
+                  {showStartTimePicker && (
                   <DateTimePicker
-                  locale={i18n.t("Lang.lang")}
                     style={{ height: 60 }}
                     value={dayjs(startTime).toDate()}
                     mode="time"
                     display={"default"}
                     onChange={(event, date1) =>  {
-                      setStartTime(dayjs(date1.toString(), "HH:MM"))
+                      setShowStartTimePicker(false);
+                      // if (Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) - Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) < 0){
+                      //   Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
+                      // } else {
+                        setShowStartTimePicker(false);
+                        setStartTime(date1.toString())
+                      // }
+                    }}
+                  />
+                  )}
+                </View>
+                )}
+               {Platform.OS === "ios" && (
+                  <DateTimePicker
+                    style={{ height: 60 }}
+                    value={dayjs(startTime).toDate()}
+                    mode="time"
+                    display={"default"}
+                    onChange={(event, date1) =>  {
+                      if (startTime > endTime){
+                        Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
+                      } else {
+                      setStartTime(date1.toString())
+                      }
+                    }}
+                  />
+                )}
+                </View>
+                <Text style={styles.timeText}>~</Text>
+                <View style={styles.timeEnd}>
+                {Platform.OS === "android" && (
+                <View>
+                  <TouchableOpacity style={styles.timeStartAndroid} onPress={() => onPressShowEndTimePicker()}>
+                    <Text style={styles.timeStartTextAndroid}>{dayjs(endTime).format("HH:mm").toString()}</Text>
+                  </TouchableOpacity>
+                  {showEndTimePicker && (
+                  <DateTimePicker
+                    style={{ height: 60 }}
+                    value={dayjs(endTime).toDate()}
+                    mode="time"
+                    display={"default"}
+                    onChange={(event, date2) =>  {
+                      setShowEndTimePicker(false);
+                      console.log(Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())));
+                      console.log(Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())));
+                      console.log(Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) - Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())));
+
+
+
+                      // if (Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) - Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) < 0){
+                      //   Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
+                      // } else {
+                        setShowEndTimePicker(false);
+                        setEndTime(date2.toString())
+                      // }
                     }}
                   />
                   )}
@@ -109,25 +166,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 {Platform.OS === "ios" && (
                   <DateTimePicker
                     style={{ height: 60 }}
-                    value={dayjs(startTime).toDate()}
-                    mode="time"
-                    display={"default"}
-                    onChange={(event, date1) =>  {
-                      setStartTime(date1.toString())
-                    }}
-                  />
-                )}
-                </View>
-                <Text style={styles.timeText}>~</Text>
-                <View style={styles.timeEnd}>
-                {Platform.OS === "ios" && (
-                  <DateTimePicker
-                    style={{ height: 60 }}
                     value={dayjs(endTime).toDate()}
                     mode="time"
                     display={"default"}
                     onChange={(event, date2) =>  {
-                      setEndTime(date2.toString())
+                      if (startTime > endTime){
+                        Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
+                      } else {
+                      setStartTime(date2.toString())
+                      }
                     }}
                   />
                 )}
@@ -253,6 +300,12 @@ const styles = StyleSheet.create({
     width:"40%",
     position:"relative",
     right:"10%",
+  },
+  timeStartAndroid: {
+    borderWidth:1,
+  },
+  timeStartTextAndroid: {
+    fontSize:16,
   },
   boxInputText: {
     paddingLeft: 10,
