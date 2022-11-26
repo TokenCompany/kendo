@@ -31,7 +31,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     setCurrentDate(currentDate.add(1, "month"));
   };
 
-  const onPressArrowLeftTest = (subtractMonth: void) => {
+  const onPressArrowLeftTest = () => {
     setCurrentDate(currentDate.add(-1, "month"));
     console.log(currentDate);
   }
