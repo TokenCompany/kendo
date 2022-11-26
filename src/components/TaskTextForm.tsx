@@ -8,7 +8,7 @@ type Props = {
   placeholder?: string;
 };
 
-export const TextForm: React.FC<Props> = ({ label, value, onChangeText, placeholder = "" }) => {
+export const TaskTextForm: React.FC<Props> = ({ label, value, onChangeText, placeholder = "" }) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>
@@ -18,6 +18,8 @@ export const TextForm: React.FC<Props> = ({ label, value, onChangeText, placehol
         value={value}
         placeholder={placeholder}
         maxLength={60}
+        multiline={true}
+        blurOnSubmit={false}
       />
     </View>
   );
@@ -33,7 +35,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   input: {
-    height: 40,
+    minHeight: 40,
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",

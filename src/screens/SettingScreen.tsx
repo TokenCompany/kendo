@@ -26,34 +26,8 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("TrainingEdit");
   };
   const onPressLanguage = () => {
-    navigation.navigate("TrainingEdit");
+    navigation.navigate("Language");
   };
-
-  // 練士、教士、範士の表示
-  const [openRenshi, setOpenRenshi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed5 !== 19900000) {
-      setOpenRenshi(true);
-    } else {
-      setOpenRenshi(false);
-    }
-  });
-  const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed6 !== 19900000) {
-      setOpenKyoushi(true);
-    } else {
-      setOpenKyoushi(false);
-    }
-  });
-  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed5 !== 19900000) {
-      setOpenHanshi(true);
-    } else {
-      setOpenHanshi(false);
-    }
-  });
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
@@ -78,7 +52,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return diffDate;
   };
 
-  // 合格日出力 or 審査びまでの日曹を出力
+  // 合格日出力 or 審査日までの日数を出力
   const renderPassedDate = (passed: number, exam: number) => {
     if (passed !== 19900000) {
       return <Text>{renderChangeText(passed)}</Text>;
@@ -103,11 +77,18 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
     return object;
   };
+<<<<<<< HEAD
   const test = passedObject1();
 
   const passedObject2 = () => {
     let object = {};
     Object.keys(test).some((key) => {
+=======
+  const onlyPassedObject = passedObject1();
+  const passedObject2 = () => {
+    let object = {};
+    Object.keys(onlyPassedObject).some((key) => {
+>>>>>>> main
       object[key] = profile[key];
       if (profile[key] !== 19900000) {
         return true;
@@ -115,8 +96,12 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
     return object;
   };
+<<<<<<< HEAD
   const test2 = passedObject2();
   console.log(test2);
+=======
+  const onlyPassed = passedObject2();
+>>>>>>> main
 
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
@@ -129,7 +114,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
 
     if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "教士";
+      kendoLevel[kendoLevel.length] = "範士";
     }
   };
   {
@@ -138,8 +125,17 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
+<<<<<<< HEAD
     if (index <= Object.keys(test2).length) {
       return "〇";
+=======
+    if (Object.keys(onlyPassed).length !== 11) {
+      if (passed !== 19900000 || index < Object.keys(onlyPassed).length) {
+        return "〇";
+      } else {
+        return "-";
+      }
+>>>>>>> main
     } else {
       return "-";
     }

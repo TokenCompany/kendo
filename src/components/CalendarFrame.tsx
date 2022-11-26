@@ -12,10 +12,10 @@ type Props = {
 export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const [allReservations, setAllReservations] = useState(reservations);
-  const [currentDate, setCurrentDate] = useState<string>(dayjs());
+  const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
-  const onChangeDate = (Date) => {
-    setCurrentDate(Date);
+  const onChangeDate = (dateNumber: any) => {
+    setCurrentDate(dateNumber);
   };
   const showDatepicker = () => {
     setShow(true);
@@ -31,50 +31,53 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     setCurrentDate(currentDate.add(1, "month"));
   };
 
-  class CalendarHeader extends React.PureComponent {
-    render() {
-      return (
-        <View>
-          <View style={styles.dayInput}>
-            <TouchableOpacity onPress={onPressArrowLeft}>
-              <Text>＜</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onPressArrowRight}>
-              <Text>＞</Text>
+  const onPressArrowLeftTest = () => {
+    setCurrentDate(currentDate.add(-1, "month"));
+    console.log(currentDate);
+  }
+
+  const CalendarHeader = () => {
+    return (
+      <View>
+        <View style={styles.dayInput}>
+          <TouchableOpacity onPress={onPressArrowLeftTest}>
+            <Text style={styles.arrowButton}>＜</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={showDatepicker}>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onPressArrowRight}>
+            <Text style={styles.arrowButton}>＞</Text>
+          </TouchableOpacity>
+        </View>
+        <Modal
+          animationType="fade"
+          visible={show}
+          transparent={true}
+          onRequestClose={() => {
+            setShow(false);
+          }}
+        >
+          <View style={styles.modalView}>
+            <DateTimePicker
+              value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
+              mode="date"
+              display={"spinner"}
+              onChange={(event, date) => {
+                if (date) {
+                  const dateNumber = dayjs(date.toString(), "YYYY-MM");
+                  onChangeDate(dateNumber);
+                }
+              }}
+            />
+            <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+              <Text style={styles.textStyle}>×</Text>
             </TouchableOpacity>
           </View>
-          <Modal
-            animationType="fade"
-            visible={show}
-            transparent={true}
-            onRequestClose={() => {
-              setShow(false);
-            }}
-          >
-            <View style={styles.modalView}>
-              <DateTimePicker
-                value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
-                mode="date"
-                display={"spinner"}
-                onChange={(event, date) => {
-                  if (date) {
-                    const Date = Number(dayjs(date).format("YYYYMMDD"));
-                    onChangeDate(Date);
-                  }
-                }}
-              />
-              <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </View>
-      );
-    }
-  }
+        </Modal>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
@@ -113,8 +116,8 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
             },
           },
         }}
-        monthFormat={"yyyy年 M月"}
-        current={currentDate.format("YYYY-MM-DD")}
+        monthFormat={"yyyy年 MM月"}
+        current={currentDate.format("YYYY-MM")}
         onPressArrowLeft={(subtractMonth) => {
           subtractMonth();
           setCurrentDate(currentDate.add(-1, "month"));
@@ -131,7 +134,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
+              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
             >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
@@ -202,7 +205,6 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 4,
     backgroundColor: "#fff",
-    borderRadius: "50%",
   },
   button: {
     marginBottom: 6,
@@ -214,6 +216,7 @@ const styles = StyleSheet.create({
   dayInput: {
     flex: 1,
     flexDirection: "row",
+    justifyContent:"space-evenly",
     marginTop: 10,
     marginBottom: 30,
     height: 25,
@@ -222,17 +225,9 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 20,
   },
-  dateButton: {
-    height: 40,
-    backgroundColor: "#a53010",
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
-  },
   buttonText: {
-    fontSize: 16,
-    color: "#fff",
+    fontSize: 20,
+    color: "#000",
   },
   modalView: {
     position: "relative",
@@ -265,5 +260,10 @@ const styles = StyleSheet.create({
     paddingRight: 120,
     marginLeft: 10,
     height: 40,
+  },
+  arrowButton:{
+    fontSize:18,
+    fontWeight:"bold",
+    color:"red",
   },
 });
