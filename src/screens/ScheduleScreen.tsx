@@ -1,17 +1,15 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text, TextInput, Alert, Platform, TouchableOpacity, } from "react-native";
+import { View, ScrollView, StyleSheet, Text, TextInput, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
+import { Picker } from "@react-native-community/picker";
 import { TextButton } from "../components/TextButton";
 import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import i18n from "../lang/localization";
-import dayjs from "dayjs";
-
+// import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
@@ -43,11 +41,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     if (startTime > endTime) {
       Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
     }
-  };
-  {
-    timeErrorAlert();
   }
-  
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
@@ -61,6 +55,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     if (value !== showForm) {
       setForm(false);
     }
+    timeErrorAlert();
   };
 
   return (
@@ -80,8 +75,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
           } else {
-            setStartTime("1000");
-            setEndTime("1000");
+            setStartTime("10:00");
+            setEndTime("10:00");
             setPlace("場所を選択");
           }
         }}
@@ -93,52 +88,37 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <Text>◆時間</Text>
             <View style={styles.boxInputTime}>
               <View style={styles.boxInputTimeFlex}>
-                <View style={styles.timeStart}>
-                {Platform.OS === "android" && (
-                <View>
-                  <TouchableOpacity onPress={() => onPressShowDatePicker()}>
-                    <Text>{startTime}</Text>
-                  </TouchableOpacity>
-                  {showDatePicker && (
-                  <DateTimePicker
-                  locale={i18n.t("Lang.lang")}
-                    style={{ height: 60 }}
-                    value={dayjs(startTime).toDate()}
-                    mode="time"
-                    display={"default"}
-                    onChange={(event, date1) =>  {
-                      setStartTime(dayjs(date1.toString(), "HH:MM"))
-                    }}
-                  />
-                  )}
-                </View>
-                )}
-                {Platform.OS === "ios" && (
-                  <DateTimePicker
-                    style={{ height: 60 }}
-                    value={dayjs(startTime).toDate()}
-                    mode="time"
-                    display={"default"}
-                    onChange={(event, date1) =>  {
-                      setStartTime(date1.toString())
-                    }}
-                  />
-                )}
-                </View>
+                <Picker
+                  selectedValue={startTime}
+                  style={styles.inputTime}
+                  onValueChange={(itemValue, itemIndex) => setStartTime(itemValue.toString())}
+                  itemStyle={{ height: 60 }}
+                >
+                  <Picker.Item label="10:00" value="1000" />
+                  <Picker.Item label="11:00" value="1100" />
+                  <Picker.Item label="12:00" value="1200" />
+                  <Picker.Item label="13:00" value="1300" />
+                  <Picker.Item label="14:00" value="1400" />
+                  <Picker.Item label="15:00" value="1500" />
+                  <Picker.Item label="19:00" value="1900" />
+                  <Picker.Item label="21:00" value="2100" />
+                </Picker>
                 <Text style={styles.timeText}>~</Text>
-                <View style={styles.timeEnd}>
-                {Platform.OS === "ios" && (
-                  <DateTimePicker
-                    style={{ height: 60 }}
-                    value={dayjs(endTime).toDate()}
-                    mode="time"
-                    display={"default"}
-                    onChange={(event, date2) =>  {
-                      setEndTime(date2.toString())
-                    }}
-                  />
-                )}
-                </View>
+                <Picker
+                  selectedValue={endTime}
+                  style={styles.inputTime}
+                  onValueChange={(itemValue, itemIndex) => setEndTime(itemValue.toString())}
+                  itemStyle={{ height: 60 }}
+                >
+                  <Picker.Item label="10:00" value="1000" />
+                  <Picker.Item label="11:00" value="1100" />
+                  <Picker.Item label="12:00" value="1200" />
+                  <Picker.Item label="13:00" value="1300" />
+                  <Picker.Item label="14:00" value="1400" />
+                  <Picker.Item label="15:00" value="1500" />
+                  <Picker.Item label="16:00" value="1600" />
+                  <Picker.Item label="21:00" value="2100" />
+                </Picker>
               </View>
             </View>
           </View>
@@ -254,14 +234,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  timeStart: {
-    width:"40%",
-  },
-  timeEnd: {
-    width:"40%",
-    position:"relative",
-    right:"10%",
-  },
   boxInputText: {
     paddingLeft: 10,
     flexGrow: 1,
@@ -290,7 +262,6 @@ const styles = StyleSheet.create({
   },
   timeText: {
     alignItems: "center",
-    paddingHorizontal:10,
     fontSize: 16,
   },
 });

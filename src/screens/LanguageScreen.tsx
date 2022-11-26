@@ -7,7 +7,6 @@ import i18n from "../lang/localization";
 type Props = NativeStackScreenProps<MainStackParamList, "Language">;
 
 export const LanguageScreen: React.FC<Props> = ({ navigation }: Props) => {
-
   const langChengeJP = () => {
     i18n.locale = "ja-JP";
     navigation.navigate("Setting");
@@ -28,7 +27,7 @@ export const LanguageScreen: React.FC<Props> = ({ navigation }: Props) => {
           }}
         >
           <Text style={i18n.locale === "ja-JP" ? styles.selectedStyle : styles.notSelectedStyle}>
-            日本語
+            日本語 / Japanese
           </Text>
         </TouchableOpacity>
         <TouchableOpacity
@@ -38,7 +37,7 @@ export const LanguageScreen: React.FC<Props> = ({ navigation }: Props) => {
           }}
         >
           <Text style={i18n.locale === "en" ? styles.selectedStyle : styles.notSelectedStyle}>
-            英語
+            英語 / English
           </Text>
         </TouchableOpacity>
       </View>

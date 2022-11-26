@@ -12,10 +12,10 @@ type Props = {
 export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const [allReservations, setAllReservations] = useState(reservations);
-  const [currentDate, setCurrentDate] = useState<string>(dayjs());
+  const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
-  const onChangeDate = (Date) => {
-    setCurrentDate(Date);
+  const onChangeDate = (dateNumber: any) => {
+    setCurrentDate(dateNumber);
   };
   const showDatepicker = () => {
     setShow(true);
@@ -31,55 +31,53 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     setCurrentDate(currentDate.add(1, "month"));
   };
 
-  class CalendarHeader extends React.PureComponent {
-    render() {
-      return (
-        <View>
-          <View style={styles.dayInput}>
-            <TouchableOpacity onPress={onPressArrowLeft}>
-              <Text>＜</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onPressArrowRight}>
-              <Text>＞</Text>
+  const CalendarHeader = () => {
+    return (
+      <View>
+        <View style={styles.dayInput}>
+          <TouchableOpacity onPress={onPressArrowLeft}>
+            <Text>＜</Text>
+          </TouchableOpacity>
+          <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
+          </TouchableOpacity>
+          <TouchableOpacity onPress={onPressArrowRight}>
+            <Text>＞</Text>
+          </TouchableOpacity>
+        </View>
+        <Modal
+          animationType="fade"
+          visible={show}
+          transparent={true}
+          onRequestClose={() => {
+            setShow(false);
+          }}
+        >
+          <View style={styles.modalView}>
+            <DateTimePicker
+              value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
+              mode="date"
+              display={"spinner"}
+              onChange={(event, date) => {
+                if (date) {
+                  const dateNumber = dayjs(date.toString(), "YYYYMMDD");
+                  onChangeDate(dateNumber);
+                }
+              }}
+            />
+            <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+              <Text style={styles.textStyle}>×</Text>
             </TouchableOpacity>
           </View>
-          <Modal
-            animationType="fade"
-            visible={show}
-            transparent={true}
-            onRequestClose={() => {
-              setShow(false);
-            }}
-          >
-            <View style={styles.modalView}>
-              <DateTimePicker
-                value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
-                mode="date"
-                display={"spinner"}
-                onChange={(event, date) => {
-                  if (date) {
-                    const Date = Number(dayjs(date).format("YYYYMMDD"));
-                    onChangeDate(Date);
-                  }
-                }}
-              />
-              <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        </View>
-      );
-    }
-  }
+        </Modal>
+      </View>
+    );
+  };
 
   return (
     <View style={styles.container}>
       <Calendar
-        // customHeader={CalendarHeader}
+        customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",
@@ -202,7 +200,6 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 4,
     backgroundColor: "#fff",
-    borderRadius: "50%",
   },
   button: {
     marginBottom: 6,
@@ -214,6 +211,7 @@ const styles = StyleSheet.create({
   dayInput: {
     flex: 1,
     flexDirection: "row",
+    justifyContent:"space-evenly",
     marginTop: 10,
     marginBottom: 30,
     height: 25,
@@ -223,16 +221,12 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   dateButton: {
-    height: 40,
-    backgroundColor: "#a53010",
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    position:"relative",
+    bottom:5,
   },
   buttonText: {
-    fontSize: 16,
-    color: "#fff",
+    fontSize: 20,
+    color: "#000",
   },
   modalView: {
     position: "relative",
