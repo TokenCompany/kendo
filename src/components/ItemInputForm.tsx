@@ -11,17 +11,21 @@ type Props = {
 
 export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, onChangeText }) => {
   return visible ? (
-    <View style={styles.item}>
-      <TextInput
-        style={styles.input}
-        placeholder={"テキスト入力"}
-        value={text}
-        onChangeText={onChangeText}
-      />
-      <TouchableOpacity onPress={onPressSubmit}>
-        <Text>登録</Text>
-      </TouchableOpacity>
-    </View>
+    <>
+      <View style={styles.item}>
+        <TextInput
+          style={styles.input}
+          placeholder={"テキスト入力"}
+          value={text}
+          onChangeText={onChangeText}
+        />
+      </View>
+      <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
+        <TouchableOpacity style={styles.container} onPress={onPressSubmit}>
+          <Text style={styles.text}>登録</Text>
+        </TouchableOpacity>
+      </View>
+    </>
   ) : null;
 };
 
@@ -33,6 +37,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 10,
   },
   input: {
     height: 25,
