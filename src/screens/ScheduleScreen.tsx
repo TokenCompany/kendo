@@ -34,6 +34,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
   const [showSelectedDate, setShowSelectedDate] = useState<boolean>();
+  const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
+  const [showEndTimePicker, setShowEndTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
@@ -61,6 +63,35 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     return changeText;
   };
 
+  const onPressShowStartTimePicker = () => {
+    setShowStartTimePicker(true)
+  }
+
+  const onPressShowEndTimePicker = () => {
+    setShowEndTimePicker(true)
+  }
+
+  const onPressSelected = () => {
+    setShowSelectedDate(false);
+    dispatch(
+      bookReservationItem({
+        date: selectedDate,
+        startTime: startTime,
+        endTime: endTime,
+        place: place,
+      })
+    )
+  }
+
+  const onPressDelete = () => {
+    setShowSelectedDate(false);
+    dispatch(
+      deleteReservationItem({
+        date: selectedDate,
+      })
+    )
+  }
+
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame
@@ -79,8 +110,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
           } else {
-            setStartTime("1000");
-            setEndTime("1000");
+            setStartTime("0000");
+            setEndTime("0000");
             setPlace("場所を選択");
           }
         }}
@@ -193,6 +224,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             onPress01={() => {
               if (Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) - Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) > 0){
                 Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
+              } else if (place == "場所を選択") {
+                Alert.alert("時間が選択されていません", "", [{ text: "OK" }]);
               } else {
                 if (selectedDate && startTime && endTime && place) {
                   if (selectedDate in allReservations) {
