@@ -22,6 +22,7 @@ export type SubCategory = {
   id: string;
   text: string;
   goal: number;
+  times: number;
 };
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
@@ -51,6 +52,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         newCurrentTargets.push({
           ...target,
           goal: count,
+          times:0,
         });
       } else {
         newCurrentTargets.push(target);

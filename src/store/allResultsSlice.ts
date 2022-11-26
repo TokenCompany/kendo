@@ -25,7 +25,6 @@ type AllResultsPayload = {
       goal: number;
     }
   ]
-  
 }
 
 // デフォルトの値
