@@ -31,18 +31,23 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     setCurrentDate(currentDate.add(1, "month"));
   };
 
+  const onPressArrowLeftTest = () => {
+    setCurrentDate(currentDate.add(-1, "month"));
+    console.log(currentDate);
+  }
+
   const CalendarHeader = () => {
     return (
       <View>
         <View style={styles.dayInput}>
-          <TouchableOpacity onPress={onPressArrowLeft}>
-            <Text>＜</Text>
+          <TouchableOpacity onPress={onPressArrowLeftTest}>
+            <Text style={styles.arrowButton}>＜</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
           </TouchableOpacity>
           <TouchableOpacity onPress={onPressArrowRight}>
-            <Text>＞</Text>
+            <Text style={styles.arrowButton}>＞</Text>
           </TouchableOpacity>
         </View>
         <Modal
@@ -55,12 +60,12 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
         >
           <View style={styles.modalView}>
             <DateTimePicker
-              value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
+              value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
               mode="date"
               display={"spinner"}
               onChange={(event, date) => {
                 if (date) {
-                  const dateNumber = dayjs(date.toString(), "YYYYMMDD");
+                  const dateNumber = dayjs(date.toString(), "YYYY-MM");
                   onChangeDate(dateNumber);
                 }
               }}
@@ -77,7 +82,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   return (
     <View style={styles.container}>
       <Calendar
-        customHeader={CalendarHeader}
+        // customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",
@@ -111,8 +116,8 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
             },
           },
         }}
-        monthFormat={"yyyy年 M月"}
-        current={currentDate.format("YYYY-MM-DD")}
+        monthFormat={"yyyy年 MM月"}
+        current={currentDate.format("YYYY-MM")}
         onPressArrowLeft={(subtractMonth) => {
           subtractMonth();
           setCurrentDate(currentDate.add(-1, "month"));
@@ -129,7 +134,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
+              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
             >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
@@ -220,10 +225,6 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 20,
   },
-  dateButton: {
-    position:"relative",
-    bottom:5,
-  },
   buttonText: {
     fontSize: 20,
     color: "#000",
@@ -259,5 +260,10 @@ const styles = StyleSheet.create({
     paddingRight: 120,
     marginLeft: 10,
     height: 40,
+  },
+  arrowButton:{
+    fontSize:18,
+    fontWeight:"bold",
+    color:"red",
   },
 });
