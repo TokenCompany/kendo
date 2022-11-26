@@ -82,7 +82,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   return (
     <View style={styles.container}>
       <Calendar
-        customHeader={CalendarHeader}
+        // customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",

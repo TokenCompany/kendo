@@ -30,6 +30,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     })
   }
   initItems.push({ label: "直接入力", value: showForm },)
+
+  console.log(initItems);
+
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
@@ -82,6 +85,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       })
     )
   }
+console.log(place);
+console.log(reservations);
 
   const onPressDelete = () => {
     setShowSelectedDate(false);
@@ -120,7 +125,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.box}>
           <Text style={styles.boxTitle}>{selectedDateText}</Text>
           <View style={styles.boxInputArea}>
-            <Text>◆時間</Text>
+            <Text>◆ 時間</Text>
             <View style={styles.boxInputTime}>
               <View style={styles.boxInputTimeFlex}>
                 <View style={styles.timeStart}>
@@ -192,7 +197,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </View>
           </View>
           <View style={styles.boxInputArea}>
-            <Text>◆場所</Text>
+            <Text>◆ 場所</Text>
             <View style={styles.boxInputText}>
               <DropDownPicker
                 open={open}
@@ -225,10 +230,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               if (Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) - Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) > 0){
                 Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
               } else if (place == "場所を選択") {
-                Alert.alert("時間が選択されていません", "", [{ text: "OK" }]);
+                Alert.alert("場所が選択されていません", "", [{ text: "OK" }]);
               } else {
                 if (selectedDate && startTime && endTime && place) {
-                  if (selectedDate in allReservations) {
+                  if (selectedDate in reservations) {
                     Alert.alert("稽古予定を修正しますか？", "", [
                       {
                         text: "いいえ",
