@@ -71,6 +71,11 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     },
   };
   const [allResults, setAllResults] = useState<Results>(initAllResults);
+  // 実績表の合計データのための操作
+  let initTargetRecords = JSON.parse(JSON.stringify(subCategories.targetSubCategories));
+  const [targetRecords,setTargetRecords] = useState(initTargetRecords);
+  console.log(targetRecords);
+  
 
   const onPressBtn = () => {
     createAlert();
