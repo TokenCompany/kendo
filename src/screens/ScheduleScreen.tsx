@@ -22,6 +22,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
   const [selectedDate, setSelectedDate] = useState<string>();
+  const [showSelectedDate, setShowSelectedDate] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>();
   const [endTime, setEndTime] = useState<string>();
   const [place, setPlace] = useState<string>();
@@ -60,6 +61,27 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     return changeText;
   };
 
+  const onPressSelected = () => {
+    setShowSelectedDate(false);
+    dispatch(
+      bookReservationItem({
+        date: selectedDate,
+        startTime: startTime,
+        endTime: endTime,
+        place: place,
+      })
+    )
+  }
+
+  const onPressDelete = () => {
+    setShowSelectedDate(false);
+    dispatch(
+      deleteReservationItem({
+        date: selectedDate,
+      })
+    )
+  }
+
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame
@@ -69,7 +91,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           let dateText =
             dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
           // 文字の変更
-          setSelectedDate(day);
+          setSelectedDate(day)
+          setShowSelectedDate(true);
           setSelectedDateText(dateText);
           // 選択された日付が既に存在する場合
           if (day in reservations) {
@@ -83,7 +106,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           }
         }}
       />
-      {selectedDate ? (
+      {showSelectedDate && (
         <View style={styles.box}>
           <Text style={styles.boxTitle}>{selectedDateText}</Text>
           <View style={styles.boxInputArea}>
@@ -202,25 +225,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       {
                         text: "はい",
                         onPress: () =>
-                          dispatch(
-                            bookReservationItem({
-                              date: selectedDate,
-                              startTime: startTime,
-                              endTime: endTime,
-                              place: place,
-                            }),
-                          ),
+                        onPressSelected()
                       },
                     ]);
                   } else {
-                    dispatch(
-                      bookReservationItem({
-                        date: selectedDate,
-                        startTime: startTime,
-                        endTime: endTime,
-                        place: place,
-                      }),
-                    );
+                    onPressSelected()
                   }
                 }
               }
@@ -235,11 +244,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   {
                     text: "はい",
                     onPress: () =>
-                      dispatch(
-                        deleteReservationItem({
-                          date: selectedDate,
-                        }),
-                      ),
+                    onPressDelete()
                   },
                 ]);
               }
@@ -247,9 +252,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             text02="削除"
           />
         </View>
-      ) : (
-        ""
-      )}
+       )}
     </ScrollView>
   );
 };
