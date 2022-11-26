@@ -31,16 +31,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     setCurrentDate(currentDate.add(1, "month"));
   };
 
-  const onPressArrowLeftTest = (subtractMonth: void) => {
-    setCurrentDate(currentDate.add(-1, "month"));
-    console.log(currentDate);
-  }
+  console.log(reservations);
+
 
   const CalendarHeader = () => {
     return (
       <View>
         <View style={styles.dayInput}>
-          <TouchableOpacity onPress={onPressArrowLeftTest}>
+          <TouchableOpacity onPress={onPressArrowLeft}>
             <Text style={styles.arrowButton}>＜</Text>
           </TouchableOpacity>
           <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
@@ -134,7 +132,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
+              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
             >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
