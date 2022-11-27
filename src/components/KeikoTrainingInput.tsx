@@ -48,7 +48,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       initValues.push(result.result);
     }
   }
-  
+
   const [values, setValues] = useState<string[]>(initValues);
   // ローカルのstateでinputの入力情報を保持
   const onChangeValues = (text: string, index: number) => {

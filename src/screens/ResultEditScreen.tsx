@@ -74,63 +74,59 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       kakarigeikoSubCategories: [],
     },
   };
-  
+
   const [allResults, setAllResults] = useState<Results>(initAllResults);
   // 実績表の合計データのための操作
   // reduxから先生事のデータ、あるいは既に設定された目標データの取得
-  let targetRecords:TargetCategory[];
-  let targets: any = useSelector(
-    (state: RootState) => state.subCategory.targetSubCategories,
-  );
-  let teachers = useSelector(
-    (state: RootState) => state.subCategory.teacherSubCategories,
-  );
+  let targetRecords: TargetCategory[];
+  let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
   // 既に目標データの登録があった場合の処理
   if (selectedYear in targets === false) {
-    let newTeachers =  JSON.parse(JSON.stringify(teachers));
+    let newTeachers = JSON.parse(JSON.stringify(teachers));
     for (const teacher of newTeachers) {
       teacher.result = 0;
       teacher.goal = 0;
     }
     targetRecords = newTeachers;
-  }else{
+  } else {
     let newTargets = JSON.parse(JSON.stringify(targets));
-    targetRecords = newTargets[selectedYear]
+    targetRecords = newTargets[selectedYear];
   }
-  
+
   // 実績合計が重複しないための予約情報取得
   const resultsRecords = useSelector((state: RootState) => state.results);
   // console.log(resultsRecords);
-  
+
   let resultsFlag = false;
   if (date in resultsRecords) {
     resultsFlag = true;
   }
 
-  const changeToHours = (num:number) => {
+  const changeToHours = (num: number) => {
     let hours = num / 60;
     return hours;
-  }
-  
+  };
+
   const onPressBtn = () => {
     createAlert();
     // REDUXへの保存
     dispatch(addResults(allResults));
     if (!resultsFlag) {
-      targetRecords.forEach((element)=>{
-        if(element.id === "all"){
-          element.result++
+      targetRecords.forEach((element) => {
+        if (element.id === "all") {
+          element.result++;
         }
-      })
-    }else{
-      let pastData = resultsRecords[date].teacherSubCategories
-      targetRecords.forEach((targetRecord)=>{
-        pastData.forEach(element => {
+      });
+    } else {
+      let pastData = resultsRecords[date].teacherSubCategories;
+      targetRecords.forEach((targetRecord) => {
+        pastData.forEach((element) => {
           if (targetRecord.id === element.id) {
-            targetRecord.result -= changeToHours(Number(element.result))
+            targetRecord.result -= changeToHours(Number(element.result));
           }
         });
-      })
+      });
     }
     // targetCategoriesの一つ一つに累計を足す
     for (const targetObj of allResults.resultsSum.teacherSubCategories) {
@@ -142,10 +138,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     }
     const saveAllTargets = {
       year: selectedYear,
-      targets:targetRecords
-    }
+      targets: targetRecords,
+    };
     dispatch(addTargetCategory(saveAllTargets));
-    
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {

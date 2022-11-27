@@ -13,51 +13,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   // reduxからサブカテゴリ―ズの情報を取得
   const allData = useSelector((state: RootState) => state.subCategory.targetSubCategories);
-  console.log(allData);
-  
-  const allDatas = {
-    2020: {
-      all: {
-        times: 10,
-      },
-    },
-    2021: {
-      all: {
-        times: 20,
-        goal: 15,
-      },
-      tanaka: {
-        times: 8,
-        goal: 5,
-      },
-      luis: {
-        times: 8,
-        goal: 5,
-      },
-      megu: {
-        times: 4,
-        goal: 5,
-      },
-    },
-    2022: {
-      all: {
-        times: 100,
-        goal: 150,
-      },
-      tanaka: {
-        times: 20,
-        goal: 50,
-      },
-      luis: {
-        times: 50,
-        goal: 50,
-      },
-      megu: {
-        times: 30,
-        goal: 50,
-      },
-    },
-  };
   // 一番上のグラフのデータ
   let mainData: any = [];
   // それ以降のグラフのデータ
@@ -92,9 +47,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             frontColor: "#A53010",
             label: element.text,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>
-                {element.goal}
-              </Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
             ),
           },
           {
@@ -102,19 +55,17 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             frontColor: "#DE7E18",
             barStyle: { marginLeft: -20 },
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>
-                {element.result}
-              </Text>
+              <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>{element.result}</Text>
             ),
-          }
-        )
+          },
+        );
       }
     }
   };
   if (currentDate.year().toString() in allData) {
     setData(allData[currentDate.year()], mainData, subData);
   }
-  
+
   return (
     <View style={styles.container}>
       <ScrollView>

@@ -30,7 +30,7 @@ interface TargetCategory {
   id: string;
   text: string;
   goal: number;
-  result:number;
+  result: number;
 }
 
 interface TargetCategories {
@@ -57,7 +57,7 @@ type SubCategoryPayload = {
 };
 type TargetSubCategoryPayload = {
   year: string;
-  targets:TargetCategory[]
+  targets: TargetCategory[];
 };
 
 type DeleteSubCategory = {
@@ -87,9 +87,9 @@ export const counterSlice = createSlice({
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
     addTargetCategory: (state, action: PayloadAction<TargetSubCategoryPayload>) => {
-      state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] = action.payload.targets;
+      state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] =
+        action.payload.targets;
       console.log(state.targetSubCategories);
-      
     },
   },
 });
