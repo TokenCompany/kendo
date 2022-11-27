@@ -151,7 +151,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const renderLevelTable = () => {
     return kendoLevel.map((data, index) => (
-      <View style={styles.tableRow}>
+      <View style={styles.tableRow} key={index}>
         <Text style={[styles.tableData, styles.firstColumn]}>{data}</Text>
         <Text style={[styles.tableData, styles.secondColumn]}>
           {renderPassedCheck(profile[`passed${index}`], index)}
