@@ -37,7 +37,7 @@
   },
   "Setting": {
     "title": "設定",
-    "name": "名前",
+    "name": "氏名",
     "birthday": "生年月日",
     "age": "年齢",
     "task": "課題",
@@ -94,6 +94,9 @@
     "birthday": "誕生日設定",
     "age": "年齢",
     "number": "全剣連番号",
+    "howToSetting": "設定方法を選択してください",
+    "album": "アルバムから選択",
+    "camera": "カメラ撮影",
     "stage01": "初段",
     "stage02": "弐段",
     "stage03": "参段",
@@ -111,7 +114,8 @@
     "setting": "設定",
     "year": "年",
     "month": "月",
-    "day": "日"
+    "day": "日",
+    "alert1": "この日付は設定できません"
   },
   "TrainingEdit": {
     "title": "練習内容項目編集",
