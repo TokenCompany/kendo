@@ -72,13 +72,13 @@ export const counterSlice = createSlice({
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
       let newSubcategory = [
-        ...state[action.payload.mainCategoryName as keyof SubCategoryState],
+        ...state[action.payload.mainCategoryName as keyof SubCategoryPayload],
         {
           id: action.payload.id,
           text: action.payload.text,
         },
       ];
-      state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
+      state[action.payload.mainCategoryName as keyof SubCategoryPayload] = newSubcategory;
     },
     deleteSubCategory: (state, action: PayloadAction<DeleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
@@ -87,8 +87,7 @@ export const counterSlice = createSlice({
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
     addTargetCategory: (state, action: PayloadAction<TargetSubCategoryPayload>) => {
-      // state.targetSubCategories = action.payload;
-      console.log(action.payload);
+      state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] = action.payload.targets;
     },
   },
 });

@@ -28,7 +28,7 @@ export type TargetCategory = {
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   // 今年の取得
-  const currentYear = dayjs().year();
+  const currentYear = dayjs().year().toString();
   // reduxから先生事のデータ、あるいは既に設定された目標データの取得
   let initTargets:TargetCategory[];
   let targets: any = useSelector(
@@ -37,6 +37,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   let teachers = useSelector(
     (state: RootState) => state.subCategory.teacherSubCategories,
   );
+  // 既に目標データの登録があった場合の処理
   if (currentYear in targets === false) {
     let newTeachers =  JSON.parse(JSON.stringify(teachers));
     for (const teacher of newTeachers) {
@@ -45,10 +46,15 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
     initTargets = newTeachers;
   }else{
+  // 合計が出ないようにtargetsデータを加工
     let newTargets = JSON.parse(JSON.stringify(targets));
-    initTargets = newTargets.currentYear
+    newTargets[currentYear].forEach((element:TargetCategory,index:number) => {
+      if (element.id === "all") {
+        newTargets[currentYear].splice(index,1)
+      }
+    });
+    initTargets = newTargets[currentYear]
   }
-  
   // refの定義
   const scrollViewRef = useRef<ScrollView>(null);
   // stateの定義
@@ -146,7 +152,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           result = initTarget.result;
         }
       }
-      
       let newCurrentTargets = [...currentTargets,{
         id: "all",
         text: "年間稽古目標",
