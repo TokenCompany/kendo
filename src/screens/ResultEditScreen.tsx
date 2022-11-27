@@ -49,11 +49,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const date = route.params.date;
   const selectedYear = dayjs(date).year().toString();
   const resultsData = useSelector((state: RootState) => state.results);
-  if (date in resultsData) {
-    // console.log('bingo');
-  } else {
-    // console.log('miss');
-  }
   const place = route.params.place;
   // 稽古場所の情報をコピーし、予約場所で選択された場所にtrueを代入,それ以外にはfalseを指定
   const places = JSON.parse(JSON.stringify(subCategories.placeSubCategories));
@@ -102,7 +97,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     let newTargets = JSON.parse(JSON.stringify(targets));
     targetRecords = newTargets[selectedYear]
   }
-  // console.log(targetRecords);
   
   // 実績合計が重複しないための予約情報取得
   const resultsRecords = useSelector((state: RootState) => state.results);
@@ -123,14 +117,12 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     // REDUXへの保存
     dispatch(addResults(allResults));
     if (!resultsFlag) {
-      console.log('new');
       targetRecords.forEach((element)=>{
         if(element.id === "all"){
           element.result++
         }
       })
     }else{
-      console.log('modification');
       let pastData = resultsRecords[date].teacherSubCategories
       targetRecords.forEach((targetRecord)=>{
         pastData.forEach(element => {
@@ -148,7 +140,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         }
       }
     }
-    console.log(targetRecords);
     const saveAllTargets = {
       year: selectedYear,
       targets:targetRecords
@@ -233,7 +224,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           onChangeSendInput={(changedResults: any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
           }}
-          resultsData={date in resultsData ? resultsData[date] : {}}
+          resultsDate={date}
         />
       ))}
       <View style={styles.buttonContainer}>

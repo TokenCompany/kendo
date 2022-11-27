@@ -4,12 +4,18 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import dayjs from "dayjs";
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
+import { useSelector } from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
 export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
-  const allData = {
+  // reduxからサブカテゴリ―ズの情報を取得
+  const allData = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  console.log(allData);
+  
+  const allDatas = {
     2020: {
       all: {
         times: 10,
@@ -58,12 +64,12 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   let subData: any = [];
   // 関数の定義
   let setData = (yearData: any, data: any, teacherData: any) => {
-    for (const key in yearData) {
+    for (const element of yearData) {
       let LabelNum: any = [];
-      if (key === "all") {
+      if (element.id === "all") {
         data.push(
           {
-            value: 0,
+            value: element.result,
             frontColor: "#61A68A",
             label: "稽古回数",
             topLabelComponent: () => (
@@ -71,7 +77,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             ),
           },
           {
-            value: 0,
+            value: element.goal,
             frontColor: "#61A68A",
             label: "稽古目標",
             topLabelComponent: () => (
@@ -79,53 +85,36 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             ),
           },
         );
-        for (const k in yearData[key]) {
-          if (k === "goal") {
-            data[1].value = yearData[key][k];
-            LabelNum[1] = yearData[key][k];
-          } else if (k === "times") {
-            data[0].value = yearData[key][k];
-            LabelNum[0] = yearData[key][k];
-          }
-        }
       } else {
-        let array: any = [];
-        for (const k in yearData[key]) {
-          let obj: any = {};
-          if (k === "goal") {
-            obj = {
-              value: 0,
-              frontColor: "#A53010",
-              label: key,
-              topLabelComponent: () => (
-                <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>
-                  {yearData[key][k]}
-                </Text>
-              ),
-            };
-            obj.value = yearData[key][k];
-          } else if (k === "times") {
-            obj = {
-              value: 0,
-              frontColor: "#DE7E18",
-              barStyle: { marginLeft: -20 },
-              topLabelComponent: () => (
-                <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>
-                  {yearData[key][k]}
-                </Text>
-              ),
-            };
-            obj.value = yearData[key][k];
+        teacherData.push(
+          {
+            value: element.goal,
+            frontColor: "#A53010",
+            label: element.text,
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>
+                {element.goal}
+              </Text>
+            ),
+          },
+          {
+            value: element.result,
+            frontColor: "#DE7E18",
+            barStyle: { marginLeft: -20 },
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>
+                {element.result}
+              </Text>
+            ),
           }
-          array.push(obj);
-        }
-        teacherData.push(array[1]);
-        teacherData.push(array[0]);
+        )
       }
     }
   };
-  setData(allData[currentDate.year()], mainData, subData);
-
+  if (currentDate.year().toString() in allData) {
+    setData(allData[currentDate.year()], mainData, subData);
+  }
+  
   return (
     <View style={styles.container}>
       <ScrollView>
