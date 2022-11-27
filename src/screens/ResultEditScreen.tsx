@@ -5,8 +5,10 @@ import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { addResults } from "../store/resultsSlice";
+// import { addAllResults } from "../store/allResultsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 export type SubCategories = [
@@ -72,15 +74,44 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
   const [allResults, setAllResults] = useState<Results>(initAllResults);
   // 実績表の合計データのための操作
-  let initTargetRecords = JSON.parse(JSON.stringify(subCategories.targetSubCategories));
-  const [targetRecords,setTargetRecords] = useState(initTargetRecords);
-  console.log(targetRecords);
-  
+  // let targetRecords = JSON.parse(JSON.stringify(subCategories.targetSubCategories));
+  // const year = dayjs(date).year();
+  // for (const targetRecord of targetRecords[year]) {
+  //   if ("result" in targetRecord === false) {
+  //     targetRecord.result = 0;
+  //   }
+  // }
+  // 実績合計が重複しないための予約情報取得
+  const reservations = useSelector((state: RootState) => state.results);
+  let reservationFlag = false;
+  if (date in reservations) {
+    reservationFlag = true;
+  }
 
+  const changeToHours = (num:number) => {
+    let hours = num / 60;
+    return hours;
+  }
+  
   const onPressBtn = () => {
     createAlert();
     // REDUXへの保存
     dispatch(addResults(allResults));
+    // if (!reservationFlag) {
+    //   for (const targetObj of allResults.resultsSum.teacherSubCategories) {
+    //     for (const targetRecord of targetRecords[year]) {
+    //       if (targetObj.id === targetRecord.id) {
+    //         targetRecord.result += changeToHours(Number(targetObj.result));
+    //       }
+    //     }
+    //   }
+    //   const saveAllTargets = {
+    //     year: year,
+    //     allResultsSum:targetRecords[year]
+    //   }
+    //   dispatch(addAllResults(saveAllTargets));
+    // }
+    
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
@@ -99,7 +130,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       },
     ]);
 
-  const mainCategories:any = {
+  const mainCategories: any = {
     placeSubCategories: {
       text: "稽古場所",
       unit: "",
@@ -156,7 +187,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           textTrainingCategories={data[2]}
           reservedPlace={place}
           key={index}
-          onChangeSendInput={(changedResults:any, mainCategory) => {
+          onChangeSendInput={(changedResults: any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
           }}
           resultsData={date in resultsData ? resultsData[date] : {}}

@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import dayjs from "dayjs";
 //
 // 練習内容項目設定の小項目に関わるredux
 //
@@ -31,6 +30,7 @@ interface TargetCategory {
   id: string;
   text: string;
   goal: number;
+  result:number;
 }
 
 interface TargetCategories {
@@ -55,6 +55,10 @@ type SubCategoryPayload = {
   id: string;
   text: string;
 };
+type TargetSubCategoryPayload = {
+  year: string;
+  targets:TargetCategory[]
+};
 
 type DeleteSubCategory = {
   categoryName: string;
@@ -67,30 +71,6 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      if (action.payload.mainCategoryName === "teacherSubCategories") {
-        // targetSubCategoriesも同時にセット
-        let currentYear = dayjs().year();
-        let newTargetSubCategories = { ...state["targetSubCategories"] };
-        if (currentYear in newTargetSubCategories) {
-          newTargetSubCategories[currentYear] = [
-            ...newTargetSubCategories[currentYear],
-            {
-              id: action.payload.id,
-              text: action.payload.text,
-              goal: 0,
-            },
-          ];
-        } else {
-          newTargetSubCategories[currentYear] = [
-            {
-              id: action.payload.id,
-              text: action.payload.text,
-              goal: 0,
-            },
-          ];
-        }
-        state["targetSubCategories"] = newTargetSubCategories;
-      }
       let newSubcategory = [
         ...state[action.payload.mainCategoryName as keyof SubCategoryState],
         {
@@ -106,8 +86,9 @@ export const counterSlice = createSlice({
       );
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
-    addTargetCategory: (state, action: PayloadAction<TargetCategories>) => {
-      state.targetSubCategories = action.payload;
+    addTargetCategory: (state, action: PayloadAction<TargetSubCategoryPayload>) => {
+      // state.targetSubCategories = action.payload;
+      console.log(action.payload);
     },
   },
 });

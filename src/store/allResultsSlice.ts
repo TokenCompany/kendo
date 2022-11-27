@@ -33,7 +33,7 @@ export interface AllResultsState {
 interface ResultData  {
   id: string;
   text: string;
-  times: number;
+  result: number;
   goal: number;
 };
 
@@ -43,7 +43,7 @@ type AllResultsPayload = {
     {
       id: string;
       text: string;
-      times: number;
+      result: number;
       goal: number;
     }
   ]
@@ -52,17 +52,20 @@ type AllResultsPayload = {
 // デフォルトの値
 const initialState: AllResultsState = {};
 
-export const counterSlice = createSlice({
-  name: "allResults",
-  initialState,
-  reducers: {
-    addAllResults: (state, action:PayloadAction<AllResultsPayload>) => {
-      state[action.payload.year] = action.payload.allResultsSum;
-    },
-  },
-});
+// export const counterSlice = createSlice({
+//   name: "allResults",
+//   initialState,
+//   reducers: {
+//     addAllResults: (state, action:PayloadAction<AllResultsPayload>) => {
+//       state[action.payload.year] = action.payload.allResultsSum;
+//       console.log(state);
+      
+      
+//     },
+//   },
+// });
 
 // Action creators are generated for each case reducer function
-export const { addAllResults } = counterSlice.actions;
+// export const { addAllResults } = counterSlice.actions;
 
-export default counterSlice.reducer;
+// export default counterSlice.reducer;
