@@ -5673,6 +5673,11 @@ expo-modules-core@0.11.8:
     compare-versions "^3.4.0"
     invariant "^2.2.4"
 
+expo-permissions@^14.0.0:
+  version "14.0.0"
+  resolved "https://registry.yarnpkg.com/expo-permissions/-/expo-permissions-14.0.0.tgz#7644e84e5a59a1c612a39a2602df927478e80c3c"
+  integrity sha512-z/1u4Kt5AhzFEB/4LjJxNE+pDX8YijjhGaokNchPNwjjn3W1f+o4JQVdZBPS2TwRpFEXbrBSTUSalxijlJKGmw==
+
 expo-pwa@0.0.122:
   version "0.0.122"
   resolved "https://registry.npmjs.org/expo-pwa/-/expo-pwa-0.0.122.tgz"
@@ -7474,6 +7479,11 @@ isomorphic-fetch@^2.1.1:
   dependencies:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
+
+japanese-holidays@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/japanese-holidays/-/japanese-holidays-1.0.10.tgz#79dee9482b4be90848035fa512b237077549ad51"
+  integrity sha512-OiK5801c432ljumKnQ65TGw6HSEuetU0Fvlz1/BPPPqwxQZ2kPeCy3XHO6q5nf+6zJqIf1fqcpQjWp+/SimO6Q==
 
 jest-diff@^26.0.0:
   version "26.6.2"

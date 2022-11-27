@@ -29,32 +29,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Language");
   };
 
-  // 練士、教士、範士の表示
-  const [openRenshi, setOpenRenshi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed5 !== 19900000) {
-      setOpenRenshi(true);
-    } else {
-      setOpenRenshi(false);
-    }
-  });
-  const [openKyoushi, setOpenKyoushi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed6 !== 19900000) {
-      setOpenKyoushi(true);
-    } else {
-      setOpenKyoushi(false);
-    }
-  });
-  const [openHanshi, setOpenHanshi] = useState<boolean>(false);
-  useEffect(() => {
-    if (profile.passed5 !== 19900000) {
-      setOpenHanshi(true);
-    } else {
-      setOpenHanshi(false);
-    }
-  });
-
   // 日付表示変換
   const renderChangeText = (date: number) => {
     let originDate = date.toString().split("");
@@ -78,7 +52,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return diffDate;
   };
 
-  // 合格日出力 or 審査びまでの日曹を出力
+  // 合格日出力 or 審査日までの日数を出力
   const renderPassedDate = (passed: number, exam: number) => {
     if (passed !== 19900000) {
       return <Text>{renderChangeText(passed)}</Text>;
@@ -93,28 +67,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-  // 合格日抽出
-  const passedObject1 = () => {
-    let object = {};
-    Object.keys(profile).forEach((key) => {
-      if (key.indexOf("passed") !== -1) {
-        object[key] = profile[key];
-      }
-    });
-    return object;
-  };
-  const onlyPassedObject = passedObject1();
-  const passedObject2 = () => {
-    let object = {};
-    Object.keys(onlyPassedObject).some((key) => {
-      object[key] = profile[key];
-      if (profile[key] !== 19900000) {
-        return true;
-      }
-    });
-    return object;
-  };
-  const onlyPassed = passedObject2();
 
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
@@ -127,17 +79,67 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
 
     if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "教士";
+      kendoLevel[kendoLevel.length] = "範士";
     }
   };
   {
     addLevel();
   }
 
+  // 合格日オブジェクト抽出
+  const passedObject1 = () => {
+    let object = {};
+    Object.keys(profile).forEach((key) => {
+      if (key.indexOf("passed") !== -1) {
+        object[key] = profile[key];
+      }
+    });
+    return object;
+  };
+  const onlyPassedObject = passedObject1();
+
+  // 合格日が記載されているもののみ抽出
+  const passedObject2 = () => {
+    let object = {};
+    Object.keys(onlyPassedObject).filter((key) => {
+      if (profile[key] !== 19900000) {
+        object[key] = profile[key];
+      }
+    });
+    return object;
+  };
+  const onlyPassed = passedObject2();
+
+  // 合格日が記載されているもののみ抽出
+  const passedObject3 = () => {
+    let object = {};
+    Object.keys(onlyPassed).filter((key ,index) => {
+      if (index == Object.keys(onlyPassed).length - 1) {
+        object[key] = onlyPassed[key];
+      }
+    });
+    return object;
+  };
+  const onlyPassedLast = passedObject3()
+
+  const passedObject4 = () => {
+    let object = {};
+    Object.keys(onlyPassedObject).some((key) => {
+      object[key] = onlyPassedObject[key];
+      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0) {
+        return true
+      }
+    });
+    return object;
+  };
+  const onlyPassedDate = passedObject4()
+
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (Object.keys(onlyPassed).length !== 11) {
-      if (index < Object.keys(onlyPassed).length || passed !== 19900000) {
+    if (Object.keys(onlyPassedDate).length !== 11) {
+      if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
         return "〇";
       } else {
         return "-";
