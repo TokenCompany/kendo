@@ -5,7 +5,7 @@ import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import { KeikoTrainingInput } from "../components/KeikoTrainingInput";
 import { addResults } from "../store/resultsSlice";
-// import { addAllResults } from "../store/allResultsSlice";
+import { addTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import dayjs from "dayjs";
@@ -18,6 +18,12 @@ export type SubCategories = [
     result: number | boolean;
   },
 ];
+export type TargetCategory = {
+  id: string;
+  text: string;
+  goal: number;
+  result: number;
+};
 export type Results = {
   trainingDate: string;
   resultsSum: {
@@ -41,6 +47,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
   const date = route.params.date;
+  const selectedYear = dayjs(date).year().toString();
   const resultsData = useSelector((state: RootState) => state.results);
   if (date in resultsData) {
     // console.log('bingo');
@@ -72,20 +79,38 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       kakarigeikoSubCategories: [],
     },
   };
+  
   const [allResults, setAllResults] = useState<Results>(initAllResults);
   // 実績表の合計データのための操作
-  // let targetRecords = JSON.parse(JSON.stringify(subCategories.targetSubCategories));
-  // const year = dayjs(date).year();
-  // for (const targetRecord of targetRecords[year]) {
-  //   if ("result" in targetRecord === false) {
-  //     targetRecord.result = 0;
-  //   }
-  // }
+  // reduxから先生事のデータ、あるいは既に設定された目標データの取得
+  let targetRecords:TargetCategory[];
+  let targets: any = useSelector(
+    (state: RootState) => state.subCategory.targetSubCategories,
+  );
+  let teachers = useSelector(
+    (state: RootState) => state.subCategory.teacherSubCategories,
+  );
+  // 既に目標データの登録があった場合の処理
+  if (selectedYear in targets === false) {
+    let newTeachers =  JSON.parse(JSON.stringify(teachers));
+    for (const teacher of newTeachers) {
+      teacher.result = 0;
+      teacher.goal = 0;
+    }
+    targetRecords = newTeachers;
+  }else{
+    let newTargets = JSON.parse(JSON.stringify(targets));
+    targetRecords = newTargets[selectedYear]
+  }
+  // console.log(targetRecords);
+  
   // 実績合計が重複しないための予約情報取得
-  const reservations = useSelector((state: RootState) => state.results);
-  let reservationFlag = false;
-  if (date in reservations) {
-    reservationFlag = true;
+  const resultsRecords = useSelector((state: RootState) => state.results);
+  // console.log(resultsRecords);
+  
+  let resultsFlag = false;
+  if (date in resultsRecords) {
+    resultsFlag = true;
   }
 
   const changeToHours = (num:number) => {
@@ -97,20 +122,38 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     createAlert();
     // REDUXへの保存
     dispatch(addResults(allResults));
-    // if (!reservationFlag) {
-    //   for (const targetObj of allResults.resultsSum.teacherSubCategories) {
-    //     for (const targetRecord of targetRecords[year]) {
-    //       if (targetObj.id === targetRecord.id) {
-    //         targetRecord.result += changeToHours(Number(targetObj.result));
-    //       }
-    //     }
-    //   }
-    //   const saveAllTargets = {
-    //     year: year,
-    //     allResultsSum:targetRecords[year]
-    //   }
-    //   dispatch(addAllResults(saveAllTargets));
-    // }
+    if (!resultsFlag) {
+      console.log('new');
+      targetRecords.forEach((element)=>{
+        if(element.id === "all"){
+          element.result++
+        }
+      })
+    }else{
+      console.log('modification');
+      let pastData = resultsRecords[date].teacherSubCategories
+      targetRecords.forEach((targetRecord)=>{
+        pastData.forEach(element => {
+          if (targetRecord.id === element.id) {
+            targetRecord.result -= changeToHours(Number(element.result))
+          }
+        });
+      })
+    }
+    // targetCategoriesの一つ一つに累計を足す
+    for (const targetObj of allResults.resultsSum.teacherSubCategories) {
+      for (const targetRecord of targetRecords) {
+        if (targetObj.id === targetRecord.id) {
+          targetRecord.result += changeToHours(Number(targetObj.result));
+        }
+      }
+    }
+    console.log(targetRecords);
+    const saveAllTargets = {
+      year: selectedYear,
+      targets:targetRecords
+    }
+    dispatch(addTargetCategory(saveAllTargets));
     
   };
 
