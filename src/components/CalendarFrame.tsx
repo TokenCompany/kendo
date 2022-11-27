@@ -14,9 +14,6 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const [allReservations, setAllReservations] = useState(reservations);
   const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
-  const onChangeDate = (dateNumber: any) => {
-    setCurrentDate(dateNumber);
-  };
   const showDatepicker = () => {
     setShow(true);
   };
@@ -24,25 +21,12 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const hideDatePicker = () => {
     setShow(false);
   };
-  const onPressArrowLeft = () => {
-    setCurrentDate(currentDate.add(-1, "month"));
-  };
-  const onPressArrowRight = () => {
-    setCurrentDate(currentDate.add(1, "month"));
-  };
 
-  const CalendarHeader = () => {
-    return (
-      <View>
+  return (
+    <View style={styles.container}>
         <View style={styles.dayInput}>
-          <TouchableOpacity onPress={onPressArrowLeft}>
-            <Text>＜</Text>
-          </TouchableOpacity>
           <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={onPressArrowRight}>
-            <Text>＞</Text>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
           </TouchableOpacity>
         </View>
         <Modal
@@ -55,13 +39,12 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
         >
           <View style={styles.modalView}>
             <DateTimePicker
-              value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
+              value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
               mode="date"
               display={"spinner"}
               onChange={(event, date) => {
                 if (date) {
-                  const dateNumber = dayjs(date.toString(), "YYYYMMDD");
-                  onChangeDate(dateNumber);
+                  setCurrentDate(dayjs(date));
                 }
               }}
             />
@@ -70,14 +53,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
             </TouchableOpacity>
           </View>
         </Modal>
-      </View>
-    );
-  };
-
-  return (
-    <View style={styles.container}>
       <Calendar
-        customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",
@@ -111,8 +87,9 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
             },
           },
         }}
-        monthFormat={"yyyy年 M月"}
-        current={currentDate.format("YYYY-MM-DD")}
+        monthFormat={"yyyy年 MM月"}
+        current={currentDate.format("YYYY-MM")}
+        key={currentDate.format("YYYY-MM")}
         onPressArrowLeft={(subtractMonth) => {
           subtractMonth();
           setCurrentDate(currentDate.add(-1, "month"));
@@ -129,7 +106,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
+              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
             >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
@@ -139,17 +116,19 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     </View>
   );
 };
+
+const JapaneseHolidays = require('japanese-holidays');
 const dayTextStyle = (date: DateObject, currentDate: DateObject) =>
+
   StyleSheet.create({
     dayText: {
       fontSize: 16,
       backgroundColor: "transparent",
       color:
         date.month !== currentDate.month() + 1
-          ? "gray"
-          : dayjs(date.dateString).day() === 0
-          ? "red"
-          : dayjs(date.dateString).day() === 6
+          ? "gray" : dayjs(date.dateString).day() === 0
+          ? "red" : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
+          ? "red" : dayjs(date.dateString).day() === 6
           ? "blue"
           : "black",
     },
@@ -191,7 +170,12 @@ LocaleConfig.defaultLocale = "jp";
 
 const styles = StyleSheet.create({
   container: {
+    position:"relative",
     margin: 10,
+  },
+  dateButton:{
+    paddingHorizontal:30,
+    height:40,
   },
   buttonSelected: {
     height: 34,
@@ -210,23 +194,19 @@ const styles = StyleSheet.create({
   },
   dayInput: {
     flex: 1,
-    flexDirection: "row",
-    justifyContent:"space-evenly",
-    marginTop: 10,
-    marginBottom: 30,
-    height: 25,
-    borderColor: "#aaa",
+    alignItems:"center",
+    justifyContent:"center",
+    borderColor: "#000",
     color: "#000",
-    fontWeight: "600",
     fontSize: 20,
-  },
-  dateButton: {
-    position:"relative",
-    bottom:5,
+    position:"absolute",
+    zIndex:2,
+    left:"30%",
+    top:"2%",
   },
   buttonText: {
     fontSize: 20,
-    color: "#000",
+    color: "transparent",
   },
   modalView: {
     position: "relative",
@@ -259,5 +239,10 @@ const styles = StyleSheet.create({
     paddingRight: 120,
     marginLeft: 10,
     height: 40,
+  },
+  arrowButton:{
+    fontSize:18,
+    fontWeight:"bold",
+    color:"red",
   },
 });
