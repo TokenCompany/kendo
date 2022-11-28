@@ -252,6 +252,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       },
                     ]);
                   } else {
+                    Alert.alert("稽古予定が登録されました。", "", [
+                      {
+                        text: "戻る",
+                        style: "cancel",
+                        onPress: () =>
+                        onPressSelected()
+                      },
+                    ]);
                     onPressSelected()
                   }
                 }
