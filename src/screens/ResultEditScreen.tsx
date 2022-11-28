@@ -104,8 +104,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   }
 
   const changeToHours = (num: number) => {
-    let hours = num / 60;
-    return hours;
+    let parsedHours = Math.floor((num / 60) * 100) / 100;
+    return parsedHours;
   };
 
   const onPressBtn = () => {
