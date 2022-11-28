@@ -28,11 +28,19 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [place, setPlace] = useState<string>("");
   const [showBox, setshowBox] = useState(false);
   const [showButton, setShowButton] = useState(true);
+  // 何回押したかどうかを確認するため変数
+  const [countButton, setCountButton] = useState<number>(0);
   const showingBox = (judge:boolean) => {
     setshowBox(judge);
   };
-  const showingButton = (judge:boolean) => {
-    setShowButton(judge);
+  const showingButton = (count:number) => {
+    let newCount = countButton + 1;
+    setCountButton(newCount)
+    if (count % 2 === 0) {
+      setShowButton(true);
+    }else{
+      setShowButton(false);
+    }
   }
   return (
     <ScrollView style={styles.container}>
@@ -77,7 +85,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           text02={i18n.t("History.ncw")}
           onPress01={onPress}
           onPress02={()=>{
-            showingButton(false)
+            showingButton(countButton)
           }}
           judge={showButton}
         />
