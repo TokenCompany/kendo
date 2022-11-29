@@ -67,7 +67,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
 
@@ -112,7 +111,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   const onlyPassed = passedObject2();
 
-  // 合格日が記載されているもののみ抽出
+  // 合格済の中で最も後のものを抽出
   const passedObject3 = () => {
     let object = {};
     Object.keys(onlyPassed).filter((key ,index) => {
@@ -128,6 +127,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let object = {};
     Object.keys(onlyPassedObject).some((key) => {
       object[key] = onlyPassedObject[key];
+
       if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0) {
         return true
       }
@@ -138,7 +138,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (Object.keys(onlyPassedDate).length !== 11) {
+    if (Object.keys(onlyPassedDate).length !== 11 && profile.passed0 !== 19900000) {
       if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
         return "〇";
       } else {
