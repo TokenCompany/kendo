@@ -68,16 +68,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
-    const date = selectedDate.split("-");
-    const hour = startTime.split(":");
-    const alartTime = Number(date[2]) - 1;
-    let unixDate = new Date(
-      Number(date[0]),
-      Number(date[1]),
-      Number(date[2]),
-      alartTime,
-      Number(hour[1]),
-    );
+    let date = selectedDate.split("-");
+    let alartDate = Number(date[2]) - 1;
+    let alartHour = 12;
+    let alartMinutes = 0;
+    let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
     await Notifications.scheduleNotificationAsync({
       content: {
