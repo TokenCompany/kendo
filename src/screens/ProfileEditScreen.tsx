@@ -19,7 +19,6 @@ import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
-import * as Permissions from "expo-permissions";
 import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
@@ -277,16 +276,19 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
+
   const pickCamera = async () => {
-    await Permissions.askAsync(Permissions.CAMERA);
-    let resultCamera = await ImagePicker.launchCameraAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0,
-      base64: true,
-    });
-    if (!resultCamera.cancelled) {
-      setImage(resultCamera.base64);
-      onChangeImage(resultCamera.base64);
+    const { status } = await ImagePicker.requestCameraPermissionsAsync();
+    if (status === 'granted') {
+      let resultCamera = await ImagePicker.launchCameraAsync({
+        mediaTypes: ImagePicker.MediaTypeOptions.Images,
+        quality: 0,
+        base64: true,
+      });
+      if (!resultCamera.cancelled) {
+        setImage(resultCamera.base64);
+        onChangeImage(resultCamera.base64);
+      }
     }
   }
 
