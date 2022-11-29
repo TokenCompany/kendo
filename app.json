@@ -18,12 +18,14 @@
       "**/*"
     ],
     "plugins": [
+      [
         "expo-build-properties",
         {
           "ios": {
             "deploymentTarget": "13.0"
           }
         }
+      ]
     ],
     "ios": {
       "supportsTablet": true,
