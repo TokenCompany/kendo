@@ -1,11 +1,12 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, ScrollView, Modal } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import dayjs from "dayjs";
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import DateTimePicker from "@react-native-community/datetimepicker";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
@@ -66,6 +67,14 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
     setData(allData[currentDate.year()], mainData, subData);
   }
 
+  const [show, setShow] = useState(false);
+  const showDatepicker = () => {
+    setShow(true);
+  };
+  const hideDatePicker = () => {
+    setShow(false);
+  };
+
   return (
     <View style={styles.container}>
       <ScrollView>
@@ -81,7 +90,33 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               setCurrentDate(currentDate.add(-1, "year"));
             }}
           />
-          <Text style={styles.yearText}>{currentDate.year()}年</Text>
+          <TouchableOpacity onPress={showDatepicker}>
+            <Text style={styles.yearText}>{currentDate.year()}年</Text>
+          </TouchableOpacity>
+          <Modal
+            animationType="fade"
+            visible={show}
+            transparent={true}
+            onRequestClose={() => {
+              setShow(false);
+            }}
+          >
+            <View style={styles.modalView}>
+              <DateTimePicker
+                value={dayjs(currentDate.toString(), "YYYY").toDate()}
+                mode="date"
+                display={"spinner"}
+                onChange={(event, date) => {
+                  if (date) {
+                    setCurrentDate(dayjs(date));
+                  }
+                }}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
           <TouchableOpacity
             style={[
               styles.yearArrow,
@@ -136,5 +171,26 @@ const styles = StyleSheet.create({
   barWrap: {
     marginTop: 50,
     paddingLeft: "20%",
+  },
+  modalView: {
+    position: "relative",
+    top: "40%",
+    backgroundColor: "#fff",
+    paddingVertical: 20,
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 7,
+    width: 50,
+    elevation: 2,
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  textStyle: {
+    fontSize: 26,
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
   },
 });

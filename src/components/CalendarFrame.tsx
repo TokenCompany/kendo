@@ -24,35 +24,35 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
 
   return (
     <View style={styles.container}>
-        <View style={styles.dayInput}>
-          <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
+      <View style={styles.dayInput}>
+        <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
+          <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
+        </TouchableOpacity>
+      </View>
+      <Modal
+        animationType="fade"
+        visible={show}
+        transparent={true}
+        onRequestClose={() => {
+          setShow(false);
+        }}
+      >
+        <View style={styles.modalView}>
+          <DateTimePicker
+            value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
+            mode="date"
+            display={"spinner"}
+            onChange={(event, date) => {
+              if (date) {
+                setCurrentDate(dayjs(date));
+              }
+            }}
+          />
+          <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+            <Text style={styles.textStyle}>×</Text>
           </TouchableOpacity>
         </View>
-        <Modal
-          animationType="fade"
-          visible={show}
-          transparent={true}
-          onRequestClose={() => {
-            setShow(false);
-          }}
-        >
-          <View style={styles.modalView}>
-            <DateTimePicker
-              value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
-              mode="date"
-              display={"spinner"}
-              onChange={(event, date) => {
-                if (date) {
-                  setCurrentDate(dayjs(date));
-                }
-              }}
-            />
-            <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-              <Text style={styles.textStyle}>×</Text>
-            </TouchableOpacity>
-          </View>
-        </Modal>
+      </Modal>
       <Calendar
         // 日付を選択したときの挙動。
         theme={{
@@ -117,18 +117,20 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   );
 };
 
-const JapaneseHolidays = require('japanese-holidays');
+const JapaneseHolidays = require("japanese-holidays");
 const dayTextStyle = (date: DateObject, currentDate: DateObject) =>
-
   StyleSheet.create({
     dayText: {
       fontSize: 16,
       backgroundColor: "transparent",
       color:
         date.month !== currentDate.month() + 1
-          ? "gray" : dayjs(date.dateString).day() === 0
-          ? "red" : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
-          ? "red" : dayjs(date.dateString).day() === 6
+          ? "gray"
+          : dayjs(date.dateString).day() === 0
+          ? "red"
+          : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
+          ? "red"
+          : dayjs(date.dateString).day() === 6
           ? "blue"
           : "black",
     },
@@ -170,12 +172,12 @@ LocaleConfig.defaultLocale = "jp";
 
 const styles = StyleSheet.create({
   container: {
-    position:"relative",
+    position: "relative",
     margin: 10,
   },
-  dateButton:{
-    paddingHorizontal:30,
-    height:40,
+  dateButton: {
+    paddingHorizontal: 30,
+    height: 40,
   },
   buttonSelected: {
     height: 34,
@@ -194,15 +196,15 @@ const styles = StyleSheet.create({
   },
   dayInput: {
     flex: 1,
-    alignItems:"center",
-    justifyContent:"center",
+    alignItems: "center",
+    justifyContent: "center",
     borderColor: "#000",
     color: "#000",
     fontSize: 20,
-    position:"absolute",
-    zIndex:2,
-    left:"30%",
-    top:"2%",
+    position: "absolute",
+    zIndex: 2,
+    left: "30%",
+    top: "2%",
   },
   buttonText: {
     fontSize: 20,
@@ -240,9 +242,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     height: 40,
   },
-  arrowButton:{
-    fontSize:18,
-    fontWeight:"bold",
-    color:"red",
+  arrowButton: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "red",
   },
 });
