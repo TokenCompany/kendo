@@ -210,6 +210,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+                max={6}
+                maxHeight={300}
+                zIndex={1000}
                 labelStyle={{
                   fontSize: 18,
                   textAlign: "center",
