@@ -1991,10 +1991,10 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
-"@react-native-community/datetimepicker@6.2.0":
-  version "6.2.0"
-  resolved "https://registry.npmjs.org/@react-native-community/datetimepicker/-/datetimepicker-6.2.0.tgz"
-  integrity sha512-w1ZS+wYO3qSASliRp+B7mPphOhtVm++rhSbj1WsgXdgLgDXSkDxpMnAXXQu9M0XdcgBwVJ6wDExeIwuzU5Jtfg==
+"@react-native-community/datetimepicker@^6.7.1":
+  version "6.7.1"
+  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.7.1.tgz#a52eed9512898adef323b2fa78c6ac4611af5502"
+  integrity sha512-NPW1YITG7N+3TsqXc4LZV3c5IEpTD5iX18r0bvFsHdIblo5qi0ykpeK3TffmMM5gbTjgKJ4DNVHOjLiWKxFUxw==
   dependencies:
     invariant "^2.2.4"
 
@@ -7474,6 +7474,11 @@ isomorphic-fetch@^2.1.1:
   dependencies:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
+
+japanese-holidays@^1.0.10:
+  version "1.0.10"
+  resolved "https://registry.yarnpkg.com/japanese-holidays/-/japanese-holidays-1.0.10.tgz#79dee9482b4be90848035fa512b237077549ad51"
+  integrity sha512-OiK5801c432ljumKnQ65TGw6HSEuetU0Fvlz1/BPPPqwxQZ2kPeCy3XHO6q5nf+6zJqIf1fqcpQjWp+/SimO6Q==
 
 jest-diff@^26.0.0:
   version "26.6.2"

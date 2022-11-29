@@ -11,7 +11,7 @@
   "dependencies": {
     "@expo/webpack-config": "^0.16.19",
     "@react-native-async-storage/async-storage": "~1.17.3",
-    "@react-native-community/datetimepicker": "6.2.0",
+    "@react-native-community/datetimepicker": "^6.7.1",
     "@react-native-community/picker": "^1.8.1",
     "@react-navigation/native": "^6.0.13",
     "@react-navigation/native-stack": "^6.9.1",
@@ -26,6 +26,7 @@
     "expo-status-bar": "~1.4.0",
     "global": "^4.4.0",
     "i18n-js": "^4.1.1",
+    "japanese-holidays": "^1.0.10",
     "moment": "^2.29.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
