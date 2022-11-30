@@ -31,17 +31,19 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
-    let originDate = date.toString().split("");
-    let changeText = "";
-    originDate.forEach((element, index) => {
-      if (index == 4) {
-        changeText += "/";
-      } else if (index == 6) {
-        changeText += "/";
-      }
-      changeText += element;
-    });
-    return changeText;
+    if(date !== undefined) {
+      let originDate = date.toString().split("");
+      let changeText = "";
+      originDate.forEach((element, index) => {
+        if (index == 4) {
+          changeText += "/";
+        } else if (index == 6) {
+          changeText += "/";
+        }
+        changeText += element;
+      });
+      return changeText;
+    }
   };
 
   // 審査までの日数
@@ -72,12 +74,10 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 条件を満たした時に錬士,教士,範士の追加
   const addLevel = () => {
-    if (profile.passed5 !== 19900000) {
+    if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
       kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "範士";
-    }
-
-    if (profile.passed6 !== 19900000) {
+    } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
       kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "教士";
       kendoLevel[kendoLevel.length] = "範士";

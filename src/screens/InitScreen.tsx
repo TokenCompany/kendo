@@ -81,9 +81,11 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   const onlyExamScheduleLast = passedObject3()
 
+
+
     // 段数を表示
     const renderLevel = () => {
-      if(Object.keys(onlyExamObject).length <= 10){
+      if(Object.keys(onlyExamSchedule).length <= 10){
         if (Object.keys(onlyExamScheduleLast) === ["exam0"]) {
           return "初段";
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam1") {
@@ -180,7 +182,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {i18n.t("Modal.stage")}
               </Text>
               <Text style={styles.modalText}>
-                {renderExamDate(profileExam()) > 0 ? renderExamDate(profileExam()) : "-"}
+                {renderExamDate(profileExam()) >= 0 ? renderExamDate(profileExam()) : "-"}
                 {i18n.t("Modal.day")}
               </Text>
               <TouchableOpacity
