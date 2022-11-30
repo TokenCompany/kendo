@@ -76,7 +76,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const addLevel = () => {
     if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
       kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length] = "範士";
+      kendoLevel[kendoLevel.length + 1] = "範士";
     } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
       kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "教士";
@@ -138,8 +138,10 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (Object.keys(onlyPassedDate).length !== 11 && profile.passed0 !== 19900000) {
-      if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
+    if (Object.keys(onlyPassedDate).length !== 11) {
+      if(profile.passed0 === 19900000){
+        return "-";
+      } else if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
         return "〇";
       } else {
         return "-";
