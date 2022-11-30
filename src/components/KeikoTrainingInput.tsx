@@ -10,7 +10,7 @@ type Props = {
   textTrainingUnit: string;
   textTrainingCategories: string;
   reservedPlace: string;
-  onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
+  onChangeSendInput: (changedResults: SubCategories[], mainCategory: string,checkStatus:boolean) => void;
   resultsDate: any;
 };
 
@@ -83,7 +83,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       ];
     }
     setResults(newResults);
-    onChangeSendInput(newResults[mainCategory], mainCategory);
+    onChangeSendInput(newResults[mainCategory], mainCategory,checked);
   };
 
   // サブカテゴリ―によって出すinput形式を変更
@@ -207,7 +207,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       } else {
                         setPlace("input");
                       }
-                      onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
+                      onChangeSendInput(results["placeSubCategories"], "placeSubCategories",checked);
                     }}
                     itemStyle={{ height: 60 }}
                   >

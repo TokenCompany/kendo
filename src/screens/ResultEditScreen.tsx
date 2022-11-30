@@ -48,7 +48,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const dateText = route.params.dateText;
   const date = route.params.date;
   const selectedYear = dayjs(date).year().toString();
-  const resultsData = useSelector((state: RootState) => state.results);
   const place = route.params.place;
   // 稽古場所の情報をコピーし、予約場所で選択された場所にtrueを代入,それ以外にはfalseを指定
   const places = JSON.parse(JSON.stringify(subCategories.placeSubCategories));
@@ -115,7 +114,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     if (!resultsFlag) {
       targetRecords.forEach((element) => {
         if (element.id === "all") {
-          element.result++;
+          element.result += 1;
+          console.log(element.result);
         }
       });
     } else {
@@ -216,7 +216,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           textTrainingCategories={data[2]}
           reservedPlace={place}
           key={index}
-          onChangeSendInput={(changedResults: any, mainCategory) => {
+          onChangeSendInput={(changedResults: any, mainCategory,checkStatus) => {
             onChangeResults(changedResults, mainCategory);
           }}
           resultsDate={date}

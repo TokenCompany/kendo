@@ -13,6 +13,8 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   // reduxからサブカテゴリ―ズの情報を取得
   const allData = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  console.log(allData);
+  
   // 一番上のグラフのデータ
   let mainData: any = [];
   // それ以降のグラフのデータ
@@ -97,12 +99,20 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.barWrap}>
           <BarChart
             data={mainData}
-            horizontal
             rulesType="solid"
             initialSpacing={20}
             noOfSections={3}
+            labelsExtraHeight={100}
+            rotateLabel
+            labelWidth={50}
           />
-          <BarChart data={subData} horizontal rulesType="solid" yAxisAtTop noOfSections={3} />
+          <BarChart data={subData}
+            rulesType="solid"
+            noOfSections={3}
+            labelsExtraHeight={100}
+            rotateLabel
+            labelWidth={50}
+          />
         </View>
       </ScrollView>
     </View>
@@ -135,6 +145,6 @@ const styles = StyleSheet.create({
   },
   barWrap: {
     marginTop: 50,
-    paddingLeft: "20%",
+    paddingLeft: "10%",
   },
 });
