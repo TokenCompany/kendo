@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import {
   View,
   StyleSheet,
@@ -9,6 +9,8 @@ import {
   Platform,
   Linking,
   AppState,
+  Alert,
+  KeyboardAvoidingView,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -18,8 +20,18 @@ import * as Notifications from "expo-notifications";
 import dayjs from "dayjs";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import { colors } from "../styles";
+import { addTargetCategory } from "../store/subCategorySlice";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
+import { Button } from "../components/Button";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
+export type TargetCategory = {
+  id: string;
+  text: string;
+  goal: number;
+  result: number;
+};
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -30,6 +42,57 @@ Notifications.setNotificationHandler({
 });
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const dispatch = useDispatch();
+  // 今年の取得
+  const currentYear = dayjs().year().toString();
+  // reduxから先生事のデータ、あるいは既に設定された目標データの取得
+  let initTargets: TargetCategory[];
+  let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
+  // 既に目標データの登録があった場合の処理
+  if (currentYear in targets === false) {
+    let newTeachers = JSON.parse(JSON.stringify(teachers));
+    for (const teacher of newTeachers) {
+      teacher.result = 0;
+      teacher.goal = 0;
+    }
+    initTargets = newTeachers;
+  } else {
+    // 合計が出ないようにtargetsデータを加工
+    let newTargets = JSON.parse(JSON.stringify(targets));
+    newTargets[currentYear].forEach((element: TargetCategory, index: number) => {
+      if (element.id === "all") {
+        newTargets[currentYear].splice(index, 1);
+      }
+    });
+    initTargets = newTargets[currentYear];
+  }
+  // refの定義
+  const scrollViewRef = useRef<ScrollView>(null);
+  // stateの定義
+  const [currentValues, setCurrentValues] = useState<string[]>([""]);
+  const [currentTargets, setCurrentTargets] = useState<TargetCategory[]>(initTargets);
+  const [show, setShow] = useState(false);
+  const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
+  // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
+  const onChangeCountByTeacher = (count: number, id: string, index: number) => {
+    let newCurrentTargets = [];
+    for (const target of currentTargets) {
+      if (target.id === id) {
+        newCurrentTargets.push({
+          ...target,
+          goal: count,
+        });
+      } else {
+        newCurrentTargets.push(target);
+      }
+    }
+    setCurrentTargets(newCurrentTargets);
+    let newCurrentValues: string[] = [...currentValues];
+    newCurrentValues[index] = count.toString();
+    setCurrentValues(newCurrentValues);
+  };
+
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -71,19 +134,19 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       subCategoryType: "kakarigeikoSubCategories",
     });
   };
+  // 年間目標の入力UIが出てから自動スクロールさせるための記述
+  const goToBottom = () => {
+    if (scrollViewRef.current) {
+      scrollViewRef.current.scrollToEnd();
+    }
+  };
   const onPressTarget = () => {
     showTargetSetting();
   };
 
-  const [show, setShow] = useState(false);
-  const [currentText, setCurrentText] = useState<string>("");
-  const onChangeText = (text: string) => {
-    setCurrentText(text);
-  };
   const showTargetSetting = () => {
     setShow(!show);
   };
-
   const [alartShow, setAlartShow] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>("0000");
@@ -117,13 +180,12 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const onChangeStartTime = (time) => {
-    setStartTime(time);
-    alartTimeChange();
+    console.log(time);
   };
 
   const alartTimeChange = async () => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
-    let newTime = startTime;
+    let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
     console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
@@ -163,162 +225,203 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressShowStartTimePicker = () => {
     setShowStartTimePicker(true);
   };
+  const onPressTargetSubmit = () => {
+    if (currentYearGoal > 365) {
+      // アラートの記述追加
+      Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
+        { text: "戻る" },
+      ]);
+    } else {
+      // allYearのデータも格納
+      let result;
+      for (const initTarget of initTargets) {
+        if (initTarget.id === "all" && "result" in initTarget === false) {
+          result = 0;
+        } else {
+          result = initTarget.result;
+        }
+      }
+      let newCurrentTargets = [
+        ...currentTargets,
+        {
+          id: "all",
+          text: "年間稽古目標",
+          goal: currentYearGoal,
+          result: result,
+        },
+      ];
+      // reduxへの保存
+      const saveTargets = {
+        year: currentYear,
+        targets: newCurrentTargets,
+      };
+      dispatch(addTargetCategory(saveTargets));
+      Alert.alert("稽古目標が登録されました", "", [{ text: "戻る" }]);
+    }
+  };
 
   return (
-    <ScrollView style={styles.container}>
-      <View style={styles.buttonContainer}>
-        <MajorItem text="稽古場所" onPress={onPressPlace} />
-        <MajorItem text="素振り" onPress={onPressSwing} />
-        <MajorItem text="足さばき" onPress={onPressFootwork} />
-        <MajorItem text="基本打ち" onPress={onPressBeat} />
-        <MajorItem text="応じ技" onPress={onPressResponse} />
-        <MajorItem text="地稽古" onPress={onPressJigeiko} />
-        <MajorItem text="先生との稽古" onPress={onPressTeacher} />
-        <MajorItem text="掛稽古" onPress={onPressKakari} />
-        <MajorItem text="年間稽古目標" onPress={onPressTarget} />
+    <View style={styles.container}>
+      <ScrollView style={styles.scrollContainer} ref={scrollViewRef}>
+        <View style={styles.buttonContainer}>
+          <MajorItem text="稽古場所" onPress={onPressPlace} />
+          <MajorItem text="素振り" onPress={onPressSwing} />
+          <MajorItem text="足さばき" onPress={onPressFootwork} />
+          <MajorItem text="基本打ち" onPress={onPressBeat} />
+          <MajorItem text="応じ技" onPress={onPressResponse} />
+          <MajorItem text="地稽古" onPress={onPressJigeiko} />
+          <MajorItem text="先生との稽古" onPress={onPressTeacher} />
+          <MajorItem text="掛稽古" onPress={onPressKakari} />
+          <MajorItem
+            text="年間稽古目標"
+            onPress={() => {
+              onPressTarget();
+              setTimeout(goToBottom, 100);
+            }}
+          />
 
-        {show && (
-          <View style={styles.objectiveContainer}>
-            <Text style={styles.objectiveLabel}>年間稽古目標</Text>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>合計</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>〇〇〇 先生</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>〇〇〇〇〇 先生</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>〇〇〇〇 先生</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                onChangeText={onChangeText}
-                // value={objectiveNum}
-              ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
-            </View>
-          </View>
-        )}
-        <MajorItem text="通知設定" onPress={onPressAlart} />
-        {alartShow && (
-          <View style={styles.alartContainer}>
-            <View style={styles.alartContainerInner}>
-              <View>
-                <Text style={styles.objectiveLabel}>通知許可設定</Text>
-                {Platform.OS === "android" && (
-                  <View style={styles.buttonWrap}>
-                    <TouchableOpacity
-                      style={permission ? styles.button1 : styles.button2}
-                      onPress={() => {
-                        Linking.openSettings();
-                      }}
-                    >
-                      <Text style={permission ? styles.text1 : styles.text2}>許可</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={!permission ? styles.button1 : styles.button2}
-                      onPress={() => {
-                        Linking.openSettings();
-                      }}
-                    >
-                      <Text style={!permission ? styles.text1 : styles.text2}>不許可</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-                {Platform.OS === "ios" && (
-                  <View style={styles.buttonWrap}>
-                    <TouchableOpacity
-                      style={styles.button}
-                      onPress={() => {
-                        Linking.openURL("app-settings:");
-                      }}
-                    >
-                      <Text style={styles.text}>許可</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity
-                      style={[styles.button, styles.color]}
-                      onPress={() => {
-                        Linking.openURL("app-settings:");
-                      }}
-                    >
-                      <Text style={styles.text}>不許可</Text>
-                    </TouchableOpacity>
-                  </View>
-                )}
-              </View>
-            </View>
-            <View style={styles.alartContainerInner}>
-              <Text style={styles.objectiveLabel}>通知時間設定</Text>
-              <View style={styles.boxInputTime}>
-                <View style={styles.boxInputTimeFlex}>
-                  <View style={styles.timeStart}>
-                    {Platform.OS === "android" && (
-                      <View>
-                        <TouchableOpacity
-                          style={styles.timeStartAndroid}
-                          onPress={() => onPressShowStartTimePicker()}
-                        >
-                          <Text style={styles.timeStartTextAndroid}>
-                            {dayjs(startTime).format("HH:mm").toString()}
-                          </Text>
-                        </TouchableOpacity>
-                        {showStartTimePicker && (
-                          <DateTimePicker
-                            style={{ height: 60 }}
-                            value={dayjs(startTime).toDate()}
-                            mode="time"
-                            display={"default"}
-                            onChange={(event, time) => {
-                              setShowStartTimePicker(false);
-                              setStartTime(time.toString());
-                              onChangeStartTime();
-                            }}
-                          />
-                        )}
-                      </View>
-                    )}
-                    {Platform.OS === "ios" && (
-                      <DateTimePicker
-                        style={{ height: 60 }}
-                        value={dayjs(startTime).toDate()}
-                        mode="time"
-                        display={"default"}
-                        onChange={(event, time) => {
-                          setStartTime(time.toString());
+          {show && (
+            <KeyboardAvoidingView>
+              <View style={styles.objectiveContainer}>
+                <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+                <View style={styles.objectiveInputArea}>
+                  <Text style={styles.objectiveText}>合計</Text>
+                  <TextInput
+                    style={styles.objectiveInput}
+                    keyboardType="numeric"
+                    onChangeText={(num) => {
+                      setCurrentYearGoal(Number(num));
+                    }}
+                  ></TextInput>
+                  {/* <Text style={styles.objectiveAll}>{currentYearGoal}</Text> */}
+                  <Text style={styles.objectiveText}>回</Text>
+                </View>
+                {currentTargets.map((currentTarget: any, index: number) => {
+                  return (
+                    <View style={styles.objectiveInputArea} key={index}>
+                      <Text style={styles.objectiveText}>{currentTarget.text}先生</Text>
+                      <TextInput
+                        style={styles.objectiveInput}
+                        keyboardType="numeric"
+                        onChangeText={(count) => {
+                          onChangeCountByTeacher(Number(count), currentTarget.id, index);
                         }}
-                      />
-                    )}
+                        value={currentValues[index]}
+                      ></TextInput>
+                      <Text style={styles.objectiveText}>時間</Text>
+                    </View>
+                  );
+                })}
+                <View style={styles.submitButtonContainer}>
+                  <Button
+                    text="目標登録"
+                    onPress={() => {
+                      onPressTargetSubmit();
+                    }}
+                  />
+                </View>
+              </View>
+            </KeyboardAvoidingView>
+          )}
+          <MajorItem text="通知設定" onPress={onPressAlart} />
+          {alartShow && (
+            <View style={styles.alartContainer}>
+              <View style={styles.alartContainerInner}>
+                <View>
+                  <Text style={styles.objectiveLabel}>通知許可設定</Text>
+                  {Platform.OS === "android" && (
+                    <View style={styles.buttonWrap}>
+                      <TouchableOpacity
+                        style={permission ? styles.button1 : styles.button2}
+                        onPress={() => {
+                          Linking.openSettings();
+                        }}
+                      >
+                        <Text style={permission ? styles.text1 : styles.text2}>許可</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={!permission ? styles.button1 : styles.button2}
+                        onPress={() => {
+                          Linking.openSettings();
+                        }}
+                      >
+                        <Text style={!permission ? styles.text1 : styles.text2}>不許可</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                  {Platform.OS === "ios" && (
+                    <View style={styles.buttonWrap}>
+                      <TouchableOpacity
+                        style={styles.button}
+                        onPress={() => {
+                          Linking.openURL("app-settings:");
+                        }}
+                      >
+                        <Text style={styles.text}>許可</Text>
+                      </TouchableOpacity>
+                      <TouchableOpacity
+                        style={[styles.button, styles.color]}
+                        onPress={() => {
+                          Linking.openURL("app-settings:");
+                        }}
+                      >
+                        <Text style={styles.text}>不許可</Text>
+                      </TouchableOpacity>
+                    </View>
+                  )}
+                </View>
+              </View>
+              <View style={styles.alartContainerInner}>
+                <Text style={styles.objectiveLabel}>通知時間設定</Text>
+                <View style={styles.boxInputTime}>
+                  <View style={styles.boxInputTimeFlex}>
+                    <View style={styles.timeStart}>
+                      {Platform.OS === "android" && (
+                        <View>
+                          <TouchableOpacity
+                            style={styles.timeStartAndroid}
+                            onPress={() => onPressShowStartTimePicker()}
+                          >
+                            <Text style={styles.timeStartTextAndroid}>
+                              {dayjs(startTime).format("HH:mm").toString()}
+                            </Text>
+                          </TouchableOpacity>
+                          {showStartTimePicker && (
+                            <DateTimePicker
+                              style={{ height: 60 }}
+                              value={dayjs(startTime).toDate()}
+                              mode="time"
+                              display={"default"}
+                              onChange={(event, time) => {
+                                setShowStartTimePicker(false);
+                                setStartTime(time.toString());
+                                alartTimeChange();
+                              }}
+                            />
+                          )}
+                        </View>
+                      )}
+                      {Platform.OS === "ios" && (
+                        <DateTimePicker
+                          style={{ height: 60 }}
+                          value={dayjs(startTime).toDate()}
+                          mode="time"
+                          display={"default"}
+                          onChange={(event, time) => {
+                            setStartTime(time.toString());
+                            alartTimeChange();
+                          }}
+                        />
+                      )}
+                    </View>
                   </View>
                 </View>
               </View>
             </View>
-          </View>
-        )}
-      </View>
-    </ScrollView>
+          )}
+        </View>
+      </ScrollView>
+    </View>
   );
 };
 
@@ -327,6 +430,8 @@ const styles = StyleSheet.create({
     flex: 1,
     flexDirection: "column",
     marginTop: 40,
+  },
+  scrollContainer: {
     paddingRight: 10,
     paddingLeft: 10,
   },
@@ -350,8 +455,6 @@ const styles = StyleSheet.create({
   objectiveContainer: {
     marginTop: 30,
     marginBottom: 20,
-    paddingRight: 60,
-    alignItems: "flex-start",
   },
   objectiveLabel: {
     fontSize: 18,
@@ -366,10 +469,20 @@ const styles = StyleSheet.create({
     width: 100,
     height: 40,
     marginHorizontal: 10,
+    padding: 10,
     fontSize: 18,
+    textAlign: "center",
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
+  },
+  objectiveAll: {
+    width: 100,
+    height: 40,
+    marginHorizontal: 10,
+    padding: 10,
+    fontSize: 18,
+    textAlign: "center",
   },
   objectiveText: {
     fontSize: 18,
@@ -431,5 +544,12 @@ const styles = StyleSheet.create({
   buttonWrap: {
     flexDirection: "row",
     padding: 10,
+  },
+  submitButtonContainer: {
+    marginTop: 20,
+    width: "100%",
+    // height: '30%',
+    // justifyContent: 'center',
+    alignItems: "center",
   },
 });

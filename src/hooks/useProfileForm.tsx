@@ -175,51 +175,64 @@ export const useProfileForm = (): Hooks => {
   const onChangePassedDate00 = (passed0: number) => {
     setCurrentPassedDate00(passed0);
     setCurrentExamDate01(passed0 + 10000);
-    setCurrentExamDate02(passed0 + 20000);
-    setCurrentExamDate03(passed0 + 30000);
-    setCurrentExamDate04(passed0 + 40000);
-    setCurrentExamDate05(passed0 + 50000);
-    setCurrentExamDate06(passed0 + 60000);
-    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate02(passed0 + 30000);
+    setCurrentExamDate03(passed0 + 60000);
+    setCurrentExamDate04(passed0 + 100000);
+    setCurrentExamDate05(passed0 + 150000);
+    setCurrentExamDate06(passed0 + 210000);
+    setCurrentExamDate07(Math.max(passed0 + 310000, currentBirthday + 460000));
+    setCurrentExamDate08(passed0 + 160000);
+    setCurrentExamDate09(passed0 + 230000);
   };
   const onChangePassedDate01 = (passed1: number) => {
     setCurrentPassedDate01(passed1);
-    setCurrentExamDate02(passed1 + 10000);
-    setCurrentExamDate03(passed1 + 20000);
-    setCurrentExamDate04(passed1 + 30000);
-    setCurrentExamDate05(passed1 + 40000);
-    setCurrentExamDate06(passed1 + 50000);
-    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate02(passed1 + 20000);
+    setCurrentExamDate03(passed1 + 50000);
+    setCurrentExamDate04(passed1 + 90000);
+    setCurrentExamDate05(passed1 + 140000);
+    setCurrentExamDate06(passed1 + 200000);
+    setCurrentExamDate07(Math.max(passed1 + 300000, currentBirthday + 460000));
+    setCurrentExamDate08(passed1 + 150000);
+    setCurrentExamDate09(passed1 + 220000);
   };
   const onChangePassedDate02 = (passed2: number) => {
     setCurrentPassedDate02(passed2);
-    setCurrentExamDate03(passed2 + 10000);
-    setCurrentExamDate04(passed2 + 20000);
-    setCurrentExamDate05(passed2 + 30000);
-    setCurrentExamDate06(passed2 + 40000);
-    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate03(passed2 + 30000);
+    setCurrentExamDate04(passed2 + 70000);
+    setCurrentExamDate05(passed2 + 120000);
+    setCurrentExamDate06(passed2 + 180000);
+    setCurrentExamDate07(Math.max(passed2 + 280000, currentBirthday + 460000));
+    setCurrentExamDate08(passed2 + 130000);
+    setCurrentExamDate09(passed2 + 200000);
   };
   const onChangePassedDate03 = (passed3: number) => {
     setCurrentPassedDate03(passed3);
-    setCurrentExamDate04(passed3 + 10000);
-    setCurrentExamDate05(passed3 + 20000);
-    setCurrentExamDate06(passed3 + 30000);
-    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate04(passed3 + 40000);
+    setCurrentExamDate05(passed3 + 90000);
+    setCurrentExamDate06(passed3 + 150000);
+    setCurrentExamDate07(Math.max(passed3 + 250000, currentBirthday + 460000));
+    setCurrentExamDate08(passed3 + 100000);
+    setCurrentExamDate09(passed3 + 170000);
   };
   const onChangePassedDate04 = (passed4: number) => {
     setCurrentPassedDate04(passed4);
-    setCurrentExamDate05(passed4 + 10000);
-    setCurrentExamDate06(passed4 + 20000);
-    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate05(passed4 + 50000);
+    setCurrentExamDate06(passed4 + 110000);
+    setCurrentExamDate07(Math.max(passed4 + 210000, currentBirthday + 460000));
+    setCurrentExamDate08(passed4 + 60000);
+    setCurrentExamDate09(passed4 + 130000);
   };
   const onChangePassedDate05 = (passed5: number) => {
     setCurrentPassedDate05(passed5);
+    setCurrentExamDate06(passed5 + 60000);
+    setCurrentExamDate07(Math.max(passed5 + 160000, currentBirthday + 460000));
     setCurrentExamDate08(passed5 + 10000);
+    setCurrentExamDate09(passed5 + 80000);
   };
   const onChangePassedDate06 = (passed6: number) => {
     setCurrentPassedDate06(passed6);
     setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
-    setCurrentExamDate10(passed6 + 20000);
+    setCurrentExamDate09(passed6 + 20000);
   };
   const onChangePassedDate07 = (passed7: number) => {
     setCurrentPassedDate07(passed7);
@@ -277,6 +290,7 @@ export const useProfileForm = (): Hooks => {
 
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
+  // 画面遷移の記述はないが、mメニュー画面へ遷移してしまう
   const onPressSave = () => {
     dispatch(setName(currentName));
     dispatch(setAge(currentAge));
