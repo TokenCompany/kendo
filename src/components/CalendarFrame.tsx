@@ -48,7 +48,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
             <DateTimePicker
               value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
               mode="date"
-              display={"spinner"}
+              display={"default"}
               onChange={(event, date) => {
                 setShowPickerAndroid(false)
                 console.log(date);

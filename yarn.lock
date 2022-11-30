@@ -2050,17 +2050,10 @@
     prompts "^2.4.0"
     semver "^6.3.0"
 
-<<<<<<< HEAD
 "@react-native-community/datetimepicker@^6.7.1":
   version "6.7.1"
   resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.7.1.tgz#a52eed9512898adef323b2fa78c6ac4611af5502"
   integrity sha512-NPW1YITG7N+3TsqXc4LZV3c5IEpTD5iX18r0bvFsHdIblo5qi0ykpeK3TffmMM5gbTjgKJ4DNVHOjLiWKxFUxw==
-=======
-"@react-native-community/datetimepicker@6.5.2":
-  version "6.5.2"
-  resolved "https://registry.yarnpkg.com/@react-native-community/datetimepicker/-/datetimepicker-6.5.2.tgz#d2c0df9f2c6acce39f7e957743dd811547656098"
-  integrity sha512-9K3zhIH1zmpIGSG3GJTWLIoAx+sR4kJ1wqpGKMwWJ5IYXBsFxMdvGw023t0pz2CQStlnNbbNhnZY/HMYFBCsCg==
->>>>>>> main
   dependencies:
     invariant "^2.2.4"
 
@@ -7537,13 +7530,6 @@ import-local@^2.0.0:
     pkg-dir "^3.0.0"
     resolve-cwd "^2.0.0"
 
-import@^0.0.6:
-  version "0.0.6"
-  resolved "https://registry.yarnpkg.com/import/-/import-0.0.6.tgz#d0eb79df86aa2677c6db61578a5212b3031e6042"
-  integrity sha512-QPhTdjy9J4wUzmWSG7APkSgMFuPGPw+iJTYUblcfc2AfpqaatbwgCldK1HoLYx+v/+lWvab63GWZtNkcnj9JcQ==
-  dependencies:
-    optimist "0.3.x"
-
 imurmurhash@^0.1.4:
   version "0.1.4"
   resolved "https://registry.npmjs.org/imurmurhash/-/imurmurhash-0.1.4.tgz"
@@ -8078,14 +8064,11 @@ isomorphic-fetch@^2.1.1:
     node-fetch "^1.0.1"
     whatwg-fetch ">=0.10.0"
 
-<<<<<<< HEAD
-=======
 isstream@~0.1.2:
   version "0.1.2"
   resolved "https://registry.yarnpkg.com/isstream/-/isstream-0.1.2.tgz#47e63f7af55afa6f92e1500e690eb8b8529c099a"
   integrity sha512-Yljz7ffyPbrLpLngrMtZ7NduUgVvi6wG9RJ9IUcyCd59YQ911PBJphODUcbOVbqYfxe1wuYf/LJ8PauMRwsM/g==
 
->>>>>>> main
 japanese-holidays@^1.0.10:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/japanese-holidays/-/japanese-holidays-1.0.10.tgz#79dee9482b4be90848035fa512b237077549ad51"
@@ -9942,13 +9925,6 @@ opn@^5.5.0:
   integrity sha512-PqHpggC9bLV0VeWcdKhkpxY+3JTzetLSqTCWL/z/tFIbI6G8JCjondXklT1JinczLz2Xib62sSp0T/gKT4KksA==
   dependencies:
     is-wsl "^1.1.0"
-
-optimist@0.3.x:
-  version "0.3.7"
-  resolved "https://registry.yarnpkg.com/optimist/-/optimist-0.3.7.tgz#c90941ad59e4273328923074d2cf2e7cbc6ec0d9"
-  integrity sha512-TCx0dXQzVtSCg2OgY/bO9hjM9cV4XYx09TVK+s3+FhkjT6LovsLe+pPMzpWf+6yXK/hUizs2gUoTw3jHM0VaTQ==
-  dependencies:
-    wordwrap "~0.0.2"
 
 optimize-css-assets-webpack-plugin@^5.0.3:
   version "5.0.8"
@@ -13830,11 +13806,6 @@ word-wrap@^1.2.3:
   version "1.2.3"
   resolved "https://registry.npmjs.org/word-wrap/-/word-wrap-1.2.3.tgz"
   integrity sha512-Hz/mrNwitNRh/HUAtM/VT/5VH+ygD6DV7mYKZAtHOrbs8U7lvPS6xf7EJKMF0uW1KJCl0H701g3ZGus+muE5vQ==
-
-wordwrap@~0.0.2:
-  version "0.0.3"
-  resolved "https://registry.yarnpkg.com/wordwrap/-/wordwrap-0.0.3.tgz#a3d5da6cd5c0bc0008d37234bbaf1bed63059107"
-  integrity sha512-1tMA907+V4QmxV7dbRvb4/8MaRALK6q9Abid3ndMYnbyo8piisCmeONVqVSXqQA3KaP4SLt5b7ud6E2sqP8TFw==
 
 worker-farm@^1.7.0:
   version "1.7.0"
