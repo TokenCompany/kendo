@@ -90,6 +90,12 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
+  // 地稽古、掛稽古サブカテゴリ―がない時に表示させないための記述
+  let specialCategory: boolean = true;
+  // let specialCategory: boolean = subCategories[textTrainingCategories].length
+  if (textTrainingCategories in subCategories && subCategories[textTrainingCategories].length === 0) {
+     specialCategory = false;
+  }
 
   if (textTraining === "稽古場所") {
     input3 = true;
@@ -163,15 +169,19 @@ export const KeikoTrainingInput: React.FC<Props> = ({
             {!!input2 && (
               <View>
                 <View style={styles.inputGroup}>
-                  <View style={styles.inputGroup}>
-                    <Checkbox
-                      status={checked2 ? "checked" : "unchecked"}
-                      onPress={() => {
-                        setChecked2(!checked2);
-                      }}
-                    />
-                    <Text style={styles.inputText}>あり</Text>
-                  </View>
+                  {!!specialCategory &&(
+                    <View style={styles.inputGroup}>
+                      <View style={styles.checkInside}>
+                        <Checkbox
+                          status={checked2 ? "checked" : "unchecked"}
+                          onPress={() => {
+                            setChecked2(!checked2);
+                          }}
+                        />
+                      </View>
+                      <Text style={styles.inputText}>あり</Text>
+                    </View>
+                  )}
                   {!!checked2 &&
                     subCategoriesData.map((data: any, index: number) => (
                       <View style={styles.inputGroup} key={index}>
@@ -246,6 +256,13 @@ const styles = StyleSheet.create({
   check: {
     justifyContent: "center",
     alignItems: "center",
+    height: 35,
+    width: 35,
+    marginRight: 10,
+    borderColor: "#aaa",
+    borderWidth: 1,
+  },
+  checkInside: {
     height: 35,
     width: 35,
     marginRight: 10,

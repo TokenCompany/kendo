@@ -5,7 +5,7 @@ import { SwipeListView } from "react-native-swipe-list-view";
 import { SubCategory } from "../screens/SubCategoryScreen";
 
 type Props = {
-  onPressDelete: (id: string,mainCategoryName: string) => void; // 親の呼び出し側で削除タップ時の処理を書く
+  onPressDelete: (id: string, mainCategoryName: string) => void; // 親の呼び出し側で削除タップ時の処理を書く
   subCategories: SubCategory[];
   mainCategoryName: string;
 };
