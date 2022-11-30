@@ -171,14 +171,16 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                 <View style={styles.inputGroup}>
                   {!!specialCategory &&(
                     <View style={styles.inputGroup}>
-                    <Checkbox
-                      status={checked2 ? "checked" : "unchecked"}
-                      onPress={() => {
-                        setChecked2(!checked2);
-                      }}
-                    />
-                    <Text style={styles.inputText}>あり</Text>
-                  </View>
+                      <View style={styles.checkInside}>
+                        <Checkbox
+                          status={checked2 ? "checked" : "unchecked"}
+                          onPress={() => {
+                            setChecked2(!checked2);
+                          }}
+                        />
+                      </View>
+                      <Text style={styles.inputText}>あり</Text>
+                    </View>
                   )}
                   {!!checked2 &&
                     subCategoriesData.map((data: any, index: number) => (
@@ -254,6 +256,13 @@ const styles = StyleSheet.create({
   check: {
     justifyContent: "center",
     alignItems: "center",
+    height: 35,
+    width: 35,
+    marginRight: 10,
+    borderColor: "#aaa",
+    borderWidth: 1,
+  },
+  checkInside: {
     height: 35,
     width: 35,
     marginRight: 10,
