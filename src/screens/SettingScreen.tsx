@@ -31,17 +31,19 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
-    let originDate = date.toString().split("");
-    let changeText = "";
-    originDate.forEach((element, index) => {
-      if (index == 4) {
-        changeText += "/";
-      } else if (index == 6) {
-        changeText += "/";
-      }
-      changeText += element;
-    });
-    return changeText;
+    if(date !== undefined) {
+      let originDate = date.toString().split("");
+      let changeText = "";
+      originDate.forEach((element, index) => {
+        if (index == 4) {
+          changeText += "/";
+        } else if (index == 6) {
+          changeText += "/";
+        }
+        changeText += element;
+      });
+      return changeText;
+    }
   };
 
   // 審査までの日数
@@ -67,7 +69,25 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-  // 合格日抽出
+  // 階級
+  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
+
+  // 条件を満たした時に錬士,教士,範士の追加
+  const addLevel = () => {
+    if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
+      kendoLevel[kendoLevel.length] = "錬士";
+      kendoLevel[kendoLevel.length + 1] = "範士";
+    } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
+      kendoLevel[kendoLevel.length] = "錬士";
+      kendoLevel[kendoLevel.length] = "教士";
+      kendoLevel[kendoLevel.length] = "範士";
+    }
+  };
+  {
+    addLevel();
+  }
+
+  // 合格日オブジェクト抽出
   const passedObject1 = () => {
     let object = {};
     Object.keys(profile).forEach((key) => {
@@ -78,54 +98,64 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return object;
   };
   const onlyPassedObject = passedObject1();
+
+  // 合格日が記載されているもののみ抽出
   const passedObject2 = () => {
     let object = {};
-    Object.keys(onlyPassedObject).some((key) => {
-      object[key] = profile[key];
+    Object.keys(onlyPassedObject).filter((key) => {
       if (profile[key] !== 19900000) {
-        return true;
+        object[key] = profile[key];
       }
     });
     return object;
   };
   const onlyPassed = passedObject2();
 
-  // 階級
-  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
-
-  // 条件を満たした時に錬士,教士,範士の追加
-  const addLevel = () => {
-    if (profile.passed5 !== 19900000) {
-      kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length] = "範士";
-    }
-
-    if (profile.passed6 !== 19900000) {
-      kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length] = "教士";
-      kendoLevel[kendoLevel.length] = "範士";
-    }
+  // 合格済の中で最も後のものを抽出
+  const passedObject3 = () => {
+    let object = {};
+    Object.keys(onlyPassed).filter((key ,index) => {
+      if (index == Object.keys(onlyPassed).length - 1) {
+        object[key] = onlyPassed[key];
+      }
+    });
+    return object;
   };
-  {
-    addLevel();
-  }
+  const onlyPassedLast = passedObject3()
+
+  const passedObject4 = () => {
+    let object = {};
+    Object.keys(onlyPassedObject).some((key) => {
+      object[key] = onlyPassedObject[key];
+      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0){
+
+        return true
+      }
+    });
+    return object;
+  };
+  const onlyPassedDate = passedObject4()
+
+  console.log(onlyPassedLast);
+
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (Object.keys(onlyPassed).length !== 11) {
-      if (passed !== 19900000 || index < Object.keys(onlyPassed).length) {
+    if (Object.keys(onlyPassedLast).length === 0) {
+      return "-";
+    } else {
+      if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
         return "〇";
       } else {
         return "-";
       }
-    } else {
-      return "-";
     }
   };
 
+
   const renderLevelTable = () => {
     return kendoLevel.map((data, index) => (
-      <View style={styles.tableRow}>
+      <View style={styles.tableRow} key={index}>
         <Text style={[styles.tableData, styles.firstColumn]}>{data}</Text>
         <Text style={[styles.tableData, styles.secondColumn]}>
           {renderPassedCheck(profile[`passed${index}`], index)}

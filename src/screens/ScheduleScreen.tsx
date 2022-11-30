@@ -45,6 +45,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState(null);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const onPressShowDatePicker = () => {
+    setShowDatePicker(true)
+  }
+
   const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
     setPlace(value);
@@ -199,12 +204,16 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <Text>◆ 場所</Text>
             <View style={styles.boxInputText}>
               <DropDownPicker
+              listMode="SCROLLVIEW"
                 open={open}
                 value={value}
                 items={items}
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+                max={6}
+                maxHeight={300}
+                zIndex={1000}
                 labelStyle={{
                   fontSize: 18,
                   textAlign: "center",
@@ -247,6 +256,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       },
                     ]);
                   } else {
+                    Alert.alert("稽古予定が登録されました。", "", [
+                      {
+                        text: "戻る",
+                        style: "cancel",
+                        onPress: () =>
+                        onPressSelected()
+                      },
+                    ]);
                     onPressSelected()
                   }
                 }

@@ -11,7 +11,7 @@ type Props = {
   textTrainingCategories: string;
   reservedPlace: string;
   onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
-  resultsData: any;
+  resultsDate: any;
 };
 
 export type SubCategories = {
@@ -37,16 +37,18 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   textTrainingUnit,
   textTrainingCategories,
   reservedPlace,
-  resultsData,
+  resultsDate,
   onChangeSendInput,
 }) => {
   // 既に実績を入力した場合にvaluesに表示をする
+  const resultsData = useSelector((state: RootState) => state.results);
   let initValues: string[] = [];
-  if (textTrainingCategories in resultsData) {
-    for (const result of resultsData[textTrainingCategories]) {
+  if (resultsDate in resultsData) {
+    for (const result of resultsData[resultsDate][textTrainingCategories]) {
       initValues.push(result.result);
     }
   }
+
   const [values, setValues] = useState<string[]>(initValues);
   // ローカルのstateでinputの入力情報を保持
   const onChangeValues = (text: string, index: number) => {
