@@ -127,8 +127,8 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let object = {};
     Object.keys(onlyPassedObject).some((key) => {
       object[key] = onlyPassedObject[key];
+      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0){
 
-      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0) {
         return true
       }
     });
@@ -136,20 +136,22 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   const onlyPassedDate = passedObject4()
 
+  console.log(onlyPassedLast);
+
+
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (Object.keys(onlyPassedDate).length !== 11) {
-      if(profile.passed0 === 19900000){
-        return "-";
-      } else if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
+    if (Object.keys(onlyPassedLast).length === 0) {
+      return "-";
+    } else {
+      if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
         return "〇";
       } else {
         return "-";
       }
-    } else {
-      return "-";
     }
   };
+
 
   const renderLevelTable = () => {
     return kendoLevel.map((data, index) => (
