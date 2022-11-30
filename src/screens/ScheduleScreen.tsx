@@ -204,6 +204,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <Text>◆ 場所</Text>
             <View style={styles.boxInputText}>
               <DropDownPicker
+              listMode="SCROLLVIEW"
                 open={open}
                 value={value}
                 items={items}

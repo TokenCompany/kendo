@@ -96,7 +96,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
 
   // 実績合計が重複しないための予約情報取得
   const resultsRecords = useSelector((state: RootState) => state.results);
-  // console.log(resultsRecords);
 
   let resultsFlag = false;
   if (date in resultsRecords) {
