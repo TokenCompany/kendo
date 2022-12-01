@@ -36,6 +36,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+
   const showForm = () => {
     setForm(true);
   };
@@ -57,15 +58,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [startTime, setStartTime] = useState<string>("0000");
   const [endTime, setEndTime] = useState<string>("0000");
   const [place, setPlace] = useState<string>("場所を選択");
-  const showButton: boolean = true;
-  const [allReservations, setAllReservations] = useState(reservations);
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
   const [showDatePicker, setShowDatePicker] = useState(false);
   const onPressShowDatePicker = () => {
     setShowDatePicker(true);
   };
+  const [value, setValue] = useState();
+  const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
 
   const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
@@ -99,6 +99,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     setValue(place);
     setForm(false);
     setOpen(false);
+
     dispatch(
       bookReservationItem({
         date: selectedDate,
@@ -200,14 +201,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       </TouchableOpacity>
                       {showStartTimePicker && (
                         <DateTimePicker
-                          style={{ height: 60 }}
+                          locale={i18n.t("Lang.lang")}
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
                           onChange={(event, date1) => {
                             setShowStartTimePicker(false);
                             setStartTime(date1.toString());
-                            console.log(dayjs(startTime));
                           }}
                         />
                       )}
@@ -215,7 +215,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   )}
                   {Platform.OS === "ios" && (
                     <DateTimePicker
-                      style={{ height: 60 }}
+                      locale={i18n.t("Lang.lang")}
                       value={dayjs(startTime).toDate()}
                       mode="time"
                       display={"default"}
@@ -239,7 +239,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       </TouchableOpacity>
                       {showEndTimePicker && (
                         <DateTimePicker
-                          style={{ height: 60 }}
+                          locale={i18n.t("Lang.lang")}
                           value={dayjs(endTime).toDate()}
                           mode="time"
                           display={"default"}
@@ -253,7 +253,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   )}
                   {Platform.OS === "ios" && (
                     <DateTimePicker
-                      style={{ height: 60 }}
+                      locale={i18n.t("Lang.lang")}
                       value={dayjs(endTime).toDate()}
                       mode="time"
                       display={"default"}
@@ -270,12 +270,16 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <Text>◆ 場所</Text>
             <View style={styles.boxInputText}>
               <DropDownPicker
+                listMode="SCROLLVIEW"
                 open={open}
                 value={value}
                 items={items}
                 setOpen={setOpen}
                 setValue={setValue}
                 setItems={setItems}
+                max={6}
+                maxHeight={300}
+                zIndex={1000}
                 labelStyle={{
                   fontSize: 18,
                   textAlign: "center",
@@ -293,7 +297,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               />
             </View>
           </View>
-          {form && <TextInput style={styles.form} onChangeText={setPlace} />}
+          {form && (
+            <TextInput
+              style={styles.form}
+              onChangeText={(text) => {
+                setPlace(text);
+                setNewPlaceFlag(true);
+              }}
+            />
+          )}
           <TextButton
             text01="登録"
             onPress01={() => {
@@ -330,10 +342,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       {
                         text: "戻る",
                         style: "cancel",
-                        onPress: () => onPressSelected(),
+                        onPress: () => {
+                          onPressSelected();
+                        },
                       },
                     ]);
-                    onPressSelected();
                     scheduleNotificationAsync();
                   }
                 }

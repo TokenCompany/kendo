@@ -11,7 +11,7 @@ type Props = {
 
 export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, onChangeText }) => {
   return visible ? (
-    <>
+    <View style={styles.body}>
       <View style={styles.item}>
         <TextInput
           style={styles.input}
@@ -20,42 +20,49 @@ export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, o
           onChangeText={onChangeText}
         />
       </View>
-      <View style={{ flex: 1, flexDirection: "row", justifyContent: "center" }}>
-        <TouchableOpacity style={styles.container} onPress={onPressSubmit}>
-          <Text style={styles.text}>登録</Text>
-        </TouchableOpacity>
-      </View>
-    </>
+      <TouchableOpacity style={styles.container} onPress={onPressSubmit}>
+        <Text style={styles.text}>登録</Text>
+      </TouchableOpacity>
+    </View>
   ) : null;
 };
 
 const styles = StyleSheet.create({
-  container: {
-    width: 250,
-    height: 50,
-    backgroundColor: colors.primary,
-    borderRadius: 10,
+  body: {
+    width: "100%",
+    flexDirection: "row",
     alignItems: "center",
-    justifyContent: "center",
-    marginTop: 10,
   },
   input: {
+    width: "100%",
     height: 25,
     borderColor: "#aaa",
     paddingHorizontal: 5,
     color: "#000",
     fontWeight: "600",
     fontSize: 20,
+    textAlign: "center",
+    flexGrow: 1,
   },
   item: {
     position: "relative",
     marginBottom: 3,
-    width: "100%",
+    width: "75%",
     height: 50,
     backgroundColor: "#def3d7",
     elevation: 2,
     alignItems: "center",
     justifyContent: "center",
+  },
+  container: {
+    width: "25%",
+    height: 50,
+    marginBottom: 3,
+    backgroundColor: colors.primary,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingHorizontal: 5,
+    flexGrow: 1,
   },
   text: {
     color: "#fff",

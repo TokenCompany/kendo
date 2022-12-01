@@ -1,17 +1,17 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Modal, Platform } from "react-native";
 import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
+import i18n from "../lang/localization";
 type Props = {
   onPressDay: (day: string) => void;
 };
 
 export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
-  const [allReservations, setAllReservations] = useState(reservations);
   const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
   const showDatepicker = () => {
@@ -22,37 +22,74 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     setShow(false);
   };
 
+  const [showPickerAndroid, setShowPickerAndroid] = useState<boolean>();
+  const onPressShowPickerAndroid = () => {
+    setShowPickerAndroid(true)
+  }
+
   return (
     <View style={styles.container}>
+      {Platform.OS === "android" && (
+        <View style={styles.dayInput}>
+          <TouchableOpacity style={styles.dateButton} onPress={onPressShowPickerAndroid}>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {Platform.OS === "ios" && (
         <View style={styles.dayInput}>
           <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
             <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
           </TouchableOpacity>
         </View>
-        <Modal
-          animationType="fade"
-          visible={show}
-          transparent={true}
-          onRequestClose={() => {
-            setShow(false);
-          }}
-        >
-          <View style={styles.modalView}>
+      )}
+        {Platform.OS === "android" && (
+          <View>
+            {showPickerAndroid && (
             <DateTimePicker
+              locale={i18n.t("Lang.lang")}
               value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
               mode="date"
-              display={"spinner"}
+              display={"default"}
               onChange={(event, date) => {
-                if (date) {
-                  setCurrentDate(dayjs(date));
-                }
+                setShowPickerAndroid(false)
+                console.log(date);
+
+                setCurrentDate(dayjs(date));
               }}
             />
-            <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-              <Text style={styles.textStyle}>×</Text>
-            </TouchableOpacity>
+            )}
           </View>
-        </Modal>
+        )}
+        {Platform.OS === "ios" && (
+          <Modal
+            animationType="fade"
+            visible={show}
+            transparent={true}
+            onRequestClose={() => {
+              setShow(false);
+            }}
+          >
+            <View style={styles.modalView}>
+              <DateTimePicker
+                locale={i18n.t("Lang.lang")}
+                value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
+                mode="date"
+                display={"spinner"}
+                onChange={(event, date) => {
+                  console.log(date);
+
+                  if (date) {
+                    setCurrentDate(dayjs(date));
+                  }
+                }}
+              />
+              <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+                <Text style={styles.textStyle}>×</Text>
+              </TouchableOpacity>
+            </View>
+          </Modal>
+        )}
       <Calendar
         // 日付を選択したときの挙動。
         theme={{

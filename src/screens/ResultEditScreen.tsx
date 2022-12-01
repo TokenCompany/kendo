@@ -48,17 +48,19 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const dateText = route.params.dateText;
   const date = route.params.date;
   const selectedYear = dayjs(date).year().toString();
-  const resultsData = useSelector((state: RootState) => state.results);
   const place = route.params.place;
   // 稽古場所の情報をコピーし、予約場所で選択された場所にtrueを代入,それ以外にはfalseを指定
   const places = JSON.parse(JSON.stringify(subCategories.placeSubCategories));
+  let newPlaceFlag = true;
   for (const item of places) {
     if (item.text === place) {
       item.result = true;
+      newPlaceFlag = false;
     } else {
       item.result = false;
     }
   }
+
   // 練習結果の初期化
   const initAllResults = {
     trainingDate: date,
@@ -96,7 +98,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
 
   // 実績合計が重複しないための予約情報取得
   const resultsRecords = useSelector((state: RootState) => state.results);
-  // console.log(resultsRecords);
 
   let resultsFlag = false;
   if (date in resultsRecords) {
@@ -115,7 +116,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     if (!resultsFlag) {
       targetRecords.forEach((element) => {
         if (element.id === "all") {
-          element.result++;
+          element.result += 1;
+          console.log(element.result);
         }
       });
     } else {
@@ -216,6 +218,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           textTrainingCategories={data[2]}
           reservedPlace={place}
           key={index}
+          newPlaceJudge={newPlaceFlag}
           onChangeSendInput={(changedResults: any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
           }}
