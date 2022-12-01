@@ -156,7 +156,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     AppState.addEventListener("change", _handleAppStateChange);
 
     return () => {
-      AppState.removeEventListener("change", _handleAppStateChange);
+      AppState.addEventListener("change", _handleAppStateChange).remove();
     };
   });
 
@@ -177,10 +177,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
     setPermission(granted);
-  };
-
-  const onChangeStartTime = (time) => {
-    console.log(time);
   };
 
   const alartTimeChange = async () => {
@@ -204,6 +200,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         alartHour,
         alartMinutes,
       );
+      console.log(unixDate);
 
       await Notifications.scheduleNotificationAsync({
         content: {
