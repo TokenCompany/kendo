@@ -5,6 +5,7 @@ import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
+import i18n from "../lang/localization";
 type Props = {
   onPressDay: (day: string) => void;
 };
@@ -46,6 +47,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           <View>
             {showPickerAndroid && (
             <DateTimePicker
+              locale={i18n.t("Lang.lang")}
               value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
               mode="date"
               display={"default"}
@@ -70,6 +72,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           >
             <View style={styles.modalView}>
               <DateTimePicker
+                locale={i18n.t("Lang.lang")}
                 value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
                 mode="date"
                 display={"spinner"}

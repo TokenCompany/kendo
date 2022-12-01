@@ -150,7 +150,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       </TouchableOpacity>
                       {showStartTimePicker && (
                         <DateTimePicker
-                          style={{ height: 60 }}
+                          locale={i18n.t("Lang.lang")}
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
@@ -164,7 +164,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   )}
                   {Platform.OS === "ios" && (
                     <DateTimePicker
-                      style={{ height: 60 }}
+                      locale={i18n.t("Lang.lang")}
                       value={dayjs(startTime).toDate()}
                       mode="time"
                       display={"default"}
@@ -188,7 +188,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       </TouchableOpacity>
                       {showEndTimePicker && (
                         <DateTimePicker
-                          style={{ height: 60 }}
+                          locale={i18n.t("Lang.lang")}
                           value={dayjs(endTime).toDate()}
                           mode="time"
                           display={"default"}
@@ -202,7 +202,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   )}
                   {Platform.OS === "ios" && (
                     <DateTimePicker
-                      style={{ height: 60 }}
+                      locale={i18n.t("Lang.lang")}
                       value={dayjs(endTime).toDate()}
                       mode="time"
                       display={"default"}
