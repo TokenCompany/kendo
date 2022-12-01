@@ -96,7 +96,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             }}
           />
         </View>
-        <View style={styles.barWrap}>
+        <View style={styles.MainBarWrap}>
           <BarChart
             data={mainData}
             horizontal
@@ -113,13 +113,14 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             labelWidth={50}
           />
         </View>
+        <View style={styles.subBarWrap}>
           <BarChart data={subData}
             rulesType="solid"
             noOfSections={3}
             labelsExtraHeight={100}
             labelWidth={50}
           />
-        
+        </View>
       </ScrollView>
     </View>
   );
@@ -149,8 +150,11 @@ const styles = StyleSheet.create({
     height: 30,
     marginTop: 10,
   },
-  barWrap: {
-    marginTop: 50,
-    paddingLeft: "30%",
+  MainBarWrap: {
+    marginTop: 30,
+    marginLeft: "30%",
   },
+  subBarWrap:{
+    marginTop:-30,
+  }
 });
