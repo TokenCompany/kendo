@@ -157,5 +157,6 @@ const styles = StyleSheet.create({
   },
   subBarWrap: {
     marginTop: -30,
+    marginLeft: 10,
   },
 });
