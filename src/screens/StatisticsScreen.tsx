@@ -99,21 +99,27 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.barWrap}>
           <BarChart
             data={mainData}
+            horizontal
             rulesType="solid"
             initialSpacing={20}
             noOfSections={3}
-            labelsExtraHeight={100}
-            rotateLabel
+            // rotateLabel
+            xAxisLabelTextStyle={{
+              transform: [{ translateX: -15},{translateY:-10}]
+            }}
+            yAxisTextStyle={{ 
+              transform: [{ rotate: "-90deg" }]
+            }}
             labelWidth={50}
           />
+        </View>
           <BarChart data={subData}
             rulesType="solid"
             noOfSections={3}
             labelsExtraHeight={100}
-            rotateLabel
             labelWidth={50}
           />
-        </View>
+        
       </ScrollView>
     </View>
   );
@@ -145,6 +151,6 @@ const styles = StyleSheet.create({
   },
   barWrap: {
     marginTop: 50,
-    paddingLeft: "10%",
+    paddingLeft: "30%",
   },
 });
