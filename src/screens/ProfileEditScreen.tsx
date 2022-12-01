@@ -417,18 +417,22 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow01(false);
                 // 14歳未満の合格は制限
-              if (date1) {
-                const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed0.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 14 || passed0 - currentExamDate00 < 0 || dayjs(calcPassed).diff(dayjs()) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate00(passed0);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow01(false);
+              } else {
+                if (date1) {
+                  const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed0.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 14 || passed0 - currentExamDate00 < 0 || dayjs(calcPassed).diff(dayjs()) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate00(passed0);
+                  }
                 }
               }
             }}
@@ -437,18 +441,22 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow02(false);
               // 14歳未満の合格は制限
-              if (date2) {
-                const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam0.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 14){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate00(exam0);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow02(false);
+              } else {
+                if (date2) {
+                  const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam0.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 14){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate00(exam0);
+                  }
                 }
               }
             }}
@@ -468,36 +476,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow03(false);
-              if (date1) {
-                const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed1.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 15 || passed1 - currentExamDate01 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate01(passed1);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow03(false);
+              } else {
+                if (date1) {
+                  const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed1.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 15 || passed1 - currentExamDate01 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate01(passed1);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate01.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow04(false);
-              if (date2) {
-                const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam1.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 15){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate01(exam1);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow04(false);
+              } else {
+                if (date2) {
+                  const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam1.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 15){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate01(exam1);
+                  }
                 }
               }
             }}
@@ -516,37 +532,45 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow05(false);
-              if (date1) {
-                const passed2 = Number(dayjs(date1).format("YYYYMMDD"));
-                // 16歳未満の合格は制限
-                const calcPassed = dayjs(passed2.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 17 || passed2 - currentExamDate02 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate02(passed2);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow05(false);
+              } else {
+                if (date1) {
+                  const passed2 = Number(dayjs(date1).format("YYYYMMDD"));
+                  // 16歳未満の合格は制限
+                  const calcPassed = dayjs(passed2.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 17 || passed2 - currentExamDate02 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate02(passed2);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate02.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow06(false);
-              if (date2) {
-                const exam2 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam2.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 17){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate02(exam2);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow06(false);
+              } else {
+                if (date2) {
+                  const exam2 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam2.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 17){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate02(exam2);
+                  }
                 }
               }
             }}
@@ -565,36 +589,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow07(false);
-              if (date1) {
-                const passed3 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed3.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 20 || passed3 - currentExamDate03 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate03(passed3);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow07(false);
+              } else {
+                if (date1) {
+                  const passed3 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed3.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 20 || passed3 - currentExamDate03 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate03(passed3);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate03.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow08(false);
-              if (date2) {
-                const exam3 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam3.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 20){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate03(exam3);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow08(false);
+              } else {
+                if (date2) {
+                  const exam3 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam3.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 20){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate03(exam3);
+                  }
                 }
               }
             }}
@@ -613,36 +645,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow09(false);
-              if (date1) {
-                const passed4 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed4.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 24 || passed4 - currentExamDate04 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate04(passed4);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow09(false);
+              } else {
+                if (date1) {
+                  const passed4 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed4.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 24 || passed4 - currentExamDate04 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate04(passed4);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate04.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow10(false);
-              if (date2) {
-                const exam4 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam4.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 24){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate04(exam4);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow10(false);
+              } else {
+                if (date2) {
+                  const exam4 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam4.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 24){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate04(exam4);
+                  }
                 }
               }
             }}
@@ -661,36 +701,45 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow11(false);
-              if (date1) {
-                const passed5 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed5.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 29 || passed5 - currentExamDate05 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate05(passed5);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow11(false);
+              } else {
+                if (date1) {
+                  const passed5 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed5.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 29 || passed5 - currentExamDate05 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate05(passed5);
+                  }
                 }
               }
+
             }}
             examDateValue={dayjs(currentExamDate05.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow12(false);
-              if (date2) {
-                const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam5.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 29){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate05(exam5);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow12(false);
+              } else {
+                if (date2) {
+                  const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam5.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 29){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate05(exam5);
+                  }
                 }
               }
             }}
@@ -709,36 +758,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow13(false);
-              if (date1) {
-                const passed6 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed6.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 35 || passed6 - currentExamDate06 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate06(passed6);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow13(false);
+              } else {
+                if (date1) {
+                  const passed6 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed6.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 35 || passed6 - currentExamDate06 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate06(passed6);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow14(false);
-              if (date2) {
-                const exam6 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam6.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 35){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate06(exam6);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow14(false);
+              } else {
+                if (date2) {
+                  const exam6 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam6.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 35){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate06(exam6);
+                  }
                 }
               }
             }}
@@ -757,36 +814,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow15(false);
-              if (date1) {
-                const passed7 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed7.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 45 || passed7 - currentExamDate07 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate07(passed7);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow15(false);
+              } else {
+                if (date1) {
+                  const passed7 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed7.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 45 || passed7 - currentExamDate07 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate07(passed7);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow16(false);
-              if (date2) {
-                const exam7 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam7.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 45){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate07(exam7);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow16(false);
+              } else {
+                if (date2) {
+                  const exam7 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam7.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 45){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate07(exam7);
+                  }
                 }
               }
             }}
@@ -809,36 +874,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow17(false);
-              if (date1) {
-                const passed8 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed8.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 30 || passed8 - currentExamDate08 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate08(passed8);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow17(false);
+              } else {
+                if (date1) {
+                  const passed8 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed8.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 30 || passed8 - currentExamDate08 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate08(passed8);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate08.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow18(false);
-              if (date2) {
-                const exam8 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam8.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 30){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate08(exam8);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow18(false);
+              } else {
+                if (date2) {
+                  const exam8 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam8.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 30){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate08(exam8);
+                  }
                 }
               }
             }}
@@ -861,36 +934,44 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow19(false);
-              if (date1) {
-                const passed9 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed9.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 37 || passed9 - currentExamDate09 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate09(passed9);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow19(false);
+              } else {
+                if (date1) {
+                  const passed9 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed9.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 37 || passed9 - currentExamDate09 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate09(passed9);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate09.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow20(false);
-              if (date2) {
-                const exam9 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam9.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 37){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate09(exam9);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow20(false);
+              } else {
+                if (date2) {
+                  const exam9 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam9.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 37){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate09(exam9);
+                  }
                 }
               }
             }}
@@ -913,35 +994,43 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow21(false);
-              if (date1) {
-                const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
-                const calcPassed = dayjs(passed10.toString(),"YYYYMMDD").toDate()
-                if(diffDate < 29 || passed10 - currentExamDate10 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangePassedDate10(passed10);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow21(false);
+              } else {
+                if (date1) {
+                  const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
+                  const calcPassed = dayjs(passed10.toString(),"YYYYMMDD").toDate()
+                  if(diffDate < 29 || passed10 - currentExamDate10 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangePassedDate10(passed10);
+                  }
                 }
               }
             }}
             examDateValue={dayjs(currentExamDate10.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow22(false);
-              if (date2) {
-                const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
-                const calcExam = dayjs(exam10.toString(),"YYYYMMDD").toDate()
-                const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                if(diffDate < 29){
-                  Alert.alert("この日付は設定できません", "", [
-                    {
-                      text: "はい",
-                    }
-                  ]);
-                }else{
-                  onChangeExamDate10(exam10);
+              if(event.type == "dismissed") {
+                Platform.OS === "android" && setShow22(false);
+              } else {
+                if (date2) {
+                  const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
+                  const calcExam = dayjs(exam10.toString(),"YYYYMMDD").toDate()
+                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
+                  if(diffDate < 29){
+                    Alert.alert("この日付は設定できません", "", [
+                      {
+                        text: "はい",
+                      }
+                    ]);
+                  }else{
+                    onChangeExamDate10(exam10);
+                  }
                 }
               }
             }}

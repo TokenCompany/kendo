@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { View, ScrollView, StyleSheet, Text, Image } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -135,9 +134,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return object;
   };
   const onlyPassedDate = passedObject4()
-
-  console.log(onlyPassedLast);
-
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
