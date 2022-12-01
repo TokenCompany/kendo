@@ -1,4 +1,3 @@
-import React, { useState, useEffect } from "react";
 import { View, ScrollView, StyleSheet, Text, Image } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -31,17 +30,19 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
-    let originDate = date.toString().split("");
-    let changeText = "";
-    originDate.forEach((element, index) => {
-      if (index == 4) {
-        changeText += "/";
-      } else if (index == 6) {
-        changeText += "/";
-      }
-      changeText += element;
-    });
-    return changeText;
+    if(date !== undefined) {
+      let originDate = date.toString().split("");
+      let changeText = "";
+      originDate.forEach((element, index) => {
+        if (index == 4) {
+          changeText += "/";
+        } else if (index == 6) {
+          changeText += "/";
+        }
+        changeText += element;
+      });
+      return changeText;
+    }
   };
 
   // 審査までの日数
@@ -67,18 +68,15 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-
   // 階級
   const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
 
   // 条件を満たした時に錬士,教士,範士の追加
   const addLevel = () => {
-    if (profile.passed5 !== 19900000) {
+    if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
       kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length] = "範士";
-    }
-
-    if (profile.passed6 !== 19900000) {
+      kendoLevel[kendoLevel.length + 1] = "範士";
+    } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
       kendoLevel[kendoLevel.length] = "錬士";
       kendoLevel[kendoLevel.length] = "教士";
       kendoLevel[kendoLevel.length] = "範士";
@@ -112,7 +110,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   const onlyPassed = passedObject2();
 
-  // 合格日が記載されているもののみ抽出
+  // 合格済の中で最も後のものを抽出
   const passedObject3 = () => {
     let object = {};
     Object.keys(onlyPassed).filter((key ,index) => {
@@ -128,7 +126,8 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let object = {};
     Object.keys(onlyPassedObject).some((key) => {
       object[key] = onlyPassedObject[key];
-      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0) {
+      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0){
+
         return true
       }
     });
@@ -138,16 +137,17 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-    if (Object.keys(onlyPassedDate).length !== 11) {
+    if (Object.keys(onlyPassedLast).length === 0) {
+      return "-";
+    } else {
       if (passed !== 19900000 || index < Object.keys(onlyPassedDate).length) {
         return "〇";
       } else {
         return "-";
       }
-    } else {
-      return "-";
     }
   };
+
 
   const renderLevelTable = () => {
     return kendoLevel.map((data, index) => (

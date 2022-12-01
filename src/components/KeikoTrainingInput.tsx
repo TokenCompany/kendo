@@ -10,7 +10,8 @@ type Props = {
   textTrainingUnit: string;
   textTrainingCategories: string;
   reservedPlace: string;
-  onChangeSendInput: (changedResults: SubCategories[], mainCategory: string,checkStatus:boolean) => void;
+  newPlaceJudge: boolean;
+  onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
   resultsDate: any;
 };
 
@@ -38,6 +39,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   textTrainingCategories,
   reservedPlace,
   resultsDate,
+  newPlaceJudge,
   onChangeSendInput,
 }) => {
   // 既に実績を入力した場合にvaluesに表示をする
@@ -50,6 +52,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   }
 
   const [values, setValues] = useState<string[]>(initValues);
+  const [directValue, setDirectValue] = useState<string>("");
   // ローカルのstateでinputの入力情報を保持
   const onChangeValues = (text: string, index: number) => {
     let newValues = [...values];
@@ -90,6 +93,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let input1: boolean = false;
   let input2: boolean = false;
   let input3: boolean = false;
+  // 地稽古、掛稽古サブカテゴリ―がない時に表示させないための記述
+  let specialCategory: boolean = true;
+  // let specialCategory: boolean = subCategories[textTrainingCategories].length
+  if (
+    textTrainingCategories in subCategories &&
+    subCategories[textTrainingCategories].length === 0
+  ) {
+    specialCategory = false;
+  }
 
   if (textTraining === "稽古場所") {
     input3 = true;
@@ -102,8 +114,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let subCategoriesData: any = [];
 
   // subcategoriesに登録がない稽古時間の条件分岐
-  if (textTrainingCategories in results) {
-    for (const data of results[textTrainingCategories as keyof Results]) {
+  if (textTrainingCategories in initResults) {
+    for (const data of initResults[textTrainingCategories as keyof Results]) {
       subCategoriesData.push({
         id: data.id,
         text: data.text,
@@ -118,13 +130,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       mainCategory: textTrainingCategories,
     });
   }
-
-  let inputSelected = true;
-  if (place === "input") {
-    inputSelected = true;
-  } else {
-    inputSelected = false;
-  }
+  // 稽古場所の入力欄表示・非表示をするための変数
+  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
 
   return (
     <View style={styles.inputWrap}>
@@ -163,15 +170,19 @@ export const KeikoTrainingInput: React.FC<Props> = ({
             {!!input2 && (
               <View>
                 <View style={styles.inputGroup}>
-                  <View style={styles.inputGroup}>
-                    <Checkbox
-                      status={checked2 ? "checked" : "unchecked"}
-                      onPress={() => {
-                        setChecked2(!checked2);
-                      }}
-                    />
-                    <Text style={styles.inputText}>あり</Text>
-                  </View>
+                  {!!specialCategory && (
+                    <View style={styles.inputGroup}>
+                      <View style={styles.checkInside}>
+                        <Checkbox
+                          status={checked2 ? "checked" : "unchecked"}
+                          onPress={() => {
+                            setChecked2(!checked2);
+                          }}
+                        />
+                      </View>
+                      <Text style={styles.inputText}>あり</Text>
+                    </View>
+                  )}
                   {!!checked2 &&
                     subCategoriesData.map((data: any, index: number) => (
                       <View style={styles.inputGroup} key={index}>
@@ -196,27 +207,50 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   <Picker
                     selectedValue={place}
                     onValueChange={(itemValue, itemIndex) => {
-                      if (itemValue !== "input") {
+                      if (itemValue !== "") {
                         let newResults = { ...results };
                         for (const place of newResults["placeSubCategories"]) {
                           place["result"] = false;
                         }
-                        newResults["placeSubCategories"][itemIndex]["result"] = true;
+                        if (newResults["placeSubCategories"][itemIndex]) {
+                          newResults["placeSubCategories"][itemIndex]["result"] = true;
+                        } else {
+                          newResults["placeSubCategories"].push({
+                            id: "new",
+                            result: true,
+                            text: itemValue.toString(),
+                          });
+                        }
                         setResults(newResults);
-                        setPlace(newResults["placeSubCategories"][itemIndex]["text"]);
+                        setPlaceInputSelected(false);
                       } else {
-                        setPlace("input");
+                        setPlaceInputSelected(true);
                       }
-                      onChangeSendInput(results["placeSubCategories"], "placeSubCategories",checked);
+                      setPlace(itemValue.toString());
+                      onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
                     }}
                     itemStyle={{ height: 60 }}
                   >
                     {subCategoriesData.map((data: any, index: number) => (
                       <Picker.Item label={data.text} value={data.text} key={index} />
                     ))}
-                    <Picker.Item label="直接入力" value="input" />
+                    {!!newPlaceJudge && (
+                      <Picker.Item
+                        label={reservedPlace}
+                        value={reservedPlace}
+                        key={subCategoriesData.length}
+                      />
+                    )}
+                    <Picker.Item label="直接入力" value={directValue} />
                   </Picker>
-                  {!!inputSelected && <TextInput style={styles.inputFull} />}
+                  {placeInputSelected && (
+                    <TextInput
+                      style={styles.inputFull}
+                      onChangeText={(text) => {
+                        setDirectValue(text);
+                      }}
+                    />
+                  )}
                 </View>
               </View>
             )}
@@ -246,6 +280,13 @@ const styles = StyleSheet.create({
   check: {
     justifyContent: "center",
     alignItems: "center",
+    height: 35,
+    width: 35,
+    marginRight: 10,
+    borderColor: "#aaa",
+    borderWidth: 1,
+  },
+  checkInside: {
     height: 35,
     width: 35,
     marginRight: 10,
