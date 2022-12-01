@@ -1,5 +1,14 @@
 import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text, TextInput, Alert, Platform, TouchableOpacity, } from "react-native";
+import {
+  View,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TextInput,
+  Alert,
+  Platform,
+  TouchableOpacity,
+} from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
@@ -12,13 +21,13 @@ import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/dat
 import i18n from "../lang/localization";
 import dayjs from "dayjs";
 
-
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+
   const showForm = () => {
     setForm(true);
   };
@@ -26,10 +35,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   for (const place of places) {
     initItems.push({
       label: place.text,
-      value: place.text
-    })
+      value: place.text,
+    });
   }
-  initItems.push({ label: "直接入力", value: showForm },)
+  initItems.push({ label: "直接入力", value: showForm });
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
@@ -40,15 +49,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [startTime, setStartTime] = useState<string>("0000");
   const [endTime, setEndTime] = useState<string>("0000");
   const [place, setPlace] = useState<string>("場所を選択");
-  const showButton: boolean = true;
-  const [allReservations, setAllReservations] = useState(reservations);
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(null);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const onPressShowDatePicker = () => {
-    setShowDatePicker(true)
-  }
+  const [value, setValue] = useState();
+  const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
 
   const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
@@ -61,7 +65,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   // 時間分解
   const renderChangeText = (date: string) => {
     let originDate = date.toString().split("");
-    originDate.splice(2,1)
+    originDate.splice(2, 1);
     let changeText = "";
     originDate.forEach((element) => {
       changeText += element;
@@ -70,36 +74,37 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const onPressShowStartTimePicker = () => {
-    setShowStartTimePicker(true)
-  }
+    setShowStartTimePicker(true);
+  };
 
   const onPressShowEndTimePicker = () => {
-    setShowEndTimePicker(true)
-  }
+    setShowEndTimePicker(true);
+  };
 
   const onPressSelected = () => {
     setShowSelectedDate(false);
     setValue(place);
     setForm(false);
     setOpen(false);
+
     dispatch(
       bookReservationItem({
         date: selectedDate,
         startTime: startTime,
         endTime: endTime,
         place: place,
-      })
-    )
-  }
+      }),
+    );
+  };
 
   const onPressDelete = () => {
     setShowSelectedDate(false);
     dispatch(
       deleteReservationItem({
         date: selectedDate,
-      })
-    )
-  }
+      }),
+    );
+  };
 
   return (
     <ScrollView style={styles.container}>
@@ -110,7 +115,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           let dateText =
             dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
           // 文字の変更
-          setSelectedDate(day)
+          setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
           // 選択された日付が既に存在する場合
@@ -133,69 +138,79 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <View style={styles.boxInputTime}>
               <View style={styles.boxInputTimeFlex}>
                 <View style={styles.timeStart}>
-                {Platform.OS === "android" && (
-                  <View>
-                    <TouchableOpacity style={styles.timeStartAndroid} onPress={() => onPressShowStartTimePicker()}>
-                      <Text style={styles.timeStartTextAndroid}>{dayjs(startTime).format("HH:mm").toString()}</Text>
-                    </TouchableOpacity>
-                    {showStartTimePicker && (
+                  {Platform.OS === "android" && (
+                    <View>
+                      <TouchableOpacity
+                        style={styles.timeStartAndroid}
+                        onPress={() => onPressShowStartTimePicker()}
+                      >
+                        <Text style={styles.timeStartTextAndroid}>
+                          {dayjs(startTime).format("HH:mm").toString()}
+                        </Text>
+                      </TouchableOpacity>
+                      {showStartTimePicker && (
+                        <DateTimePicker
+                          style={{ height: 60 }}
+                          value={dayjs(startTime).toDate()}
+                          mode="time"
+                          display={"default"}
+                          onChange={(event, date1) => {
+                            setShowStartTimePicker(false);
+                            setStartTime(date1.toString());
+                          }}
+                        />
+                      )}
+                    </View>
+                  )}
+                  {Platform.OS === "ios" && (
                     <DateTimePicker
                       style={{ height: 60 }}
                       value={dayjs(startTime).toDate()}
                       mode="time"
                       display={"default"}
-                      onChange={(event, date1) =>  {
-                        setShowStartTimePicker(false);
-                        setStartTime(date1.toString())
+                      onChange={(event, date1) => {
+                        setStartTime(date1.toString());
                       }}
                     />
-                    )}
-                  </View>
-                )}
-               {Platform.OS === "ios" && (
-                  <DateTimePicker
-                    style={{ height: 60 }}
-                    value={dayjs(startTime).toDate()}
-                    mode="time"
-                    display={"default"}
-                    onChange={(event, date1) =>  {
-                      setStartTime(date1.toString())
-                    }}
-                  />
-                )}
+                  )}
                 </View>
                 <Text style={styles.timeText}>~</Text>
                 <View style={styles.timeEnd}>
-                {Platform.OS === "android" && (
-                  <View>
-                    <TouchableOpacity style={styles.timeStartAndroid} onPress={() => onPressShowEndTimePicker()}>
-                      <Text style={styles.timeStartTextAndroid}>{dayjs(endTime).format("HH:mm").toString()}</Text>
-                    </TouchableOpacity>
-                    {showEndTimePicker && (
+                  {Platform.OS === "android" && (
+                    <View>
+                      <TouchableOpacity
+                        style={styles.timeStartAndroid}
+                        onPress={() => onPressShowEndTimePicker()}
+                      >
+                        <Text style={styles.timeStartTextAndroid}>
+                          {dayjs(endTime).format("HH:mm").toString()}
+                        </Text>
+                      </TouchableOpacity>
+                      {showEndTimePicker && (
+                        <DateTimePicker
+                          style={{ height: 60 }}
+                          value={dayjs(endTime).toDate()}
+                          mode="time"
+                          display={"default"}
+                          onChange={(event, date2) => {
+                            setShowEndTimePicker(false);
+                            setEndTime(date2.toString());
+                          }}
+                        />
+                      )}
+                    </View>
+                  )}
+                  {Platform.OS === "ios" && (
                     <DateTimePicker
                       style={{ height: 60 }}
                       value={dayjs(endTime).toDate()}
                       mode="time"
                       display={"default"}
-                      onChange={(event, date2) =>  {
-                        setShowEndTimePicker(false);
-                        setEndTime(date2.toString())
+                      onChange={(event, date2) => {
+                        setEndTime(date2.toString());
                       }}
                     />
-                    )}
-                  </View>
-                )}
-                {Platform.OS === "ios" && (
-                  <DateTimePicker
-                    style={{ height: 60 }}
-                    value={dayjs(endTime).toDate()}
-                    mode="time"
-                    display={"default"}
-                    onChange={(event, date2) =>  {
-                      setEndTime(date2.toString())
-                    }}
-                  />
-                )}
+                  )}
                 </View>
               </View>
             </View>
@@ -204,7 +219,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             <Text>◆ 場所</Text>
             <View style={styles.boxInputText}>
               <DropDownPicker
-              listMode="SCROLLVIEW"
+                listMode="SCROLLVIEW"
                 open={open}
                 value={value}
                 items={items}
@@ -231,12 +246,26 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
               />
             </View>
           </View>
-          {form && <TextInput style={styles.form} onChangeText={setPlace} />}
+          {form && (
+            <TextInput
+              style={styles.form}
+              onChangeText={(text) => {
+                setPlace(text);
+                setNewPlaceFlag(true);
+              }}
+            />
+          )}
           <TextButton
             text01="登録"
             onPress01={() => {
-              if (Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) - Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) > 0){
-                Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [{ text: "OK" }]);
+              if (
+                Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) -
+                  Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) >
+                0
+              ) {
+                Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [
+                  { text: "OK" },
+                ]);
               } else if (startTime == "0000" || endTime == "0000") {
                 Alert.alert("時間が選択されていません", "", [{ text: "OK" }]);
               } else if (place == "場所を選択") {
@@ -251,8 +280,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       },
                       {
                         text: "はい",
-                        onPress: () =>
-                        onPressSelected()
+                        onPress: () => onPressSelected(),
                       },
                     ]);
                   } else {
@@ -260,11 +288,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       {
                         text: "戻る",
                         style: "cancel",
-                        onPress: () =>
-                        onPressSelected()
+                        onPress: () => {
+                          onPressSelected();
+                        },
                       },
                     ]);
-                    onPressSelected()
                   }
                 }
               }
@@ -278,8 +306,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   },
                   {
                     text: "はい",
-                    onPress: () =>
-                    onPressDelete()
+                    onPress: () => onPressDelete(),
                   },
                 ]);
               }
@@ -288,7 +315,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             judge={true}
           />
         </View>
-       )}
+      )}
     </ScrollView>
   );
 };
@@ -313,22 +340,22 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   timeStart: {
-    width:"40%",
+    width: "40%",
   },
   timeEnd: {
-    width:"40%",
-    position:"relative",
-    right:"10%",
+    width: "40%",
+    position: "relative",
+    right: "10%",
   },
   timeStartAndroid: {
-    borderRadius:10,
-    marginLeft:10,
-    backgroundColor:"#F4F4F5",
+    borderRadius: 10,
+    marginLeft: 10,
+    backgroundColor: "#F4F4F5",
   },
   timeStartTextAndroid: {
-    fontSize:16,
-    padding:5,
-    paddingLeft:10,
+    fontSize: 16,
+    padding: 5,
+    paddingLeft: 10,
   },
   boxInputText: {
     paddingLeft: 10,
@@ -358,7 +385,7 @@ const styles = StyleSheet.create({
   },
   timeText: {
     alignItems: "center",
-    paddingHorizontal:10,
+    paddingHorizontal: 10,
     fontSize: 16,
   },
 });
