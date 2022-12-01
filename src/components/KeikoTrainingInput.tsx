@@ -4,6 +4,7 @@ import { Checkbox } from "react-native-paper";
 import { Picker } from "@react-native-community/picker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import DropDownPicker from "react-native-dropdown-picker";
 
 type Props = {
   textTraining: string;
@@ -204,6 +205,33 @@ export const KeikoTrainingInput: React.FC<Props> = ({
             {!!input3 && (
               <View>
                 <View style={styles.inputpicker}>
+                <DropDownPicker
+                listMode="SCROLLVIEW"
+                open={open}
+                value={value}
+                items={items}
+                setOpen={setOpen}
+                setValue={setPlace}
+                setItems={setItems}
+                max={6}
+                maxHeight={300}
+                zIndex={1000}
+                labelStyle={{
+                  fontSize: 18,
+                  textAlign: "center",
+                }}
+                containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
+                style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
+                dropDownStyle={{ backgroundColor: "#F4F4F5" }}
+                onChangeValue={onChangeValue}
+                placeholder={place}
+                placeholderStyle={{
+                  textAlign: "center",
+                  fontSize: 20,
+                }}
+                activeLabelStyle={{ color: "red" }}
+              />
+            </View>
                   <Picker
                     selectedValue={place}
                     onValueChange={(itemValue, itemIndex) => {
