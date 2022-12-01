@@ -14,7 +14,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   // reduxからサブカテゴリ―ズの情報を取得
   const allData = useSelector((state: RootState) => state.subCategory.targetSubCategories);
   console.log(allData);
-  
+
   // 一番上のグラフのデータ
   let mainData: any = [];
   // それ以降のグラフのデータ
@@ -105,16 +105,17 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             noOfSections={3}
             // rotateLabel
             xAxisLabelTextStyle={{
-              transform: [{ translateX: -15},{translateY:-10}]
+              transform: [{ translateX: -15 }, { translateY: -10 }],
             }}
-            yAxisTextStyle={{ 
-              transform: [{ rotate: "-90deg" }]
+            yAxisTextStyle={{
+              transform: [{ rotate: "-90deg" }],
             }}
             labelWidth={50}
           />
         </View>
         <View style={styles.subBarWrap}>
-          <BarChart data={subData}
+          <BarChart
+            data={subData}
             rulesType="solid"
             noOfSections={3}
             labelsExtraHeight={100}
@@ -154,7 +155,7 @@ const styles = StyleSheet.create({
     marginTop: 30,
     marginLeft: "30%",
   },
-  subBarWrap:{
-    marginTop:-30,
-  }
+  subBarWrap: {
+    marginTop: -30,
+  },
 });
