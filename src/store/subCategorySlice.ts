@@ -89,7 +89,6 @@ export const counterSlice = createSlice({
     addTargetCategory: (state, action: PayloadAction<TargetSubCategoryPayload>) => {
       state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] =
         action.payload.targets;
-      console.log(state.targetSubCategories);
     },
   },
 });

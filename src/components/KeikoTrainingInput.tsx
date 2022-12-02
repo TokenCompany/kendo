@@ -87,7 +87,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       ];
     }
     setResults(newResults);
-    onChangeSendInput(newResults[mainCategory], mainCategory);
+    onChangeSendInput(newResults[mainCategory], mainCategory,checked);
   };
 
   // サブカテゴリ―によって出すinput形式を変更

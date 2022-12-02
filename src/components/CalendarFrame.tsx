@@ -5,11 +5,13 @@ import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
+import i18n from "../lang/localization";
 type Props = {
   onPressDay: (day: string) => void;
+  onChangeDay: (day: string) => void;
 };
 
-export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
+export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
@@ -31,14 +33,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
       {Platform.OS === "android" && (
         <View style={styles.dayInput}>
           <TouchableOpacity style={styles.dateButton} onPress={onPressShowPickerAndroid}>
-            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
           </TouchableOpacity>
         </View>
       )}
       {Platform.OS === "ios" && (
         <View style={styles.dayInput}>
           <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM")}</Text>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
           </TouchableOpacity>
         </View>
       )}
@@ -46,14 +48,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           <View>
             {showPickerAndroid && (
             <DateTimePicker
-              value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
+              locale={i18n.t("Lang.lang")}
+              value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
               mode="date"
               display={"default"}
               onChange={(event, date) => {
                 setShowPickerAndroid(false)
-                console.log(date);
-
                 setCurrentDate(dayjs(date));
+                onChangeDay(dayjs(date).format("YYYY-MM-DD").toString())
               }}
             />
             )}
@@ -70,14 +72,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           >
             <View style={styles.modalView}>
               <DateTimePicker
-                value={dayjs(currentDate.toString(), "YYYY-MM").toDate()}
+                locale={i18n.t("Lang.lang")}
+                value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
                 mode="date"
                 display={"spinner"}
                 onChange={(event, date) => {
-                  console.log(date);
-
                   if (date) {
                     setCurrentDate(dayjs(date));
+                    onChangeDay(dayjs(date).format("YYYY-MM-DD").toString())
                   }
                 }}
               />
@@ -122,8 +124,8 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           },
         }}
         monthFormat={"yyyy年 MM月"}
-        current={currentDate.format("YYYY-MM")}
-        key={currentDate.format("YYYY-MM")}
+        current={currentDate.format("YYYY-MM-DD")}
+        key={currentDate.format("YYYY-MM-DD")}
         onPressArrowLeft={(subtractMonth) => {
           subtractMonth();
           setCurrentDate(currentDate.add(-1, "month"));
@@ -244,7 +246,7 @@ const styles = StyleSheet.create({
   },
   modalView: {
     position: "relative",
-    top: "40%",
+    top: "30%",
     backgroundColor: "#fff",
     paddingVertical: 20,
   },

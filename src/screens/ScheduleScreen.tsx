@@ -8,6 +8,7 @@ import {
   Alert,
   Platform,
   TouchableOpacity,
+  Modal
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -51,16 +52,39 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [place, setPlace] = useState<string>("場所を選択");
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState();
+  const [value, setValue] = useState<string>("場所を選択");
   const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
+  const [showStart, setStartShow] = useState(false);
+  const [showEnd, setEndShow] = useState(false);
+
+
+  const hideDatePicker = () => {
+    setStartShow(false);
+    setEndShow(false);
+  };
+
+  const showStartDatepicker = () => {
+    setStartShow(true);
+  };
+
+  const showEndDatepicker = () => {
+    setEndShow(true);
+  };
+
 
   const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
     setPlace(value);
-    if (value !== showForm) {
+    if (value !== showForm.toString()) {
       setForm(false);
     }
   };
+  console.log(value);
+  console.log(startTime);
+  console.log(place);
+
+
+
 
   // 時間分解
   const renderChangeText = (date: string) => {
@@ -106,12 +130,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     );
   };
 
+  let dateTextArray
+
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame
         onPressDay={(day) => {
           // 文字列型日付を日本語に変換
-          let dateTextArray = day.split("-");
+          dateTextArray = day.split("-");
           let dateText =
             dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
           // 文字の変更
@@ -128,6 +154,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             setEndTime("0000");
             setPlace("場所を選択");
           }
+        }}
+        onChangeDay={(day) => {
+          dateTextArray = day.split("-");
+          let dateText = dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          setSelectedDate(day);
+          setShowSelectedDate(true);
+          setSelectedDateText(dateText);
         }}
       />
       {showSelectedDate && (
@@ -150,7 +183,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       </TouchableOpacity>
                       {showStartTimePicker && (
                         <DateTimePicker
-                          style={{ height: 60 }}
+                          locale={i18n.t("Lang.lang")}
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
@@ -163,15 +196,36 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                     </View>
                   )}
                   {Platform.OS === "ios" && (
-                    <DateTimePicker
-                      style={{ height: 60 }}
-                      value={dayjs(startTime).toDate()}
-                      mode="time"
-                      display={"default"}
-                      onChange={(event, date1) => {
-                        setStartTime(date1.toString());
+                  <View>
+                    <View style={styles.dayInput}>
+                      <TouchableOpacity style={styles.dateButton} onPress={showStartDatepicker}>
+                        <Text style={styles.buttonText}>{dayjs(startTime).format("HH:mm").toString()}</Text>
+                      </TouchableOpacity>
+                    </View>
+                    <Modal
+                      animationType="fade"
+                      visible={showStart}
+                      transparent={true}
+                      onRequestClose={() => {
+                        setStartShow(false);
                       }}
-                    />
+                    >
+                      <View style={styles.modalView}>
+                        <DateTimePicker
+                          locale={i18n.t("Lang.lang")}
+                          value={dayjs(startTime).toDate()}
+                          mode="time"
+                          display={"spinner"}
+                          onChange={(event, date2) => {
+                            setStartTime(date2.toString());
+                          }}
+                        />
+                        <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+                          <Text style={styles.textStyle}>×</Text>
+                        </TouchableOpacity>
+                      </View>
+                    </Modal>
+                  </View>
                   )}
                 </View>
                 <Text style={styles.timeText}>~</Text>
@@ -188,7 +242,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       </TouchableOpacity>
                       {showEndTimePicker && (
                         <DateTimePicker
-                          style={{ height: 60 }}
+                          locale={i18n.t("Lang.lang")}
                           value={dayjs(endTime).toDate()}
                           mode="time"
                           display={"default"}
@@ -201,15 +255,36 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                     </View>
                   )}
                   {Platform.OS === "ios" && (
-                    <DateTimePicker
-                      style={{ height: 60 }}
-                      value={dayjs(endTime).toDate()}
-                      mode="time"
-                      display={"default"}
-                      onChange={(event, date2) => {
-                        setEndTime(date2.toString());
-                      }}
-                    />
+                    <View>
+                      <View style={styles.dayInput}>
+                        <TouchableOpacity style={styles.dateButton} onPress={showEndDatepicker}>
+                          <Text style={styles.buttonText}>{dayjs(endTime).format("HH:mm").toString()}</Text>
+                        </TouchableOpacity>
+                      </View>
+                      <Modal
+                        animationType="fade"
+                        visible={showEnd}
+                        transparent={true}
+                        onRequestClose={() => {
+                          setEndShow(false);
+                        }}
+                      >
+                        <View style={styles.modalView}>
+                          <DateTimePicker
+                            locale={i18n.t("Lang.lang")}
+                            value={dayjs(endTime).toDate()}
+                            mode="time"
+                            display={"spinner"}
+                            onChange={(event, date2) => {
+                              setEndTime(date2.toString());
+                            }}
+                          />
+                          <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+                            <Text style={styles.textStyle}>×</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Modal>
+                    </View>
                   )}
                 </View>
               </View>
@@ -224,7 +299,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 value={value}
                 items={items}
                 setOpen={setOpen}
-                setValue={setValue}
+                setValue={setPlace}
                 setItems={setItems}
                 max={6}
                 maxHeight={300}
@@ -373,7 +448,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
   },
   boxInputTime: {
-    paddingLeft: 10,
+    paddingLeft: 20,
     flexGrow: 1,
   },
   boxInputTimeFlex: {
@@ -387,5 +462,39 @@ const styles = StyleSheet.create({
     alignItems: "center",
     paddingHorizontal: 10,
     fontSize: 16,
+  },
+  modalView: {
+    position: "relative",
+    top: "30%",
+    backgroundColor: "#fff",
+    paddingVertical: 20,
+  },
+  modalButton: {
+    borderRadius: 5,
+    padding: 7,
+    width: 50,
+    elevation: 2,
+    position: "absolute",
+    top: 15,
+    right: 15,
+  },
+  textStyle: {
+    fontSize: 26,
+    color: "#000",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  dateButton:{
+    paddingHorizontal:30,
+    height:35,
+  },
+  dayInput: {
+    alignItems:"center",
+    borderRadius:10,
+    backgroundColor: "#F4F4F5",
+  },
+  buttonText: {
+    paddingVertical:8,
+    fontSize: 18,
   },
 });
