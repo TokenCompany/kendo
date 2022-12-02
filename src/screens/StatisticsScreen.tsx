@@ -18,54 +18,54 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   // 一番上のグラフのデータ
   let mainData: any = [];
   // それ以降のグラフのデータ
-  let subData: any = [ {value:50}, {value:80}, {value:90}, {value:70} ];
+  let subData: any = [];
   // 関数の定義
   let setData = (yearData: any, data: any, teacherData: any) => {
-    // for (const element of yearData) {
-    //   let LabelNum: any = [];
-    //   if (element.id === "all") {
-    //     data.push(
-    //       {
-    //         value: element.result,
-    //         frontColor: "#61A68A",
-    //         label: "稽古回数",
-    //         topLabelComponent: () => (
-    //           <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
-    //         ),
-    //       },
-    //       {
-    //         value: element.goal,
-    //         frontColor: "#61A68A",
-    //         label: "稽古目標",
-    //         topLabelComponent: () => (
-    //           <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
-    //         ),
-    //       },
-    //     );
-    //   } else {
-    //     teacherData.push(
-    //       {
-    //         value: element.goal,
-    //         frontColor: "#A53010",
-    //         label: element.text,
-    //         topLabelComponent: () => (
-    //           <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
-    //         ),
-    //       },
-    //       {
-    //         value: element.result,
-    //         frontColor: "#DE7E18",
-    //         barStyle: { marginLeft: -20 },
-    //         topLabelComponent: () => (
-    //           <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>{element.result}</Text>
-    //         ),
-    //       },
-    //     );
-    //   }
-    // }
+    for (const element of yearData) {
+      let LabelNum: any = [];
+      if (element.id === "all") {
+        data.push(
+          {
+            value: element.result,
+            frontColor: "#61A68A",
+            label: "稽古回数",
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
+            ),
+          },
+          {
+            value: element.goal,
+            frontColor: "#61A68A",
+            label: "稽古目標",
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
+            ),
+          },
+        );
+      } else {
+        teacherData.push(
+          {
+            value: element.goal,
+            frontColor: "#A53010",
+            label: element.text,
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
+            ),
+          },
+          {
+            value: element.result,
+            frontColor: "#DE7E18",
+            barStyle: { marginLeft: -20 },
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>{element.result}</Text>
+            ),
+          },
+        );
+      }
+    }
   };
   if (currentDate.year().toString() in allData) {
-    // setData(allData[currentDate.year().toString()], mainData, subData);
+    setData(allData[currentDate.year().toString()], mainData, subData);
   }else{
     
   }
@@ -120,10 +120,10 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.subBarWrap}>
           <BarChart
             data={subData}
-            // rulesType="solid"
-            // noOfSections={3}
-            // labelsExtraHeight={100}
-            // labelWidth={50}
+            rulesType="solid"
+            noOfSections={3}
+            labelsExtraHeight={100}
+            labelWidth={50}
           />
         </View>
       </ScrollView>
