@@ -79,12 +79,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       setForm(false);
     }
   };
-  console.log(value);
-  console.log(startTime);
-  console.log(place);
-
-
-
 
   // 時間分解
   const renderChangeText = (date: string) => {

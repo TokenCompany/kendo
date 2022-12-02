@@ -53,7 +53,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   }
 
   const [values, setValues] = useState<string[]>(initValues);
-  const [directValue, setDirectValue] = useState<string>("");
+  // const [directValue, setDirectValue] = useState<string>("");
   // ローカルのstateでinputの入力情報を保持
   const onChangeValues = (text: string, index: number) => {
     let newValues = [...values];
@@ -62,7 +62,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   };
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
-  const [place, setPlace] = useState<string>(reservedPlace);
+  const [checked3, setChecked3] = useState(false);
   const subCategories = useSelector((state: RootState) => state.subCategory);
   // reduxからの情報を複製し、設定小項目を表示するために活用
   const initResults = JSON.parse(JSON.stringify(subCategories));
@@ -131,10 +131,40 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       mainCategory: textTrainingCategories,
     });
   }
-  // 稽古場所の入力欄表示・非表示をするための変数
-  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
 
-  return (
+  // 稽古場所の入力
+  const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  let initItems = [];
+  for (const place of places) {
+    initItems.push({
+      label: place.text,
+      value: place.text,
+    });
+  }
+
+  const showForm = () => {
+    setForm(true);
+  };
+  initItems.push({ label: "直接入力", value: showForm });
+
+  const [form, setForm] = useState(true);
+  const [items, setItems] = useState(initItems);
+  const [open, setOpen] = useState(false);
+  const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
+  const [value, setValue] = useState<string>(reservedPlace);
+  const [place, setPlace] = useState<string>(reservedPlace);
+  const onChangeValue = () => {
+    setPlace(value);
+    if (value !== showForm.toString()) {
+      setForm(false);
+    }
+  };
+
+  console.log(initItems);
+
+
+  if (input1 === true) {
+    return (
     <View style={styles.inputWrap}>
       <View style={styles.check}>
         <Checkbox
@@ -144,13 +174,11 @@ export const KeikoTrainingInput: React.FC<Props> = ({
           }}
         />
       </View>
-
       <View style={styles.inputArea}>
         <Text style={styles.label}>{textTraining}</Text>
         {!!checked && (
           <View>
-            {!!input1 && (
-              <View>
+            <View>
                 {subCategoriesData.map((data: any, index: number) => (
                   <View style={styles.inputGroup} key={index}>
                     <Text style={styles.inputText}>{data.text}</Text>
@@ -167,127 +195,103 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   </View>
                 ))}
               </View>
-            )}
-            {!!input2 && (
-              <View>
-                <View style={styles.inputGroup}>
-                  {!!specialCategory && (
-                    <View style={styles.inputGroup}>
-                      <View style={styles.checkInside}>
-                        <Checkbox
-                          status={checked2 ? "checked" : "unchecked"}
-                          onPress={() => {
-                            setChecked2(!checked2);
-                          }}
-                        />
-                      </View>
-                      <Text style={styles.inputText}>あり</Text>
-                    </View>
-                  )}
-                  {!!checked2 &&
-                    subCategoriesData.map((data: any, index: number) => (
-                      <View style={styles.inputGroup} key={index}>
-                        <TextInput
-                          style={styles.input}
-                          keyboardType="numeric"
-                          onChangeText={(text) => {
-                            onChangeCountResults(Number(text), data.id, data.mainCategory);
-                            onChangeValues(text, index);
-                          }}
-                          value={values[index]}
-                        />
-                        <Text style={styles.inputText}>{textTrainingUnit}</Text>
-                      </View>
-                    ))}
-                </View>
-              </View>
-            )}
-            {!!input3 && (
-              <View>
-                <View style={styles.inputpicker}>
-                <DropDownPicker
-                listMode="SCROLLVIEW"
-                open={open}
-                value={value}
-                items={items}
-                setOpen={setOpen}
-                setValue={setPlace}
-                setItems={setItems}
-                max={6}
-                maxHeight={300}
-                zIndex={1000}
-                labelStyle={{
-                  fontSize: 18,
-                  textAlign: "center",
-                }}
-                containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
-                style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                dropDownStyle={{ backgroundColor: "#F4F4F5" }}
-                onChangeValue={onChangeValue}
-                placeholder={place}
-                placeholderStyle={{
-                  textAlign: "center",
-                  fontSize: 20,
-                }}
-                activeLabelStyle={{ color: "red" }}
-              />
-            </View>
-                  <Picker
-                    selectedValue={place}
-                    onValueChange={(itemValue, itemIndex) => {
-                      if (itemValue !== "") {
-                        let newResults = { ...results };
-                        for (const place of newResults["placeSubCategories"]) {
-                          place["result"] = false;
-                        }
-                        if (newResults["placeSubCategories"][itemIndex]) {
-                          newResults["placeSubCategories"][itemIndex]["result"] = true;
-                        } else {
-                          newResults["placeSubCategories"].push({
-                            id: "new",
-                            result: true,
-                            text: itemValue.toString(),
-                          });
-                        }
-                        setResults(newResults);
-                        setPlaceInputSelected(false);
-                      } else {
-                        setPlaceInputSelected(true);
-                      }
-                      setPlace(itemValue.toString());
-                      onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
-                    }}
-                    itemStyle={{ height: 60 }}
-                  >
-                    {subCategoriesData.map((data: any, index: number) => (
-                      <Picker.Item label={data.text} value={data.text} key={index} />
-                    ))}
-                    {!!newPlaceJudge && (
-                      <Picker.Item
-                        label={reservedPlace}
-                        value={reservedPlace}
-                        key={subCategoriesData.length}
-                      />
-                    )}
-                    <Picker.Item label="直接入力" value={directValue} />
-                  </Picker>
-                  {placeInputSelected && (
-                    <TextInput
-                      style={styles.inputFull}
-                      onChangeText={(text) => {
-                        setDirectValue(text);
-                      }}
-                    />
-                  )}
-                </View>
-              </View>
-            )}
           </View>
         )}
       </View>
     </View>
-  );
-};
+    )
+  }
+  if (input2 === true) {
+    return(
+    <View style={styles.inputWrap}>
+      <View style={styles.check}>
+        <Checkbox
+          status={checked2 ? "checked" : "unchecked"}
+          onPress={() => {
+            setChecked2(!checked);
+          }}
+        />
+      </View>
+      <View style={styles.inputArea}>
+        <Text style={styles.label}>{textTraining}</Text>
+        {!!checked2 &&
+          subCategoriesData.map((data: any, index: number) => (
+          <View style={styles.inputGroup} key={index}>
+            <TextInput
+              style={styles.input}
+              keyboardType="numeric"
+              onChangeText={(text) => {
+                onChangeCountResults(Number(text), data.id, data.mainCategory);
+                onChangeValues(text, index);
+              }}
+              value={values[index]}
+            />
+            <Text style={styles.inputText}>{textTrainingUnit}</Text>
+          </View>
+        ))}
+      </View>
+    </View>
+    )
+  }
+  if (input3 === true) {
+    return (
+      <View style={styles.inputWrap}>
+        <View style={styles.check}>
+          <Checkbox
+            status={checked3 ? "checked" : "unchecked"}
+            onPress={() => {
+              setChecked3(!checked);
+            }}
+          />
+        </View>
+        <View style={styles.inputArea}>
+        <Text style={styles.label}>{textTraining}</Text>
+          {!!checked3 &&
+            <View>
+              <View style={styles.inputpicker}>
+                <DropDownPicker
+                  listMode="SCROLLVIEW"
+                  open={open}
+                  value={value}
+                  items={initItems}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  max={6}
+
+                  maxHeight={300}
+                  labelStyle={{
+                    fontSize: 18,
+                    textAlign: "center",
+                  }}
+                  containerStyle={{backgroundColor: "#fff", height: 50, width: 260, marginTop:20, }}
+                  style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
+                  dropDownContainerStyle={{ backgroundColor: "#fff" }}
+                  onChangeValue={onChangeValue}
+                  placeholder={place}
+                  placeholderStyle={{
+                    textAlign: "center",
+                    fontSize: 20,
+                  }}
+                  activeLabelStyle={{ color: "red" }}
+                />
+              </View>
+              {form && (
+                <TextInput
+                  style={styles.form}
+                  onChangeText={(text) => {
+                    setPlace(text);
+                    setNewPlaceFlag(true);
+                  }}
+                />
+              )}
+            </View>
+          }
+        </View>
+      </View>
+    )
+  }
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -384,4 +388,14 @@ const styles = StyleSheet.create({
   inputpicker: {
     flexGrow: 1,
   },
+  form: {
+    height: 40,
+    width: "79%",
+    marginTop: "5%",
+    borderWidth: 1,
+    backgroundColor: "#fff",
+    borderColor: "#aaa",
+    borderRadius: 5,
+    paddingHorizontal: 5,
+  }
 });
