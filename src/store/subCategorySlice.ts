@@ -1,6 +1,5 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-import dayjs from "dayjs";
 //
 // 練習内容項目設定の小項目に関わるredux
 //
@@ -24,14 +23,14 @@ interface subCategory {
 interface teacherSubcategory {
   id: string;
   text: string;
-  times: number;
 }
 
 // 年間目標のtype宣言
 interface TargetCategory {
   id: string;
   text: string;
-  times: number;
+  goal: number;
+  result: number;
 }
 
 interface TargetCategories {
@@ -56,8 +55,12 @@ type SubCategoryPayload = {
   id: string;
   text: string;
 };
+type TargetSubCategoryPayload = {
+  year: string;
+  targets: TargetCategory[];
+};
 
-type deleteSubCategory = {
+type DeleteSubCategory = {
   categoryName: string;
   id: string;
 };
@@ -68,47 +71,24 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      if (action.payload.mainCategoryName === "teacherSubCategories") {
-        // targetSubCategoriesも同時にセット
-        let currentYear = dayjs().year();
-        let newTargetSubCategories = { ...state["targetSubCategories"] };
-        if (currentYear in newTargetSubCategories) {
-          newTargetSubCategories[currentYear] = [
-            ...newTargetSubCategories[currentYear],
-            {
-              id: action.payload.id,
-              text: action.payload.text,
-              times: 0,
-            },
-          ];
-        } else {
-          newTargetSubCategories[currentYear] = [
-            {
-              id: action.payload.id,
-              text: action.payload.text,
-              times: 0,
-            },
-          ];
-        }
-        state["targetSubCategories"] = newTargetSubCategories;
-      }
       let newSubcategory = [
-        ...state[action.payload.mainCategoryName as keyof SubCategoryState],
+        ...state[action.payload.mainCategoryName as keyof SubCategoryPayload],
         {
           id: action.payload.id,
           text: action.payload.text,
         },
       ];
-      state[action.payload.mainCategoryName as keyof SubCategoryState] = newSubcategory;
+      state[action.payload.mainCategoryName as keyof SubCategoryPayload] = newSubcategory;
     },
-    deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
+    deleteSubCategory: (state, action: PayloadAction<DeleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
         (item: any) => item.id !== action.payload.id,
       );
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
-    addTargetCategory: (state, action: PayloadAction<TargetCategories>) => {
-      state.targetSubCategories = action.payload;
+    addTargetCategory: (state, action: PayloadAction<TargetSubCategoryPayload>) => {
+      state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] =
+        action.payload.targets;
     },
   },
 });

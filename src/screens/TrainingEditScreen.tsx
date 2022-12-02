@@ -18,45 +18,68 @@ import { Button } from "../components/Button";
 import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
-export type SubCategory = {
+export type TargetCategory = {
   id: string;
   text: string;
-  times: number;
+  goal: number;
+  result: number;
 };
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const dispatch = useDispatch();
   // 今年の取得
-  const currentYear = dayjs().year();
-  // reduxからデータの取得
-  let teacherData: any = useSelector(
-    (state: RootState) => state.subCategory.targetSubCategories[currentYear],
-  );
-  // reduxデータのバリデーション
-  if (!teacherData) {
-    teacherData = [];
+  const currentYear = dayjs().year().toString();
+  // reduxから先生事のデータ、あるいは既に設定された目標データの取得
+  let initTargets;
+  let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
+  // REDUXをmutateしないようにコピーしてから編集
+  let newTeachers = JSON.parse(JSON.stringify(teachers));
+  // stateの初期値を作成
+  for (const teacher of newTeachers) {
+    if(currentYear in targets){
+      for (const target of targets[currentYear]) {
+        if (target.id === teacher.id) {
+          "goal" in target ? teacher.goal = target.goal : teacher.goal = 0;
+          "result" in target ? teacher.result = target.result : teacher.result = 0;
+          break;
+        }
+      }
+    }else{
+      teacher.result = 0;
+      teacher.goal = 0;
+    }
   }
+  initTargets = newTeachers;
+  let test = initTargets
+  // console.log(initTargets);
   // refの定義
   const scrollViewRef = useRef<ScrollView>(null);
   // stateの定義
-  const [currentTargets, setCurrentTargets] = useState(teacherData);
+  const [currentValues, setCurrentValues] = useState<string[]>([""]);
+  const [currentTargets, setCurrentTargets] = useState(test);
+  console.log(targets);
+  
   const [show, setShow] = useState(false);
   const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
-  const onChangeCountByTeacher = (count: number, id: string) => {
+  const onChangeCountByTeacher = (count: number, id: string, index: number) => {
     let newCurrentTargets = [];
     for (const target of currentTargets) {
       if (target.id === id) {
         newCurrentTargets.push({
           ...target,
-          times: count,
+          goal: count,
+          result: "result" in target ? target.result : 0
         });
       } else {
         newCurrentTargets.push(target);
       }
     }
     setCurrentTargets(newCurrentTargets);
-    // sumAllYearGoal();
+    let newCurrentValues: string[] = [...currentValues];
+    newCurrentValues[index] = count.toString();
+    setCurrentValues(newCurrentValues);
   };
 
   const onPressPlace = () => {
@@ -121,12 +144,42 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         { text: "戻る" },
       ]);
     } else {
+      // allYearのデータも格納
+      let result = 0;
+      if (currentYear in targets) {
+        for (const target of targets[currentYear]) {
+          if (target.id === "all" && target.result !== 0) {
+            result = target.result;
+          }
+        }
+      }
+      
+      let newCurrentTargets = [
+        ...currentTargets,
+        {
+          id: "all",
+          text: "年間稽古目標",
+          goal: currentYearGoal,
+          result: result,
+        },
+      ];
       // reduxへの保存
+      
+      
       const saveTargets = {
-        [currentYear]: currentTargets,
+        year: currentYear,
+        targets: newCurrentTargets,
       };
-      dispatch(addTargetCategory(saveTargets));
-      Alert.alert("稽古目標が登録されました", "", [{ text: "戻る" }]);
+      // 登録された先生全てに目標入力を必須にする
+      // console.log(saveTargets);
+      
+      if (saveTargets.targets.length === teachers.length + 1) {
+        dispatch(addTargetCategory(saveTargets));
+        Alert.alert("稽古目標が登録されました", "", [{ text: "戻る" }]);
+      }else{
+        Alert.alert("設定された全ての先生の目標を設定してください。", "", [{ text: "戻る" }]);
+      }
+      
     }
   };
 
@@ -166,19 +219,19 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                   {/* <Text style={styles.objectiveAll}>{currentYearGoal}</Text> */}
                   <Text style={styles.objectiveText}>回</Text>
                 </View>
-                {currentTargets.map((currentTarget: any, index: number) => {
+                {teachers.map((teacher: any, index: number) => {
                   return (
                     <View style={styles.objectiveInputArea} key={index}>
-                      <Text style={styles.objectiveText}>{currentTarget.text}先生</Text>
+                      <Text style={styles.objectiveText}>{teacher.text}先生</Text>
                       <TextInput
                         style={styles.objectiveInput}
                         keyboardType="numeric"
                         onChangeText={(count) => {
-                          onChangeCountByTeacher(Number(count), currentTarget.id);
+                          onChangeCountByTeacher(Number(count), teacher.id, index);
                         }}
-                        // value={currentTarget[index].times}
+                        value={currentValues[index]}
                       ></TextInput>
-                      <Text style={styles.objectiveText}>回</Text>
+                      <Text style={styles.objectiveText}>時間</Text>
                     </View>
                   );
                 })}

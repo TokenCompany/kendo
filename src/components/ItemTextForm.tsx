@@ -1,5 +1,5 @@
 import React from "react";
-import { TouchableOpacity, StyleSheet, View, Text, } from "react-native";
+import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { colors } from "../styles";
 
 type Props = {

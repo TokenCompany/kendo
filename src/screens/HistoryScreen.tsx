@@ -7,6 +7,7 @@ import { TextButton } from "../components/TextButton";
 import i18n from "../lang/localization";
 import { useSelector} from "react-redux";
 import { RootState } from "../store";
+import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
@@ -28,15 +29,24 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [place, setPlace] = useState<string>("");
   const [showBox, setshowBox] = useState(false);
   const [showButton, setShowButton] = useState(true);
+  // 何回押したかどうかを確認するため変数
+  const [countButton, setCountButton] = useState<number>(0);
   const showingBox = (judge:boolean) => {
     setshowBox(judge);
   };
-  const showingButton = (judge:boolean) => {
-    setShowButton(judge);
+  const showingButton = (count:number) => {
+    let newCount = countButton + 1;
+    setCountButton(newCount)
+    if (count % 2 === 0) {
+      setShowButton(true);
+    }else{
+      setShowButton(false);
+    }
   }
+
   return (
     <ScrollView style={styles.container}>
-      <CalendarFrame 
+      <CalendarFrame
         onPressDay={(day)=>{
          // 文字列型日付を日本語に変換
          let dateTextArray = day.split("-");
@@ -54,7 +64,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
          }else{
           showingBox(false);
          }
-         
+
       }}
       />
       {showBox && (
@@ -63,7 +73,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
         <View style={styles.boxInputArea}>
           <Text style={styles.timeText}>◆{i18n.t("History.time")}</Text>
           <View style={styles.boxInputTime}>
-            <Text style={styles.timeText}>{startTime}</Text><Text style={styles.timeText}>~{endTime}</Text>
+            <Text style={styles.timeText}>{dayjs(startTime).format("hh:mm")}</Text><Text style={styles.timeText}> 〜 {dayjs(endTime).format("hh:mm")}</Text>
           </View>
         </View>
         <View style={styles.boxInputArea}>
@@ -77,13 +87,13 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           text02={i18n.t("History.ncw")}
           onPress01={onPress}
           onPress02={()=>{
-            showingButton(false)
+            showingButton(countButton)
           }}
           judge={showButton}
         />
       </View>
       )}
-      
+
     </ScrollView>
   );
 };
