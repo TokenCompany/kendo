@@ -49,11 +49,43 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   }
   initTargets = newTeachers;
-  let test = initTargets;
   // stateの定義
-  const [currentValues, setCurrentValues] = useState<string[]>([""]);
-  const [currentTargets, setCurrentTargets] = useState(test);
-  const [currentYearGoal, setCurrentYearGoal] = useState<number>(0);
+  const setInitValues = () => {
+    let initValues:any = [];
+    if (currentYear in targets){
+      targets[currentYear].forEach((element:any,index:number) => {
+        if (element.id !== "all") {
+          initValues.push(element.goal.toString());
+        }
+      })
+    }
+    return initValues;
+  }
+  
+  const [currentValues, setCurrentValues] = useState<string[]>(setInitValues());
+  
+  const [currentTargets, setCurrentTargets] = useState(initTargets);
+  const setInitYearGoal = () => {
+    let res:string = "";
+    if (currentYear in targets) {
+      targets[currentYear].forEach((element:any,index:number) => {
+        if (element.id === "all") {
+          res = element.goal.toString();
+        }
+      })
+    }
+    return res;
+  }
+  const [currentYearGoal, setCurrentYearGoal] = useState<string>(setInitYearGoal());
+  // 登録する前に全ての値が入ってるかチェック
+  const checkAllInput = () => {
+    let judge: boolean = false;
+    console.log(currentTargets);
+    currentTargets.forEach((element:any) => {
+      if("goal" in element === false) judge = true;
+    });
+    return judge;
+  }
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
   const onChangeCountByTeacher = (count: number, id: string, index: number) => {
     let newCurrentTargets = [];
@@ -75,12 +107,14 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const onPressTargetSubmit = () => {
-    if (currentYearGoal > 365) {
+    if (Number(currentYearGoal) > 365) {
       // アラートの記述追加
       Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
         { text: "戻る" },
       ]);
-    } else {
+    } else if(checkAllInput()) {
+      Alert.alert("設定された全ての先生の目標を設定してください。", "", [{ text: "戻る" }]);
+    }else {
       // allYearのデータも格納
       let result = 0;
       let yearGoal = 0;
@@ -89,12 +123,14 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
           if (target.id === "all" && target.result !== 0) {
             result = target.result;
           }
-          if (target.id === "all" && currentYearGoal === 0) {
+          if (target.id === "all" && Number(currentYearGoal) === 0) {
             yearGoal = target.goal;
           }else{
-            yearGoal = currentYearGoal
+            yearGoal = Number(currentYearGoal)
           }
         }
+      }else{
+        yearGoal = Number(currentYearGoal)
       }
 
       let newCurrentTargets = [
@@ -110,9 +146,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
       const saveTargets = {
         year: currentYear,
         targets: newCurrentTargets,
-      };
-      console.log(saveTargets);
-      
+      };      
       // 登録された先生全てに目標入力を必須にする
       if (saveTargets.targets.length === teachers.length + 1) {
         dispatch(addTargetCategory(saveTargets));
@@ -134,8 +168,9 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
               <TextInput
                 style={styles.objectiveInput}
                 keyboardType="numeric"
+                value={currentYearGoal.toString()}
                 onChangeText={(num) => {
-                  setCurrentYearGoal(Number(num));
+                  setCurrentYearGoal(num);
                 }}
               ></TextInput>
               <Text style={styles.objectiveText}>回</Text>
