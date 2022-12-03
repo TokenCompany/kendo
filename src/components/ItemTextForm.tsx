@@ -10,9 +10,11 @@ type Props = {
 
 export const ItemTextForm: React.FC<Props> = ({ visible, onPressSubmitKeiko, text }) => {
   return visible ? (
-    <View style={styles.item}>
-      <Text style={styles.category}>あり</Text>
-      <TouchableOpacity onPress={onPressSubmitKeiko}>
+    <View style={styles.body}>
+      <View style={styles.item}>
+        <Text style={styles.category}>あり</Text>
+      </View>
+      <TouchableOpacity style={styles.container} onPress={onPressSubmitKeiko}>
         <Text>登録</Text>
       </TouchableOpacity>
     </View>
@@ -20,13 +22,20 @@ export const ItemTextForm: React.FC<Props> = ({ visible, onPressSubmitKeiko, tex
 };
 
 const styles = StyleSheet.create({
+  body: {
+    width: "100%",
+    flexDirection: "row",
+    alignItems: "center",
+  },
   container: {
-    width: 250,
+    width: "25%",
     height: 50,
+    marginBottom: 3,
     backgroundColor: colors.primary,
-    borderRadius: 10,
     alignItems: "center",
     justifyContent: "center",
+    paddingHorizontal: 5,
+    flexGrow: 1,
   },
   category: {
     height: 25,
@@ -39,7 +48,7 @@ const styles = StyleSheet.create({
   item: {
     position: "relative",
     marginBottom: 3,
-    width: "100%",
+    width: "75%",
     height: 50,
     backgroundColor: "#def3d7",
     elevation: 2,

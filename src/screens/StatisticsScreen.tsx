@@ -65,8 +65,12 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
     }
   };
   if (currentDate.year().toString() in allData) {
-    setData(allData[currentDate.year()], mainData, subData);
+    setData(allData[currentDate.year().toString()], mainData, subData);
+  }else{
+    
   }
+  // mainData.push({value:1,frontColor: "#61A68A",label: "稽古回数",});
+  // subData.push({value:1,frontColor: "#61A68A",label: "稽古回数",});
 
   return (
     <View style={styles.container}>
@@ -103,7 +107,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             rulesType="solid"
             initialSpacing={20}
             noOfSections={3}
-            // rotateLabel
+            rotateLabel
             xAxisLabelTextStyle={{
               transform: [{ translateX: -15 }, { translateY: -10 }],
             }}
