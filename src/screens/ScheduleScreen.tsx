@@ -466,7 +466,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "30%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
