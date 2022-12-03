@@ -6,6 +6,7 @@ import i18n from "../lang/localization";
 import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import * as Notifications from "expo-notifications";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
