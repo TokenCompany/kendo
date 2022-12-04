@@ -145,44 +145,28 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("場所を選択");
   const [items, setItems] = useState(initItems);
-  const onChangeValue = () => {
-
-  };
-
-  const onSelectItem = (item) => {
-    if (item.value === "直接入力") {
-    //   let newResults = { ...results };
-    setPlaceInputSelected(true);
-    //   for (const place of newResults["placeSubCategories"]) {
-    //     place["result"] = false;
-    //     console.log(place["result"]);
-    //   }
-    //   if (newResults["placeSubCategories"]) {
-    //     newResults["placeSubCategories"]["result"] = true;
-    //   } else {
-    //     newResults["placeSubCategories"].push({
-    //       id: "new",
-    //       result: true,
-    //       text: value.toString(),
-    //     });
-    //   }
-    //   setResults(newResults);
-    // } else {
-    //   setPlaceInputSelected(true);
-    // }
-    console.log(item);
+  const onSelectItem = (itemIndex: number) => {
+    if (value !== "") {
+      let newResults = { ...results };
+      for (const place of newResults["placeSubCategories"]) {
+        place["result"] = false;
+      }
+      if (value === "直接入力") {
+        newResults["placeSubCategories"].push({
+          id: "new",
+          result: true,
+          text: value.toString(),
+        });
+      }else{
+        newResults["placeSubCategories"][itemIndex]["result"] = true;
+      }
+      console.log(newResults);
+    } else {
+      setPlaceInputSelected(true);
     }
-
-
-    // onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
-    // setPlace(value.toString());
-    setPlace(item.value.toString());
+    onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
+    setPlace(value.toString());
   }
-
-
-
-
-
 
   return (
     <View style={styles.inputWrap}>
@@ -272,11 +256,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
                   dropDownContainerStyle={{ backgroundColor: "red" }}
                   itemStyle={{zIndex:9999}}
-                  onChangeValue={onChangeValue}
                   onSelectItem={(item) => {
-                    onSelectItem(item)
+                    onSelectItem(items.indexOf(item))
                   }}
-
                   placeholder={place}
                   placeholderStyle={{
                     textAlign: "center",
