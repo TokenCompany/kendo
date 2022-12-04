@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
-import { Picker } from "@react-native-community/picker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -156,6 +155,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     }
   };
 
+
   return (
     <View style={styles.inputWrap}>
       <View style={styles.check}>
@@ -236,14 +236,14 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   setItems={setItems}
                   max={6}
                   maxHeight={300}
-                  zIndex={99}
                   labelStyle={{
                     fontSize: 18,
                     textAlign: "center",
                   }}
                   containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                   style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                  dropDownContainerStyle={{ backgroundColor: "#fff" }}
+                  dropDownContainerStyle={{ backgroundColor: "red" }}
+                  itemStyle={{zIndex:9999}}
                   onChangeValue={onChangeValue}
                   placeholder={place}
                   placeholderStyle={{
@@ -283,7 +283,7 @@ const styles = StyleSheet.create({
   inputWrap: {
     margin: 10,
     flexDirection: "row",
-    elevation:-1,
+    zIndex:-9999,
   },
 
   check: {
