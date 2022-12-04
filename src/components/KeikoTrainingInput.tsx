@@ -86,7 +86,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       ];
     }
     setResults(newResults);
-    onChangeSendInput(newResults[mainCategory], mainCategory,checked);
+    onChangeSendInput(newResults[mainCategory], mainCategory);
   };
 
   // サブカテゴリ―によって出すinput形式を変更
@@ -133,9 +133,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   // 稽古場所の入力欄表示・非表示をするための変数
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
 
-  const showForm = () => {
-    setPlaceInputSelected(true);
-  };
   let initItems = [];
   for (const place of places) {
     initItems.push({
@@ -143,17 +140,48 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       value: place.text,
     });
   }
-  initItems.push({ label: "直接入力", value: showForm });
+  initItems.push({ label: "直接入力", value: "直接入力" });
   const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("場所を選択");
   const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
-    setPlace(value);
-    if (value !== showForm.toString()) {
-      setPlaceInputSelected(false);
-    }
+
   };
+
+  const onSelectItem = (item) => {
+    if (item.value === "直接入力") {
+    //   let newResults = { ...results };
+    setPlaceInputSelected(true);
+    //   for (const place of newResults["placeSubCategories"]) {
+    //     place["result"] = false;
+    //     console.log(place["result"]);
+    //   }
+    //   if (newResults["placeSubCategories"]) {
+    //     newResults["placeSubCategories"]["result"] = true;
+    //   } else {
+    //     newResults["placeSubCategories"].push({
+    //       id: "new",
+    //       result: true,
+    //       text: value.toString(),
+    //     });
+    //   }
+    //   setResults(newResults);
+    // } else {
+    //   setPlaceInputSelected(true);
+    // }
+    console.log(item);
+    }
+
+
+    // onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
+    // setPlace(value.toString());
+    setPlace(item.value.toString());
+  }
+
+
+
+
 
 
   return (
@@ -245,6 +273,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   dropDownContainerStyle={{ backgroundColor: "red" }}
                   itemStyle={{zIndex:9999}}
                   onChangeValue={onChangeValue}
+                  onSelectItem={(item) => {
+                    onSelectItem(item)
+                  }}
+
                   placeholder={place}
                   placeholderStyle={{
                     textAlign: "center",

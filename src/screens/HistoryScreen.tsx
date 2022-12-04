@@ -49,6 +49,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
     // }
   }
 
+
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame

@@ -117,7 +117,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       targetRecords.forEach((element) => {
         if (element.id === "all") {
           element.result += 1;
-          console.log(element.result);
         }
       });
     } else {
@@ -231,6 +230,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     </ScrollView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

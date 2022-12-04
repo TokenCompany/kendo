@@ -109,7 +109,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
-    console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let identifier = notifications[i].identifier;
       Notifications.cancelScheduledNotificationAsync(identifier);
@@ -126,7 +125,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         alartHour,
         alartMinutes,
       );
-      console.log(unixDate);
 
       await Notifications.scheduleNotificationAsync({
         content: {
