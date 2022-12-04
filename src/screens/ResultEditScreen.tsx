@@ -43,6 +43,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const dispatch = useDispatch();
   // reduxからサブカテゴリ―ズの情報を取得
   const subCategories = useSelector((state: RootState) => state.subCategory);
+  const resultsData = useSelector((state: RootState) => state.results);
+  // console.log(resultsData);
+  
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
@@ -60,24 +63,45 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       item.result = false;
     }
   }
+   // 練習結果の初期化
+  const setInitAllResults = () => {
+    let initAllResults:Results;
+    if (date in resultsData) {
+      const copyResultsData = JSON.parse(JSON.stringify(resultsData[date]));
+      initAllResults = {
+        trainingDate: date,
+        resultsSum: {
+          placeSubCategories: places,
+          trainingTime: copyResultsData.trainingTime,
+          suburiSubCategories: copyResultsData.suburiSubCategories,
+          ashiSabakiSubCategories: copyResultsData.ashiSabakiSubCategories,
+          kihonUchiSubCategories: copyResultsData.kihonUchiSubCategories,
+          oujiwazaSubCategories: copyResultsData.oujiwazaSubCategories,
+          jigeikoSubCategories: copyResultsData.jigeikoSubCategories,
+          teacherSubCategories: copyResultsData.teacherSubCategories,
+          kakarigeikoSubCategories: copyResultsData.kakarigeikoSubCategories,
+        },
+      };
+    }else{
+      initAllResults = {
+        trainingDate: date,
+        resultsSum: {
+          placeSubCategories: places,
+          trainingTime: [],
+          suburiSubCategories: [],
+          ashiSabakiSubCategories: [],
+          kihonUchiSubCategories: [],
+          oujiwazaSubCategories: [],
+          jigeikoSubCategories: [],
+          teacherSubCategories: [],
+          kakarigeikoSubCategories: [],
+        },
+      };
+    }
+    return initAllResults
+  }
 
-  // 練習結果の初期化
-  const initAllResults = {
-    trainingDate: date,
-    resultsSum: {
-      placeSubCategories: places,
-      trainingTime: [],
-      suburiSubCategories: [],
-      ashiSabakiSubCategories: [],
-      kihonUchiSubCategories: [],
-      oujiwazaSubCategories: [],
-      jigeikoSubCategories: [],
-      teacherSubCategories: [],
-      kakarigeikoSubCategories: [],
-    },
-  };
-
-  const [allResults, setAllResults] = useState<Results>(initAllResults);
+  const [allResults, setAllResults] = useState<Results>(setInitAllResults());
   // 実績表の合計データのための操作
   // reduxから先生事のデータ、あるいは既に設定された目標データの取得
   let targetRecords: TargetCategory[];
@@ -117,7 +141,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       targetRecords.forEach((element) => {
         if (element.id === "all") {
           element.result += 1;
-          console.log(element.result);
         }
       });
     } else {
