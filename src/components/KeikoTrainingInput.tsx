@@ -132,7 +132,11 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   }
   // 稽古場所の入力欄表示・非表示をするための変数
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
 
+  const showForm = () => {
+    setPlaceInputSelected(true);
+  }
   let initItems = [];
   for (const place of places) {
     initItems.push({
@@ -140,8 +144,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       value: place.text,
     });
   }
-  initItems.push({ label: "直接入力", value: "直接入力" });
-  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
+  initItems.push({ label: "直接入力", value: showForm });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("場所を選択");
   const [items, setItems] = useState(initItems);
@@ -151,22 +154,31 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       for (const place of newResults["placeSubCategories"]) {
         place["result"] = false;
       }
-      if (value === "直接入力") {
+      if (newResults["placeSubCategories"][itemIndex]) {
+        newResults["placeSubCategories"][itemIndex]["result"] = true;
+      }else{
         newResults["placeSubCategories"].push({
           id: "new",
           result: true,
           text: value.toString(),
         });
-      }else{
-        newResults["placeSubCategories"][itemIndex]["result"] = true;
       }
-      console.log(newResults);
+      setResults(newResults);
+      setPlaceInputSelected(false);
     } else {
       setPlaceInputSelected(true);
     }
-    onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
+
+    if(itemIndex === items.length -1) {
+      setPlaceInputSelected(true);
+    }
     setPlace(value.toString());
+    onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
   }
+console.log(resultsData);
+console.log(place);
+
+
 
   return (
     <View style={styles.inputWrap}>
@@ -269,7 +281,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                     <TextInput
                       style={styles.inputFull}
                       onChangeText={(text) => {
-                        setDirectValue(text);
+                        setValue(text);
                       }}
                     />
                   )}
