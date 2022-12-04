@@ -61,11 +61,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [place, setPlace] = useState<string>("場所を選択");
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
-  const [showDatePicker, setShowDatePicker] = useState(false);
-  const onPressShowDatePicker = () => {
-    setShowDatePicker(true);
-  };
-
   const [value, setValue] = useState<string>("場所を選択");
   const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
   const [showStart, setStartShow] = useState(false);
@@ -91,9 +86,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       setForm(false);
     }
   };
-  console.log(value);
-  console.log(startTime);
-  console.log(place);
 
   // 時間分解
   const renderChangeText = (date: string) => {
@@ -191,15 +183,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
+          setStartTime("0000");
+          setEndTime("0000");
+          setPlace("場所を選択");
+          setValue("場所を選択")
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
-          } else {
-            setStartTime("0000");
-            setEndTime("0000");
-            setPlace("場所を選択");
           }
         }}
         onChangeDay={(day) => {
@@ -351,8 +343,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 value={value}
                 items={items}
                 setOpen={setOpen}
-                setValue={setPlace}
+                setValue={setValue}
                 setItems={setItems}
+                onChangeValue={onChangeValue}
+                placeholder={place}
+
                 max={6}
                 maxHeight={300}
                 zIndex={1000}
@@ -363,8 +358,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                 style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
                 dropDownStyle={{ backgroundColor: "#F4F4F5" }}
-                onChangeValue={onChangeValue}
-                placeholder={place}
                 placeholderStyle={{
                   textAlign: "center",
                   fontSize: 20,

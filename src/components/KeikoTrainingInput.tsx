@@ -4,6 +4,7 @@ import { Checkbox } from "react-native-paper";
 import { Picker } from "@react-native-community/picker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import DropDownPicker from "react-native-dropdown-picker";
 
 type Props = {
   textTraining: string;
@@ -131,7 +132,29 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     });
   }
   // 稽古場所の入力欄表示・非表示をするための変数
+  const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+
+  const showForm = () => {
+    setPlaceInputSelected(true);
+  };
+  let initItems = [];
+  for (const place of places) {
+    initItems.push({
+      label: place.text,
+      value: place.text,
+    });
+  }
+  initItems.push({ label: "直接入力", value: showForm });
   const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState<string>("場所を選択");
+  const [items, setItems] = useState(initItems);
+  const onChangeValue = () => {
+    setPlace(value);
+    if (value !== showForm.toString()) {
+      setPlaceInputSelected(false);
+    }
+  };
 
   return (
     <View style={styles.inputWrap}>
@@ -204,45 +227,30 @@ export const KeikoTrainingInput: React.FC<Props> = ({
             {!!input3 && (
               <View>
                 <View style={styles.inputpicker}>
-                  <Picker
-                    selectedValue={place}
-                    onValueChange={(itemValue, itemIndex) => {
-                      if (itemValue !== "") {
-                        let newResults = { ...results };
-                        for (const place of newResults["placeSubCategories"]) {
-                          place["result"] = false;
-                        }
-                        if (newResults["placeSubCategories"][itemIndex]) {
-                          newResults["placeSubCategories"][itemIndex]["result"] = true;
-                        } else {
-                          newResults["placeSubCategories"].push({
-                            id: "new",
-                            result: true,
-                            text: itemValue.toString(),
-                          });
-                        }
-                        setResults(newResults);
-                        setPlaceInputSelected(false);
-                      } else {
-                        setPlaceInputSelected(true);
-                      }
-                      setPlace(itemValue.toString());
-                      onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
-                    }}
-                    itemStyle={{ height: 60 }}
-                  >
-                    {subCategoriesData.map((data: any, index: number) => (
-                      <Picker.Item label={data.text} value={data.text} key={index} />
-                    ))}
-                    {!!newPlaceJudge && (
-                      <Picker.Item
-                        label={reservedPlace}
-                        value={reservedPlace}
-                        key={subCategoriesData.length}
-                      />
-                    )}
-                    <Picker.Item label="直接入力" value={directValue} />
-                  </Picker>
+                <DropDownPicker
+                  open={open}
+                  value={value}
+                  items={items}
+                  setOpen={setOpen}
+                  setValue={setValue}
+                  setItems={setItems}
+                  max={6}
+                  maxHeight={300}
+                  zIndex={99}
+                  labelStyle={{
+                    fontSize: 18,
+                    textAlign: "center",
+                  }}
+                  containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
+                  style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
+                  dropDownContainerStyle={{ backgroundColor: "red" }}
+                  onChangeValue={onChangeValue}
+                  placeholder={place}
+                  placeholderStyle={{
+                    textAlign: "center",
+                    fontSize: 20,
+                  }}
+                />
                   {placeInputSelected && (
                     <TextInput
                       style={styles.inputFull}
@@ -275,6 +283,7 @@ const styles = StyleSheet.create({
   inputWrap: {
     margin: 10,
     flexDirection: "row",
+    elevation:-1,
   },
 
   check: {
@@ -308,6 +317,7 @@ const styles = StyleSheet.create({
     margin: 5,
     marginTop: 7,
     width: 108,
+    zIndex:-10,
   },
 
   label: {
@@ -343,14 +353,14 @@ const styles = StyleSheet.create({
 
   inputFull: {
     height: 30,
-    width: "100%",
+    width: "60%",
     flex: 1,
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
     paddingHorizontal: 5,
-    marginTop: 5,
-    marginRight: 5,
+    marginTop: 25,
+    marginLeft: 10,
     marginBottom: 5,
   },
   inputpicker: {
