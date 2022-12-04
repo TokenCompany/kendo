@@ -14,6 +14,7 @@ import { InitEditScreen } from "../screens/InitEditScreen";
 import { ProfileEditScreen } from "../screens/ProfileEditScreen";
 import { TrainingEditScreen } from "../screens/TrainingEditScreen";
 import { SubCategoryScreen } from "../screens/SubCategoryScreen";
+import { TargetScreen } from "../screens/TargetScreen";
 import { LanguageScreen } from "../screens/LanguageScreen";
 import { SettingButton } from "../components/SettingButton";
 // types
@@ -88,6 +89,14 @@ export const MainStack: React.FC<Props> = () => {
         component={SubCategoryScreen}
         options={({ route, navigation }) => ({
           title: "練習内容項目編集",
+          headerRight: () => renderMenuButton(navigation),
+        })}
+      />
+      <Stack.Screen
+        name="Target"
+        component={TargetScreen}
+        options={({ route, navigation }) => ({
+          title: "年間稽古目標編集",
           headerRight: () => renderMenuButton(navigation),
         })}
       />

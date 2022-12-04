@@ -7,7 +7,7 @@ import { ItemInputForm } from "../components/ItemInputForm";
 import { ItemTextForm } from "../components/ItemTextForm";
 import { SwipeItem } from "../components/SwipeItem";
 import uuid from "react-native-uuid";
-import { addSubCategory, deleteSubCategory } from "../store/subCategorySlice";
+import { addSubCategory, deleteSubCategory,deleteTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 
@@ -79,6 +79,8 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       id: id,
     };
     dispatch(deleteSubCategory(deleteObj));
+    // 同時に目標設定も削除
+    dispatch(deleteTargetCategory(deleteObj));
     if (newSubCategory.length > max) {
       setPlusButton(styles.offFab);
     } else {

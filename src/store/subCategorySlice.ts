@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 //
 // 練習内容項目設定の小項目に関わるredux
 //
@@ -65,6 +66,8 @@ type DeleteSubCategory = {
   id: string;
 };
 
+const currentYear = dayjs().year()
+
 export const counterSlice = createSlice({
   name: "subCategory",
   initialState,
@@ -90,12 +93,21 @@ export const counterSlice = createSlice({
       state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] =
         action.payload.targets;
     },
+    deleteTargetCategory: (state, action) => {
+      if (currentYear in state.targetSubCategories) {
+        const newArray = state.targetSubCategories[currentYear].filter(
+          (item: any) => item.id !== action.payload.id,
+        );
+        state.targetSubCategories[currentYear] = newArray;
+      }
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
 export const { addSubCategory } = counterSlice.actions;
 export const { deleteSubCategory } = counterSlice.actions;
+export const { deleteTargetCategory } = counterSlice.actions;
 export const { addTargetCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;
