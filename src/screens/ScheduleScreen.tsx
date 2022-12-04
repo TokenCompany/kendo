@@ -8,7 +8,7 @@ import {
   Alert,
   Platform,
   TouchableOpacity,
-  Modal
+  Modal,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -18,11 +18,20 @@ import { bookReservationItem, deleteReservationItem } from "../store/reservation
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
+import * as Notifications from "expo-notifications";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import i18n from "../lang/localization";
 import dayjs from "dayjs";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
@@ -52,11 +61,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [place, setPlace] = useState<string>("場所を選択");
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
+  const [showDatePicker, setShowDatePicker] = useState(false);
+  const onPressShowDatePicker = () => {
+    setShowDatePicker(true);
+  };
+
   const [value, setValue] = useState<string>("場所を選択");
   const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
   const [showStart, setStartShow] = useState(false);
   const [showEnd, setEndShow] = useState(false);
-
 
   const hideDatePicker = () => {
     setStartShow(false);
@@ -71,7 +84,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     setEndShow(true);
   };
 
-
   const [items, setItems] = useState(initItems);
   const onChangeValue = () => {
     setPlace(value);
@@ -82,9 +94,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   console.log(value);
   console.log(startTime);
   console.log(place);
-
-
-
 
   // 時間分解
   const renderChangeText = (date: string) => {
@@ -129,8 +138,46 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       }),
     );
   };
+  const scheduleNotificationAsync = async () => {
+    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId == selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+    let date = selectedDate.split("-");
+    let alartDate = Number(date[2]) - 1;
+    let alartHour = 12;
+    let alartMinutes = 0;
+    let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
-  let dateTextArray
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        body: "test",
+        title: "a",
+      },
+      trigger: {
+        channelId: selectedDate,
+        date: unixDate,
+      },
+    });
+    console.log(notifications);
+  };
+
+  const scheduledelete = async () => {
+    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId === selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+    console.log(notifications);
+  };
+  let dateTextArray;
 
   return (
     <ScrollView style={styles.container}>
@@ -157,7 +204,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         }}
         onChangeDay={(day) => {
           dateTextArray = day.split("-");
-          let dateText = dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          let dateText =
+            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
@@ -196,36 +244,38 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                     </View>
                   )}
                   {Platform.OS === "ios" && (
-                  <View>
-                    <View style={styles.dayInput}>
-                      <TouchableOpacity style={styles.dateButton} onPress={showStartDatepicker}>
-                        <Text style={styles.buttonText}>{dayjs(startTime).format("HH:mm").toString()}</Text>
-                      </TouchableOpacity>
-                    </View>
-                    <Modal
-                      animationType="fade"
-                      visible={showStart}
-                      transparent={true}
-                      onRequestClose={() => {
-                        setStartShow(false);
-                      }}
-                    >
-                      <View style={styles.modalView}>
-                        <DateTimePicker
-                          locale={i18n.t("Lang.lang")}
-                          value={dayjs(startTime).toDate()}
-                          mode="time"
-                          display={"spinner"}
-                          onChange={(event, date2) => {
-                            setStartTime(date2.toString());
-                          }}
-                        />
-                        <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-                          <Text style={styles.textStyle}>×</Text>
+                    <View>
+                      <View style={styles.dayInput}>
+                        <TouchableOpacity style={styles.dateButton} onPress={showStartDatepicker}>
+                          <Text style={styles.buttonText}>
+                            {dayjs(startTime).format("HH:mm").toString()}
+                          </Text>
                         </TouchableOpacity>
                       </View>
-                    </Modal>
-                  </View>
+                      <Modal
+                        animationType="fade"
+                        visible={showStart}
+                        transparent={true}
+                        onRequestClose={() => {
+                          setStartShow(false);
+                        }}
+                      >
+                        <View style={styles.modalView}>
+                          <DateTimePicker
+                            locale={i18n.t("Lang.lang")}
+                            value={dayjs(startTime).toDate()}
+                            mode="time"
+                            display={"spinner"}
+                            onChange={(event, date2) => {
+                              setStartTime(date2.toString());
+                            }}
+                          />
+                          <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+                            <Text style={styles.textStyle}>×</Text>
+                          </TouchableOpacity>
+                        </View>
+                      </Modal>
+                    </View>
                   )}
                 </View>
                 <Text style={styles.timeText}>~</Text>
@@ -258,7 +308,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                     <View>
                       <View style={styles.dayInput}>
                         <TouchableOpacity style={styles.dateButton} onPress={showEndDatepicker}>
-                          <Text style={styles.buttonText}>{dayjs(endTime).format("HH:mm").toString()}</Text>
+                          <Text style={styles.buttonText}>
+                            {dayjs(endTime).format("HH:mm").toString()}
+                          </Text>
                         </TouchableOpacity>
                       </View>
                       <Modal
@@ -355,7 +407,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       },
                       {
                         text: "はい",
-                        onPress: () => onPressSelected(),
+                        onPress: () => {
+                          onPressSelected();
+                          scheduleNotificationAsync();
+                        },
                       },
                     ]);
                   } else {
@@ -368,6 +423,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                         },
                       },
                     ]);
+                    scheduleNotificationAsync();
                   }
                 }
               }
@@ -381,7 +437,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   },
                   {
                     text: "はい",
-                    onPress: () => onPressDelete(),
+                    onPress: () => {
+                      onPressDelete();
+                      scheduledelete();
+                    },
                   },
                 ]);
               }
@@ -466,7 +525,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "30%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
@@ -484,17 +543,17 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  dateButton:{
-    paddingHorizontal:30,
-    height:35,
+  dateButton: {
+    paddingHorizontal: 30,
+    height: 35,
   },
   dayInput: {
-    alignItems:"center",
-    borderRadius:10,
+    alignItems: "center",
+    borderRadius: 10,
     backgroundColor: "#F4F4F5",
   },
   buttonText: {
-    paddingVertical:8,
+    paddingVertical: 8,
     fontSize: 18,
   },
 });

@@ -6,6 +6,7 @@ import dayjs from "dayjs";
 import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
+import DropDownPicker from "react-native-dropdown-picker";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
@@ -13,7 +14,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   // reduxからサブカテゴリ―ズの情報を取得
   const allData = useSelector((state: RootState) => state.subCategory.targetSubCategories);
-  console.log(allData);
+
 
   // 一番上のグラフのデータ
   let mainData: any = [];
@@ -66,11 +67,28 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   };
   if (currentDate.year().toString() in allData) {
     setData(allData[currentDate.year().toString()], mainData, subData);
-  }else{
-    
   }
-  // mainData.push({value:1,frontColor: "#61A68A",label: "稽古回数",});
-  // subData.push({value:1,frontColor: "#61A68A",label: "稽古回数",});
+
+  const dates = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  let dateItems = []
+  for (const key in dates) {
+    dateItems.push({
+      label: `${key}` + `年`,
+      value: dayjs(key),
+    });
+  }
+
+  const [open, setOpen] = useState(false);
+  const [value, setValue] = useState(dayjs());
+  const [items, setItems] = useState(dateItems);
+  const onChangeValue = (value:any) => {
+    console.log("aaa");
+
+    setCurrentDate(value)
+  };
+
+
+
 
   return (
     <View style={styles.container}>
@@ -85,9 +103,36 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             ]}
             onPress={() => {
               setCurrentDate(currentDate.add(-1, "year"));
+              setValue(value.add(-1, "year"));
             }}
           />
           <Text style={styles.yearText}>{currentDate.year()}年</Text>
+          <View style={styles.scrollWrap}>
+            <DropDownPicker
+              listMode="SCROLLVIEW"
+              open={open}
+              value={value}
+              items={items}
+              setOpen={setOpen}
+              setValue={setValue}
+              setItems={setItems}
+              maxHeight={300}
+              zIndex={1000}
+              labelStyle={{
+                color:"transparent",
+              }}
+              containerStyle={{ height: 40, width: 150,}}
+              style={{ backgroundColor: "transparent", borderWidth: 0 }}
+              dropDownContainerStyle={{ backgroundColor: "#fff" }}
+              onChangeValue={(value) => {
+                onChangeValue(value)
+              }}
+              placeholder={`${currentDate.year().toString()}` + `年`}
+              placeholderStyle={{
+                color:"transparent",
+              }}
+            />
+          </View>
           <TouchableOpacity
             style={[
               styles.yearArrow,
@@ -97,6 +142,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             ]}
             onPress={() => {
               setCurrentDate(currentDate.add(1, "year"));
+              setValue(value.add(1, "year"));
             }}
           />
         </View>
@@ -135,7 +181,13 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  scrollWrap:{
+    position:"absolute",
+    right:"27%",
+    top:"-5%",
+  },
   yearWrap: {
+    zIndex:1000,
     marginTop: 30,
     justifyContent: "space-around",
     flexDirection: "row",
@@ -156,6 +208,7 @@ const styles = StyleSheet.create({
     marginTop: 10,
   },
   MainBarWrap: {
+    zIndex:-100,
     marginTop: 30,
     marginLeft: "30%",
   },
