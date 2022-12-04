@@ -243,7 +243,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   }}
                   containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                   style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                  dropDownContainerStyle={{ backgroundColor: "red" }}
+                  dropDownContainerStyle={{ backgroundColor: "#fff" }}
                   onChangeValue={onChangeValue}
                   placeholder={place}
                   placeholderStyle={{
