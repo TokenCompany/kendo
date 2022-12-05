@@ -149,6 +149,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [value, setValue] = useState<string>("場所を選択");
   const [items, setItems] = useState(initItems);
   const onSelectItem = (itemIndex: number) => {
+    if(itemIndex === items.length -1) {
+      setPlaceInputSelected(true);
+    }
     if (value !== "") {
       let newResults = { ...results };
       for (const place of newResults["placeSubCategories"]) {
@@ -160,23 +163,18 @@ export const KeikoTrainingInput: React.FC<Props> = ({
         newResults["placeSubCategories"].push({
           id: "new",
           result: true,
-          text: value.toString(),
+          text: directValue.toString(),
         });
       }
+
       setResults(newResults);
-      setPlaceInputSelected(false);
     } else {
       setPlaceInputSelected(true);
     }
 
-    if(itemIndex === items.length -1) {
-      setPlaceInputSelected(true);
-    }
     setPlace(value.toString());
     onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
   }
-console.log(resultsData);
-console.log(place);
 
 
 
@@ -252,6 +250,7 @@ console.log(place);
               <View>
                 <View style={styles.inputpicker}>
                 <DropDownPicker
+                  listMode="SCROLLVIEW"
                   open={open}
                   value={value}
                   items={items}
@@ -281,7 +280,16 @@ console.log(place);
                     <TextInput
                       style={styles.inputFull}
                       onChangeText={(text) => {
-                        setValue(text);
+                        setDirectValue(text);
+                        let newResults = { ...results };
+                        for (const place of newResults["placeSubCategories"]) {
+                          if(place.id === "new"){
+                            place.text = text
+                          }
+                        }
+                        setResults(newResults)
+                        console.log(results);
+
                       }}
                     />
                   )}
