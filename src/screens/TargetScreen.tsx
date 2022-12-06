@@ -61,9 +61,9 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
     return initValues;
   }
-  
+
   const [currentValues, setCurrentValues] = useState<string[]>(setInitValues());
-  
+
   const [currentTargets, setCurrentTargets] = useState(initTargets);
   const setInitYearGoal = () => {
     let res:string = "";
@@ -80,7 +80,6 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 登録する前に全ての値が入ってるかチェック
   const checkAllInput = () => {
     let judge: boolean = false;
-    console.log(currentTargets);
     currentTargets.forEach((element:any) => {
       if("goal" in element === false) judge = true;
     });
@@ -146,7 +145,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
       const saveTargets = {
         year: currentYear,
         targets: newCurrentTargets,
-      };      
+      };
       // 登録された先生全てに目標入力を必須にする
       if (saveTargets.targets.length === teachers.length + 1) {
         dispatch(addTargetCategory(saveTargets));

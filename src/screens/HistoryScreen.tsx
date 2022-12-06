@@ -40,15 +40,9 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
     }else{
       setShowButton(true);
     }
-    // let newCount = countButton + 1;
-    // setCountButton(newCount)
-    // if (count % 2 === 0) {
-    //   setShowButton(true);
-    // }else{
-    //   setShowButton(false);
-    // }
   }
 
+  let dateTextArray;
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame
@@ -69,8 +63,23 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
          }else{
           showingBox(false);
          }
-
-      }}
+        }}
+        onChangeDay={(day) => {
+          if (day in reservations) {
+          setStartTime(reservations[day].startTime);
+          setEndTime(reservations[day].endTime);
+          setPlace(reservations[day].place);
+          showingBox(true);
+          dateTextArray = day.split("-");
+          let dateText =
+            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          setSelectedDate(day);
+          // setShowSelectedDate(true);
+          setSelectedDateText(dateText);
+          }else{
+            showingBox(false);
+          }
+        }}
       />
       {showBox && (
         <View style={styles.box}>

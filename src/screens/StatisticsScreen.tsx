@@ -82,8 +82,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [value, setValue] = useState(dayjs());
   const [items, setItems] = useState(dateItems);
   const onChangeValue = (value:any) => {
-    console.log("aaa");
-
     setCurrentDate(value)
   };
 
@@ -124,6 +122,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               containerStyle={{ height: 40, width: 150,}}
               style={{ backgroundColor: "transparent", borderWidth: 0 }}
               dropDownContainerStyle={{ backgroundColor: "#fff" }}
+              activeItemStyle={{alignItems: 'center'}}
               onChangeValue={(value) => {
                 onChangeValue(value)
               }}

@@ -155,7 +155,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         date: unixDate,
       },
     });
-    console.log(notifications);
   };
 
   const scheduledelete = async () => {
@@ -167,7 +166,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
-    console.log(notifications);
   };
   let dateTextArray;
 

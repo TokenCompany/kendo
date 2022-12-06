@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
-import { Picker } from "@react-native-community/picker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -87,7 +86,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       ];
     }
     setResults(newResults);
-    onChangeSendInput(newResults[mainCategory], mainCategory,checked);
+    onChangeSendInput(newResults[mainCategory], mainCategory);
   };
 
   // サブカテゴリ―によって出すinput形式を変更
@@ -133,10 +132,11 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   }
   // 稽古場所の入力欄表示・非表示をするための変数
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
 
   const showForm = () => {
     setPlaceInputSelected(true);
-  };
+  }
   let initItems = [];
   for (const place of places) {
     initItems.push({
@@ -145,16 +145,41 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     });
   }
   initItems.push({ label: "直接入力", value: showForm });
-  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>("場所を選択");
   const [items, setItems] = useState(initItems);
-  const onChangeValue = () => {
-    setPlace(value);
-    if (value !== showForm.toString()) {
+  const onSelectItem = (itemIndex: number) => {
+    if(itemIndex === items.length -1) {
+      setPlaceInputSelected(true);
+    } else {
       setPlaceInputSelected(false);
     }
-  };
+    if (value !== "") {
+      let newResults = { ...results };
+      for (const place of newResults["placeSubCategories"]) {
+        place["result"] = false;
+      }
+      if (newResults["placeSubCategories"][itemIndex]) {
+        newResults["placeSubCategories"][itemIndex]["result"] = true;
+
+      }else{
+        newResults["placeSubCategories"].push({
+          id: "new",
+          result: true,
+          text: directValue.toString(),
+        });
+      }
+
+      setResults(newResults);
+    } else {
+      setPlaceInputSelected(true);
+    }
+
+    setPlace(value.toString());
+    onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
+  }
+
+
 
   return (
     <View style={styles.inputWrap}>
@@ -228,23 +253,23 @@ export const KeikoTrainingInput: React.FC<Props> = ({
               <View>
                 <View style={styles.inputpicker}>
                 <DropDownPicker
+                  listMode="SCROLLVIEW"
                   open={open}
                   value={value}
                   items={items}
                   setOpen={setOpen}
                   setValue={setValue}
                   setItems={setItems}
-                  max={6}
-                  maxHeight={300}
-                  zIndex={99}
                   labelStyle={{
                     fontSize: 18,
                     textAlign: "center",
                   }}
                   containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                   style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                  dropDownContainerStyle={{ backgroundColor: "#fff" }}
-                  onChangeValue={onChangeValue}
+                  dropDownContainerStyle={{ backgroundColor: "#fff", height:100 }}
+                  onSelectItem={(item) => {
+                    onSelectItem(items.indexOf(item))
+                  }}
                   placeholder={place}
                   placeholderStyle={{
                     textAlign: "center",
@@ -256,6 +281,13 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       style={styles.inputFull}
                       onChangeText={(text) => {
                         setDirectValue(text);
+                        let newResults = { ...results };
+                        for (const place of newResults["placeSubCategories"]) {
+                          if(place.id === "new"){
+                            place.text = text
+                          }
+                        }
+                        setResults(newResults)
                       }}
                     />
                   )}
@@ -283,7 +315,7 @@ const styles = StyleSheet.create({
   inputWrap: {
     margin: 10,
     flexDirection: "row",
-    elevation:-1,
+    zIndex:-9999,
   },
 
   check: {
@@ -365,5 +397,6 @@ const styles = StyleSheet.create({
   },
   inputpicker: {
     flexGrow: 1,
+    marginBottom:100,
   },
 });
