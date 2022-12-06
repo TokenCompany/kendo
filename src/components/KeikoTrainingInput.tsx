@@ -175,7 +175,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
               <View>
                 {subCategoriesData.map((data: any, index: number) => (
                   <View style={styles.inputGroup} key={index}>
-                    <Text style={styles.inputText}>{data.text}</Text>
+                    <Text style={styles.inputText}>{data.text}{data.mainCategory==="teacherSubCategories"?"先生":""}</Text>
                     <TextInput
                       style={styles.input}
                       keyboardType="numeric"

@@ -188,7 +188,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     },
     jigeikoSubCategories: {
       text: "地稽古",
-      unit: "回",
+      unit: "本",
     },
     teacherSubCategories: {
       text: "先生との稽古",
@@ -196,7 +196,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     },
     kakarigeikoSubCategories: {
       text: "掛稽古",
-      unit: "回",
+      unit: "本",
     },
   };
 
