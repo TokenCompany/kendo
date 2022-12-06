@@ -26,7 +26,8 @@
     "sat": "土",
     "year": "年",
     "month": "月",
-    "day": "曜日"
+    "monthBlank": "月",
+    "day": "日"
   },
   "History": {
     "title": "稽古実績",

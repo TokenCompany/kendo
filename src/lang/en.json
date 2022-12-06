@@ -24,9 +24,10 @@
     "thu": "木",
     "fri": "金",
     "sat": "土",
-    "year": "年",
-    "month": "月",
-    "day": "曜日"
+    "year": ".",
+    "month": ".",
+    "monthBlank": "",
+    "day": ""
   },
   "History": {
     "title": "稽古実績",

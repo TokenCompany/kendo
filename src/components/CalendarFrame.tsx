@@ -123,7 +123,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
             },
           },
         }}
-        monthFormat={"yyyy年 MM月"}
+        monthFormat={`yyyy${i18n.t("ScheduleScreen.year")}MM${i18n.t("ScheduleScreen.monthBlank")}`}
         current={currentDate.format("YYYY-MM-DD")}
         key={currentDate.format("YYYY-MM-DD")}
         onPressArrowLeft={(subtractMonth) => {
