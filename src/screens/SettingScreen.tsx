@@ -1,3 +1,4 @@
+import React from 'react'
 import { View, ScrollView, StyleSheet, Text, Image } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -70,17 +71,17 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // 階級
-  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
+  const kendoLevel = [`${i18n.t("ProfileEdit.stage01")}`, `${i18n.t("ProfileEdit.stage02")}`, `${i18n.t("ProfileEdit.stage03")}`, `${i18n.t("ProfileEdit.stage04")}`, `${i18n.t("ProfileEdit.stage05")}`, `${i18n.t("ProfileEdit.stage06")}`, `${i18n.t("ProfileEdit.stage07")}`, `${i18n.t("ProfileEdit.stage08")}`];
 
   // 条件を満たした時に錬士,教士,範士の追加
   const addLevel = () => {
     if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
-      kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length + 1] = "範士";
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
+      kendoLevel[kendoLevel.length + 1] = `${i18n.t("ProfileEdit.stage11")}`;
     } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
-      kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length] = "教士";
-      kendoLevel[kendoLevel.length] = "範士";
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage10")}`;
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage011")}`;
     }
   };
   {

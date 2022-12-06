@@ -1,3 +1,4 @@
+import React from 'react'
 import { View, StyleSheet, Text, TouchableOpacity, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -17,11 +18,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
   const createAlert = () =>
-<<<<<<< HEAD
     Alert.alert("Alert Title", i18n.t("TaskEdit.alert04"), [
-=======
-    Alert.alert("本当に削除しますか？", "", [
->>>>>>> main
       {
         text: i18n.t("TaskEdit.cancel"),
         style: "cancel",

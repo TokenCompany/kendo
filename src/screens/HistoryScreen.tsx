@@ -50,7 +50,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
          // 文字列型日付を日本語に変換
          let dateTextArray = day.split("-");
          let dateText =
-           dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+         dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
          // 文字の変更
          setSelectedDate(day);
          setSelectedDateText(dateText);
@@ -72,9 +72,8 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           showingBox(true);
           dateTextArray = day.split("-");
           let dateText =
-            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+            dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
           setSelectedDate(day);
-          // setShowSelectedDate(true);
           setSelectedDateText(dateText);
           }else{
             showingBox(false);
