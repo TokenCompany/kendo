@@ -3,6 +3,8 @@
     "title": "稽古予定",
     "time": "時間",
     "place": "稽古場所",
+    "selectPlace": "場所を選択",
+    "input": "直接入力",
     "entry": "登録",
     "delete": "消去",
     "jan": "1",
@@ -64,9 +66,7 @@
   },
   "ResultEdit": {
     "title": "実績入力",
-    "textPlace": "稽古場所",
     "textTime": "稽古時間",
-    "textTeacher": "先生との稽古",
     "teacher": "先生",
     "textButton": "稽古実績登録",
     "textUnit01": "本",
@@ -86,7 +86,7 @@
     "title": "実績表",
     "label01": "稽古回数",
     "label02": "稽古目標",
-    "year": "年",
+    "year": "",
     "teacher": "先生"
   },
   "ProfileEdit": {
@@ -120,6 +120,7 @@
   },
   "TrainingEdit": {
     "title": "練習内容項目編集",
+    "inputText": "テキスト入力",
     "training01": "練習場所",
     "training02": "素振り",
     "training03": "足さばき",
@@ -128,7 +129,10 @@
     "training06": "地稽古",
     "training07": "先生との稽古",
     "training08": "掛稽古",
-    "training09": "年間稽古目標"
+    "training09": "年間稽古目標",
+    "result": "合計",
+    "times": "回",
+    "register": "目標登録"
   },
   "Modal": {
     "task": "課題",
@@ -141,8 +145,18 @@
     "alert02": "稽古予定を修正しますか？",
     "alert03": "稽古予定を削除しますか？",
     "alert04": "本当に削除しますか？",
+    "alert05": "時間が選択されていません",
+    "alert06": "場所が選択されていません",
+    "alert07": "稽古予定が登録されました",
+    "alert08": "空の内容は登録できません",
+    "alert09": "もう一度入力し直してください",
+    "alert10": "登録された内容が削除されます",
+    "alert11": "登録された内容が1年の制限を超えています",
+    "alert12": "設定された全ての先生の目標を設定してください",
+    "alert13": "稽古目標が登録されました",
     "ok": "はい",
     "cancel": "いいえ",
+    "back": "戻る",
     "myTask": "自分の課題",
     "delete": "消去",
     "setting": "設定"
