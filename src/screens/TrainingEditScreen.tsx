@@ -16,6 +16,7 @@ import * as Notifications from "expo-notifications";
 import dayjs from "dayjs";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { colors } from "../styles";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -151,21 +152,21 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     <View style={styles.container}>
       <ScrollView style={styles.scrollContainer}>
         <View style={styles.buttonContainer}>
-          <MajorItem text="稽古場所" onPress={onPressPlace} />
-          <MajorItem text="素振り" onPress={onPressSwing} />
-          <MajorItem text="足さばき" onPress={onPressFootwork} />
-          <MajorItem text="基本打ち" onPress={onPressBeat} />
-          <MajorItem text="応じ技" onPress={onPressResponse} />
-          <MajorItem text="地稽古" onPress={onPressJigeiko} />
-          <MajorItem text="先生との稽古" onPress={onPressTeacher} />
-          <MajorItem text="掛稽古" onPress={onPressKakari} />
-          <MajorItem text="年間稽古目標" onPress={onPressTarget} />
-          <MajorItem text="通知設定" onPress={onPressAlart} />
+          <MajorItem text={i18n.t("TrainingEdit.training01")} onPress={onPressPlace} />
+          <MajorItem text={i18n.t("TrainingEdit.training02")} onPress={onPressSwing} />
+          <MajorItem text={i18n.t("TrainingEdit.training03")} onPress={onPressFootwork} />
+          <MajorItem text={i18n.t("TrainingEdit.training04")} onPress={onPressBeat} />
+          <MajorItem text={i18n.t("TrainingEdit.training05")} onPress={onPressResponse} />
+          <MajorItem text={i18n.t("TrainingEdit.training06")} onPress={onPressJigeiko} />
+          <MajorItem text={i18n.t("TrainingEdit.training07")} onPress={onPressTeacher} />
+          <MajorItem text={i18n.t("TrainingEdit.training08")} onPress={onPressKakari} />
+          <MajorItem text={i18n.t("TrainingEdit.training09")} onPress={onPressTarget} />
+          <MajorItem text={i18n.t("TrainingEdit.training10")} onPress={onPressAlart} />
           {alartShow && (
             <View style={styles.alartContainer}>
               <View style={styles.alartContainerInner}>
                 <View>
-                  <Text style={styles.objectiveLabel}>通知許可設定</Text>
+                  <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.editAlert")}</Text>
                   {Platform.OS === "android" && (
                     <View style={styles.buttonWrap}>
                       <TouchableOpacity
@@ -174,7 +175,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openSettings();
                         }}
                       >
-                        <Text style={permission ? styles.text1 : styles.text2}>許可</Text>
+                        <Text style={permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.true")}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={!permission ? styles.button1 : styles.button2}
@@ -182,7 +183,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openSettings();
                         }}
                       >
-                        <Text style={!permission ? styles.text1 : styles.text2}>不許可</Text>
+                        <Text style={!permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.false")}</Text>
                       </TouchableOpacity>
                     </View>
                   )}
@@ -194,7 +195,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openURL("app-settings:");
                         }}
                       >
-                        <Text style={permission ? styles.text1 : styles.text2}>許可</Text>
+                        <Text style={permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.true")}</Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={!permission ? styles.button1 : styles.button2}
@@ -202,14 +203,14 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openURL("app-settings:");
                         }}
                       >
-                        <Text style={!permission ? styles.text1 : styles.text2}>不許可</Text>
+                        <Text style={!permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.false")}</Text>
                       </TouchableOpacity>
                     </View>
                   )}
                 </View>
               </View>
               <View style={styles.alartContainerInner}>
-                <Text style={styles.objectiveLabel}>通知時間設定</Text>
+                <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.editAlertTimes")}</Text>
                 <View style={styles.boxInputTime}>
                   <View style={styles.boxInputTimeFlex}>
                     <View style={styles.timeStart}>

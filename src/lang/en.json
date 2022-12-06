@@ -131,6 +131,8 @@
     "training07": "先生との稽古",
     "training08": "掛稽古",
     "training09": "年間稽古目標",
+    "training10": "通知設定",
+    "editAlert": "通知許可設定",
     "result": "合計",
     "times": "回",
     "register": "目標登録"

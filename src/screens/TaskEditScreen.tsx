@@ -18,7 +18,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     navigation.navigate("Setting");
   };
   const createAlert = () =>
-    Alert.alert("Alert Title", i18n.t("TaskEdit.alert04"), [
+    Alert.alert("", i18n.t("TaskEdit.alert04"), [
       {
         text: i18n.t("TaskEdit.cancel"),
         style: "cancel",
@@ -39,7 +39,7 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   return (
     <View style={styles.container}>
-      <TaskTextForm label="自分の課題" value={currentTask} onChangeText={onChangeTask} />
+      <TaskTextForm label={i18n.t("TaskEdit.myTask")} value={currentTask} onChangeText={onChangeTask} />
       <View style={styles.display}>
         <TouchableOpacity style={styles.button} onPress={onChangeDelete}>
           <Text style={styles.text}>{i18n.t("TaskEdit.delete")}</Text>
@@ -51,9 +51,9 @@ export const TaskEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               onPressSaveTask();
               onChangeSetting();
             } else {
-              Alert.alert("課題は５行まででお願いします", "", [
+              Alert.alert(`${i18n.t("TaskEdit.alert14")}`, "", [
                 {
-                  text: "はい",
+                  text: `${i18n.t("TaskEdit.ok")}`,
                 },
               ]);
             }
