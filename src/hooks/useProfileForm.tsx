@@ -5,30 +5,30 @@ import { setName } from "../store/profileSlice";
 import { setAge } from "../store/profileSlice";
 import { setKenNumber } from "../store/profileSlice";
 import { setBirthday } from "../store/profileSlice";
-import { setPassed01 } from "../store/profileSlice";
-import { setPassed02 } from "../store/profileSlice";
-import { setPassed03 } from "../store/profileSlice";
-import { setPassed04 } from "../store/profileSlice";
-import { setPassed05 } from "../store/profileSlice";
-import { setPassed06 } from "../store/profileSlice";
-import { setPassed07 } from "../store/profileSlice";
-import { setPassed08 } from "../store/profileSlice";
-import { setPassed09 } from "../store/profileSlice";
-import { setPassed10 } from "../store/profileSlice";
-import { setPassed11 } from "../store/profileSlice";
-import { setExam01 } from "../store/profileSlice";
-import { setExam02 } from "../store/profileSlice";
-import { setExam03 } from "../store/profileSlice";
-import { setExam04 } from "../store/profileSlice";
-import { setExam05 } from "../store/profileSlice";
-import { setExam06 } from "../store/profileSlice";
-import { setExam07 } from "../store/profileSlice";
-import { setExam08 } from "../store/profileSlice";
-import { setExam09 } from "../store/profileSlice";
-import { setExam10 } from "../store/profileSlice";
-import { setExam11 } from "../store/profileSlice";
 import { setProfileImage } from "../store/profileSlice";
 import { setTask } from "../store/profileSlice";
+import { setpassed0 } from "../store/profileSlice";
+import { setpassed1 } from "../store/profileSlice";
+import { setpassed2 } from "../store/profileSlice";
+import { setpassed3 } from "../store/profileSlice";
+import { setpassed4 } from "../store/profileSlice";
+import { setpassed5 } from "../store/profileSlice";
+import { setpassed6 } from "../store/profileSlice";
+import { setpassed7 } from "../store/profileSlice";
+import { setpassed8 } from "../store/profileSlice";
+import { setpassed9 } from "../store/profileSlice";
+import { setpassed10 } from "../store/profileSlice";
+import { setexam0 } from "../store/profileSlice";
+import { setexam1 } from "../store/profileSlice";
+import { setexam2 } from "../store/profileSlice";
+import { setexam3 } from "../store/profileSlice";
+import { setexam4 } from "../store/profileSlice";
+import { setexam5 } from "../store/profileSlice";
+import { setexam6 } from "../store/profileSlice";
+import { setexam7 } from "../store/profileSlice";
+import { setexam8 } from "../store/profileSlice";
+import { setexam9 } from "../store/profileSlice";
+import { setexam10 } from "../store/profileSlice";
 
 type Hooks = {
   currentName: string;
@@ -38,7 +38,14 @@ type Hooks = {
   currentKenNumber: string;
   onChangeKenNumber: (text: string) => void;
   currentBirthday: number;
-  onChangeBirthday: (data: number) => void;
+  onChangeBirthday: (date: number) => void;
+  onPressSaveTask: () => void;
+  onPressDeleteTask: () => void;
+  currentImage: string;
+  onChangeImage: (text: string) => void;
+  currentTask: string;
+  onChangeTask: (text: string) => void;
+  currentPassedDate00: number;
   currentPassedDate01: number;
   currentPassedDate02: number;
   currentPassedDate03: number;
@@ -49,18 +56,18 @@ type Hooks = {
   currentPassedDate08: number;
   currentPassedDate09: number;
   currentPassedDate10: number;
-  currentPassedDate11: number;
-  onChangePassedDate01: (passed01: number) => void;
-  onChangePassedDate02: (passed02: number) => void;
-  onChangePassedDate03: (passed03: number) => void;
-  onChangePassedDate04: (passed04: number) => void;
-  onChangePassedDate05: (passed05: number) => void;
-  onChangePassedDate06: (passed06: number) => void;
-  onChangePassedDate07: (passed07: number) => void;
-  onChangePassedDate08: (passed08: number) => void;
-  onChangePassedDate09: (passed09: number) => void;
+  onChangePassedDate00: (passed0: number) => void;
+  onChangePassedDate01: (passed1: number) => void;
+  onChangePassedDate02: (passed2: number) => void;
+  onChangePassedDate03: (passed3: number) => void;
+  onChangePassedDate04: (passed4: number) => void;
+  onChangePassedDate05: (passed5: number) => void;
+  onChangePassedDate06: (passed6: number) => void;
+  onChangePassedDate07: (passed7: number) => void;
+  onChangePassedDate08: (passed8: number) => void;
+  onChangePassedDate09: (passed9: number) => void;
   onChangePassedDate10: (passed10: number) => void;
-  onChangePassedDate11: (passed10: number) => void;
+  currentExamDate00: number;
   currentExamDate01: number;
   currentExamDate02: number;
   currentExamDate03: number;
@@ -71,25 +78,18 @@ type Hooks = {
   currentExamDate08: number;
   currentExamDate09: number;
   currentExamDate10: number;
-  currentExamDate11: number;
-  onChangeExamDate01: (exam01: number) => void;
-  onChangeExamDate02: (exam02: number) => void;
-  onChangeExamDate03: (exam03: number) => void;
-  onChangeExamDate04: (exam04: number) => void;
-  onChangeExamDate05: (exam05: number) => void;
-  onChangeExamDate06: (exam06: number) => void;
-  onChangeExamDate07: (exam07: number) => void;
-  onChangeExamDate08: (exam08: number) => void;
-  onChangeExamDate09: (exam09: number) => void;
+  onChangeExamDate00: (exam0: number) => void;
+  onChangeExamDate01: (exam1: number) => void;
+  onChangeExamDate02: (exam2: number) => void;
+  onChangeExamDate03: (exam3: number) => void;
+  onChangeExamDate04: (exam4: number) => void;
+  onChangeExamDate05: (exam5: number) => void;
+  onChangeExamDate06: (exam6: number) => void;
+  onChangeExamDate07: (exam7: number) => void;
+  onChangeExamDate08: (exam8: number) => void;
+  onChangeExamDate09: (exam9: number) => void;
   onChangeExamDate10: (exam10: number) => void;
-  onChangeExamDate11: (exam10: number) => void;
   onPressSave: () => void;
-  onPressSaveTask: () => void;
-  onPressDeleteTask: () => void;
-  currentImage: string;
-  onChangeImage: (text: string) => void;
-  currentTask: string;
-  onChangeTask: (text: string) => void;
 };
 
 export const useProfileForm = (): Hooks => {
@@ -101,30 +101,31 @@ export const useProfileForm = (): Hooks => {
   const age = useSelector((state: RootState) => state.profile.age);
   const kenNumber = useSelector((state: RootState) => state.profile.kenNumber);
   const birthday = useSelector((state: RootState) => state.profile.birthday);
-  const passed01 = useSelector((state: RootState) => state.profile.passed01);
-  const passed02 = useSelector((state: RootState) => state.profile.passed02);
-  const passed03 = useSelector((state: RootState) => state.profile.passed03);
-  const passed04 = useSelector((state: RootState) => state.profile.passed04);
-  const passed05 = useSelector((state: RootState) => state.profile.passed05);
-  const passed06 = useSelector((state: RootState) => state.profile.passed06);
-  const passed07 = useSelector((state: RootState) => state.profile.passed07);
-  const passed08 = useSelector((state: RootState) => state.profile.passed08);
-  const passed09 = useSelector((state: RootState) => state.profile.passed09);
-  const passed10 = useSelector((state: RootState) => state.profile.passed10);
-  const passed11 = useSelector((state: RootState) => state.profile.passed11);
-  const exam01 = useSelector((state: RootState) => state.profile.exam01);
-  const exam02 = useSelector((state: RootState) => state.profile.exam02);
-  const exam03 = useSelector((state: RootState) => state.profile.exam03);
-  const exam04 = useSelector((state: RootState) => state.profile.exam04);
-  const exam05 = useSelector((state: RootState) => state.profile.exam05);
-  const exam06 = useSelector((state: RootState) => state.profile.exam06);
-  const exam07 = useSelector((state: RootState) => state.profile.exam07);
-  const exam08 = useSelector((state: RootState) => state.profile.exam08);
-  const exam09 = useSelector((state: RootState) => state.profile.exam09);
-  const exam10 = useSelector((state: RootState) => state.profile.exam10);
-  const exam11 = useSelector((state: RootState) => state.profile.exam11);
   const image = useSelector((state: RootState) => state.profile.profileImage);
   const task = useSelector((state: RootState) => state.profile.task);
+  const passed0 = useSelector((state: RootState) => state.profile.passed0);
+  const passed1 = useSelector((state: RootState) => state.profile.passed1);
+  const passed2 = useSelector((state: RootState) => state.profile.passed2);
+  const passed3 = useSelector((state: RootState) => state.profile.passed3);
+  const passed4 = useSelector((state: RootState) => state.profile.passed4);
+  const passed5 = useSelector((state: RootState) => state.profile.passed5);
+  const passed6 = useSelector((state: RootState) => state.profile.passed6);
+  const passed7 = useSelector((state: RootState) => state.profile.passed7);
+  const passed8 = useSelector((state: RootState) => state.profile.passed8);
+  const passed9 = useSelector((state: RootState) => state.profile.passed9);
+  const passed10 = useSelector((state: RootState) => state.profile.passed10);
+  const exam0 = useSelector((state: RootState) => state.profile.exam0);
+  const exam1 = useSelector((state: RootState) => state.profile.exam1);
+  const exam2 = useSelector((state: RootState) => state.profile.exam2);
+  const exam3 = useSelector((state: RootState) => state.profile.exam3);
+  const exam4 = useSelector((state: RootState) => state.profile.exam4);
+  const exam5 = useSelector((state: RootState) => state.profile.exam5);
+  const exam6 = useSelector((state: RootState) => state.profile.exam6);
+  const exam7 = useSelector((state: RootState) => state.profile.exam7);
+  const exam8 = useSelector((state: RootState) => state.profile.exam8);
+  const exam9 = useSelector((state: RootState) => state.profile.exam9);
+  const exam10 = useSelector((state: RootState) => state.profile.exam10);
+
   // currentNameは編集中の一時的な氏名です
   // currentNameをフォームに渡して表示します
   // フォームに文字を入力するとsetCurrentNameが呼ばれてcurrentNameを更新します
@@ -133,28 +134,28 @@ export const useProfileForm = (): Hooks => {
   let [currentAge, setCurrentAge] = useState<number>(age);
   const [currentKenNumber, setCurrentKenNumber] = useState<string>(kenNumber);
   const [currentBirthday, setCurrentBirthday] = useState<number>(birthday);
-  const [currentPassedDate01, setCurrentPassedDate01] = useState<number>(passed01);
-  const [currentPassedDate02, setCurrentPassedDate02] = useState<number>(passed02);
-  const [currentPassedDate03, setCurrentPassedDate03] = useState<number>(passed03);
-  const [currentPassedDate04, setCurrentPassedDate04] = useState<number>(passed04);
-  const [currentPassedDate05, setCurrentPassedDate05] = useState<number>(passed05);
-  const [currentPassedDate06, setCurrentPassedDate06] = useState<number>(passed06);
-  const [currentPassedDate07, setCurrentPassedDate07] = useState<number>(passed07);
-  const [currentPassedDate08, setCurrentPassedDate08] = useState<number>(passed08);
-  const [currentPassedDate09, setCurrentPassedDate09] = useState<number>(passed09);
+  const [currentPassedDate00, setCurrentPassedDate00] = useState<number>(passed0);
+  const [currentPassedDate01, setCurrentPassedDate01] = useState<number>(passed1);
+  const [currentPassedDate02, setCurrentPassedDate02] = useState<number>(passed2);
+  const [currentPassedDate03, setCurrentPassedDate03] = useState<number>(passed3);
+  const [currentPassedDate04, setCurrentPassedDate04] = useState<number>(passed4);
+  const [currentPassedDate05, setCurrentPassedDate05] = useState<number>(passed5);
+  const [currentPassedDate06, setCurrentPassedDate06] = useState<number>(passed6);
+  const [currentPassedDate07, setCurrentPassedDate07] = useState<number>(passed7);
+  const [currentPassedDate08, setCurrentPassedDate08] = useState<number>(passed8);
+  const [currentPassedDate09, setCurrentPassedDate09] = useState<number>(passed9);
   const [currentPassedDate10, setCurrentPassedDate10] = useState<number>(passed10);
-  const [currentPassedDate11, setCurrentPassedDate11] = useState<number>(passed11);
-  const [currentExamDate01, setCurrentExamDate01] = useState<number>(exam01);
-  const [currentExamDate02, setCurrentExamDate02] = useState<number>(exam02);
-  const [currentExamDate03, setCurrentExamDate03] = useState<number>(exam03);
-  const [currentExamDate04, setCurrentExamDate04] = useState<number>(exam04);
-  const [currentExamDate05, setCurrentExamDate05] = useState<number>(exam05);
-  const [currentExamDate06, setCurrentExamDate06] = useState<number>(exam06);
-  const [currentExamDate07, setCurrentExamDate07] = useState<number>(exam07);
-  const [currentExamDate08, setCurrentExamDate08] = useState<number>(exam08);
-  const [currentExamDate09, setCurrentExamDate09] = useState<number>(exam09);
+  const [currentExamDate00, setCurrentExamDate00] = useState<number>(exam0);
+  const [currentExamDate01, setCurrentExamDate01] = useState<number>(exam1);
+  const [currentExamDate02, setCurrentExamDate02] = useState<number>(exam2);
+  const [currentExamDate03, setCurrentExamDate03] = useState<number>(exam3);
+  const [currentExamDate04, setCurrentExamDate04] = useState<number>(exam4);
+  const [currentExamDate05, setCurrentExamDate05] = useState<number>(exam5);
+  const [currentExamDate06, setCurrentExamDate06] = useState<number>(exam6);
+  const [currentExamDate07, setCurrentExamDate07] = useState<number>(exam7);
+  const [currentExamDate08, setCurrentExamDate08] = useState<number>(exam8);
+  const [currentExamDate09, setCurrentExamDate09] = useState<number>(exam9);
   const [currentExamDate10, setCurrentExamDate10] = useState<number>(exam10);
-  const [currentExamDate11, setCurrentExamDate11] = useState<number>(exam11);
   const [currentImage, setCurrentImage] = useState<string>(image);
   const [currentTask, setCurrentTask] = useState<string>(task);
 
@@ -168,83 +169,115 @@ export const useProfileForm = (): Hooks => {
   const onChangeKenNumber = (text: string) => {
     setCurrentKenNumber(text);
   };
-  const onChangeBirthday = (data: number) => {
-    setCurrentBirthday(data);
+  const onChangeBirthday = (date: number) => {
+    setCurrentBirthday(date);
   };
-  const onChangePassedDate01 = (passed01: number) => {
-    setCurrentPassedDate01(passed01);
-    setCurrentExamDate02(passed01 + 10000);
-    setCurrentExamDate03(passed01 + 20000);
-    setCurrentExamDate04(passed01 + 30000);
-    setCurrentExamDate05(passed01 + 40000);
-    setCurrentExamDate06(passed01 + 50000);
-    setCurrentExamDate07(passed01 + 60000);
-    setCurrentExamDate08(Math.max(passed01 + 100000, currentBirthday + 460000));
+  const onChangePassedDate00 = (passed0: number) => {
+    setCurrentPassedDate00(passed0);
+    setCurrentExamDate01(passed0 + 10000);
+    setCurrentExamDate02(passed0 + 30000);
+    setCurrentExamDate03(passed0 + 60000);
+    setCurrentExamDate04(passed0 + 100000);
+    setCurrentExamDate05(passed0 + 150000);
+    setCurrentExamDate06(passed0 + 210000);
+    setCurrentExamDate07(Math.max(passed0 + 310000, currentBirthday + 460000));
+    setCurrentExamDate08(passed0 + 160000);
+    setCurrentExamDate09(passed0 + 230000);
   };
-  const onChangePassedDate02 = (passed02: number) => {
-    setCurrentPassedDate02(passed02);
+  const onChangePassedDate01 = (passed1: number) => {
+    setCurrentPassedDate01(passed1);
+    setCurrentExamDate02(passed1 + 20000);
+    setCurrentExamDate03(passed1 + 50000);
+    setCurrentExamDate04(passed1 + 90000);
+    setCurrentExamDate05(passed1 + 140000);
+    setCurrentExamDate06(passed1 + 200000);
+    setCurrentExamDate07(Math.max(passed1 + 300000, currentBirthday + 460000));
+    setCurrentExamDate08(passed1 + 150000);
+    setCurrentExamDate09(passed1 + 220000);
   };
-  const onChangePassedDate03 = (passed03: number) => {
-    setCurrentPassedDate03(passed03);
+  const onChangePassedDate02 = (passed2: number) => {
+    setCurrentPassedDate02(passed2);
+    setCurrentExamDate03(passed2 + 30000);
+    setCurrentExamDate04(passed2 + 70000);
+    setCurrentExamDate05(passed2 + 120000);
+    setCurrentExamDate06(passed2 + 180000);
+    setCurrentExamDate07(Math.max(passed2 + 280000, currentBirthday + 460000));
+    setCurrentExamDate08(passed2 + 130000);
+    setCurrentExamDate09(passed2 + 200000);
   };
-  const onChangePassedDate04 = (passed04: number) => {
-    setCurrentPassedDate04(passed04);
+  const onChangePassedDate03 = (passed3: number) => {
+    setCurrentPassedDate03(passed3);
+    setCurrentExamDate04(passed3 + 40000);
+    setCurrentExamDate05(passed3 + 90000);
+    setCurrentExamDate06(passed3 + 150000);
+    setCurrentExamDate07(Math.max(passed3 + 250000, currentBirthday + 460000));
+    setCurrentExamDate08(passed3 + 100000);
+    setCurrentExamDate09(passed3 + 170000);
   };
-  const onChangePassedDate05 = (passed05: number) => {
-    setCurrentPassedDate05(passed05);
+  const onChangePassedDate04 = (passed4: number) => {
+    setCurrentPassedDate04(passed4);
+    setCurrentExamDate05(passed4 + 50000);
+    setCurrentExamDate06(passed4 + 110000);
+    setCurrentExamDate07(Math.max(passed4 + 210000, currentBirthday + 460000));
+    setCurrentExamDate08(passed4 + 60000);
+    setCurrentExamDate09(passed4 + 130000);
   };
-  const onChangePassedDate06 = (passed06: number) => {
-    setCurrentPassedDate06(passed06);
-    setCurrentExamDate09(passed06 + 10000);
+  const onChangePassedDate05 = (passed5: number) => {
+    setCurrentPassedDate05(passed5);
+    setCurrentExamDate06(passed5 + 60000);
+    setCurrentExamDate07(Math.max(passed5 + 160000, currentBirthday + 460000));
+    setCurrentExamDate08(passed5 + 10000);
+    setCurrentExamDate09(passed5 + 80000);
   };
-  const onChangePassedDate07 = (passed07: number) => {
-    setCurrentPassedDate07(passed07);
-    setCurrentExamDate10(passed07 + 20000);
+  const onChangePassedDate06 = (passed6: number) => {
+    setCurrentPassedDate06(passed6);
+    setCurrentExamDate07(Math.max(passed6 + 100000, currentBirthday + 460000));
+    setCurrentExamDate09(passed6 + 20000);
   };
-  const onChangePassedDate08 = (passed08: number) => {
-    setCurrentPassedDate08(passed08);
+  const onChangePassedDate07 = (passed7: number) => {
+    setCurrentPassedDate07(passed7);
   };
-  const onChangePassedDate09 = (passed09: number) => {
-    setCurrentPassedDate09(passed09);
+  const onChangePassedDate08 = (passed8: number) => {
+    setCurrentPassedDate08(passed8);
+  };
+  const onChangePassedDate09 = (passed9: number) => {
+    setCurrentPassedDate09(passed9);
   };
   const onChangePassedDate10 = (passed10: number) => {
     setCurrentPassedDate10(passed10);
   };
-  const onChangePassedDate11 = (passed11: number) => {
-    setCurrentPassedDate11(passed11);
+  const onChangeExamDate00 = (exam0: number) => {
+    setCurrentExamDate00(exam0);
   };
-  const onChangeExamDate01 = (exam01: number) => {
-    setCurrentExamDate01(exam01);
+  const onChangeExamDate01 = (exam1: number) => {
+    setCurrentExamDate01(exam1);
   };
-  const onChangeExamDate02 = (exam02: number) => {
-    setCurrentExamDate02(exam02);
+  const onChangeExamDate02 = (exam2: number) => {
+    setCurrentExamDate02(exam2);
   };
-  const onChangeExamDate03 = (exam03: number) => {
-    setCurrentExamDate03(exam03);
+  const onChangeExamDate03 = (exam3: number) => {
+    setCurrentExamDate03(exam3);
   };
-  const onChangeExamDate04 = (exam04: number) => {
-    setCurrentExamDate04(exam04);
+  const onChangeExamDate04 = (exam4: number) => {
+    setCurrentExamDate04(exam4);
   };
-  const onChangeExamDate05 = (exam05: number) => {
-    setCurrentExamDate05(exam05);
+  const onChangeExamDate05 = (exam5: number) => {
+    setCurrentExamDate05(exam5);
   };
-  const onChangeExamDate06 = (exam06: number) => {
-    setCurrentExamDate06(exam06);
+  const onChangeExamDate06 = (exam6: number) => {
+    setCurrentExamDate06(exam6);
   };
-  const onChangeExamDate07 = (exam07: number) => {
-    setCurrentExamDate07(exam07);
+  const onChangeExamDate07 = (exam7: number) => {
+    setCurrentExamDate07(exam7);
   };
-  const onChangeExamDate08 = (exam08: number) => {
-    setCurrentExamDate08(exam08);
+  const onChangeExamDate08 = (exam8: number) => {
+    setCurrentExamDate08(exam8);
   };
-  const onChangeExamDate09 = (exam09: number) => {
-    setCurrentExamDate09(exam09);
+  const onChangeExamDate09 = (exam9: number) => {
+    setCurrentExamDate09(exam9);
   };
   const onChangeExamDate10 = (exam10: number) => {
     setCurrentExamDate10(exam10);
-  };
-  const onChangeExamDate11 = (exam11: number) => {
-    setCurrentExamDate11(exam11);
   };
 
   const onChangeImage = (text: string) => {
@@ -257,33 +290,34 @@ export const useProfileForm = (): Hooks => {
 
   // ”登録"ボタンを押したときに呼ばれます
   // dispatchでreduxの状態を更新します
+  // 画面遷移の記述はないが、mメニュー画面へ遷移してしまう
   const onPressSave = () => {
     dispatch(setName(currentName));
     dispatch(setAge(currentAge));
     dispatch(setKenNumber(currentKenNumber));
     dispatch(setBirthday(currentBirthday));
-    dispatch(setPassed01(currentPassedDate01));
-    dispatch(setPassed02(currentPassedDate02));
-    dispatch(setPassed03(currentPassedDate03));
-    dispatch(setPassed04(currentPassedDate04));
-    dispatch(setPassed05(currentPassedDate05));
-    dispatch(setPassed06(currentPassedDate06));
-    dispatch(setPassed07(currentPassedDate07));
-    dispatch(setPassed08(currentPassedDate08));
-    dispatch(setPassed09(currentPassedDate09));
-    dispatch(setPassed10(currentPassedDate10));
-    dispatch(setPassed11(currentPassedDate11));
-    dispatch(setExam01(currentExamDate01));
-    dispatch(setExam02(currentExamDate02));
-    dispatch(setExam03(currentExamDate03));
-    dispatch(setExam04(currentExamDate04));
-    dispatch(setExam05(currentExamDate05));
-    dispatch(setExam06(currentExamDate06));
-    dispatch(setExam07(currentExamDate07));
-    dispatch(setExam08(currentExamDate08));
-    dispatch(setExam09(currentExamDate09));
-    dispatch(setExam10(currentExamDate10));
-    dispatch(setExam11(currentExamDate11));
+    dispatch(setpassed0(currentPassedDate00));
+    dispatch(setpassed1(currentPassedDate01));
+    dispatch(setpassed2(currentPassedDate02));
+    dispatch(setpassed3(currentPassedDate03));
+    dispatch(setpassed4(currentPassedDate04));
+    dispatch(setpassed5(currentPassedDate05));
+    dispatch(setpassed6(currentPassedDate06));
+    dispatch(setpassed7(currentPassedDate07));
+    dispatch(setpassed8(currentPassedDate08));
+    dispatch(setpassed9(currentPassedDate09));
+    dispatch(setpassed10(currentPassedDate10));
+    dispatch(setexam0(currentExamDate00));
+    dispatch(setexam1(currentExamDate01));
+    dispatch(setexam2(currentExamDate02));
+    dispatch(setexam3(currentExamDate03));
+    dispatch(setexam4(currentExamDate04));
+    dispatch(setexam5(currentExamDate05));
+    dispatch(setexam6(currentExamDate06));
+    dispatch(setexam7(currentExamDate07));
+    dispatch(setexam8(currentExamDate08));
+    dispatch(setexam9(currentExamDate09));
+    dispatch(setexam10(currentExamDate10));
     dispatch(setProfileImage(currentImage));
   };
 
@@ -300,6 +334,7 @@ export const useProfileForm = (): Hooks => {
     currentAge,
     currentKenNumber,
     currentBirthday,
+    currentPassedDate00,
     currentPassedDate01,
     currentPassedDate02,
     currentPassedDate03,
@@ -310,7 +345,7 @@ export const useProfileForm = (): Hooks => {
     currentPassedDate08,
     currentPassedDate09,
     currentPassedDate10,
-    currentPassedDate11,
+    currentExamDate00,
     currentExamDate01,
     currentExamDate02,
     currentExamDate03,
@@ -321,13 +356,13 @@ export const useProfileForm = (): Hooks => {
     currentExamDate08,
     currentExamDate09,
     currentExamDate10,
-    currentExamDate11,
     currentImage,
     currentTask,
     onChangeName,
     onChangeAge,
     onChangeKenNumber,
     onChangeBirthday,
+    onChangePassedDate00,
     onChangePassedDate01,
     onChangePassedDate02,
     onChangePassedDate03,
@@ -338,7 +373,7 @@ export const useProfileForm = (): Hooks => {
     onChangePassedDate08,
     onChangePassedDate09,
     onChangePassedDate10,
-    onChangePassedDate11,
+    onChangeExamDate00,
     onChangeExamDate01,
     onChangeExamDate02,
     onChangeExamDate03,
@@ -349,7 +384,6 @@ export const useProfileForm = (): Hooks => {
     onChangeExamDate08,
     onChangeExamDate09,
     onChangeExamDate10,
-    onChangeExamDate11,
     onPressSave,
     onPressSaveTask,
     onPressDeleteTask,

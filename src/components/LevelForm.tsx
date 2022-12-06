@@ -1,20 +1,22 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, Modal, TouchableOpacity } from "react-native";
+import { View, StyleSheet, Text, Modal, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import i18n from "../lang/localization";
 
 type Props = {
   label: string;
-  currentPassedDateText: any;
-  currentExamDateText: any;
-  passedDateValue: any;
-  examDateValue: any;
+  currentPassedDateText: string;
+  currentExamDateText: string;
+  passedDateValue: Date;
+  examDateValue: Date;
   onChangePassed: (event: DateTimePickerEvent, date1?: Date) => void;
   onChangeExam: (event: DateTimePickerEvent, date2?: Date) => void;
   showDatepickerPassed: () => void;
   showDatepickerExam: () => void;
-  visiblePassed: any;
-  visibleExam: any;
+  visiblePassed: boolean;
+  visibleExam: boolean;
+  closePassed: () => void;
+  closeExam: () => void;
   onPressClose: () => void;
 };
 
@@ -28,13 +30,12 @@ export const LevelForm: React.FC<Props> = ({
   onChangeExam,
   visiblePassed,
   visibleExam,
+  closePassed,
+  closeExam,
   showDatepickerPassed,
   showDatepickerExam,
   onPressClose,
 }) => {
-  const [show01, setShow01] = useState<boolean>(false);
-  const [show02, setShow02] = useState<boolean>(false);
-
   return (
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>
@@ -45,27 +46,39 @@ export const LevelForm: React.FC<Props> = ({
             <TouchableOpacity style={styles.button} onPress={showDatepickerPassed}>
               <Text style={styles.buttonText}>{i18n.t("ProfileEdit.setting")}</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{currentPassedDateText}</Text>
+            <View style={styles.dayTextWrap}>
+              <Text style={styles.dayText}>{currentPassedDateText}</Text>
+            </View>
           </View>
           <Modal
             animationType="fade"
             visible={visiblePassed}
             transparent={true}
-            onRequestClose={() => {
-              setShow01(false);
-            }}
+            onRequestClose={closePassed}
           >
-            <View style={styles.modalView}>
+            {Platform.OS === "ios" && (
+              <View style={styles.modalView}>
+                <DateTimePicker
+                  locale={i18n.t("Lang.lang")}
+                  value={passedDateValue}
+                  mode="date"
+                  display={"spinner"}
+                  onChange={onChangePassed}
+                />
+                <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
+                  <Text style={styles.textStyle}>×</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {Platform.OS === "android" && (
               <DateTimePicker
+                locale={i18n.t("Lang.lang")}
                 value={passedDateValue}
                 mode="date"
-                display={"spinner"}
+                display={"default"}
                 onChange={onChangePassed}
               />
-              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
+            )}
           </Modal>
         </View>
       </View>
@@ -76,27 +89,39 @@ export const LevelForm: React.FC<Props> = ({
             <TouchableOpacity style={styles.button} onPress={showDatepickerExam}>
               <Text style={styles.buttonText}>{i18n.t("ProfileEdit.setting")}</Text>
             </TouchableOpacity>
-            <Text style={styles.dayText}>{currentExamDateText}</Text>
+            <View style={styles.dayTextWrap}>
+              <Text style={styles.dayText}>{currentExamDateText}</Text>
+            </View>
           </View>
           <Modal
             animationType="fade"
             visible={visibleExam}
             transparent={true}
-            onRequestClose={() => {
-              setShow02(false);
-            }}
+            onRequestClose={closeExam}
           >
-            <View style={styles.modalView}>
+            {Platform.OS === "ios" && (
+              <View style={styles.modalView}>
+                <DateTimePicker
+                  locale={i18n.t("Lang.lang")}
+                  value={examDateValue}
+                  mode="date"
+                  display={"spinner"}
+                  onChange={onChangeExam}
+                />
+                <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
+                  <Text style={styles.textStyle}>×</Text>
+                </TouchableOpacity>
+              </View>
+            )}
+            {Platform.OS === "android" && (
               <DateTimePicker
-                value={examDateValue}
+                locale={i18n.t("Lang.lang")}
+                value={passedDateValue}
                 mode="date"
-                display={"spinner"}
+                display={"default"}
                 onChange={onChangeExam}
               />
-              <TouchableOpacity style={styles.modalButton} onPress={onPressClose}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
+            )}
           </Modal>
         </View>
       </View>
@@ -126,6 +151,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     marginBottom: 30,
+    width: 200,
     height: 25,
     borderColor: "#aaa",
     color: "#000",
@@ -147,7 +173,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "40%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
@@ -164,17 +190,20 @@ const styles = StyleSheet.create({
     color: "#000",
     fontWeight: "bold",
     textAlign: "center",
+    elevation: 999,
   },
-  dayText: {
-    fontSize: 18,
+  dayTextWrap: {
     flex: 1,
     borderWidth: 1,
     backgroundColor: "#fff",
     borderColor: "#aaa",
     paddingLeft: 5,
-    paddingRight: 145,
+    width: 145,
     marginLeft: 10,
     height: 40,
+  },
+  dayText: {
+    fontSize: 18,
   },
   buttonContainer: {
     alignItems: "center",

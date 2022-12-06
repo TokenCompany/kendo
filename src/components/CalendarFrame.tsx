@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
-import { View, StyleSheet, Text, TouchableOpacity, Modal } from "react-native";
+import { View, StyleSheet, Text, TouchableOpacity, Modal, Platform } from "react-native";
 import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
+import i18n from "../lang/localization";
 type Props = {
   onPressDay: (day: string) => void;
+  onChangeDay: (day: string) => void;
 };
 
-export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
+export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
-  const [allReservations, setAllReservations] = useState(reservations);
-  const [currentDate, setCurrentDate] = useState<string>(dayjs());
+  const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
-  const onChangeDate = (Date) => {
-    setCurrentDate(Date);
-  };
   const showDatepicker = () => {
     setShow(true);
   };
@@ -24,28 +22,46 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
   const hideDatePicker = () => {
     setShow(false);
   };
-  const onPressArrowLeft = () => {
-    setCurrentDate(currentDate.add(-1, "month"));
-  };
-  const onPressArrowRight = () => {
-    setCurrentDate(currentDate.add(1, "month"));
-  };
 
-  class CalendarHeader extends React.PureComponent {
-    render() {
-      return (
-        <View>
-          <View style={styles.dayInput}>
-            <TouchableOpacity onPress={onPressArrowLeft}>
-              <Text>＜</Text>
-            </TouchableOpacity>
-            <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={onPressArrowRight}>
-              <Text>＞</Text>
-            </TouchableOpacity>
+  const [showPickerAndroid, setShowPickerAndroid] = useState<boolean>();
+  const onPressShowPickerAndroid = () => {
+    setShowPickerAndroid(true)
+  }
+
+  return (
+    <View style={styles.container}>
+      {Platform.OS === "android" && (
+        <View style={styles.dayInput}>
+          <TouchableOpacity style={styles.dateButton} onPress={onPressShowPickerAndroid}>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+      {Platform.OS === "ios" && (
+        <View style={styles.dayInput}>
+          <TouchableOpacity style={styles.dateButton} onPress={showDatepicker}>
+            <Text style={styles.buttonText}>{currentDate.format("YYYY-MM-DD")}</Text>
+          </TouchableOpacity>
+        </View>
+      )}
+        {Platform.OS === "android" && (
+          <View>
+            {showPickerAndroid && (
+            <DateTimePicker
+              locale={i18n.t("Lang.lang")}
+              value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
+              mode="date"
+              display={"default"}
+              onChange={(event, date) => {
+                setShowPickerAndroid(false)
+                setCurrentDate(dayjs(date));
+                onChangeDay(dayjs(date).format("YYYY-MM-DD").toString())
+              }}
+            />
+            )}
           </View>
+        )}
+        {Platform.OS === "ios" && (
           <Modal
             animationType="fade"
             visible={show}
@@ -56,13 +72,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
           >
             <View style={styles.modalView}>
               <DateTimePicker
-                value={dayjs(currentDate.toString(), "YYYYMMDD").toDate()}
+                locale={i18n.t("Lang.lang")}
+                value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
                 mode="date"
                 display={"spinner"}
                 onChange={(event, date) => {
                   if (date) {
-                    const Date = Number(dayjs(date).format("YYYYMMDD"));
-                    onChangeDate(Date);
+                    setCurrentDate(dayjs(date));
+                    onChangeDay(dayjs(date).format("YYYY-MM-DD").toString())
                   }
                 }}
               />
@@ -71,15 +88,8 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
               </TouchableOpacity>
             </View>
           </Modal>
-        </View>
-      );
-    }
-  }
-
-  return (
-    <View style={styles.container}>
+        )}
       <Calendar
-        // customHeader={CalendarHeader}
         // 日付を選択したときの挙動。
         theme={{
           arrowColor: "#A53010",
@@ -113,8 +123,9 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
             },
           },
         }}
-        monthFormat={"yyyy年 M月"}
+        monthFormat={`yyyy${i18n.t("ScheduleScreen.year")}MM${i18n.t("ScheduleScreen.monthBlank")}`}
         current={currentDate.format("YYYY-MM-DD")}
+        key={currentDate.format("YYYY-MM-DD")}
         onPressArrowLeft={(subtractMonth) => {
           subtractMonth();
           setCurrentDate(currentDate.add(-1, "month"));
@@ -131,7 +142,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in allReservations ? styles.buttonSelected : styles.button}
+              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
             >
               <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
             </TouchableOpacity>
@@ -141,17 +152,19 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay }: Props) => {
     </View>
   );
 };
+
+const JapaneseHolidays = require('japanese-holidays');
 const dayTextStyle = (date: DateObject, currentDate: DateObject) =>
+
   StyleSheet.create({
     dayText: {
       fontSize: 16,
       backgroundColor: "transparent",
       color:
         date.month !== currentDate.month() + 1
-          ? "gray"
-          : dayjs(date.dateString).day() === 0
-          ? "red"
-          : dayjs(date.dateString).day() === 6
+          ? "gray" : dayjs(date.dateString).day() === 0
+          ? "red" : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
+          ? "red" : dayjs(date.dateString).day() === 6
           ? "blue"
           : "black",
     },
@@ -193,7 +206,12 @@ LocaleConfig.defaultLocale = "jp";
 
 const styles = StyleSheet.create({
   container: {
+    position:"relative",
     margin: 10,
+  },
+  dateButton:{
+    paddingHorizontal:30,
+    height:40,
   },
   buttonSelected: {
     height: 34,
@@ -202,7 +220,6 @@ const styles = StyleSheet.create({
     padding: 5,
     paddingLeft: 4,
     backgroundColor: "#fff",
-    borderRadius: "50%",
   },
   button: {
     marginBottom: 6,
@@ -213,31 +230,24 @@ const styles = StyleSheet.create({
   },
   dayInput: {
     flex: 1,
-    flexDirection: "row",
-    marginTop: 10,
-    marginBottom: 30,
-    height: 25,
-    borderColor: "#aaa",
+    alignItems:"center",
+    justifyContent:"center",
+    borderColor: "#000",
     color: "#000",
-    fontWeight: "600",
     fontSize: 20,
-  },
-  dateButton: {
-    height: 40,
-    backgroundColor: "#a53010",
-    borderRadius: 10,
-    alignItems: "center",
-    justifyContent: "center",
-    paddingHorizontal: 10,
+    position:"absolute",
+    zIndex:2,
+    left:"30%",
+    top:"2%",
   },
   buttonText: {
-    fontSize: 16,
-    color: "#fff",
+    fontSize: 20,
+    color: "transparent",
   },
   modalView: {
     position: "relative",
-    top: "40%",
-    backgroundColor: "#fff",
+    top: "30%",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
@@ -265,5 +275,10 @@ const styles = StyleSheet.create({
     paddingRight: 120,
     marginLeft: 10,
     height: 40,
+  },
+  arrowButton:{
+    fontSize:18,
+    fontWeight:"bold",
+    color:"red",
   },
 });

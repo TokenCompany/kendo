@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } from "react-native";
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -15,84 +15,140 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
   });
+
   const [modalVisible, setModalVisible] = useState(false);
-  const onPress = () => {
+  const [onPressJudge, setOnPressJudge] = useState(false);
+
+  let time: any;
+  const onPress = (time: any) => {
+    setOnPressJudge(true);
     setModalVisible(true);
-    setTimeout(() => {
-      hiddenModal();
+
+    time = setTimeout(() => {
+      onPressClose(time);
     }, 5000);
   };
 
-  const hiddenModal = () => {
-    setModalVisible(false);
-    navigation.navigate("Menu");
-  };
+  useEffect(() => {
+    if (!modalVisible && onPressJudge) {
+      navigation.navigate("Menu");
+    }
+  }, [modalVisible, navigation, onPressJudge]);
 
-  const onPressClose = () => {
+  const onPressClose = (time?: any) => {
     setModalVisible(false);
-    navigation.navigate("Menu");
+    clearTimeout(time);
   };
 
   const initText = useSelector((state: RootState) => state.initText.initText);
   const splitText = initText.split("");
   const task = useSelector((state: RootState) => state.profile.task);
+  interface keyType {
+    [key: string]: Function;
+  }
+  // 審査日オブジェクト抽出
+  const examObject1 = () => {
 
-  // 段数を表示
-  const renderLevel = () => {
-    if (profile.passed01 === 19900000) {
-      return <Text>初段</Text>;
-    } else if (profile.passed02 === 19900000) {
-      return <Text>弐段</Text>;
-    } else if (profile.passed03 === 19900000) {
-      return <Text>参段</Text>;
-    } else if (profile.passed04 === 19900000) {
-      return <Text>四段</Text>;
-    } else if (profile.passed05 === 19900000) {
-      return <Text>五段</Text>;
-    } else if (profile.passed06 === 19900000) {
-      return <Text>六段</Text>;
-    } else if (profile.passed07 === 19900000) {
-      return <Text>七段</Text>;
-    } else if (profile.passed08 === 19900000) {
-      return <Text>八段</Text>;
-    } else if (profile.passed09 === 19900000) {
-      return <Text>錬士</Text>;
-    } else if (profile.passed10 === 19900000) {
-      return <Text>教士</Text>;
-    }
+    let object = {} as keyType;
+    Object.keys(profile).forEach((key) => {
+      if (key.indexOf("exam") !== -1) {
+        object[key] = profile[key];
+      }
+    });
+    return object;
   };
+  const onlyExamObject = examObject1();
 
-  // 審査日までの残り日数
-  let profileExam = () => {
-    if (profile.passed01 === 19900000) {
-      return profile.exam01;
-    } else if (profile.passed02 === 19900000) {
-      return profile.exam02;
-    } else if (profile.passed03 === 19900000) {
-      return profile.exam03;
-    } else if (profile.passed04 === 19900000) {
-      return profile.exam04;
-    } else if (profile.passed05 === 19900000) {
-      return profile.exam05;
-    } else if (profile.passed06 === 19900000) {
-      return profile.exam06;
-    } else if (profile.passed07 === 19900000) {
-      return profile.exam07;
-    } else if (profile.passed08 === 19900000) {
-      return profile.exam08;
-    } else if (profile.passed09 === 19900000) {
-      return profile.exam09;
-    } else if (profile.passed10 === 19900000) {
-      return profile.exam10;
-    }
+  // 審査日が今日以降のものを抽出
+  const examObject2 = () => {
+    let object = {} as keyType;
+    Object.keys(onlyExamObject).some((key) => {
+      object[key] = profile[key];
+      if (profile[key] >= dayjs().format("YYYYMMDD").toString()) {
+        return true
+      }
+    });
+    return object;
   };
+  const onlyExamSchedule = examObject2();
 
-  const renderExamDate = (exam: number) => {
-    const examDate = exam;
-    const today = Number(dayjs().format("YYYYMMDD"));
-    let diffDate = (examDate - today) / 27.3972603;
-    let diffRoundDate = Math.round(diffDate);
-    return diffRoundDate;
+  // 合格済の中で最も後のものを抽出
+  const passedObject3 = () => {
+    let object = {} as keyType;
+    Object.keys(onlyExamSchedule).filter((key ,index) => {
+      if (index == Object.keys(onlyExamSchedule).length - 1) {
+        object[key] = onlyExamSchedule[key];
+      }
+    });
+    return object;
+  };
+  const onlyExamScheduleLast = passedObject3()
+
+
+
+    // 段数を表示
+    const renderLevel = () => {
+      if(Object.keys(onlyExamSchedule).length <= 10){
+        if (Object.keys(onlyExamScheduleLast) === ["exam0"]) {
+          return i18n.t("ProfileEdit.stage01");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam1") {
+          return i18n.t("ProfileEdit.stage02");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam2") {
+          return i18n.t("ProfileEdit.stage03");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam3") {
+          return i18n.t("ProfileEdit.stage04");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam4") {
+          return i18n.t("ProfileEdit.stage05");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam5") {
+          return i18n.t("ProfileEdit.stage06");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam6") {
+          return i18n.t("ProfileEdit.stage07");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam7") {
+          return i18n.t("ProfileEdit.stage08");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam8") {
+          return i18n.t("ProfileEdit.stage09");
+        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam9") {
+          return i18n.t("ProfileEdit.stage010");
+        } else {
+          return i18n.t("ProfileEdit.stage11");
+        }
+      } else {
+        return i18n.t("ProfileEdit.stage01");
+      }
+    };
+
+    // 審査日までの残り日数
+    let profileExam = () => {
+      if (profile.exam0 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam0;
+      } else if (profile.exam1 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam1;
+      } else if (profile.exam2 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam2;
+      } else if (profile.exam3 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam3;
+      } else if (profile.exam4 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam4;
+      } else if (profile.exam5 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam5;
+      } else if (profile.exam6 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam6;
+      } else if (profile.exam7 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam7;
+      } else if (profile.exam8 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam8;
+      } else if (profile.exam9 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam9;
+      } else if (profile.exam10 >= Number(dayjs().format("YYYYMMDD"))) {
+        return profile.exam10;
+      }
+    };
+
+  const renderExamDate = (exam?: number) => {
+    const today = dayjs().format("YYYYMMDD");
+    const examDay = String(exam);
+    const diffDate = dayjs(examDay).diff(today, "day");
+    return diffDate;
   };
 
   return (
@@ -129,7 +185,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
                 {i18n.t("Modal.stage")}
               </Text>
               <Text style={styles.modalText}>
-                {renderExamDate(profileExam())}
+                {renderExamDate(profileExam()) >= 0 ? renderExamDate(profileExam()) : "-"}
                 {i18n.t("Modal.day")}
               </Text>
               <TouchableOpacity
@@ -186,9 +242,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
   },
   buttonClose: {
     backgroundColor: "#fff",

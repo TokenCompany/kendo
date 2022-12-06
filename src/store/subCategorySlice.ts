@@ -1,6 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
-
+import dayjs from "dayjs";
 //
 // 練習内容項目設定の小項目に関わるredux
 //
@@ -11,19 +11,31 @@ export interface SubCategoryState {
   kihonUchiSubCategories: subCategory[];
   oujiwazaSubCategories: subCategory[];
   jigeikoSubCategories: subCategory[];
-  teacherSubCategories: subCategory[];
+  teacherSubCategories: teacherSubcategory[];
   kakarigeikoSubCategories: subCategory[];
-  targetSubCategories: subCategory[];
-}
-
-interface TotalResults {
-  [year: string]: number;
+  targetSubCategories: TargetCategories;
 }
 
 interface subCategory {
   id: string;
   text: string;
-  // totalResults:TotalResults;
+}
+
+interface teacherSubcategory {
+  id: string;
+  text: string;
+}
+
+// 年間目標のtype宣言
+interface TargetCategory {
+  id: string;
+  text: string;
+  goal: number;
+  result: number;
+}
+
+interface TargetCategories {
+  [year: string]: TargetCategory[];
 }
 
 // デフォルトの値
@@ -36,7 +48,7 @@ const initialState: SubCategoryState = {
   jigeikoSubCategories: [],
   teacherSubCategories: [],
   kakarigeikoSubCategories: [],
-  targetSubCategories: [],
+  targetSubCategories: {},
 };
 
 type SubCategoryPayload = {
@@ -44,11 +56,17 @@ type SubCategoryPayload = {
   id: string;
   text: string;
 };
+type TargetSubCategoryPayload = {
+  year: string;
+  targets: TargetCategory[];
+};
 
-type deleteSubCategory = {
+type DeleteSubCategory = {
   categoryName: string;
   id: string;
 };
+
+const currentYear = dayjs().year()
 
 export const counterSlice = createSlice({
   name: "subCategory",
@@ -56,22 +74,40 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―のstring配列
     addSubCategory: (state, action: PayloadAction<SubCategoryPayload>) => {
-      state[action.payload.mainCategoryName as keyof SubCategoryState].push({
-        id: action.payload.id,
-        text: action.payload.text,
-      });
+      let newSubcategory = [
+        ...state[action.payload.mainCategoryName as keyof SubCategoryPayload],
+        {
+          id: action.payload.id,
+          text: action.payload.text,
+        },
+      ];
+      state[action.payload.mainCategoryName as keyof SubCategoryPayload] = newSubcategory;
     },
-    deleteSubCategory: (state, action: PayloadAction<deleteSubCategory>) => {
+    deleteSubCategory: (state, action: PayloadAction<DeleteSubCategory>) => {
       const newArray = state[action.payload.categoryName as keyof SubCategoryState].filter(
-        (item) => item.id !== action.payload.id,
+        (item: any) => item.id !== action.payload.id,
       );
       state[action.payload.categoryName as keyof SubCategoryState] = newArray;
     },
+    addTargetCategory: (state, action: PayloadAction<TargetSubCategoryPayload>) => {
+      state.targetSubCategories[action.payload.year as keyof TargetSubCategoryPayload] =
+        action.payload.targets;
+    },
+    deleteTargetCategory: (state, action) => {
+      if (currentYear in state.targetSubCategories) {
+        const newArray = state.targetSubCategories[currentYear].filter(
+          (item: any) => item.id !== action.payload.id,
+        );
+        state.targetSubCategories[currentYear] = newArray;
+      }
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
 export const { addSubCategory } = counterSlice.actions;
 export const { deleteSubCategory } = counterSlice.actions;
+export const { deleteTargetCategory } = counterSlice.actions;
+export const { addTargetCategory } = counterSlice.actions;
 
 export default counterSlice.reducer;

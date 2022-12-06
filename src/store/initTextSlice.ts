@@ -7,11 +7,11 @@ export interface InitTextState {
 
 // デフォルトの値
 const initialState: InitTextState = {
-  initText: "",
+  initText: "八段への道",
 };
 
 export const counterSlice = createSlice({
-  name: "InitText",
+  name: "initText",
   initialState,
   reducers: {
     setInitText: (state, action: PayloadAction<string>) => {

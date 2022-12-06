@@ -1,6 +1,6 @@
 {
   "ScheduleScreen": {
-    "title": "Schedule",
+    "title": "稽古予定",
     "time": "時間",
     "place": "稽古場所",
     "entry": "登録",
@@ -24,9 +24,10 @@
     "thu": "木",
     "fri": "金",
     "sat": "土",
-    "year": "年",
-    "month": "月",
-    "day": "曜日"
+    "year": ".",
+    "month": ".",
+    "monthBlank": "",
+    "day": ""
   },
   "History": {
     "title": "稽古実績",
@@ -37,9 +38,10 @@
   },
   "Setting": {
     "title": "設定",
-    "name": "名前",
-    "birthday": "誕生日設定",
+    "name": "氏名",
+    "birthday": "生年月日",
     "age": "年齢",
+    "task": "課題",
     "number": "全剣連番号",
     "task": "課題",
     "button01": "プロフィール編集",
@@ -53,6 +55,7 @@
     "year": "年",
     "month": "月",
     "day": "日",
+    "old": "歳",
     "remain": "残り",
     "intoName": "名前が入ります",
     "intoBirthday": "生年月日が入ります",
@@ -93,6 +96,9 @@
     "birthday": "誕生日設定",
     "age": "年齢",
     "number": "全剣連番号",
+    "howToSetting": "設定方法を選択してください",
+    "album": "アルバムから選択",
+    "camera": "カメラ撮影",
     "stage01": "初段",
     "stage02": "弐段",
     "stage03": "参段",
@@ -110,7 +116,8 @@
     "setting": "設定",
     "year": "年",
     "month": "月",
-    "day": "日"
+    "day": "日",
+    "alert1": "この日付は設定できません"
   },
   "TrainingEdit": {
     "title": "練習内容項目編集",
@@ -140,5 +147,8 @@
     "myTask": "自分の課題",
     "delete": "消去",
     "setting": "設定"
+  },
+  "Lang": {
+    "lang": "en"
   }
 }

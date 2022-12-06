@@ -11,6 +11,8 @@ export type MainStackParamList = {
   InitEdit: undefined;
   ProfileEdit: undefined;
   TrainingEdit: undefined;
+  Language: undefined;
+  Target: undefined;
   SubCategory: { subCategoryType: string };
-  ResultEdit: undefined;
+  ResultEdit: { dateText: string; date: string; place: string };
 };
