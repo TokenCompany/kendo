@@ -151,6 +151,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const onSelectItem = (itemIndex: number) => {
     if(itemIndex === items.length -1) {
       setPlaceInputSelected(true);
+    } else {
+      setPlaceInputSelected(false);
     }
     if (value !== "") {
       let newResults = { ...results };
@@ -159,6 +161,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       }
       if (newResults["placeSubCategories"][itemIndex]) {
         newResults["placeSubCategories"][itemIndex]["result"] = true;
+
       }else{
         newResults["placeSubCategories"].push({
           id: "new",
@@ -257,16 +260,13 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   setOpen={setOpen}
                   setValue={setValue}
                   setItems={setItems}
-                  max={6}
-                  maxHeight={300}
                   labelStyle={{
                     fontSize: 18,
                     textAlign: "center",
                   }}
                   containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                   style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                  dropDownContainerStyle={{ backgroundColor: "red" }}
-                  itemStyle={{zIndex:9999}}
+                  dropDownContainerStyle={{ backgroundColor: "#fff", height:100 }}
                   onSelectItem={(item) => {
                     onSelectItem(items.indexOf(item))
                   }}
@@ -288,8 +288,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           }
                         }
                         setResults(newResults)
-                        console.log(results);
-
                       }}
                     />
                   )}
@@ -399,5 +397,6 @@ const styles = StyleSheet.create({
   },
   inputpicker: {
     flexGrow: 1,
+    marginBottom:100,
   },
 });
