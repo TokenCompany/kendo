@@ -40,6 +40,7 @@ const styles = StyleSheet.create({
   containerText:{
     color:"#fff",
     fontWeight: "600",
+    fontSize:18,
   },
   category: {
     height: 25,
