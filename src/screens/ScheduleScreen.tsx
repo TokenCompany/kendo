@@ -79,7 +79,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     setEndShow(true);
   };
 
-  const [items, setItems] = useState(initItems);
+  const [items, setItems] = useState<any>(initItems);
   const onChangeValue = () => {
     setPlace(value);
     if (value !== showForm.toString()) {
@@ -114,7 +114,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
 
     dispatch(
       bookReservationItem({
-        date: selectedDate,
+        date: selectedDate!,
         startTime: startTime,
         endTime: endTime,
         place: place,
@@ -126,10 +126,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     setShowSelectedDate(false);
     dispatch(
       deleteReservationItem({
-        date: selectedDate,
+        date: selectedDate!,
       }),
     );
   };
+
   const scheduleNotificationAsync = async () => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
@@ -139,7 +140,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
-    let date = selectedDate.split("-");
+    let date = selectedDate!.split("-");
     let alartDate = Number(date[2]) - 1;
     let alartHour = 12;
     let alartMinutes = 0;
@@ -161,6 +162,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
+      console.log(notifications[i].trigger);
+
       let identifier = notifications[i].identifier;
       if (channelId === selectedDate) {
         Notifications.cancelScheduledNotificationAsync(identifier);
@@ -227,7 +230,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                           display={"default"}
                           onChange={(event, date1) => {
                             setShowStartTimePicker(false);
-                            setStartTime(date1.toString());
+                            setStartTime(date1!.toString());
                           }}
                         />
                       )}
@@ -257,7 +260,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                             mode="time"
                             display={"spinner"}
                             onChange={(event, date2) => {
-                              setStartTime(date2.toString());
+                              setStartTime(date2!.toString());
                             }}
                           />
                           <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
@@ -288,7 +291,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                           display={"default"}
                           onChange={(event, date2) => {
                             setShowEndTimePicker(false);
-                            setEndTime(date2.toString());
+                            setEndTime(date2!.toString());
                           }}
                         />
                       )}
@@ -318,7 +321,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                             mode="time"
                             display={"spinner"}
                             onChange={(event, date2) => {
-                              setEndTime(date2.toString());
+                              setEndTime(date2!.toString());
                             }}
                           />
                           <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
@@ -354,12 +357,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 }}
                 containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                 style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                dropDownStyle={{ backgroundColor: "#F4F4F5" }}
+                dropDownContainerStyle={{ backgroundColor: "#F4F4F5" }}
                 placeholderStyle={{
                   textAlign: "center",
                   fontSize: 20,
                 }}
-                activeLabelStyle={{ color: "red" }}
               />
             </View>
           </View>

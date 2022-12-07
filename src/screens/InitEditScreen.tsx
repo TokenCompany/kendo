@@ -19,7 +19,7 @@ export const InitEditScreen: React.FC<Props> = ({}: Props) => {
   const { currentText, onPressSave } = useInitText();
   const initTitle = currentText ? currentText : "八段への道";
   const [Selected, setSelected] = useState(initTitle);
-  const renderItem = ({ item }) => {
+  const renderItem = ({ item }:any) => {
     const SelectedStyle = item === Selected ? styles.selectedStyle : styles.notSelectedStyle;
 
     return (

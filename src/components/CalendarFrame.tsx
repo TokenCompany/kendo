@@ -142,9 +142,9 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
+              style={date!.dateString in reservations ? styles.buttonSelected : styles.button}
             >
-              <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
+              <Text style={dayTextStyle(date, currentDate.toDate()).dayText}> {date!.day}</Text>
             </TouchableOpacity>
           );
         }}
@@ -154,14 +154,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
 };
 
 const JapaneseHolidays = require('japanese-holidays');
-const dayTextStyle = (date: DateObject, currentDate: DateObject) =>
+const dayTextStyle = (date: any, currentDate: Date) =>
 
   StyleSheet.create({
     dayText: {
       fontSize: 16,
       backgroundColor: "transparent",
       color:
-        date.month !== currentDate.month() + 1
+        date.month !== dayjs(currentDate).month() + 1
           ? "gray" : dayjs(date.dateString).day() === 0
           ? "red" : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
           ? "red" : dayjs(date.dateString).day() === 6

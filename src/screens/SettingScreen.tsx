@@ -12,7 +12,7 @@ import * as Notifications from "expo-notifications";
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const profile = useSelector((state: RootState) => state.profile);
+  const profile: any = useSelector((state: RootState) => state.profile);
 
   const onPressTask = () => {
     navigation.navigate("TaskEdit");
@@ -89,8 +89,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   }
 
   // 合格日オブジェクト抽出
+  interface keyType {
+    [key: string]: Function;
+  }
   const passedObject1 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(profile).forEach((key) => {
       if (key.indexOf("passed") !== -1) {
         object[key] = profile[key];
@@ -102,7 +105,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格日が記載されているもののみ抽出
   const passedObject2 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyPassedObject).filter((key) => {
       if (profile[key] !== 19900000) {
         object[key] = profile[key];
@@ -114,7 +117,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済の中で最も後のものを抽出
   const passedObject3 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyPassed).filter((key ,index) => {
       if (index == Object.keys(onlyPassed).length - 1) {
         object[key] = onlyPassed[key];
@@ -125,7 +128,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onlyPassedLast = passedObject3()
 
   const passedObject4 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyPassedObject).some((key) => {
       object[key] = onlyPassedObject[key];
       if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0){

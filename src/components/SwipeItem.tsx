@@ -10,7 +10,7 @@ type Props = {
   mainCategoryName: string;
 };
 
-export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => {
+export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories, mainCategoryName }) => {
   return (
     <SwipeListView
       data={subCategories}
@@ -20,8 +20,9 @@ export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => 
         </View>
       )}
       renderHiddenItem={(data, rowMap) => {
+
         return (
-          <TouchableOpacity style={styles.delete} onPress={() => onPressDelete(data.item.id)}>
+          <TouchableOpacity style={styles.delete} onPress={() => onPressDelete(data.item.id, data.item.mainCategoryName)}>
             <Text>{i18n.t("TaskEdit.delete")}</Text>
           </TouchableOpacity>
         );

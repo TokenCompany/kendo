@@ -11,7 +11,7 @@ import dayjs from "dayjs";
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
 export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const profile = useSelector((state: RootState) => state.profile);
+  const profile: any = useSelector((state: RootState) => state.profile);
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
   });

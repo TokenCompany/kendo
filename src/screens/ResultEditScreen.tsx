@@ -146,7 +146,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
-    let newAllResults = { ...allResults };
+    let newAllResults: any = { ...allResults };
     newAllResults["resultsSum"][mainCategory] = results;
     setAllResults(newAllResults);
   };

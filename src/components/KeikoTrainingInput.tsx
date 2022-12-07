@@ -44,7 +44,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   onChangeSendInput,
 }) => {
   // 既に実績を入力した場合にvaluesに表示をする
-  const resultsData = useSelector((state: RootState) => state.results);
+  const resultsData: any = useSelector((state: RootState) => state.results);
   let initValues: string[] = [];
   if (resultsDate in resultsData) {
     for (const result of resultsData[resultsDate][textTrainingCategories]) {
@@ -63,7 +63,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
-  const subCategories = useSelector((state: RootState) => state.subCategory);
+  const subCategories: any = useSelector((state: RootState) => state.subCategory);
   // reduxからの情報を複製し、設定小項目を表示するために活用
   const initResults = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
@@ -145,7 +145,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       value: place.text,
     });
   }
-  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm });
+  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm.toString() });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
   const [items, setItems] = useState(initItems);
@@ -266,7 +266,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                   containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                   style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
                   dropDownContainerStyle={{ backgroundColor: "#fff", height:100 }}
-                  onSelectItem={(item) => {
+                  onSelectItem={(item: any) => {
                     onSelectItem(items.indexOf(item))
                   }}
                   placeholder={place}
