@@ -4,6 +4,7 @@ import { Checkbox } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
+import i18n from "../lang/localization";
 
 type Props = {
   textTraining: string;
@@ -103,9 +104,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     specialCategory = false;
   }
 
-  if (textTraining === "稽古場所") {
+  if (textTraining === `${i18n.t("TrainingEdit.training01")}`) {
     input3 = true;
-  } else if (textTraining === "地稽古" || textTraining === "掛稽古") {
+  } else if (textTraining === `${i18n.t("TrainingEdit.training06")}` || textTraining === `${i18n.t("TrainingEdit.training08")}`) {
     input2 = true;
   } else {
     input1 = true;
@@ -144,9 +145,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       value: place.text,
     });
   }
-  initItems.push({ label: "直接入力", value: showForm });
+  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm });
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string>("場所を選択");
+  const [value, setValue] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
   const [items, setItems] = useState(initItems);
   const onSelectItem = (itemIndex: number) => {
     if(itemIndex === items.length -1) {
@@ -178,8 +179,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     setPlace(value.toString());
     onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
   }
-
-
 
   return (
     <View style={styles.inputWrap}>
@@ -228,7 +227,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           }}
                         />
                       </View>
-                      <Text style={styles.inputText}>あり</Text>
+                      <Text style={styles.inputText}>{i18n.t("ResultEdit.ari")}</Text>
                     </View>
                   )}
                   {!!checked2 &&
