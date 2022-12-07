@@ -210,7 +210,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 </View>
               </View>
               <View style={styles.alartContainerInner}>
-                <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.editAlertTimes")}</Text>
+                <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.editAlertTime")}</Text>
                 <View style={styles.boxInputTime}>
                   <View style={styles.boxInputTimeFlex}>
                     <View style={styles.timeStart}>
