@@ -90,7 +90,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   // AppState.currentStateで現在の状態を取得できる
   const [appState, setAppState] = useState(AppState.currentState);
 
-  const _handleAppStateChange = (nextAppState: string) => {
+  const _handleAppStateChange = (nextAppState: any) => {
     setAppState(nextAppState);
 
     // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
@@ -231,7 +231,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                               value={dayjs(startTime).toDate()}
                               mode="time"
                               display={"default"}
-                              onChange={(event, time) => {
+                              onChange={(event, time:any) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time.toString());
                                 alartTimeChange();
@@ -247,7 +247,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
-                          onChange={(event, time) => {
+                          onChange={(event, time:any) => {
                             setStartTime(time.toString());
                             alartTimeChange();
                           }}
