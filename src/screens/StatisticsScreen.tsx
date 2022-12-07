@@ -7,6 +7,7 @@ import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
@@ -29,7 +30,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.goal,
             frontColor: "#61A68A",
-            label: "稽古目標",
+            label: `${i18n.t("Statistics.label01")}`,
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
             ),
@@ -37,7 +38,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.result,
             frontColor: "#61A68A",
-            label: "稽古回数",
+            label: `${i18n.t("Statistics.label02")}`,
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
             ),
@@ -73,7 +74,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   let dateItems = []
   for (const key in dates) {
     dateItems.push({
-      label: `${key}` + `年`,
+      label: `${key}` + `${i18n.t("Statistics.year")}`,
       value: dayjs(key),
     });
   }
@@ -104,7 +105,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               setValue(value.add(-1, "year"));
             }}
           />
-          <Text style={styles.yearText}>{currentDate.year()}年</Text>
+          <Text style={styles.yearText}>{currentDate.year()}{i18n.t("Statistics.year")}</Text>
           <View style={styles.scrollWrap}>
             <DropDownPicker
               listMode="SCROLLVIEW"
@@ -126,7 +127,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               onChangeValue={(value) => {
                 onChangeValue(value)
               }}
-              placeholder={`${currentDate.year().toString()}` + `年`}
+              placeholder={`${currentDate.year().toString()}` + `${i18n.t("Statistics.year")}`}
               placeholderStyle={{
                 color:"transparent",
               }}

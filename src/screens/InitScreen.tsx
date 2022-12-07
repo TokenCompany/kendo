@@ -35,7 +35,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   }, [modalVisible, navigation, onPressJudge]);
 
-  const onPressClose = (time: any) => {
+  const onPressClose = (time?: any) => {
     setModalVisible(false);
     clearTimeout(time);
   };
@@ -43,10 +43,13 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const initText = useSelector((state: RootState) => state.initText.initText);
   const splitText = initText.split("");
   const task = useSelector((state: RootState) => state.profile.task);
-
+  interface keyType {
+    [key: string]: Function;
+  }
   // 審査日オブジェクト抽出
   const examObject1 = () => {
-    let object = {};
+
+    let object = {} as keyType;
     Object.keys(profile).forEach((key) => {
       if (key.indexOf("exam") !== -1) {
         object[key] = profile[key];
@@ -58,7 +61,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 審査日が今日以降のものを抽出
   const examObject2 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyExamObject).some((key) => {
       object[key] = profile[key];
       if (profile[key] >= dayjs().format("YYYYMMDD").toString()) {
@@ -71,7 +74,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済の中で最も後のものを抽出
   const passedObject3 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyExamSchedule).filter((key ,index) => {
       if (index == Object.keys(onlyExamSchedule).length - 1) {
         object[key] = onlyExamSchedule[key];
@@ -87,30 +90,30 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     const renderLevel = () => {
       if(Object.keys(onlyExamSchedule).length <= 10){
         if (Object.keys(onlyExamScheduleLast) === ["exam0"]) {
-          return "初段";
+          return i18n.t("ProfileEdit.stage01");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam1") {
-          return "弐段";
+          return i18n.t("ProfileEdit.stage02");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam2") {
-          return "参段";
+          return i18n.t("ProfileEdit.stage03");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam3") {
-          return "四段";
+          return i18n.t("ProfileEdit.stage04");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam4") {
-          return "五段";
+          return i18n.t("ProfileEdit.stage05");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam5") {
-          return "六段";
+          return i18n.t("ProfileEdit.stage06");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam6") {
-          return "七段";
+          return i18n.t("ProfileEdit.stage07");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam7") {
-          return "八段";
+          return i18n.t("ProfileEdit.stage08");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam8") {
-          return "錬士";
+          return i18n.t("ProfileEdit.stage09");
         } else if (Object.keys(onlyExamScheduleLast).toString() === "exam9") {
-          return "教士";
+          return i18n.t("ProfileEdit.stage010");
         } else {
-          return "範士";
+          return i18n.t("ProfileEdit.stage11");
         }
       } else {
-        return "初段";
+        return i18n.t("ProfileEdit.stage01");
       }
     };
 
@@ -141,7 +144,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
       }
     };
 
-  const renderExamDate = (exam: number) => {
+  const renderExamDate = (exam?: number) => {
     const today = dayjs().format("YYYYMMDD");
     const examDay = String(exam);
     const diffDate = dayjs(examDay).diff(today, "day");
@@ -239,9 +242,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
   },
   buttonClose: {
     backgroundColor: "#fff",

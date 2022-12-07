@@ -48,7 +48,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       value: place.text,
     });
   }
-  initItems.push({ label: "直接入力", value: showForm });
+  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm });
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
@@ -58,10 +58,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [showEndTimePicker, setShowEndTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>("0000");
   const [endTime, setEndTime] = useState<string>("0000");
-  const [place, setPlace] = useState<string>("場所を選択");
+  const [place, setPlace] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string>("場所を選択");
+  const [value, setValue] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
   const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
   const [showStart, setStartShow] = useState(false);
   const [showEnd, setEndShow] = useState(false);
@@ -176,15 +176,15 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           // 文字列型日付を日本語に変換
           dateTextArray = day.split("-");
           let dateText =
-            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
           // 文字の変更
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
           setStartTime("0000");
           setEndTime("0000");
-          setPlace("場所を選択");
-          setValue("場所を選択")
+          setPlace(`${i18n.t("ScheduleScreen.selectPlace")}`);
+          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`)
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
@@ -195,7 +195,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         onChangeDay={(day) => {
           dateTextArray = day.split("-");
           let dateText =
-            dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+          dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
@@ -205,7 +205,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.box}>
           <Text style={styles.boxTitle}>{selectedDateText}</Text>
           <View style={styles.boxInputArea}>
-            <Text>◆ 時間</Text>
+            <Text>◆ {i18n.t("ScheduleScreen.time")}</Text>
             <View style={styles.boxInputTime}>
               <View style={styles.boxInputTimeFlex}>
                 <View style={styles.timeStart}>
@@ -333,7 +333,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             </View>
           </View>
           <View style={styles.boxInputArea}>
-            <Text>◆ 場所</Text>
+            <Text>◆ {i18n.t("History.place")}</Text>
             <View style={styles.boxInputText}>
               <DropDownPicker
                 listMode="SCROLLVIEW"
@@ -345,7 +345,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 setItems={setItems}
                 onChangeValue={onChangeValue}
                 placeholder={place}
-
                 max={6}
                 maxHeight={300}
                 zIndex={1000}
@@ -374,30 +373,30 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             />
           )}
           <TextButton
-            text01="登録"
+            text01={i18n.t("ScheduleScreen.entry")}
             onPress01={() => {
               if (
                 Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) -
                   Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) >
                 0
               ) {
-                Alert.alert("終了時間は開始時間より遅い時間を入力してください", "", [
-                  { text: "OK" },
+                Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [
+                  { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
               } else if (startTime == "0000" || endTime == "0000") {
-                Alert.alert("時間が選択されていません", "", [{ text: "OK" }]);
-              } else if (place == "場所を選択") {
-                Alert.alert("場所が選択されていません", "", [{ text: "OK" }]);
+                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
+              } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {
+                Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
               } else {
                 if (selectedDate && startTime && endTime && place) {
                   if (selectedDate in reservations) {
-                    Alert.alert("稽古予定を修正しますか？", "", [
+                    Alert.alert(`${i18n.t("TaskEdit.alert02")}`, "", [
                       {
-                        text: "いいえ",
+                        text: `${i18n.t("TaskEdit.cancel")}`,
                         style: "cancel",
                       },
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                         onPress: () => {
                           onPressSelected();
                           scheduleNotificationAsync();
@@ -405,9 +404,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                       },
                     ]);
                   } else {
-                    Alert.alert("稽古予定が登録されました。", "", [
+                    Alert.alert(`${i18n.t("TaskEdit.alert07")}`, "", [
                       {
-                        text: "戻る",
+                        text: `${i18n.t("TaskEdit.back")}`,
                         style: "cancel",
                         onPress: () => {
                           onPressSelected();
@@ -421,13 +420,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             }}
             onPress02={() => {
               if (selectedDate) {
-                Alert.alert("稽古予定を削除しますか？", "", [
+                Alert.alert(`${i18n.t("TaskEdit.alert03")}`, "", [
                   {
-                    text: "いいえ",
+                    text: `${i18n.t("TaskEdit.cancel")}`,
                     style: "cancel",
                   },
                   {
-                    text: "はい",
+                    text: `${i18n.t("TaskEdit.ok")}`,
                     onPress: () => {
                       onPressDelete();
                       scheduledelete();
@@ -436,7 +435,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 ]);
               }
             }}
-            text02="削除"
+            text02={i18n.t("TaskEdit.delete")}
             judge={true}
           />
         </View>
