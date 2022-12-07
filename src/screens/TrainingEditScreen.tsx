@@ -226,6 +226,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           </TouchableOpacity>
                           {showStartTimePicker && (
                             <DateTimePicker
+                              locale={i18n.t("Lang.lang")}
                               style={{ height: 60 }}
                               value={dayjs(startTime).toDate()}
                               mode="time"
@@ -241,6 +242,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                       )}
                       {Platform.OS === "ios" && (
                         <DateTimePicker
+                          locale={i18n.t("Lang.lang")}
                           style={{ height: 60 }}
                           value={dayjs(startTime).toDate()}
                           mode="time"
