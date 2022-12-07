@@ -162,7 +162,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
-      console.log(notifications[i].trigger);
 
       let identifier = notifications[i].identifier;
       if (channelId === selectedDate) {

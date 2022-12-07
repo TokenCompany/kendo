@@ -15,7 +15,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPress = () => {
     navigation.navigate("ResultEdit",{
       dateText: selectedDateText,
-      date:selectedDate,
+      date:selectedDate!,
       place:place,
     });
   };
@@ -30,7 +30,6 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [showBox, setshowBox] = useState(false);
   const [showButton, setShowButton] = useState(true);
   // 何回押したかどうかを確認するため変数
-  // const [countButton, setCountButton] = useState<number>(0);
   const showingBox = (judge:boolean) => {
     setshowBox(judge);
   };

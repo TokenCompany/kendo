@@ -307,7 +307,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       `${examDate.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
     );
     const examDateAge = Number(examDate.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
-    console.log(examDateAge);
     return examDateAge
   }
 
