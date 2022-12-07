@@ -200,7 +200,7 @@ LocaleConfig.locales.jp = {
     "12月",
   ],
   dayNames: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-  dayNamesShort: ["日", "月", "火", "水", "木", "金", "土"],
+  dayNamesShort: [`${i18n.t("ScheduleScreen.sun")}`, `${i18n.t("ScheduleScreen.mon")}`,`${i18n.t("ScheduleScreen.tue")}`, `${i18n.t("ScheduleScreen.wed")}`, `${i18n.t("ScheduleScreen.thu")}`, `${i18n.t("ScheduleScreen.fri")}`, `${i18n.t("ScheduleScreen.sat")}`],
 };
 LocaleConfig.defaultLocale = "jp";
 

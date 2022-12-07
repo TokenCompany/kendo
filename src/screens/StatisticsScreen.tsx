@@ -49,7 +49,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.goal,
             frontColor: "#A53010",
-            label: element.text + "先生",
+            label: element.text + `${i18n.t("ResultEdit.teacher")}`,
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
             ),
