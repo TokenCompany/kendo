@@ -1,7 +1,7 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { colors } from "../styles";
-
+import i18n from "../lang/localization";
 type Props = {
   visible: boolean; // 入力フォームの表示/非表示
   text: string; // 入力中の文字
@@ -12,10 +12,10 @@ export const ItemTextForm: React.FC<Props> = ({ visible, onPressSubmitKeiko, tex
   return visible ? (
     <View style={styles.body}>
       <View style={styles.item}>
-        <Text style={styles.category}>あり</Text>
+        <Text style={styles.category}>{i18n.t("ResultEdit.ari")}</Text>
       </View>
       <TouchableOpacity style={styles.container} onPress={onPressSubmitKeiko}>
-        <Text>登録</Text>
+        <Text style={styles.containerText}>{i18n.t("ScheduleScreen.entry")}</Text>
       </TouchableOpacity>
     </View>
   ) : null;
@@ -36,6 +36,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     paddingHorizontal: 5,
     flexGrow: 1,
+  },
+  containerText:{
+    color:"#fff",
+    fontWeight: "600",
   },
   category: {
     height: 25,
