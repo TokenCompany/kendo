@@ -28,19 +28,19 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
       if (element.id === "all") {
         data.push(
           {
-            value: element.result,
+            value: element.goal,
             frontColor: "#61A68A",
             label: `${i18n.t("Statistics.label01")}`,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
             ),
           },
           {
-            value: element.goal,
+            value: element.result,
             frontColor: "#61A68A",
             label: `${i18n.t("Statistics.label02")}`,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
             ),
           },
         );
@@ -49,7 +49,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.goal,
             frontColor: "#A53010",
-            label: element.text,
+            label: element.text + "先生",
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
             ),
@@ -153,7 +153,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             rulesType="solid"
             initialSpacing={20}
             noOfSections={3}
-            rotateLabel
             xAxisLabelTextStyle={{
               transform: [{ translateX: -15 }, { translateY: -10 }],
             }}
@@ -169,7 +168,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             rulesType="solid"
             noOfSections={3}
             labelsExtraHeight={100}
-            labelWidth={50}
+            labelWidth={100}
           />
         </View>
       </ScrollView>
