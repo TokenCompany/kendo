@@ -3,27 +3,27 @@ import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { colors } from "../styles";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { SubCategory } from "../screens/SubCategoryScreen";
-
+import i18n from "../lang/localization";
 type Props = {
   onPressDelete: (id: string, mainCategoryName: string) => void; // 親の呼び出し側で削除タップ時の処理を書く
   subCategories: SubCategory[];
   mainCategoryName: string;
 };
 
-export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => {
+export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories, mainCategoryName }) => {
   return (
     <SwipeListView
       data={subCategories}
-      // data2={mainCategoryName}
       renderItem={(data) => (
         <View style={styles.item}>
           <Text style={styles.input}>{data.item.text}</Text>
         </View>
       )}
       renderHiddenItem={(data, rowMap) => {
+
         return (
-          <TouchableOpacity style={styles.dalete} onPress={() => onPressDelete(data.item.id)}>
-            <Text>消去</Text>
+          <TouchableOpacity style={styles.delete} onPress={() => onPressDelete(data.item.id, data.item.mainCategoryName)}>
+            <Text>{i18n.t("TaskEdit.delete")}</Text>
           </TouchableOpacity>
         );
       }}
@@ -64,7 +64,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
   },
-  dalete: {
+  delete: {
     marginBottom: 3,
     width: 75,
     height: 50,
