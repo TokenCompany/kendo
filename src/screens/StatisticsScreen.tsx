@@ -80,8 +80,8 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   }
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(dayjs());
-  const [items, setItems] = useState(dateItems);
+  const [value, setValue] = useState<any>(dayjs());
+  const [items, setItems] = useState<any>(dateItems);
   const onChangeValue = (value:any) => {
     setCurrentDate(value)
   };
@@ -123,8 +123,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               containerStyle={{ height: 40, width: 150,}}
               style={{ backgroundColor: "transparent", borderWidth: 0 }}
               dropDownContainerStyle={{ backgroundColor: "#fff" }}
-              activeItemStyle={{alignItems: 'center'}}
-              onChangeValue={(value) => {
+              onChangeValue={(value:any) => {
                 onChangeValue(value)
               }}
               placeholder={`${currentDate.year().toString()}` + `${i18n.t("Statistics.year")}`}

@@ -13,6 +13,7 @@ type Props = {
   reservedPlace: string;
   newPlaceJudge: boolean;
   onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
+  onCheckedSend: (mainCategory: string, judge: boolean) => void;
   resultsDate: any;
 };
 
@@ -42,17 +43,21 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   resultsDate,
   newPlaceJudge,
   onChangeSendInput,
+  onCheckedSend,
 }) => {
-  // 既に実績を入力した場合にvaluesに表示をする
+  // 既に実績を入力した場合に結果をvaluesに表示をする
   const resultsData: any = useSelector((state: RootState) => state.results);
-  let initValues: string[] = [];
-  if (resultsDate in resultsData) {
-    for (const result of resultsData[resultsDate][textTrainingCategories]) {
-      initValues.push(result.result);
+  const setInitValues = () => {
+    let initValues: string[] = [];
+    if (resultsDate in resultsData) {
+      for (const result of resultsData[resultsDate][textTrainingCategories]) {
+        initValues.push(result.result.toString());
+      }
     }
-  }
+    return initValues;
+  };
 
-  const [values, setValues] = useState<string[]>(initValues);
+  const [values, setValues] = useState<string[]>(setInitValues());
   const [directValue, setDirectValue] = useState<string>("");
   // ローカルのstateでinputの入力情報を保持
   const onChangeValues = (text: string, index: number) => {
@@ -65,7 +70,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [place, setPlace] = useState<string>(reservedPlace);
   const subCategories: any = useSelector((state: RootState) => state.subCategory);
   // reduxからの情報を複製し、設定小項目を表示するために活用
-  const initResults = JSON.parse(JSON.stringify(subCategories));
+  let initResults = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
   // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count: number, id: string, mainCategory: string) => {
@@ -96,7 +101,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let input3: boolean = false;
   // 地稽古、掛稽古サブカテゴリ―がない時に表示させないための記述
   let specialCategory: boolean = true;
-  // let specialCategory: boolean = subCategories[textTrainingCategories].length
   if (
     textTrainingCategories in subCategories &&
     subCategories[textTrainingCategories].length === 0
@@ -115,8 +119,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   let subCategoriesData: any = [];
 
   // subcategoriesに登録がない稽古時間の条件分岐
-  if (textTrainingCategories in initResults) {
-    for (const data of initResults[textTrainingCategories as keyof Results]) {
+  if (textTrainingCategories in results) {
+    for (const data of results[textTrainingCategories as keyof Results]) {
       subCategoriesData.push({
         id: data.id,
         text: data.text,
@@ -135,7 +139,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
   const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
 
-  const showForm = () => {
+  const showForm: any = () => {
     setPlaceInputSelected(true);
   }
   let initItems = [];
@@ -187,6 +191,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
           status={checked ? "checked" : "unchecked"}
           onPress={() => {
             setChecked(!checked);
+            onCheckedSend(textTrainingCategories, !checked);
           }}
         />
       </View>
@@ -207,7 +212,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                         onChangeCountResults(Number(text), data.id, data.mainCategory);
                         onChangeValues(text, index);
                       }}
-                      value={values[index]}
+                      value={values[index] ? values[index].toString() : ""}
                     />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>
@@ -240,7 +245,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                             onChangeCountResults(Number(text), data.id, data.mainCategory);
                             onChangeValues(text, index);
                           }}
-                          value={values[index]}
+                          value={values[index] ? values[index].toString() : ""}
                         />
                         <Text style={styles.inputText}>{textTrainingUnit}</Text>
                       </View>
@@ -314,7 +319,6 @@ const styles = StyleSheet.create({
   inputWrap: {
     margin: 10,
     flexDirection: "row",
-    zIndex:-9999,
   },
 
   check: {
@@ -348,7 +352,7 @@ const styles = StyleSheet.create({
     margin: 5,
     marginTop: 7,
     width: 108,
-    zIndex:-10,
+    zIndex: -10,
   },
 
   label: {
