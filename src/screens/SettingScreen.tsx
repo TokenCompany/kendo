@@ -1,3 +1,4 @@
+import React from 'react'
 import { View, ScrollView, StyleSheet, Text, Image } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -11,7 +12,7 @@ import * as Notifications from "expo-notifications";
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const profile = useSelector((state: RootState) => state.profile);
+  const profile: any = useSelector((state: RootState) => state.profile);
 
   const onPressTask = () => {
     navigation.navigate("TaskEdit");
@@ -70,17 +71,17 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // 階級
-  const kendoLevel = ["初段", "弐段", "参段", "四段", "五段", "六段", "七段", "八段"];
+  const kendoLevel = [`${i18n.t("ProfileEdit.stage01")}`, `${i18n.t("ProfileEdit.stage02")}`, `${i18n.t("ProfileEdit.stage03")}`, `${i18n.t("ProfileEdit.stage04")}`, `${i18n.t("ProfileEdit.stage05")}`, `${i18n.t("ProfileEdit.stage06")}`, `${i18n.t("ProfileEdit.stage07")}`, `${i18n.t("ProfileEdit.stage08")}`];
 
   // 条件を満たした時に錬士,教士,範士の追加
   const addLevel = () => {
     if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
-      kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length + 1] = "範士";
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
+      kendoLevel[kendoLevel.length + 1] = `${i18n.t("ProfileEdit.stage11")}`;
     } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
-      kendoLevel[kendoLevel.length] = "錬士";
-      kendoLevel[kendoLevel.length] = "教士";
-      kendoLevel[kendoLevel.length] = "範士";
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage10")}`;
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage011")}`;
     }
   };
   {
@@ -88,8 +89,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   }
 
   // 合格日オブジェクト抽出
+  interface keyType {
+    [key: string]: Function;
+  }
   const passedObject1 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(profile).forEach((key) => {
       if (key.indexOf("passed") !== -1) {
         object[key] = profile[key];
@@ -101,7 +105,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格日が記載されているもののみ抽出
   const passedObject2 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyPassedObject).filter((key) => {
       if (profile[key] !== 19900000) {
         object[key] = profile[key];
@@ -113,7 +117,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済の中で最も後のものを抽出
   const passedObject3 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyPassed).filter((key ,index) => {
       if (index == Object.keys(onlyPassed).length - 1) {
         object[key] = onlyPassed[key];
@@ -124,7 +128,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onlyPassedLast = passedObject3()
 
   const passedObject4 = () => {
-    let object = {};
+    let object = {} as keyType;
     Object.keys(onlyPassedObject).some((key) => {
       object[key] = onlyPassedObject[key];
       if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0){
