@@ -123,7 +123,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
             },
           },
         }}
-        monthFormat={"yyyy年 MM月"}
+        monthFormat={`yyyy${i18n.t("ScheduleScreen.year")}MM${i18n.t("ScheduleScreen.monthBlank")}`}
         current={currentDate.format("YYYY-MM-DD")}
         key={currentDate.format("YYYY-MM-DD")}
         onPressArrowLeft={(subtractMonth) => {
@@ -142,9 +142,9 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
                   onPressDay(date.dateString);
                 }
               }}
-              style={date.dateString in reservations ? styles.buttonSelected : styles.button}
+              style={date!.dateString in reservations ? styles.buttonSelected : styles.button}
             >
-              <Text style={dayTextStyle(date, currentDate).dayText}> {date.day}</Text>
+              <Text style={dayTextStyle(date, currentDate.toDate()).dayText}> {date!.day}</Text>
             </TouchableOpacity>
           );
         }}
@@ -154,14 +154,14 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
 };
 
 const JapaneseHolidays = require('japanese-holidays');
-const dayTextStyle = (date: DateObject, currentDate: DateObject) =>
+const dayTextStyle = (date: any, currentDate: Date) =>
 
   StyleSheet.create({
     dayText: {
       fontSize: 16,
       backgroundColor: "transparent",
       color:
-        date.month !== currentDate.month() + 1
+        date.month !== dayjs(currentDate).month() + 1
           ? "gray" : dayjs(date.dateString).day() === 0
           ? "red" : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
           ? "red" : dayjs(date.dateString).day() === 6
@@ -200,7 +200,7 @@ LocaleConfig.locales.jp = {
     "12月",
   ],
   dayNames: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-  dayNamesShort: ["日", "月", "火", "水", "木", "金", "土"],
+  dayNamesShort: [`${i18n.t("ScheduleScreen.sun")}`, `${i18n.t("ScheduleScreen.mon")}`,`${i18n.t("ScheduleScreen.tue")}`, `${i18n.t("ScheduleScreen.wed")}`, `${i18n.t("ScheduleScreen.thu")}`, `${i18n.t("ScheduleScreen.fri")}`, `${i18n.t("ScheduleScreen.sat")}`],
 };
 LocaleConfig.defaultLocale = "jp";
 
@@ -247,7 +247,7 @@ const styles = StyleSheet.create({
   modalView: {
     position: "relative",
     top: "30%",
-    backgroundColor: "#fff",
+    backgroundColor: "gray",
     paddingVertical: 20,
   },
   modalButton: {
