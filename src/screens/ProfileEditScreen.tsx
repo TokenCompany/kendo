@@ -253,7 +253,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // プロフィール画像登録
-  const [image, setImage] = useState(currentImage);
+  const [image, setImage] = useState<string>(currentImage);
   const pickImage = async () => {
     let resultImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -262,11 +262,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     });
 
     if (!resultImage.cancelled) {
-      setImage(resultImage.base64);
-      onChangeImage(resultImage.base64);
+      setImage(String(resultImage.base64));
+      onChangeImage(String(resultImage.base64));
     }
   };
-
 
   const pickCamera = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
@@ -277,20 +276,20 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         base64: true,
       });
       if (!resultCamera.cancelled) {
-        setImage(resultCamera.base64);
-        onChangeImage(resultCamera.base64);
+        setImage(String(resultCamera.base64));
+        onChangeImage(String(resultCamera.base64));
       }
     }
   }
 
   const optionCamera = () => {
-    Alert.alert("設定方法を選択してください", "", [
+    Alert.alert(`${i18n.t("ProfileEdit.howToSetting")}`, "", [
       {
-        text: "アルバムから選択",
+        text: `${i18n.t("ProfileEdit.album")}`,
         onPress: () => pickImage()
       },
       {
-        text: "カメラ撮影",
+        text: `${i18n.t("ProfileEdit.camera")}`,
         onPress: () => pickCamera(),
       },
     ]);
@@ -299,15 +298,26 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   //誕生日（date型）
   const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
 
+  // 審査日が14歳未満でないか確認年
+  const ageCheck = (date: Date) => {
+    const dateBirthday = dayjs(calcCurrentBirthday.toString(), "YYYYMMDD");
+    const examDate = dayjs(date);
+    const baseAge = examDate.year() - dateBirthday.year();
+    const thisBirthday = dayjs(
+      `${examDate.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
+    );
+    const examDateAge = Number(examDate.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
+    return examDateAge
+  }
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
         <View style={styles.profileBody}>
-          <ProfileTextForm label="氏名" value={currentName} onChangeText={onChangeName} />
+          <ProfileTextForm label={i18n.t("ProfileEdit.name")} value={currentName} onChangeText={onChangeName} />
           <View style={styles.birthdayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
-              <Text style={styles.buttonText}>誕生日設定</Text>
+              <Text style={styles.buttonText}>{i18n.t("ProfileEdit.birthday")}</Text>
             </TouchableOpacity>
             <Text style={styles.birthdayText}>{renderChangeText(currentBirthday) !== "1990/00/00" ? renderChangeText(currentBirthday) : ""}</Text>
           </View>
@@ -380,10 +390,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             </View>
           )}
           <View>
-            <Text style={styles.label}>年齢</Text>
+            <Text style={styles.label}>{i18n.t("ProfileEdit.age")}</Text>
             <Text style={styles.input}>{String(currentAge) != "0" ? String(currentAge) : ""}</Text>
           </View>
-          <ProfileTextForm label="全剣連番号" value={currentKenNumber} onChangeText={onChangeKenNumber} />
+          <ProfileTextForm label={i18n.t("ProfileEdit.number")} value={currentKenNumber} onChangeText={onChangeKenNumber} />
         </View>
         <TouchableOpacity style={styles.profileImage} onPress={optionCamera}>
           {image ? (
@@ -403,7 +413,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       {open && (
         <View>
           <LevelForm
-            label="初段"
+            label={i18n.t("ProfileEdit.stage01")}
             visiblePassed={show01}
             visibleExam={show02}
             closePassed={onPressClose}
@@ -412,7 +422,6 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             showDatepickerExam={showDatepicker02}
             currentPassedDateText={renderChangeText(currentPassedDate00) !== "1990/00/00" ? renderChangeText(currentPassedDate00) : ""}
             currentExamDateText={renderChangeText(currentExamDate00) !== "1990/00/00" ? renderChangeText(currentExamDate00) : ""}
-
             passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow01(false);
@@ -423,11 +432,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed0.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 14 || passed0 - currentExamDate00 < 0 || dayjs(calcPassed).diff(dayjs()) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 14 || passed0 - currentExamDate00 < 0 || dayjs(calcPassed).diff(dayjs()) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -446,12 +454,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam0.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 14){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 14){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -460,11 +466,11 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 }
               }
             }}
-
             onPressClose={onPressClose}
           />
+
           <LevelForm
-            label="弐段"
+            label={i18n.t("ProfileEdit.stage02")}
             visiblePassed={show03}
             visibleExam={show04}
             closePassed={onPressClose}
@@ -482,11 +488,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed1.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 15 || passed1 - currentExamDate01 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 15 || passed1 - currentExamDate01 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -503,12 +508,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam1.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 15){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 15){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -520,7 +523,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="参段"
+            label={i18n.t("ProfileEdit.stage03")}
             visiblePassed={show05}
             visibleExam={show06}
             closePassed={onPressClose}
@@ -537,13 +540,11 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date1) {
                   const passed2 = Number(dayjs(date1).format("YYYYMMDD"));
-                  // 16歳未満の合格は制限
                   const calcPassed = dayjs(passed2.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 17 || passed2 - currentExamDate02 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 17 || passed2 - currentExamDate02 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -560,12 +561,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam2 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam2.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 17){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 17){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -577,7 +576,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="四段"
+            label={i18n.t("ProfileEdit.stage04")}
             visiblePassed={show07}
             visibleExam={show08}
             closePassed={onPressClose}
@@ -595,11 +594,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed3 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed3.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 20 || passed3 - currentExamDate03 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 20 || passed3 - currentExamDate03 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -616,12 +614,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam3 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam3.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 20){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 20){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -633,7 +629,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="五段"
+            label={i18n.t("ProfileEdit.stage05")}
             visiblePassed={show09}
             visibleExam={show10}
             closePassed={onPressClose}
@@ -651,11 +647,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed4 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed4.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 24 || passed4 - currentExamDate04 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 24 || passed4 - currentExamDate04 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -672,12 +667,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam4 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam4.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 24){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 24){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -689,7 +682,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="六段"
+            label={i18n.t("ProfileEdit.stage06")}
             visiblePassed={show11}
             visibleExam={show12}
             closePassed={onPressClose}
@@ -707,11 +700,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed5 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed5.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 29 || passed5 - currentExamDate05 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 29 || passed5 - currentExamDate05 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -729,12 +721,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam5.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 29){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 29){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -746,7 +736,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="七段"
+            label={i18n.t("ProfileEdit.stage07")}
             visiblePassed={show13}
             visibleExam={show14}
             closePassed={onPressClose}
@@ -764,11 +754,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed6 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed6.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 35 || passed6 - currentExamDate06 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 35 || passed6 - currentExamDate06 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -785,12 +774,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam6 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam6.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 35){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 35){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -802,7 +789,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPressClose={onPressClose}
           />
           <LevelForm
-            label="八段"
+            label={i18n.t("ProfileEdit.stage08")}
             visiblePassed={show15}
             visibleExam={show16}
             closePassed={onPressClose}
@@ -820,11 +807,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed7 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed7.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 45 || passed7 - currentExamDate07 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 45 || passed7 - currentExamDate07 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -841,12 +827,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam7 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam7.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 45){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 45){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -862,7 +846,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       {openRenshi && (
         <View>
           <LevelForm
-            label="錬士"
+            label={i18n.t("ProfileEdit.stage09")}
             visiblePassed={show17}
             visibleExam={show18}
             closePassed={onPressClose}
@@ -880,11 +864,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed8 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed8.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 30 || passed8 - currentExamDate08 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 30 || passed8 - currentExamDate08 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -901,12 +884,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam8 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam8.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 30){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 30){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -922,7 +903,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       {openKyoushi && (
         <View>
           <LevelForm
-            label="教士"
+            label={i18n.t("ProfileEdit.stage10")}
             visiblePassed={show19}
             visibleExam={show20}
             closePassed={onPressClose}
@@ -940,11 +921,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed9 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed9.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcPassed).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 37 || passed9 - currentExamDate09 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 37 || passed9 - currentExamDate09 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -961,12 +941,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam9 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam9.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 37){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 37){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -982,7 +960,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       {openHanshi && (
         <View>
           <LevelForm
-            label="範士"
+            label={i18n.t("ProfileEdit.stage11")}
             visiblePassed={show21}
             visibleExam={show22}
             closePassed={onPressClose}
@@ -1000,10 +978,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                 if (date1) {
                   const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
                   const calcPassed = dayjs(passed10.toString(),"YYYYMMDD").toDate()
-                  if(diffDate < 29 || passed10 - currentExamDate10 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date1) < 29 || passed10 - currentExamDate10 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -1020,12 +998,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
               } else {
                 if (date2) {
                   const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
-                  const calcExam = dayjs(exam10.toString(),"YYYYMMDD").toDate()
-                  const diffDate = dayjs(calcExam).year() - dayjs(calcCurrentBirthday).year();
-                  if(diffDate < 29){
-                    Alert.alert("この日付は設定できません", "", [
+                  if(ageCheck(date2) < 29){
+                    Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
-                        text: "はい",
+                        text: `${i18n.t("TaskEdit.ok")}`,
                       }
                     ]);
                   }else{
@@ -1039,7 +1015,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         </View>
       )}
       <View style={styles.buttonContainer}>
-        <Button text="プロフィール登録" onPress={onSetting} />
+        <Button text={i18n.t("ProfileEdit.registerButton")} onPress={onSetting} />
       </View>
     </ScrollView>
   );

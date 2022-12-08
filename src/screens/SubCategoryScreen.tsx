@@ -10,6 +10,7 @@ import uuid from "react-native-uuid";
 import { addSubCategory, deleteSubCategory,deleteTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
@@ -41,21 +42,21 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   // 小項目の出し分け
   const renderSubCategoryEditor = () => {
     if (subCategoryType === "placeSubCategories") {
-      return <Text style={styles.MajorText}>稽古場所</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training01")}</Text>;
     } else if (subCategoryType === "suburiSubCategories") {
-      return <Text style={styles.MajorText}>素振り</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training02")}</Text>;
     } else if (subCategoryType === "ashiSabakiSubCategories") {
-      return <Text style={styles.MajorText}>足さばき</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training03")}</Text>;
     } else if (subCategoryType === "kihonUchiSubCategories") {
-      return <Text style={styles.MajorText}>基本打ち</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training04")}</Text>;
     } else if (subCategoryType === "oujiwazaSubCategories") {
-      return <Text style={styles.MajorText}>応じ技</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training05")}</Text>;
     } else if (subCategoryType === "jigeikoSubCategories") {
-      return <Text style={styles.MajorText}>地稽古</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training06")}</Text>;
     } else if (subCategoryType === "teacherSubCategories") {
-      return <Text style={styles.MajorText}>先生との稽古</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training07")}</Text>;
     } else if (subCategoryType === "kakarigeikoSubCategories") {
-      return <Text style={styles.MajorText}>掛稽古</Text>;
+      return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training08")}</Text>;
     }
   };
   const [visible, setVisible] = useState(false);
@@ -112,9 +113,9 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       // TODO: reduxに保存,newSubCategoriesのmainCategoryNameによってredux保存先を切り替える
       dispatch(addSubCategory(newSubCategories[lastNum]));
     } else {
-      Alert.alert(`空の内容は登録できません。`, "もう一度入力し直してください。", [
+      Alert.alert(`${i18n.t("TaskEdit.alert08")}`, `${i18n.t("TaskEdit.alert09")}`, [
         {
-          text: "戻る",
+          text: `${i18n.t("TaskEdit.back")}`,
         },
       ]);
     }
@@ -125,7 +126,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       ...subCategories,
       {
         mainCategoryName: subCategoryType,
-        text: "あり",
+        text: `${i18n.t("ResultEdit.ari")}`,
         id: uuid.v4().toString(),
       } as SubCategory,
     ];
@@ -206,15 +207,15 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
         subCategories={subCategories}
         onPressDelete={(id: string, mainCategoryName: string) => {
           // アラートの記述追加
-          Alert.alert(`登録された内容が削除されます。`, "本当に削除しますか？", [
+          Alert.alert(`${i18n.t("TaskEdit.alert10")}`, `${i18n.t("TaskEdit.alert04")}`, [
             {
-              text: "はい",
+              text: `${i18n.t("TaskEdit.ok")}`,
               onPress: () => {
                 onPressDelete(id, subCategoryType);
               },
             },
             {
-              text: "いいえ",
+              text: `${i18n.t("TaskEdit.cancel")}`,
             },
           ]);
         }}

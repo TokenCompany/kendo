@@ -14,6 +14,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { Button } from "../components/Button";
 import dayjs from "dayjs";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Target">;
 export type TargetCategory = {
@@ -61,9 +62,9 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
     return initValues;
   }
-  
+
   const [currentValues, setCurrentValues] = useState<string[]>(setInitValues());
-  
+
   const [currentTargets, setCurrentTargets] = useState(initTargets);
   const setInitYearGoal = () => {
     let res:string = "";
@@ -80,7 +81,6 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 登録する前に全ての値が入ってるかチェック
   const checkAllInput = () => {
     let judge: boolean = false;
-    console.log(currentTargets);
     currentTargets.forEach((element:any) => {
       if("goal" in element === false) judge = true;
     });
@@ -109,11 +109,11 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressTargetSubmit = () => {
     if (Number(currentYearGoal) > 365) {
       // アラートの記述追加
-      Alert.alert("登録された内容が1年の制限を超えています。", "もう一度入力し直してください", [
-        { text: "戻る" },
+      Alert.alert(`${i18n.t("TaskEdit.alert11")}`, `${i18n.t("TaskEdit.alert09")}`, [
+        { text: `${i18n.t("TaskEdit.back")}` },
       ]);
     } else if(checkAllInput()) {
-      Alert.alert("設定された全ての先生の目標を設定してください。", "", [{ text: "戻る" }]);
+      Alert.alert(`${i18n.t("TaskEdit.alert12")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
     }else {
       // allYearのデータも格納
       let result = 0;
@@ -137,7 +137,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
         ...currentTargets,
         {
           id: "all",
-          text: "年間稽古目標",
+          text: `${i18n.t("TrainingEdit.training09")}`,
           goal: yearGoal,
           result: result,
         },
@@ -146,13 +146,13 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
       const saveTargets = {
         year: currentYear,
         targets: newCurrentTargets,
-      };      
+      };
       // 登録された先生全てに目標入力を必須にする
       if (saveTargets.targets.length === teachers.length + 1) {
         dispatch(addTargetCategory(saveTargets));
-        Alert.alert("稽古目標が登録されました", "", [{ text: "戻る" }]);
+        Alert.alert(`${i18n.t("TaskEdit.alert13")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
       } else {
-        Alert.alert("設定された全ての先生の目標を設定してください。", "", [{ text: "戻る" }]);
+        Alert.alert(`${i18n.t("TaskEdit.alert12")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
       }
     }
   };
@@ -162,9 +162,9 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
       <View style={styles.buttonContainer}>
         <KeyboardAvoidingView>
           <View>
-            <Text style={styles.objectiveLabel}>年間稽古目標</Text>
+            <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.training09")}</Text>
             <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>合計</Text>
+              <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.result")}</Text>
               <TextInput
                 style={styles.objectiveInput}
                 keyboardType="numeric"
@@ -173,7 +173,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
                   setCurrentYearGoal(num);
                 }}
               ></TextInput>
-              <Text style={styles.objectiveText}>回</Text>
+              <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.times")}</Text>
             </View>
             {teachers.map((teacher: any, index: number) => {
               return (
@@ -187,13 +187,13 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }}
                     value={currentValues[index]}
                   ></TextInput>
-                  <Text style={styles.objectiveText}>時間</Text>
+                  <Text style={styles.objectiveText}>{i18n.t("ScheduleScreen.time")}</Text>
                 </View>
               );
             })}
             <View style={styles.submitButtonContainer}>
               <Button
-                text="目標登録"
+                text={i18n.t("TrainingEdit.register")}
                 onPress={() => {
                   onPressTargetSubmit();
                 }}

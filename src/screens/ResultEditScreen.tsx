@@ -9,6 +9,7 @@ import { addTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import dayjs from "dayjs";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 export type SubCategories = [
@@ -181,7 +182,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
-    let newAllResults = { ...allResults };
+    let newAllResults: any = { ...allResults };
     newAllResults["resultsSum"][mainCategory] = results;
     setAllResults(newAllResults);
   };
@@ -200,9 +201,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
 
   const createAlert = () =>
-    Alert.alert("", "登録しました", [
+    Alert.alert("", `${i18n.t("Modal.registered")}`, [
       {
-        text: "OK",
+        text: `${i18n.t("TaskEdit.ok")}`,
         onPress: () => {
           navigation.navigate("History");
         },
@@ -211,40 +212,40 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
 
   const mainCategories: any = {
     placeSubCategories: {
-      text: "稽古場所",
+      text: `${i18n.t("TrainingEdit.training01")}`,
       unit: "",
     },
     trainingTime: {
-      text: "稽古時間",
-      unit: "時間",
+      text: `${i18n.t("ResultEdit.textTime")}`,
+      unit: `${i18n.t("ResultEdit.textUnit03")}`,
     },
     suburiSubCategories: {
-      text: "素振り",
-      unit: "本",
+      text: `${i18n.t("TrainingEdit.training02")}`,
+      unit: `${i18n.t("ResultEdit.textUnit01")}`,
     },
     ashiSabakiSubCategories: {
-      text: "足さばき",
-      unit: "本",
+      text: `${i18n.t("TrainingEdit.training03")}`,
+      unit: `${i18n.t("ResultEdit.textUnit01")}`,
     },
     kihonUchiSubCategories: {
-      text: "基本打ち",
-      unit: "本",
+      text: `${i18n.t("TrainingEdit.training04")}`,
+      unit: `${i18n.t("ResultEdit.textUnit01")}`,
     },
     oujiwazaSubCategories: {
-      text: "応じ技",
-      unit: "本",
+      text: `${i18n.t("TrainingEdit.training05")}`,
+      unit: `${i18n.t("ResultEdit.textUnit01")}`,
     },
     jigeikoSubCategories: {
-      text: "地稽古",
-      unit: "回",
+      text: `${i18n.t("TrainingEdit.training06")}`,
+      unit: `${i18n.t("ResultEdit.textUnit01")}`,
     },
     teacherSubCategories: {
-      text: "先生との稽古",
-      unit: "分",
+      text: `${i18n.t("TrainingEdit.training07")}`,
+      unit: `${i18n.t("ResultEdit.textUnit02")}`,
     },
     kakarigeikoSubCategories: {
-      text: "掛稽古",
-      unit: "回",
+      text: `${i18n.t("TrainingEdit.training08")}`,
+      unit: `${i18n.t("ResultEdit.textUnit01")}`,
     },
   };
 
@@ -277,11 +278,12 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         />
       ))}
       <View style={styles.buttonContainer}>
-        <Button text="稽古実績登録" onPress={onPressBtn} />
+        <Button text={i18n.t("ResultEdit.textButton")} onPress={onPressBtn} />
       </View>
     </ScrollView>
   );
 };
+
 
 const styles = StyleSheet.create({
   container: {

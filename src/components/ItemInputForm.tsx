@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text, TextInput } from "react-native";
 import { colors } from "../styles";
+import i18n from "../lang/localization";
 
 type Props = {
   visible: boolean; // 入力フォームの表示/非表示
@@ -15,13 +16,13 @@ export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, o
       <View style={styles.item}>
         <TextInput
           style={styles.input}
-          placeholder={"テキスト入力"}
+          placeholder={i18n.t("TrainingEdit.inputText")}
           value={text}
           onChangeText={onChangeText}
         />
       </View>
       <TouchableOpacity style={styles.container} onPress={onPressSubmit}>
-        <Text style={styles.text}>登録</Text>
+        <Text style={styles.text}>{i18n.t("ScheduleScreen.entry")}</Text>
       </TouchableOpacity>
     </View>
   ) : null;

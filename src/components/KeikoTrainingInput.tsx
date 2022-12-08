@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, TextInput } from "react-native";
 import { Checkbox } from "react-native-paper";
-import { Picker } from "@react-native-community/picker";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
+import i18n from "../lang/localization";
 
 type Props = {
   textTraining: string;
@@ -45,17 +45,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   onChangeSendInput,
   onCheckedSend,
 }) => {
-  // 既に実績を入力した場合に結果をvaluesに表示をする
-  const resultsData = useSelector((state: RootState) => state.results);
-  const setInitValues = () => {
-    let initValues: string[] = [];
-    if (resultsDate in resultsData) {
-      for (const result of resultsData[resultsDate][textTrainingCategories]) {
-        initValues.push(result.result.toString());
-      }
+  // 既に実績を入力した場合にvaluesに表示をする
+  const resultsData: any = useSelector((state: RootState) => state.results);
+  let initValues: string[] = [];
+  if (resultsDate in resultsData) {
+    for (const result of resultsData[resultsDate][textTrainingCategories]) {
+      initValues.push(result.result);
     }
     return initValues;
-  };
+  }
 
   const [values, setValues] = useState<string[]>(setInitValues());
   const [directValue, setDirectValue] = useState<string>("");
@@ -68,7 +66,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
-  const subCategories = useSelector((state: RootState) => state.subCategory);
+  const subCategories: any = useSelector((state: RootState) => state.subCategory);
   // reduxからの情報を複製し、設定小項目を表示するために活用
   let initResults = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
@@ -108,9 +106,12 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     specialCategory = false;
   }
 
-  if (textTraining === "稽古場所") {
+  if (textTraining === `${i18n.t("TrainingEdit.training01")}`) {
     input3 = true;
-  } else if (textTraining === "地稽古" || textTraining === "掛稽古") {
+  } else if (
+    textTraining === `${i18n.t("TrainingEdit.training06")}` ||
+    textTraining === `${i18n.t("TrainingEdit.training08")}`
+  ) {
     input2 = true;
   } else {
     input1 = true;
@@ -137,6 +138,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   }
   // 稽古場所の入力欄表示・非表示をするための変数
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
 
   const showForm = () => {
     setPlaceInputSelected(true);
@@ -148,16 +150,38 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       value: place.text,
     });
   }
-  initItems.push({ label: "直接入力", value: showForm });
-  const [placeInputSelected, setPlaceInputSelected] = useState<boolean>(false);
+  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm.toString() });
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState<string>("場所を選択");
+  const [value, setValue] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
   const [items, setItems] = useState(initItems);
-  const onChangeValue = () => {
-    setPlace(value);
-    if (value !== showForm.toString()) {
+  const onSelectItem = (itemIndex: number) => {
+    if (itemIndex === items.length - 1) {
+      setPlaceInputSelected(true);
+    } else {
       setPlaceInputSelected(false);
     }
+    if (value !== "") {
+      let newResults = { ...results };
+      for (const place of newResults["placeSubCategories"]) {
+        place["result"] = false;
+      }
+      if (newResults["placeSubCategories"][itemIndex]) {
+        newResults["placeSubCategories"][itemIndex]["result"] = true;
+      } else {
+        newResults["placeSubCategories"].push({
+          id: "new",
+          result: true,
+          text: directValue.toString(),
+        });
+      }
+
+      setResults(newResults);
+    } else {
+      setPlaceInputSelected(true);
+    }
+
+    setPlace(value.toString());
+    onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
   };
 
   return (
@@ -180,7 +204,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({
               <View>
                 {subCategoriesData.map((data: any, index: number) => (
                   <View style={styles.inputGroup} key={index}>
-                    <Text style={styles.inputText}>{data.text}</Text>
+                    <Text style={styles.inputText}>
+                      {data.text}
+                      {data.mainCategory === "teacherSubCategories" ? "先生" : ""}
+                    </Text>
                     <TextInput
                       style={styles.input}
                       keyboardType="numeric"
@@ -208,7 +235,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           }}
                         />
                       </View>
-                      <Text style={styles.inputText}>あり</Text>
+                      <Text style={styles.inputText}>{i18n.t("ResultEdit.ari")}</Text>
                     </View>
                   )}
                   {!!checked2 &&
@@ -233,23 +260,23 @@ export const KeikoTrainingInput: React.FC<Props> = ({
               <View>
                 <View style={styles.inputpicker}>
                   <DropDownPicker
+                    listMode="SCROLLVIEW"
                     open={open}
                     value={value}
                     items={items}
                     setOpen={setOpen}
                     setValue={setValue}
                     setItems={setItems}
-                    max={6}
-                    maxHeight={300}
-                    zIndex={99}
                     labelStyle={{
                       fontSize: 18,
                       textAlign: "center",
                     }}
                     containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
                     style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                    dropDownContainerStyle={{ backgroundColor: "red" }}
-                    onChangeValue={onChangeValue}
+                    dropDownContainerStyle={{ backgroundColor: "#fff", height: 100 }}
+                    onSelectItem={(item: any) => {
+                      onSelectItem(items.indexOf(item));
+                    }}
                     placeholder={place}
                     placeholderStyle={{
                       textAlign: "center",
@@ -261,6 +288,13 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       style={styles.inputFull}
                       onChangeText={(text) => {
                         setDirectValue(text);
+                        let newResults = { ...results };
+                        for (const place of newResults["placeSubCategories"]) {
+                          if (place.id === "new") {
+                            place.text = text;
+                          }
+                        }
+                        setResults(newResults);
                       }}
                     />
                   )}
@@ -370,5 +404,6 @@ const styles = StyleSheet.create({
   },
   inputpicker: {
     flexGrow: 1,
+    marginBottom: 100,
   },
 });

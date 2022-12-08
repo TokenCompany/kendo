@@ -15,7 +15,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPress = () => {
     navigation.navigate("ResultEdit",{
       dateText: selectedDateText,
-      date:selectedDate,
+      date:selectedDate!,
       place:place,
     });
   };
@@ -30,7 +30,6 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [showBox, setshowBox] = useState(false);
   const [showButton, setShowButton] = useState(true);
   // 何回押したかどうかを確認するため変数
-  // const [countButton, setCountButton] = useState<number>(0);
   const showingBox = (judge:boolean) => {
     setshowBox(judge);
   };
@@ -40,15 +39,9 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
     }else{
       setShowButton(true);
     }
-    // let newCount = countButton + 1;
-    // setCountButton(newCount)
-    // if (count % 2 === 0) {
-    //   setShowButton(true);
-    // }else{
-    //   setShowButton(false);
-    // }
   }
 
+  let dateTextArray;
   return (
     <ScrollView style={styles.container}>
       <CalendarFrame
@@ -56,7 +49,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
          // 文字列型日付を日本語に変換
          let dateTextArray = day.split("-");
          let dateText =
-           dateTextArray[0] + "年" + dateTextArray[1] + "月" + dateTextArray[2] + "日";
+         dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
          // 文字の変更
          setSelectedDate(day);
          setSelectedDateText(dateText);
@@ -69,8 +62,22 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
          }else{
           showingBox(false);
          }
-
-      }}
+        }}
+        onChangeDay={(day) => {
+          if (day in reservations) {
+          setStartTime(reservations[day].startTime);
+          setEndTime(reservations[day].endTime);
+          setPlace(reservations[day].place);
+          showingBox(true);
+          dateTextArray = day.split("-");
+          let dateText =
+            dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
+          setSelectedDate(day);
+          setSelectedDateText(dateText);
+          }else{
+            showingBox(false);
+          }
+        }}
       />
       {showBox && (
         <View style={styles.box}>
