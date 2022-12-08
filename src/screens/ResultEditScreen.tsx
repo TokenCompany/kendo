@@ -9,6 +9,7 @@ import { addTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import dayjs from "dayjs";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 export type SubCategories = [
@@ -136,9 +137,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const onPressBtn = () => {
     for (const check of checkArray) {
       if (allResults.resultsSum[check].length === 0) {
-        Alert.alert("入力欄に入力してください", "", [
+        Alert.alert(`${i18n.t("TaskEdit.alert15")}`, "", [
           {
-            text: "はい",
+            text: `${i18n.t("TaskEdit.ok")}`,
             onPress: () => {},
           },
         ]);
