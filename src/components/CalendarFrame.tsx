@@ -119,7 +119,7 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
               flex: 1,
               alignItems: "center",
               paddingTop: 10,
-              margingTop: 0,
+              marginTop: 0,
             },
           },
         }}
