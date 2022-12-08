@@ -46,7 +46,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   onCheckedSend,
 }) => {
   // 既に実績を入力した場合に結果をvaluesに表示をする
-  const resultsData = useSelector((state: RootState) => state.results);
+  const resultsData: any = useSelector((state: RootState) => state.results);
   const setInitValues = () => {
     let initValues: string[] = [];
     if (resultsDate in resultsData) {
@@ -68,7 +68,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked, setChecked] = useState(false);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
-  const subCategories = useSelector((state: RootState) => state.subCategory);
+  const subCategories: any = useSelector((state: RootState) => state.subCategory);
   // reduxからの情報を複製し、設定小項目を表示するために活用
   let initResults = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
@@ -138,7 +138,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   // 稽古場所の入力欄表示・非表示をするための変数
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
 
-  const showForm = () => {
+  const showForm: any = () => {
     setPlaceInputSelected(true);
   };
   let initItems = [];

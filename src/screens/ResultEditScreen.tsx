@@ -101,7 +101,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     return initAllResults;
   };
 
-  const [allResults, setAllResults] = useState<Results>(setInitAllResults());
+  const [allResults, setAllResults] = useState<any>(setInitAllResults());
   // 実績表の合計データのための操作
   // reduxから先生事のデータ、あるいは既に設定された目標データの取得
   let targetRecords: TargetCategory[];
@@ -181,7 +181,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
-    let newAllResults = { ...allResults };
+    let newAllResults: any = { ...allResults };
     newAllResults["resultsSum"][mainCategory] = results;
     setAllResults(newAllResults);
   };
