@@ -19,6 +19,7 @@ import { LanguageScreen } from "../screens/LanguageScreen";
 import { SettingButton } from "../components/SettingButton";
 // types
 import { MainStackParamList } from "../types/navigation";
+import i18n from "../lang/localization";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
@@ -40,15 +41,15 @@ export const MainStack: React.FC<Props> = () => {
       {/* 画面を追加する時はここに追加してください */}
       <Stack.Screen name="Init" component={InitScreen} options={{ headerShown: false }} />
       <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }} />
-      <Stack.Screen name="History" component={HistoryScreen} options={{ title: "稽古実績" }} />
-      <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: "稽古予定" }} />
-      <Stack.Screen name="Setting" component={SettingScreen} options={{ title: "設定" }} />
-      <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: "実績表" }} />
+      <Stack.Screen name="History" component={HistoryScreen} options={{ title: `${i18n.t("History.title")}` }} />
+      <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: `${i18n.t("ScheduleScreen.title")}` }} />
+      <Stack.Screen name="Setting" component={SettingScreen} options={{ title: `${i18n.t("ProfileEdit.setting")}` }} />
+      <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: `${i18n.t("Statistics.title")}` }} />
       <Stack.Screen
         name="ResultEdit"
         component={ResultEditScreen}
         options={({ navigation }) => ({
-          title: "実績入力",
+          title: `${i18n.t("ResultEdit.title")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -56,7 +57,7 @@ export const MainStack: React.FC<Props> = () => {
         name="TaskEdit"
         component={TaskEditScreen}
         options={({ navigation }) => ({
-          headerTitle: "課題設定",
+          headerTitle: `${i18n.t("Setting.button03")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -64,7 +65,7 @@ export const MainStack: React.FC<Props> = () => {
         name="InitEdit"
         component={InitEditScreen}
         options={({ navigation }) => ({
-          headerTitle: "初期画面設定",
+          headerTitle: `${i18n.t("Setting.button04")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -72,7 +73,7 @@ export const MainStack: React.FC<Props> = () => {
         name="ProfileEdit"
         component={ProfileEditScreen}
         options={({ navigation }) => ({
-          headerTitle: "プロフィール編集",
+          headerTitle: `${i18n.t("Setting.button01")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -80,7 +81,7 @@ export const MainStack: React.FC<Props> = () => {
         name="TrainingEdit"
         component={TrainingEditScreen}
         options={({ navigation }) => ({
-          title: "練習内容項目編集",
+          title: `${i18n.t("TrainingEdit.title")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -88,7 +89,7 @@ export const MainStack: React.FC<Props> = () => {
         name="SubCategory"
         component={SubCategoryScreen}
         options={({ route, navigation }) => ({
-          title: "練習内容項目編集",
+          title: `${i18n.t("TrainingEdit.title")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -96,7 +97,7 @@ export const MainStack: React.FC<Props> = () => {
         name="Target"
         component={TargetScreen}
         options={({ route, navigation }) => ({
-          title: "年間稽古目標編集",
+          title: `${i18n.t("Setting.button06")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />
@@ -104,7 +105,7 @@ export const MainStack: React.FC<Props> = () => {
         name="Language"
         component={LanguageScreen}
         options={({ route, navigation }) => ({
-          title: "表示言語切り替え",
+          title: `${i18n.t("Setting.button05")}`,
           headerRight: () => renderMenuButton(navigation),
         })}
       />

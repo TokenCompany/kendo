@@ -7,6 +7,7 @@ import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
+import i18n from "../lang/localization";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
@@ -27,19 +28,19 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
       if (element.id === "all") {
         data.push(
           {
-            value: element.result,
+            value: element.goal,
             frontColor: "#61A68A",
-            label: "稽古回数",
+            label: `${i18n.t("Statistics.label01")}`,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
             ),
           },
           {
-            value: element.goal,
+            value: element.result,
             frontColor: "#61A68A",
-            label: "稽古目標",
+            label: `${i18n.t("Statistics.label02")}`,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
             ),
           },
         );
@@ -48,7 +49,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.goal,
             frontColor: "#A53010",
-            label: element.text,
+            label: element.text + `${i18n.t("ResultEdit.teacher")}`,
             topLabelComponent: () => (
               <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
             ),
@@ -73,7 +74,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   let dateItems = []
   for (const key in dates) {
     dateItems.push({
-      label: `${key}` + `年`,
+      label: `${key}` + `${i18n.t("Statistics.year")}`,
       value: dayjs(key),
     });
   }
@@ -82,8 +83,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [value, setValue] = useState(dayjs());
   const [items, setItems] = useState(dateItems);
   const onChangeValue = (value:any) => {
-    console.log("aaa");
-
     setCurrentDate(value)
   };
 
@@ -106,7 +105,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               setValue(value.add(-1, "year"));
             }}
           />
-          <Text style={styles.yearText}>{currentDate.year()}年</Text>
+          <Text style={styles.yearText}>{currentDate.year()}{i18n.t("Statistics.year")}</Text>
           <View style={styles.scrollWrap}>
             <DropDownPicker
               listMode="SCROLLVIEW"
@@ -124,10 +123,11 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               containerStyle={{ height: 40, width: 150,}}
               style={{ backgroundColor: "transparent", borderWidth: 0 }}
               dropDownContainerStyle={{ backgroundColor: "#fff" }}
+              activeItemStyle={{alignItems: 'center'}}
               onChangeValue={(value) => {
                 onChangeValue(value)
               }}
-              placeholder={`${currentDate.year().toString()}` + `年`}
+              placeholder={`${currentDate.year().toString()}` + `${i18n.t("Statistics.year")}`}
               placeholderStyle={{
                 color:"transparent",
               }}
@@ -153,7 +153,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             rulesType="solid"
             initialSpacing={20}
             noOfSections={3}
-            rotateLabel
             xAxisLabelTextStyle={{
               transform: [{ translateX: -15 }, { translateY: -10 }],
             }}
@@ -169,7 +168,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             rulesType="solid"
             noOfSections={3}
             labelsExtraHeight={100}
-            labelWidth={50}
+            labelWidth={100}
           />
         </View>
       </ScrollView>
