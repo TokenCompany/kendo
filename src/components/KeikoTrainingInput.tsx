@@ -13,6 +13,7 @@ type Props = {
   reservedPlace: string;
   newPlaceJudge: boolean;
   onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
+  onCheckedSend: (mainCategory: string, judge: boolean) => void;
   resultsDate: any;
 };
 
@@ -42,6 +43,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   resultsDate,
   newPlaceJudge,
   onChangeSendInput,
+  onCheckedSend,
 }) => {
   // 既に実績を入力した場合に結果をvaluesに表示をする
   const resultsData = useSelector((state: RootState) => state.results);
@@ -52,11 +54,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({
         initValues.push(result.result.toString());
       }
     }
-    return initValues
-  }
-  
+    return initValues;
+  };
 
-  const [values, setValues] = useState<string[]>(setInitValues());  
+  const [values, setValues] = useState<string[]>(setInitValues());
   const [directValue, setDirectValue] = useState<string>("");
   // ローカルのstateでinputの入力情報を保持
   const onChangeValues = (text: string, index: number) => {
@@ -68,8 +69,8 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
   const subCategories = useSelector((state: RootState) => state.subCategory);
-   // reduxからの情報を複製し、設定小項目を表示するために活用
-   let initResults = JSON.parse(JSON.stringify(subCategories));
+  // reduxからの情報を複製し、設定小項目を表示するために活用
+  let initResults = JSON.parse(JSON.stringify(subCategories));
   const [results, setResults] = useState<Results>(initResults);
   // 入力された実績をstateに保存するための関数
   const onChangeCountResults = (count: number, id: string, mainCategory: string) => {
@@ -166,6 +167,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
           status={checked ? "checked" : "unchecked"}
           onPress={() => {
             setChecked(!checked);
+            onCheckedSend(textTrainingCategories, !checked);
           }}
         />
       </View>
@@ -186,7 +188,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                         onChangeCountResults(Number(text), data.id, data.mainCategory);
                         onChangeValues(text, index);
                       }}
-                      value={values[index]?values[index].toString():""}
+                      value={values[index] ? values[index].toString() : ""}
                     />
                     <Text style={styles.inputText}>{textTrainingUnit}</Text>
                   </View>
@@ -219,7 +221,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                             onChangeCountResults(Number(text), data.id, data.mainCategory);
                             onChangeValues(text, index);
                           }}
-                          value={values[index]?values[index].toString():""}
+                          value={values[index] ? values[index].toString() : ""}
                         />
                         <Text style={styles.inputText}>{textTrainingUnit}</Text>
                       </View>
@@ -230,30 +232,30 @@ export const KeikoTrainingInput: React.FC<Props> = ({
             {!!input3 && (
               <View>
                 <View style={styles.inputpicker}>
-                <DropDownPicker
-                  open={open}
-                  value={value}
-                  items={items}
-                  setOpen={setOpen}
-                  setValue={setValue}
-                  setItems={setItems}
-                  max={6}
-                  maxHeight={300}
-                  zIndex={99}
-                  labelStyle={{
-                    fontSize: 18,
-                    textAlign: "center",
-                  }}
-                  containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
-                  style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
-                  dropDownContainerStyle={{ backgroundColor: "red" }}
-                  onChangeValue={onChangeValue}
-                  placeholder={place}
-                  placeholderStyle={{
-                    textAlign: "center",
-                    fontSize: 20,
-                  }}
-                />
+                  <DropDownPicker
+                    open={open}
+                    value={value}
+                    items={items}
+                    setOpen={setOpen}
+                    setValue={setValue}
+                    setItems={setItems}
+                    max={6}
+                    maxHeight={300}
+                    zIndex={99}
+                    labelStyle={{
+                      fontSize: 18,
+                      textAlign: "center",
+                    }}
+                    containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
+                    style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
+                    dropDownContainerStyle={{ backgroundColor: "red" }}
+                    onChangeValue={onChangeValue}
+                    placeholder={place}
+                    placeholderStyle={{
+                      textAlign: "center",
+                      fontSize: 20,
+                    }}
+                  />
                   {placeInputSelected && (
                     <TextInput
                       style={styles.inputFull}
@@ -286,7 +288,7 @@ const styles = StyleSheet.create({
   inputWrap: {
     margin: 10,
     flexDirection: "row",
-    elevation:-1,
+    elevation: -1,
   },
 
   check: {
@@ -320,7 +322,7 @@ const styles = StyleSheet.create({
     margin: 5,
     marginTop: 7,
     width: 108,
-    zIndex:-10,
+    zIndex: -10,
   },
 
   label: {

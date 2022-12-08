@@ -45,7 +45,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const subCategories = useSelector((state: RootState) => state.subCategory);
   const resultsData = useSelector((state: RootState) => state.results);
   // console.log(resultsData);
-  
+
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
@@ -63,9 +63,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       item.result = false;
     }
   }
-   // 練習結果の初期化
+  // 練習結果の初期化
   const setInitAllResults = () => {
-    let initAllResults:Results;
+    let initAllResults: Results;
     if (date in resultsData) {
       const copyResultsData = JSON.parse(JSON.stringify(resultsData[date]));
       initAllResults = {
@@ -82,7 +82,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           kakarigeikoSubCategories: copyResultsData.kakarigeikoSubCategories,
         },
       };
-    }else{
+    } else {
       initAllResults = {
         trainingDate: date,
         resultsSum: {
@@ -98,8 +98,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         },
       };
     }
-    return initAllResults
-  }
+    return initAllResults;
+  };
 
   const [allResults, setAllResults] = useState<Results>(setInitAllResults());
   // 実績表の合計データのための操作
@@ -134,6 +134,18 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
 
   const onPressBtn = () => {
+    for (const check of checkArray) {
+      if (allResults.resultsSum[check].length === 0) {
+        Alert.alert("入力欄に入力してください", "", [
+          {
+            text: "はい",
+            onPress: () => {},
+          },
+        ]);
+        return false;
+      }
+    }
+
     createAlert();
     // REDUXへの保存
     dispatch(addResults(allResults));
@@ -172,6 +184,19 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     let newAllResults = { ...allResults };
     newAllResults["resultsSum"][mainCategory] = results;
     setAllResults(newAllResults);
+  };
+
+  let checkArray: string[] = [];
+
+  const onCheckedBoolean = (textTrainingCategories: string, checked: boolean) => {
+    if (checked === true) {
+      checkArray.push(textTrainingCategories);
+    } else {
+      let idx = checkArray.indexOf(textTrainingCategories);
+      if (idx >= 0) {
+        checkArray.splice(idx, 1);
+      }
+    }
   };
 
   const createAlert = () =>
@@ -244,6 +269,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           newPlaceJudge={newPlaceFlag}
           onChangeSendInput={(changedResults: any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
+          }}
+          onCheckedSend={(textTrainingCategories, checked) => {
+            onCheckedBoolean(textTrainingCategories, checked);
           }}
           resultsDate={date}
         />
