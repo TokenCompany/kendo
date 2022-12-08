@@ -10,15 +10,15 @@ export interface ReminderState {
 
 // デフォルトの値
 const initialState: ReminderState = {
-  reminderTimer: ""
+  reminderTimer: "00:00",
 };
 
 export const counterSlice = createSlice({
   name: "reminder",
   initialState,
   reducers: {
-    // 渡されるpayloadは日付をstringにしたもの(例: "12:00")    
-    addReminder: (state, action:PayloadAction<string>) => {
+    // 渡されるpayloadは日付をstringにしたもの(例: "12:00")
+    addReminder: (state, action: PayloadAction<string>) => {
       state.reminderTimer = action.payload;
     },
   },

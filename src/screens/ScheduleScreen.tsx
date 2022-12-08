@@ -37,6 +37,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const reminder = useSelector((state: RootState) => state.reminder);
 
   const showForm = () => {
     setForm(true);
@@ -133,6 +134,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
 
   const scheduleNotificationAsync = async () => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -140,10 +142,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
+
     let date = selectedDate!.split("-");
+    let remindTime = reminder.reminderTimer.reminderTimer.split(":");
     let alartDate = Number(date[2]) - 1;
-    let alartHour = 12;
-    let alartMinutes = 0;
+    let alartHour = remindTime[0];
+    let alartMinutes = remindTime[1];
     let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
     await Notifications.scheduleNotificationAsync({
@@ -178,7 +182,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           // 文字列型日付を日本語に変換
           dateTextArray = day.split("-");
           let dateText =
-          dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
+            dateTextArray[0] +
+            `${i18n.t("ScheduleScreen.year")}` +
+            dateTextArray[1] +
+            `${i18n.t("ScheduleScreen.month")}` +
+            dateTextArray[2] +
+            `${i18n.t("ScheduleScreen.day")}`;
           // 文字の変更
           setSelectedDate(day);
           setShowSelectedDate(true);
@@ -186,7 +195,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setStartTime("0000");
           setEndTime("0000");
           setPlace(`${i18n.t("ScheduleScreen.selectPlace")}`);
-          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`)
+          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`);
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
@@ -197,7 +206,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         onChangeDay={(day) => {
           dateTextArray = day.split("-");
           let dateText =
-          dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
+            dateTextArray[0] +
+            `${i18n.t("ScheduleScreen.year")}` +
+            dateTextArray[1] +
+            `${i18n.t("ScheduleScreen.month")}` +
+            dateTextArray[2] +
+            `${i18n.t("ScheduleScreen.day")}`;
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
@@ -385,9 +399,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
               } else if (startTime == "0000" || endTime == "0000") {
-                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
+                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [
+                  { text: `${i18n.t("TaskEdit.ok")}` },
+                ]);
               } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {
-                Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
+                Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [
+                  { text: `${i18n.t("TaskEdit.ok")}` },
+                ]);
               } else {
                 if (selectedDate && startTime && endTime && place) {
                   if (selectedDate in reservations) {

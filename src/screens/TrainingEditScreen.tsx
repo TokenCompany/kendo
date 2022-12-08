@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -17,6 +17,9 @@ import dayjs from "dayjs";
 import DateTimePicker from "@react-native-community/datetimepicker";
 import { colors } from "../styles";
 import i18n from "../lang/localization";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
+import { addReminder } from "../store/reminderSlice";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -29,6 +32,9 @@ Notifications.setNotificationHandler({
 });
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const dispatch = useDispatch();
+  const reminder = useSelector((state: RootState) => state.reminder);
+  console.log(reminder);
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -110,6 +116,11 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
+    dispatch(
+      addReminder({
+        reminderTimer: newTime,
+      }),
+    );
     for (let i = 0; i < notifications.length; i++) {
       let identifier = notifications[i].identifier;
       Notifications.cancelScheduledNotificationAsync(identifier);
@@ -175,7 +186,9 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openSettings();
                         }}
                       >
-                        <Text style={permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.true")}</Text>
+                        <Text style={permission ? styles.text1 : styles.text2}>
+                          {i18n.t("TrainingEdit.true")}
+                        </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={!permission ? styles.button1 : styles.button2}
@@ -183,7 +196,9 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openSettings();
                         }}
                       >
-                        <Text style={!permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.false")}</Text>
+                        <Text style={!permission ? styles.text1 : styles.text2}>
+                          {i18n.t("TrainingEdit.false")}
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   )}
@@ -195,7 +210,9 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openURL("app-settings:");
                         }}
                       >
-                        <Text style={permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.true")}</Text>
+                        <Text style={permission ? styles.text1 : styles.text2}>
+                          {i18n.t("TrainingEdit.true")}
+                        </Text>
                       </TouchableOpacity>
                       <TouchableOpacity
                         style={!permission ? styles.button1 : styles.button2}
@@ -203,7 +220,9 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           Linking.openURL("app-settings:");
                         }}
                       >
-                        <Text style={!permission ? styles.text1 : styles.text2}>{i18n.t("TrainingEdit.false")}</Text>
+                        <Text style={!permission ? styles.text1 : styles.text2}>
+                          {i18n.t("TrainingEdit.false")}
+                        </Text>
                       </TouchableOpacity>
                     </View>
                   )}
@@ -231,7 +250,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                               value={dayjs(startTime).toDate()}
                               mode="time"
                               display={"default"}
-                              onChange={(event, time:any) => {
+                              onChange={(event, time: any) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time.toString());
                                 alartTimeChange();
@@ -247,7 +266,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
-                          onChange={(event, time:any) => {
+                          onChange={(event, time: any) => {
                             setStartTime(time.toString());
                             alartTimeChange();
                           }}
