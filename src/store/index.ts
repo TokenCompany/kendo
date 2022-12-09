@@ -7,6 +7,7 @@ import reservationReducer from "./reservationSlice";
 import resultsReducer from "./resultsSlice";
 // import allResultsReducer from "./allResultsSlice";
 import initTextReducer from "./initTextSlice";
+import langReducer from "./langSlice";
 import {
   persistStore,
   persistReducer,
@@ -32,6 +33,7 @@ const rootReducer = combineReducers({
   reservation: reservationReducer,
   initText: initTextReducer,
   results: resultsReducer,
+  lang: langReducer,
   // allResults:allResultsReducer,
 });
 
