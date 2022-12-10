@@ -33,6 +33,31 @@ Notifications.setNotificationHandler({
   }),
 });
 
+
+  export type Content = {
+    autoDismiss: boolean
+    badge: null;
+    body: string;
+    data: null;
+    sound: string;
+    sticky: boolean;
+    subtitle: null;
+    title: string;
+  }
+
+  export type Trigger = {
+      channelId: string;
+      repeats: boolean;
+      type: string;
+      value?: number;
+  }
+
+  export type notifications = [{
+    content: Content;
+    identifier: string;
+    trigger: Trigger;
+  }]
+
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
@@ -52,7 +77,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
-  const [selectedDate, setSelectedDate] = useState<string>();
+  const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [showSelectedDate, setShowSelectedDate] = useState<boolean>();
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [showEndTimePicker, setShowEndTimePicker] = useState<boolean>();
@@ -132,7 +157,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduleNotificationAsync = async () => {
-    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    let notifications : any | notifications = await Notifications.getAllScheduledNotificationsAsync();
+
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -159,7 +185,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduledelete = async () => {
-    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    let notifications : any | notifications = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
 
