@@ -227,6 +227,16 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
+          setStartTime("0000");
+          setEndTime("0000");
+          setPlace(`${i18n.t("ScheduleScreen.selectPlace")}`);
+          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`)
+          // 選択された日付が既に存在する場合
+          if (day in reservations) {
+            setStartTime(reservations[day].startTime);
+            setEndTime(reservations[day].endTime);
+            setPlace(reservations[day].place);
+          }
         }}
       />
       {showSelectedDate && (
