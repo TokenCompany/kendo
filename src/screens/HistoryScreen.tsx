@@ -18,9 +18,20 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
       date:selectedDate!,
       place:place,
     });
+    setshowBox(false);
   };
-  // reduxからの情報取得
+  // reduxからの予約情報取得
   const reservations = useSelector((state: RootState) => state.reservation);
+  // reduxからの実績情報取得
+  const results = useSelector((state: RootState) => state.results);
+  const resultChangePlace = (day:string) => {
+    if (day in results) {
+      results[day].placeSubCategories.forEach(element => {
+        element.result === true ? setPlace(element.text) :  setPlace(reservations[day].place);
+      }); 
+    }
+  }
+  
   // ステートの定義
   const [selectedDateText, setSelectedDateText] = useState<string>("");
   const [selectedDate, setSelectedDate] = useState<string>();
@@ -57,7 +68,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
          if (day in reservations) {
            setStartTime(reservations[day].startTime);
            setEndTime(reservations[day].endTime);
-           setPlace(reservations[day].place);
+           resultChangePlace(day)
            showingBox(true);
          }else{
           showingBox(false);
