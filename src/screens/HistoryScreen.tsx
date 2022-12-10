@@ -27,8 +27,10 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const resultChangePlace = (day:string) => {
     if (day in results) {
       results[day].placeSubCategories.forEach(element => {
-        element.result === true ? setPlace(element.text) :  setPlace(reservations[day].place);
+        if(element.result === true) setPlace(element.text);
       }); 
+    }else{
+      setPlace(reservations[day].place);
     }
   }
   
