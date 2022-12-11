@@ -2,14 +2,21 @@ import React, { useState } from "react";
 import { TouchableOpacity, StyleSheet, Text, View } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Language">;
 
 export const LanguageScreen: React.FC<Props> = () => {
-  const [locale, setLocale] = useState(i18n.locale);
   const { currentLang, onChangeLang } = useLang();
+
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
+
+  const [locale, setLocale] = useState(i18n.locale);
 
   const langChengeJP = () => {
     i18n.locale = "ja-JP";

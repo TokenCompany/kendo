@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import * as Localization from "expo-localization";
 
 export interface LangState {
   lang: string;
@@ -7,7 +8,7 @@ export interface LangState {
 
 // デフォルトの値
 const initialState: LangState = {
-  lang: "八段への道",
+  lang: Localization.locale,
 };
 
 export const counterSlice = createSlice({
