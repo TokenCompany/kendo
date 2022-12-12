@@ -23,6 +23,32 @@ import { addReminder } from "../store/reminderSlice";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
+export type Content = {
+  autoDismiss: boolean;
+  badge: null;
+  body: string;
+  data: null;
+  sound: string;
+  sticky: boolean;
+  subtitle: null;
+  title: string;
+};
+
+export type Trigger = {
+  channelId: string;
+  repeats: boolean;
+  type: string;
+  value?: number;
+};
+
+export type notifications = [
+  {
+    content: Content;
+    identifier: string;
+    trigger: Trigger;
+  },
+];
+
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
     shouldShowAlert: true,
@@ -99,7 +125,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setAppState(nextAppState);
 
     // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
-    if (!nextAppState === "background") {
+    if (nextAppState !== "background") {
       requestPermissionsAsync();
     }
   };
@@ -112,8 +138,8 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const alartTimeChange = async () => {
-    let notifications = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(notifications);
+    let notifications: any | notifications =
+      await Notifications.getAllScheduledNotificationsAsync();
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
     for (let i = 0; i < notifications.length; i++) {

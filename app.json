@@ -4,7 +4,6 @@
     "slug": "kendo-app",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -17,25 +16,13 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "plugins": [
-      [
-        "expo-build-properties",
-        {
-          "ios": {
-            "deploymentTarget": "14.0"
-          }
-        }
-      ]
-    ],
     "ios": {
+      "icon": "./assets/icon_ios.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.shimafactory.waytohachidan"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
+      "icon": "./assets/icon_android.png",
       "package": "com.shimafactory.waytohachidan"
     },
     "web": {

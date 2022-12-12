@@ -81,7 +81,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     } else if (profile.passed5 !== 19900000 && profile.passed6 !== 19900000)  {
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage10")}`;
-      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage011")}`;
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage11")}`;
     }
   };
   {
@@ -102,6 +102,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     return object;
   };
   const onlyPassedObject = passedObject1();
+
 
   // 合格日が記載されているもののみ抽出
   const passedObject2 = () => {
@@ -142,6 +143,13 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
+
+    for (let i = 6; i < 11; i++) {
+      if (index === i && profile[`passed${i}`] === 19900000) {
+        return "-";
+      }
+    }
+
     if (Object.keys(onlyPassedLast).length === 0) {
       return "-";
     } else {
