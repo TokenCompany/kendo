@@ -20,8 +20,11 @@ import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as Notifications from "expo-notifications";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import i18n from "../lang/localization";
 import dayjs from "dayjs";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
@@ -34,6 +37,11 @@ Notifications.setNotificationHandler({
 });
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
+
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
@@ -178,7 +186,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           // 文字列型日付を日本語に変換
           dateTextArray = day.split("-");
           let dateText =
-          dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
+            dateTextArray[0] +
+            `${i18n.t("ScheduleScreen.year")}` +
+            dateTextArray[1] +
+            `${i18n.t("ScheduleScreen.month")}` +
+            dateTextArray[2] +
+            `${i18n.t("ScheduleScreen.day")}`;
           // 文字の変更
           setSelectedDate(day);
           setShowSelectedDate(true);
@@ -186,7 +199,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setStartTime("0000");
           setEndTime("0000");
           setPlace(`${i18n.t("ScheduleScreen.selectPlace")}`);
-          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`)
+          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`);
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
@@ -197,7 +210,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         onChangeDay={(day) => {
           dateTextArray = day.split("-");
           let dateText =
-          dateTextArray[0] + `${i18n.t("ScheduleScreen.year")}` + dateTextArray[1] + `${i18n.t("ScheduleScreen.month")}` + dateTextArray[2] + `${i18n.t("ScheduleScreen.day")}`;
+            dateTextArray[0] +
+            `${i18n.t("ScheduleScreen.year")}` +
+            dateTextArray[1] +
+            `${i18n.t("ScheduleScreen.month")}` +
+            dateTextArray[2] +
+            `${i18n.t("ScheduleScreen.day")}`;
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
@@ -385,9 +403,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
               } else if (startTime == "0000" || endTime == "0000") {
-                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
+                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [
+                  { text: `${i18n.t("TaskEdit.ok")}` },
+                ]);
               } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {
-                Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
+                Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [
+                  { text: `${i18n.t("TaskEdit.ok")}` },
+                ]);
               } else {
                 if (selectedDate && startTime && endTime && place) {
                   if (selectedDate in reservations) {

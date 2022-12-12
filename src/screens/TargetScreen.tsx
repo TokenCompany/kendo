@@ -1,12 +1,5 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  Text,
-  TextInput,
-  Alert,
-  KeyboardAvoidingView,
-} from "react-native";
+import { View, StyleSheet, Text, TextInput, Alert, KeyboardAvoidingView } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { addTargetCategory } from "../store/subCategorySlice";
@@ -14,7 +7,10 @@ import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import { Button } from "../components/Button";
 import dayjs from "dayjs";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Target">;
 export type TargetCategory = {
@@ -25,6 +21,11 @@ export type TargetCategory = {
 };
 
 export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
+
   const dispatch = useDispatch();
   // 今年の取得
   const currentYear = dayjs().year().toString();
@@ -52,40 +53,40 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   initTargets = newTeachers;
   // stateの定義
   const setInitValues = () => {
-    let initValues:any = [];
-    if (currentYear in targets){
-      targets[currentYear].forEach((element:any,index:number) => {
+    let initValues: any = [];
+    if (currentYear in targets) {
+      targets[currentYear].forEach((element: any, index: number) => {
         if (element.id !== "all") {
           initValues.push(element.goal.toString());
         }
-      })
+      });
     }
     return initValues;
-  }
+  };
 
   const [currentValues, setCurrentValues] = useState<string[]>(setInitValues());
 
   const [currentTargets, setCurrentTargets] = useState(initTargets);
   const setInitYearGoal = () => {
-    let res:string = "";
+    let res: string = "";
     if (currentYear in targets) {
-      targets[currentYear].forEach((element:any,index:number) => {
+      targets[currentYear].forEach((element: any, index: number) => {
         if (element.id === "all") {
           res = element.goal.toString();
         }
-      })
+      });
     }
     return res;
-  }
+  };
   const [currentYearGoal, setCurrentYearGoal] = useState<string>(setInitYearGoal());
   // 登録する前に全ての値が入ってるかチェック
   const checkAllInput = () => {
     let judge: boolean = false;
-    currentTargets.forEach((element:any) => {
-      if("goal" in element === false) judge = true;
+    currentTargets.forEach((element: any) => {
+      if ("goal" in element === false) judge = true;
     });
     return judge;
-  }
+  };
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
   const onChangeCountByTeacher = (count: number, id: string, index: number) => {
     let newCurrentTargets = [];
@@ -112,9 +113,9 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
       Alert.alert(`${i18n.t("TaskEdit.alert11")}`, `${i18n.t("TaskEdit.alert09")}`, [
         { text: `${i18n.t("TaskEdit.back")}` },
       ]);
-    } else if(checkAllInput()) {
+    } else if (checkAllInput()) {
       Alert.alert(`${i18n.t("TaskEdit.alert12")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
-    }else {
+    } else {
       // allYearのデータも格納
       let result = 0;
       let yearGoal = 0;
@@ -125,12 +126,12 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
           }
           if (target.id === "all" && Number(currentYearGoal) === 0) {
             yearGoal = target.goal;
-          }else{
-            yearGoal = Number(currentYearGoal)
+          } else {
+            yearGoal = Number(currentYearGoal);
           }
         }
-      }else{
-        yearGoal = Number(currentYearGoal)
+      } else {
+        yearGoal = Number(currentYearGoal);
       }
 
       let newCurrentTargets = [

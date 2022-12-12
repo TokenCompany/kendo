@@ -7,10 +7,13 @@ import { ItemInputForm } from "../components/ItemInputForm";
 import { ItemTextForm } from "../components/ItemTextForm";
 import { SwipeItem } from "../components/SwipeItem";
 import uuid from "react-native-uuid";
-import { addSubCategory, deleteSubCategory,deleteTargetCategory } from "../store/subCategorySlice";
+import { addSubCategory, deleteSubCategory, deleteTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "SubCategory">;
 
@@ -21,6 +24,11 @@ export type SubCategory = {
 };
 
 export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
+
   const dispatch = useDispatch();
   const subCategoryData: any = useSelector((state: RootState) => state.subCategory);
   /* 2. Get the param */

@@ -3,10 +3,13 @@ import { View, StyleSheet, ActivityIndicator, Text, TouchableOpacity, Modal } fr
 import { useFonts } from "expo-font";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import i18n from "../lang/localization";
 import { RootState } from "../store";
 import { useSelector } from "react-redux";
 import dayjs from "dayjs";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
@@ -18,6 +21,11 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const [modalVisible, setModalVisible] = useState(false);
   const [onPressJudge, setOnPressJudge] = useState(false);
+
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
 
   let time: any;
   const onPress = (time: any) => {
@@ -48,7 +56,6 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   }
   // 審査日オブジェクト抽出
   const examObject1 = () => {
-
     let object = {} as keyType;
     Object.keys(profile).forEach((key) => {
       if (key.indexOf("exam") !== -1) {
@@ -65,7 +72,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     Object.keys(onlyExamObject).some((key) => {
       object[key] = profile[key];
       if (profile[key] >= dayjs().format("YYYYMMDD").toString()) {
-        return true
+        return true;
       }
     });
     return object;
@@ -75,74 +82,72 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 合格済の中で最も後のものを抽出
   const passedObject3 = () => {
     let object = {} as keyType;
-    Object.keys(onlyExamSchedule).filter((key ,index) => {
+    Object.keys(onlyExamSchedule).filter((key, index) => {
       if (index == Object.keys(onlyExamSchedule).length - 1) {
         object[key] = onlyExamSchedule[key];
       }
     });
     return object;
   };
-  const onlyExamScheduleLast = passedObject3()
+  const onlyExamScheduleLast = passedObject3();
 
-
-
-    // 段数を表示
-    const renderLevel = () => {
-      if(Object.keys(onlyExamSchedule).length <= 10){
-        if (Object.keys(onlyExamScheduleLast) === ["exam0"]) {
-          return i18n.t("ProfileEdit.stage01");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam1") {
-          return i18n.t("ProfileEdit.stage02");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam2") {
-          return i18n.t("ProfileEdit.stage03");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam3") {
-          return i18n.t("ProfileEdit.stage04");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam4") {
-          return i18n.t("ProfileEdit.stage05");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam5") {
-          return i18n.t("ProfileEdit.stage06");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam6") {
-          return i18n.t("ProfileEdit.stage07");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam7") {
-          return i18n.t("ProfileEdit.stage08");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam8") {
-          return i18n.t("ProfileEdit.stage09");
-        } else if (Object.keys(onlyExamScheduleLast).toString() === "exam9") {
-          return i18n.t("ProfileEdit.stage010");
-        } else {
-          return i18n.t("ProfileEdit.stage11");
-        }
-      } else {
+  // 段数を表示
+  const renderLevel = () => {
+    if (Object.keys(onlyExamSchedule).length <= 10) {
+      if (Object.keys(onlyExamScheduleLast) === ["exam0"]) {
         return i18n.t("ProfileEdit.stage01");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam1") {
+        return i18n.t("ProfileEdit.stage02");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam2") {
+        return i18n.t("ProfileEdit.stage03");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam3") {
+        return i18n.t("ProfileEdit.stage04");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam4") {
+        return i18n.t("ProfileEdit.stage05");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam5") {
+        return i18n.t("ProfileEdit.stage06");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam6") {
+        return i18n.t("ProfileEdit.stage07");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam7") {
+        return i18n.t("ProfileEdit.stage08");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam8") {
+        return i18n.t("ProfileEdit.stage09");
+      } else if (Object.keys(onlyExamScheduleLast).toString() === "exam9") {
+        return i18n.t("ProfileEdit.stage010");
+      } else {
+        return i18n.t("ProfileEdit.stage11");
       }
-    };
+    } else {
+      return i18n.t("ProfileEdit.stage01");
+    }
+  };
 
-    // 審査日までの残り日数
-    let profileExam = () => {
-      if (profile.exam0 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam0;
-      } else if (profile.exam1 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam1;
-      } else if (profile.exam2 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam2;
-      } else if (profile.exam3 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam3;
-      } else if (profile.exam4 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam4;
-      } else if (profile.exam5 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam5;
-      } else if (profile.exam6 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam6;
-      } else if (profile.exam7 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam7;
-      } else if (profile.exam8 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam8;
-      } else if (profile.exam9 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam9;
-      } else if (profile.exam10 >= Number(dayjs().format("YYYYMMDD"))) {
-        return profile.exam10;
-      }
-    };
+  // 審査日までの残り日数
+  let profileExam = () => {
+    if (profile.exam0 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam0;
+    } else if (profile.exam1 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam1;
+    } else if (profile.exam2 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam2;
+    } else if (profile.exam3 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam3;
+    } else if (profile.exam4 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam4;
+    } else if (profile.exam5 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam5;
+    } else if (profile.exam6 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam6;
+    } else if (profile.exam7 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam7;
+    } else if (profile.exam8 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam8;
+    } else if (profile.exam9 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam9;
+    } else if (profile.exam10 >= Number(dayjs().format("YYYYMMDD"))) {
+      return profile.exam10;
+    }
+  };
 
   const renderExamDate = (exam?: number) => {
     const today = dayjs().format("YYYYMMDD");

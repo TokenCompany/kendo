@@ -8,7 +8,7 @@ import {
   ScrollView,
   Modal,
   Platform,
-  Alert
+  Alert,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -19,11 +19,19 @@ import { LevelForm } from "../components/LevelForm";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
 export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
+
   // useProfileFormというカスタムフックにフォーム編集に関わるロジックを分離しています
   let {
     currentName,
@@ -231,11 +239,10 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       setOpenHanshi(true);
     }
 
-    if(currentPassedDate06 !== 19900000) {
+    if (currentPassedDate06 !== 19900000) {
       setOpenKyoushi(true);
     }
   });
-
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
@@ -269,7 +276,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const pickCamera = async () => {
     const { status } = await ImagePicker.requestCameraPermissionsAsync();
-    if (status === 'granted') {
+    if (status === "granted") {
       let resultCamera = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
         quality: 0,
@@ -280,13 +287,13 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         onChangeImage(String(resultCamera.base64));
       }
     }
-  }
+  };
 
   const optionCamera = () => {
     Alert.alert(`${i18n.t("ProfileEdit.howToSetting")}`, "", [
       {
         text: `${i18n.t("ProfileEdit.album")}`,
-        onPress: () => pickImage()
+        onPress: () => pickImage(),
       },
       {
         text: `${i18n.t("ProfileEdit.camera")}`,
@@ -296,7 +303,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   //誕生日（date型）
-  const calcCurrentBirthday = dayjs(currentBirthday.toString(),"YYYYMMDD").toDate()
+  const calcCurrentBirthday = dayjs(currentBirthday.toString(), "YYYYMMDD").toDate();
 
   // 審査日が14歳未満でないか確認年
   const ageCheck = (date: Date) => {
@@ -307,19 +314,27 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       `${examDate.year()}-${dateBirthday.month() + 1}-${dateBirthday.date()}`,
     );
     const examDateAge = Number(examDate.isBefore(thisBirthday) ? baseAge - 1 : baseAge);
-    return examDateAge
-  }
+    return examDateAge;
+  };
 
   return (
     <ScrollView style={styles.container} showsVerticalScrollIndicator={false}>
       <View style={styles.profileContainer}>
         <View style={styles.profileBody}>
-          <ProfileTextForm label={i18n.t("ProfileEdit.name")} value={currentName} onChangeText={onChangeName} />
+          <ProfileTextForm
+            label={i18n.t("ProfileEdit.name")}
+            value={currentName}
+            onChangeText={onChangeName}
+          />
           <View style={styles.birthdayInput}>
             <TouchableOpacity style={styles.button} onPress={showDatepicker}>
               <Text style={styles.buttonText}>{i18n.t("ProfileEdit.birthday")}</Text>
             </TouchableOpacity>
-            <Text style={styles.birthdayText}>{renderChangeText(currentBirthday) !== "1990/00/00" ? renderChangeText(currentBirthday) : ""}</Text>
+            <Text style={styles.birthdayText}>
+              {renderChangeText(currentBirthday) !== "1990/00/00"
+                ? renderChangeText(currentBirthday)
+                : ""}
+            </Text>
           </View>
           {Platform.OS === "ios" && (
             <Modal
@@ -393,7 +408,11 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             <Text style={styles.label}>{i18n.t("ProfileEdit.age")}</Text>
             <Text style={styles.input}>{String(currentAge) != "0" ? String(currentAge) : ""}</Text>
           </View>
-          <ProfileTextForm label={i18n.t("ProfileEdit.number")} value={currentKenNumber} onChangeText={onChangeKenNumber} />
+          <ProfileTextForm
+            label={i18n.t("ProfileEdit.number")}
+            value={currentKenNumber}
+            onChangeText={onChangeKenNumber}
+          />
         </View>
         <TouchableOpacity style={styles.profileImage} onPress={optionCamera}>
           {image ? (
@@ -420,47 +439,58 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker01}
             showDatepickerExam={showDatepicker02}
-            currentPassedDateText={renderChangeText(currentPassedDate00) !== "1990/00/00" ? renderChangeText(currentPassedDate00) : ""}
-            currentExamDateText={renderChangeText(currentExamDate00) !== "1990/00/00" ? renderChangeText(currentExamDate00) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate00) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate00)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate00) !== "1990/00/00"
+                ? renderChangeText(currentExamDate00)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate00.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow01(false);
-                // 14歳未満の合格は制限
-              if(event.type == "dismissed") {
+              // 14歳未満の合格は制限
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow01(false);
               } else {
                 if (date1) {
                   const passed0 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed0.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 14 || passed0 - currentExamDate00 < 0 || dayjs(calcPassed).diff(dayjs()) > 0){
+                  const calcPassed = dayjs(passed0.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 14 ||
+                    passed0 - currentExamDate00 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate00(passed0);
                   }
                 }
               }
             }}
-
             examDateValue={dayjs(currentExamDate00.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow02(false);
               // 14歳未満の合格は制限
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow02(false);
               } else {
                 if (date2) {
                   const exam0 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 14){
+                  if (ageCheck(date2) < 14) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate00(exam0);
                   }
                 }
@@ -477,24 +507,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker03}
             showDatepickerExam={showDatepicker04}
-            currentPassedDateText={renderChangeText(currentPassedDate01) !== "1990/00/00" ? renderChangeText(currentPassedDate01) : ""}
-            currentExamDateText={renderChangeText(currentExamDate01) !== "1990/00/00" ? renderChangeText(currentExamDate01) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate01) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate01)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate01) !== "1990/00/00"
+                ? renderChangeText(currentExamDate01)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow03(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow03(false);
               } else {
                 if (date1) {
                   const passed1 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed1.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 15 || passed1 - currentExamDate01 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed1.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 15 ||
+                    passed1 - currentExamDate01 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate01(passed1);
                   }
                 }
@@ -503,18 +545,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate01.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow04(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow04(false);
               } else {
                 if (date2) {
                   const exam1 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 15){
+                  if (ageCheck(date2) < 15) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate01(exam1);
                   }
                 }
@@ -530,24 +572,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker05}
             showDatepickerExam={showDatepicker06}
-            currentPassedDateText={renderChangeText(currentPassedDate02) !== "1990/00/00" ? renderChangeText(currentPassedDate02) : ""}
-            currentExamDateText={renderChangeText(currentExamDate02) !== "1990/00/00" ? renderChangeText(currentExamDate02) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate02) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate02)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate02) !== "1990/00/00"
+                ? renderChangeText(currentExamDate02)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow05(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow05(false);
               } else {
                 if (date1) {
                   const passed2 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed2.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 17 || passed2 - currentExamDate02 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed2.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 17 ||
+                    passed2 - currentExamDate02 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate02(passed2);
                   }
                 }
@@ -556,18 +610,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate02.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow06(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow06(false);
               } else {
                 if (date2) {
                   const exam2 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 17){
+                  if (ageCheck(date2) < 17) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate02(exam2);
                   }
                 }
@@ -583,24 +637,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker07}
             showDatepickerExam={showDatepicker08}
-            currentPassedDateText={renderChangeText(currentPassedDate03) !== "1990/00/00" ? renderChangeText(currentPassedDate03) : ""}
-            currentExamDateText={renderChangeText(currentExamDate03) !== "1990/00/00" ? renderChangeText(currentExamDate03) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate03) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate03)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate03) !== "1990/00/00"
+                ? renderChangeText(currentExamDate03)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow07(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow07(false);
               } else {
                 if (date1) {
                   const passed3 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed3.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 20 || passed3 - currentExamDate03 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed3.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 20 ||
+                    passed3 - currentExamDate03 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate03(passed3);
                   }
                 }
@@ -609,18 +675,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate03.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow08(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow08(false);
               } else {
                 if (date2) {
                   const exam3 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 20){
+                  if (ageCheck(date2) < 20) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate03(exam3);
                   }
                 }
@@ -636,24 +702,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker09}
             showDatepickerExam={showDatepicker10}
-            currentPassedDateText={renderChangeText(currentPassedDate04) !== "1990/00/00" ? renderChangeText(currentPassedDate04) : ""}
-            currentExamDateText={renderChangeText(currentExamDate04) !== "1990/00/00" ? renderChangeText(currentExamDate04) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate04) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate04)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate04) !== "1990/00/00"
+                ? renderChangeText(currentExamDate04)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow09(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow09(false);
               } else {
                 if (date1) {
                   const passed4 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed4.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 24 || passed4 - currentExamDate04 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed4.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 24 ||
+                    passed4 - currentExamDate04 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate04(passed4);
                   }
                 }
@@ -662,18 +740,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate04.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow10(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow10(false);
               } else {
                 if (date2) {
                   const exam4 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 24){
+                  if (ageCheck(date2) < 24) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate04(exam4);
                   }
                 }
@@ -689,45 +767,56 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker11}
             showDatepickerExam={showDatepicker12}
-            currentPassedDateText={renderChangeText(currentPassedDate05) !== "1990/00/00" ? renderChangeText(currentPassedDate05) : ""}
-            currentExamDateText={renderChangeText(currentExamDate05) !== "1990/00/00" ? renderChangeText(currentExamDate05) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate05) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate05)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate05) !== "1990/00/00"
+                ? renderChangeText(currentExamDate05)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow11(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow11(false);
               } else {
                 if (date1) {
                   const passed5 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed5.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 29 || passed5 - currentExamDate05 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed5.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 29 ||
+                    passed5 - currentExamDate05 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate05(passed5);
                   }
                 }
               }
-
             }}
             examDateValue={dayjs(currentExamDate05.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow12(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow12(false);
               } else {
                 if (date2) {
                   const exam5 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 29){
+                  if (ageCheck(date2) < 29) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate05(exam5);
                   }
                 }
@@ -743,24 +832,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker13}
             showDatepickerExam={showDatepicker14}
-            currentPassedDateText={renderChangeText(currentPassedDate06) !== "1990/00/00" ? renderChangeText(currentPassedDate06) : ""}
-            currentExamDateText={renderChangeText(currentExamDate06) !== "1990/00/00" ? renderChangeText(currentExamDate06) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate06) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate06)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate06) !== "1990/00/00"
+                ? renderChangeText(currentExamDate06)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow13(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow13(false);
               } else {
                 if (date1) {
                   const passed6 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed6.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 35 || passed6 - currentExamDate06 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed6.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 35 ||
+                    passed6 - currentExamDate06 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate06(passed6);
                   }
                 }
@@ -769,18 +870,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow14(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow14(false);
               } else {
                 if (date2) {
                   const exam6 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 35){
+                  if (ageCheck(date2) < 35) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate06(exam6);
                   }
                 }
@@ -796,24 +897,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker15}
             showDatepickerExam={showDatepicker16}
-            currentPassedDateText={renderChangeText(currentPassedDate07) !== "1990/00/00" ? renderChangeText(currentPassedDate07) : ""}
-            currentExamDateText={renderChangeText(currentExamDate07) !== "1990/00/00" ? renderChangeText(currentExamDate07) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate07) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate07)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate07) !== "1990/00/00"
+                ? renderChangeText(currentExamDate07)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow15(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow15(false);
               } else {
                 if (date1) {
                   const passed7 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed7.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 45 || passed7 - currentExamDate07 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed7.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 45 ||
+                    passed7 - currentExamDate07 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate07(passed7);
                   }
                 }
@@ -822,18 +935,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow16(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow16(false);
               } else {
                 if (date2) {
                   const exam7 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 45){
+                  if (ageCheck(date2) < 45) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate07(exam7);
                   }
                 }
@@ -853,24 +966,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker17}
             showDatepickerExam={showDatepicker18}
-            currentPassedDateText={renderChangeText(currentPassedDate08) !== "1990/00/00" ? renderChangeText(currentPassedDate08) : ""}
-            currentExamDateText={renderChangeText(currentExamDate08) !== "1990/00/00" ? renderChangeText(currentExamDate08) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate08) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate08)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate08) !== "1990/00/00"
+                ? renderChangeText(currentExamDate08)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow17(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow17(false);
               } else {
                 if (date1) {
                   const passed8 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed8.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 30 || passed8 - currentExamDate08 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed8.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 30 ||
+                    passed8 - currentExamDate08 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate08(passed8);
                   }
                 }
@@ -879,18 +1004,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate08.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow18(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow18(false);
               } else {
                 if (date2) {
                   const exam8 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 30){
+                  if (ageCheck(date2) < 30) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate08(exam8);
                   }
                 }
@@ -910,24 +1035,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker19}
             showDatepickerExam={showDatepicker20}
-            currentPassedDateText={renderChangeText(currentPassedDate09) !== "1990/00/00" ? renderChangeText(currentPassedDate09) : ""}
-            currentExamDateText={renderChangeText(currentExamDate09) !== "1990/00/00" ? renderChangeText(currentExamDate09) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate09) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate09)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate09) !== "1990/00/00"
+                ? renderChangeText(currentExamDate09)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow19(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow19(false);
               } else {
                 if (date1) {
                   const passed9 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed9.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 37 || passed9 - currentExamDate09 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed9.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 37 ||
+                    passed9 - currentExamDate09 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate09(passed9);
                   }
                 }
@@ -936,18 +1073,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate09.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow20(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow20(false);
               } else {
                 if (date2) {
                   const exam9 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 37){
+                  if (ageCheck(date2) < 37) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate09(exam9);
                   }
                 }
@@ -967,24 +1104,36 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             closeExam={onPressClose}
             showDatepickerPassed={showDatepicker21}
             showDatepickerExam={showDatepicker22}
-            currentPassedDateText={renderChangeText(currentPassedDate10) !== "1990/00/00" ? renderChangeText(currentPassedDate10) : ""}
-            currentExamDateText={renderChangeText(currentExamDate10) !== "1990/00/00" ? renderChangeText(currentExamDate10) : ""}
+            currentPassedDateText={
+              renderChangeText(currentPassedDate10) !== "1990/00/00"
+                ? renderChangeText(currentPassedDate10)
+                : ""
+            }
+            currentExamDateText={
+              renderChangeText(currentExamDate10) !== "1990/00/00"
+                ? renderChangeText(currentExamDate10)
+                : ""
+            }
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow21(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow21(false);
               } else {
                 if (date1) {
                   const passed10 = Number(dayjs(date1).format("YYYYMMDD"));
-                  const calcPassed = dayjs(passed10.toString(),"YYYYMMDD").toDate()
-                  if(ageCheck(date1) < 29 || passed10 - currentExamDate10 < 0 || dayjs(calcPassed).diff(dayjs(),) > 0){
+                  const calcPassed = dayjs(passed10.toString(), "YYYYMMDD").toDate();
+                  if (
+                    ageCheck(date1) < 29 ||
+                    passed10 - currentExamDate10 < 0 ||
+                    dayjs(calcPassed).diff(dayjs()) > 0
+                  ) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangePassedDate10(passed10);
                   }
                 }
@@ -993,18 +1142,18 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate10.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow22(false);
-              if(event.type == "dismissed") {
+              if (event.type == "dismissed") {
                 Platform.OS === "android" && setShow22(false);
               } else {
                 if (date2) {
                   const exam10 = Number(dayjs(date2).format("YYYYMMDD"));
-                  if(ageCheck(date2) < 29){
+                  if (ageCheck(date2) < 29) {
                     Alert.alert(`${i18n.t("ProfileEdit.alert1")}`, "", [
                       {
                         text: `${i18n.t("TaskEdit.ok")}`,
-                      }
+                      },
                     ]);
-                  }else{
+                  } else {
                     onChangeExamDate10(exam10);
                   }
                 }

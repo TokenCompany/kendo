@@ -9,7 +9,10 @@ import { addTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import dayjs from "dayjs";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = NativeStackScreenProps<MainStackParamList, "ResultEdit">;
 export type SubCategories = [
@@ -41,6 +44,11 @@ export type Results = {
 };
 
 export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
+
   const dispatch = useDispatch();
   // reduxからサブカテゴリ―ズの情報を取得
   const subCategories = useSelector((state: RootState) => state.subCategory);
@@ -231,7 +239,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     </ScrollView>
   );
 };
-
 
 const styles = StyleSheet.create({
   container: {
