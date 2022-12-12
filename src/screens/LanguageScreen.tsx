@@ -4,18 +4,23 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import i18n from "../lang/localization";
 import { useLang } from "../hooks/useLang";
+import * as Updates from 'expo-updates'
 
 type Props = NativeStackScreenProps<MainStackParamList, "Language">;
 
 export const LanguageScreen: React.FC<Props> = () => {
   const [locale, setLocale] = useState(i18n.locale);
   const { currentLang, onChangeLang } = useLang();
+  const Restart = () => {
+    Updates.reloadAsync()
+  }
 
   const langChengeJP = () => {
     i18n.locale = "ja-JP";
     setLocale(i18n.locale);
     onChangeLang(i18n.locale);
     console.log(currentLang);
+    Restart()
   };
 
   const langChengeEN = () => {
@@ -23,6 +28,7 @@ export const LanguageScreen: React.FC<Props> = () => {
     setLocale(i18n.locale);
     onChangeLang(i18n.locale);
     console.log(currentLang);
+    Restart()
   };
 
   return (
