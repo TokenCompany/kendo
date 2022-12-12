@@ -170,39 +170,42 @@ const dayTextStyle = (date: any, currentDate: Date) =>
     },
   });
 // カレンダーの日本語化
+
+if (i18n.t("Lang.lang") === "ja") {
 LocaleConfig.locales.jp = {
-  monthNames: [
-    "1月",
-    "2月",
-    "3月",
-    "4月",
-    "5月",
-    "6月",
-    "7月",
-    "8月",
-    "9月",
-    "10月",
-    "11月",
-    "12月",
-  ],
-  monthNamesShort: [
-    "1月",
-    "2月",
-    "3月",
-    "4月",
-    "5月",
-    "6月",
-    "7月",
-    "8月",
-    "9月",
-    "10月",
-    "11月",
-    "12月",
-  ],
-  dayNames: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
-  dayNamesShort: [`${i18n.t("ScheduleScreen.sun")}`, `${i18n.t("ScheduleScreen.mon")}`,`${i18n.t("ScheduleScreen.tue")}`, `${i18n.t("ScheduleScreen.wed")}`, `${i18n.t("ScheduleScreen.thu")}`, `${i18n.t("ScheduleScreen.fri")}`, `${i18n.t("ScheduleScreen.sat")}`],
-};
-LocaleConfig.defaultLocale = "jp";
+    monthNames: [
+      "1月",
+      "2月",
+      "3月",
+      "4月",
+      "5月",
+      "6月",
+      "7月",
+      "8月",
+      "9月",
+      "10月",
+      "11月",
+      "12月",
+    ],
+    monthNamesShort: [
+      "1月",
+      "2月",
+      "3月",
+      "4月",
+      "5月",
+      "6月",
+      "7月",
+      "8月",
+      "9月",
+      "10月",
+      "11月",
+      "12月",
+    ],
+    dayNames: ["日曜日", "月曜日", "火曜日", "水曜日", "木曜日", "金曜日", "土曜日"],
+    dayNamesShort: ['日', '月', '火', '水', '木', '金', '土'],
+  };
+  LocaleConfig.defaultLocale = "jp"
+}
 
 const styles = StyleSheet.create({
   container: {
@@ -219,7 +222,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     padding: 5,
     paddingLeft: 4,
-    backgroundColor: "#fff",
+    backgroundColor:"#fff",
   },
   button: {
     marginBottom: 6,

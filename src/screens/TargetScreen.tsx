@@ -179,7 +179,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
             {teachers.map((teacher: any, index: number) => {
               return (
                 <View style={styles.objectiveInputArea} key={index}>
-                  <Text style={styles.objectiveText}>{teacher.text}先生</Text>
+                  <Text style={styles.objectiveText}>{teacher.text}{i18n.t("Statistics.teacher")}</Text>
                   <TextInput
                     style={styles.objectiveInput}
                     keyboardType="numeric"
