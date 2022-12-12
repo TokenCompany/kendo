@@ -227,6 +227,16 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
+          setStartTime("0000");
+          setEndTime("0000");
+          setPlace(`${i18n.t("ScheduleScreen.selectPlace")}`);
+          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`)
+          // 選択された日付が既に存在する場合
+          if (day in reservations) {
+            setStartTime(reservations[day].startTime);
+            setEndTime(reservations[day].endTime);
+            setPlace(reservations[day].place);
+          }
         }}
       />
       {showSelectedDate && (
@@ -410,8 +420,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
-              } else if (startTime == "0000" || endTime == "0000") {
-                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
               } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {
                 Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
               } else {
