@@ -144,16 +144,20 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     }
 
     let date = selectedDate!.split("-");
-    let remindTime = reminder.reminderTimer.reminderTimer.split(":");
+    let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+    let remindTimeSplit = remindTime.split(":");
     let alartDate = Number(date[2]) - 1;
-    let alartHour = remindTime[0];
-    let alartMinutes = remindTime[1];
+    let alartHour = remindTimeSplit[0];
+    let alartMinutes = remindTimeSplit[1];
     let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        body: "test",
-        title: "a",
+        body: place,
+        title:
+          dayjs(startTime).format("HH:mm").toString() +
+          "~" +
+          dayjs(endTime).format("HH:mm").toString(),
       },
       trigger: {
         channelId: selectedDate,
@@ -199,6 +203,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
+            console.log(reservations[day].startTime);
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
           }

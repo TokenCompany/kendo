@@ -1,5 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 import type { PayloadAction } from "@reduxjs/toolkit";
+import dayjs from "dayjs";
 
 //
 // 通知時間に関わるREDUX
@@ -10,7 +11,7 @@ export interface ReminderState {
 
 // デフォルトの値
 const initialState: ReminderState = {
-  reminderTimer: "00:00",
+  reminderTimer: dayjs("2022-01-01 00:00:00").format(),
 };
 
 export const counterSlice = createSlice({
@@ -20,6 +21,7 @@ export const counterSlice = createSlice({
     // 渡されるpayloadは日付をstringにしたもの(例: "12:00")
     addReminder: (state, action: PayloadAction<string>) => {
       state.reminderTimer = action.payload;
+      console.log(state);
     },
   },
 });
