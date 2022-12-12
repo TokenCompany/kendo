@@ -7,10 +7,9 @@ import i18n from "../lang/localization";
 type Props = {
   onPressDelete: (id: string, mainCategoryName: string) => void; // 親の呼び出し側で削除タップ時の処理を書く
   subCategories: SubCategory[];
-  mainCategoryName: string;
 };
 
-export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories, mainCategoryName }) => {
+export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => {
   return (
     <SwipeListView
       data={subCategories}
@@ -22,7 +21,7 @@ export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories, mainC
       renderHiddenItem={(data, rowMap) => {
 
         return (
-          <TouchableOpacity style={styles.delete} onPress={() => onPressDelete(data.item.id, data.item.mainCategoryName)}>
+          <TouchableOpacity style={styles.delete} onPress={() => onPressDelete(data.item.id, data.item.text)}>
             <Text>{i18n.t("TaskEdit.delete")}</Text>
           </TouchableOpacity>
         );

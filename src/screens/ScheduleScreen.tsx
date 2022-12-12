@@ -36,6 +36,32 @@ Notifications.setNotificationHandler({
   }),
 });
 
+export type Content = {
+  autoDismiss: boolean;
+  badge: null;
+  body: string;
+  data: null;
+  sound: string;
+  sticky: boolean;
+  subtitle: null;
+  title: string;
+};
+
+export type Trigger = {
+  channelId: string;
+  repeats: boolean;
+  type: string;
+  value?: number;
+};
+
+export type notifications = [
+  {
+    content: Content;
+    identifier: string;
+    trigger: Trigger;
+  },
+];
+
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const { currentLang, onChangeLang } = useLang();
   const i18n = new I18n({ en, ja });
@@ -60,7 +86,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
 
   // 日付の取得と表示
   const [selectedDateText, setSelectedDateText] = useState<string>();
-  const [selectedDate, setSelectedDate] = useState<string>();
+  const [selectedDate, setSelectedDate] = useState<string | undefined>();
   const [showSelectedDate, setShowSelectedDate] = useState<boolean>();
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [showEndTimePicker, setShowEndTimePicker] = useState<boolean>();
@@ -140,7 +166,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduleNotificationAsync = async () => {
-    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    let notifications: any | notifications =
+      await Notifications.getAllScheduledNotificationsAsync();
+
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -167,7 +195,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduledelete = async () => {
-    let notifications = await Notifications.getAllScheduledNotificationsAsync();
+    let notifications: any | notifications =
+      await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
 
@@ -219,6 +248,16 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           setSelectedDate(day);
           setShowSelectedDate(true);
           setSelectedDateText(dateText);
+          setStartTime("0000");
+          setEndTime("0000");
+          setPlace(`${i18n.t("ScheduleScreen.selectPlace")}`);
+          setValue(`${i18n.t("ScheduleScreen.selectPlace")}`);
+          // 選択された日付が既に存在する場合
+          if (day in reservations) {
+            setStartTime(reservations[day].startTime);
+            setEndTime(reservations[day].endTime);
+            setPlace(reservations[day].place);
+          }
         }}
       />
       {showSelectedDate && (
@@ -400,10 +439,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 0
               ) {
                 Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [
-                  { text: `${i18n.t("TaskEdit.ok")}` },
-                ]);
-              } else if (startTime == "0000" || endTime == "0000") {
-                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
               } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {

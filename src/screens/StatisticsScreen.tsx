@@ -37,17 +37,17 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.goal,
             frontColor: "#61A68A",
-            label: `${i18n.t("Statistics.label01")}`,
+            label: `${i18n.t("Statistics.label02")}`,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[1]}</Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
             ),
           },
           {
             value: element.result,
             frontColor: "#61A68A",
-            label: `${i18n.t("Statistics.label02")}`,
+            label: `${i18n.t("Statistics.label01")}`,
             topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{LabelNum[0]}</Text>
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.result}</Text>
             ),
           },
         );
@@ -57,17 +57,11 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             value: element.goal,
             frontColor: "#A53010",
             label: element.text + `${i18n.t("ResultEdit.teacher")}`,
-            topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
-            ),
           },
           {
             value: element.result,
             frontColor: "#DE7E18",
             barStyle: { marginLeft: -20 },
-            topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginTop: -30 }}>{element.result}</Text>
-            ),
           },
         );
       }
@@ -85,10 +79,9 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
       value: dayjs(key),
     });
   }
-
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState(dayjs());
-  const [items, setItems] = useState(dateItems);
+  const [value, setValue] = useState<any>(dayjs());
+  const [items, setItems] = useState<any>(dateItems);
   const onChangeValue = (value: any) => {
     setCurrentDate(value);
   };
@@ -131,7 +124,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               style={{ backgroundColor: "transparent", borderWidth: 0 }}
               dropDownContainerStyle={{ backgroundColor: "#fff" }}
               activeItemStyle={{ alignItems: "center" }}
-              onChangeValue={(value) => {
+              onChangeValue={(value: any) => {
                 onChangeValue(value);
               }}
               placeholder={`${currentDate.year().toString()}` + `${i18n.t("Statistics.year")}`}
@@ -175,7 +168,10 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             rulesType="solid"
             noOfSections={3}
             labelsExtraHeight={100}
-            labelWidth={100}
+            labelWidth={70}
+            xAxisLabelTextStyle={{
+              transform: [{ translateX: -5 }],
+            }}
           />
         </View>
       </ScrollView>

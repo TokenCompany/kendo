@@ -213,7 +213,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
       {/* フォーム入力後に表示される練習項目 */}
       <SwipeItem
         subCategories={subCategories}
-        onPressDelete={(id: string, mainCategoryName: string) => {
+        onPressDelete={(id: string) => {
           // アラートの記述追加
           Alert.alert(`${i18n.t("TaskEdit.alert10")}`, `${i18n.t("TaskEdit.alert04")}`, [
             {

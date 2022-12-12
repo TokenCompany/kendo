@@ -52,6 +52,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   const dispatch = useDispatch();
   // reduxからサブカテゴリ―ズの情報を取得
   const subCategories = useSelector((state: RootState) => state.subCategory);
+  const resultsData = useSelector((state: RootState) => state.results);
+
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
@@ -69,24 +71,45 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       item.result = false;
     }
   }
-
   // 練習結果の初期化
-  const initAllResults = {
-    trainingDate: date,
-    resultsSum: {
-      placeSubCategories: places,
-      trainingTime: [],
-      suburiSubCategories: [],
-      ashiSabakiSubCategories: [],
-      kihonUchiSubCategories: [],
-      oujiwazaSubCategories: [],
-      jigeikoSubCategories: [],
-      teacherSubCategories: [],
-      kakarigeikoSubCategories: [],
-    },
+  const setInitAllResults = () => {
+    let initAllResults: Results;
+    if (date in resultsData) {
+      const copyResultsData = JSON.parse(JSON.stringify(resultsData[date]));
+      initAllResults = {
+        trainingDate: date,
+        resultsSum: {
+          placeSubCategories: places,
+          trainingTime: copyResultsData.trainingTime,
+          suburiSubCategories: copyResultsData.suburiSubCategories,
+          ashiSabakiSubCategories: copyResultsData.ashiSabakiSubCategories,
+          kihonUchiSubCategories: copyResultsData.kihonUchiSubCategories,
+          oujiwazaSubCategories: copyResultsData.oujiwazaSubCategories,
+          jigeikoSubCategories: copyResultsData.jigeikoSubCategories,
+          teacherSubCategories: copyResultsData.teacherSubCategories,
+          kakarigeikoSubCategories: copyResultsData.kakarigeikoSubCategories,
+        },
+      };
+    } else {
+      initAllResults = {
+        trainingDate: date,
+        resultsSum: {
+          placeSubCategories: places,
+          trainingTime: [],
+          suburiSubCategories: [],
+          ashiSabakiSubCategories: [],
+          kihonUchiSubCategories: [],
+          oujiwazaSubCategories: [],
+          jigeikoSubCategories: [],
+          teacherSubCategories: [],
+          kakarigeikoSubCategories: [],
+        },
+      };
+    }
+    return initAllResults;
   };
 
-  const [allResults, setAllResults] = useState<Results>(initAllResults);
+  const [allResults, setAllResults] = useState<any>(setInitAllResults());
   // 実績表の合計データのための操作
   // reduxから先生事のデータ、あるいは既に設定された目標データの取得
   let targetRecords: TargetCategory[];
@@ -119,6 +142,18 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   };
 
   const onPressBtn = () => {
+    for (const check of checkArray) {
+      if (allResults.resultsSum[check].length === 0) {
+        Alert.alert(`${i18n.t("TaskEdit.alert15")}`, "", [
+          {
+            text: `${i18n.t("TaskEdit.ok")}`,
+            onPress: () => {},
+          },
+        ]);
+        return false;
+      }
+    }
+
     createAlert();
     // REDUXへの保存
     dispatch(addResults(allResults));
@@ -157,6 +192,19 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     let newAllResults: any = { ...allResults };
     newAllResults["resultsSum"][mainCategory] = results;
     setAllResults(newAllResults);
+  };
+
+  let checkArray: string[] = [];
+
+  const onCheckedBoolean = (textTrainingCategories: string, checked: boolean) => {
+    if (checked === true) {
+      checkArray.push(textTrainingCategories);
+    } else {
+      let idx = checkArray.indexOf(textTrainingCategories);
+      if (idx >= 0) {
+        checkArray.splice(idx, 1);
+      }
+    }
   };
 
   const createAlert = () =>
@@ -230,6 +278,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           onChangeSendInput={(changedResults: any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
           }}
+          onCheckedSend={(textTrainingCategories, checked) => {
+            onCheckedBoolean(textTrainingCategories, checked);
+          }}
           resultsDate={date}
         />
       ))}
@@ -261,5 +312,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     marginBottom: 50,
+    paddingBottom:300,
   },
 });
