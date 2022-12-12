@@ -420,8 +420,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
-              } else if (startTime == "0000" || endTime == "0000") {
-                Alert.alert(`${i18n.t("TaskEdit.alert05")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
               } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {
                 Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [{ text: `${i18n.t("TaskEdit.ok")}` }]);
               } else {
