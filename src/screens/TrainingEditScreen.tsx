@@ -20,11 +20,14 @@ import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
+import { addReminder } from "../store/reminderSlice";
+import { useSelector, useDispatch } from "react-redux";
+import { RootState } from "../store";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
 export type Content = {
-  autoDismiss: boolean
+  autoDismiss: boolean;
   badge: null;
   body: string;
   data: null;
@@ -32,20 +35,22 @@ export type Content = {
   sticky: boolean;
   subtitle: null;
   title: string;
-}
+};
 
 export type Trigger = {
-    channelId: string;
-    repeats: boolean;
-    type: string;
-    value?: number;
-}
+  channelId: string;
+  repeats: boolean;
+  type: string;
+  value?: number;
+};
 
-export type notifications = [{
-  content: Content;
-  identifier: string;
-  trigger: Trigger;
-}]
+export type notifications = [
+  {
+    content: Content;
+    identifier: string;
+    trigger: Trigger;
+  },
+];
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -60,7 +65,8 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
-
+  const dispatch = useDispatch();
+  const reminder = useSelector((state: RootState) => state.reminder);
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -139,11 +145,15 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const alartTimeChange = async () => {
-    let notifications : any | notifications = await Notifications.getAllScheduledNotificationsAsync();
+    let notifications: any | notifications =
+      await Notifications.getAllScheduledNotificationsAsync();
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
     for (let i = 0; i < notifications.length; i++) {
       let identifier = notifications[i].identifier;
+      let alartBody = notifications[i].content.body;
+      let alartTitle = notifications[i].content.title;
+
       Notifications.cancelScheduledNotificationAsync(identifier);
 
       let date = notifications[i].trigger.channelId.split("-");
@@ -161,8 +171,8 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
       await Notifications.scheduleNotificationAsync({
         content: {
-          body: "test",
-          title: "a",
+          body: alartBody,
+          title: alartTitle,
         },
         trigger: {
           channelId: notifications[i].trigger.channelId,
@@ -174,6 +184,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const onPressAlart = () => {
     setAlartShow(!alartShow);
+    setStartTime(dayjs(reminder.reminderTimer).toDate());
   };
 
   const onPressShowStartTimePicker = () => {
@@ -267,14 +278,14 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           {showStartTimePicker && (
                             <DateTimePicker
                               locale={i18n.t("Lang.lang")}
-                              style={{ height: 60 }}
                               value={dayjs(startTime).toDate()}
                               mode="time"
                               display={"default"}
                               onChange={(event, time: any) => {
                                 setShowStartTimePicker(false);
-                                setStartTime(time.toString());
+                                setStartTime(time!.toString());
                                 alartTimeChange();
+                                dispatch(addReminder(time!.toString()));
                               }}
                             />
                           )}
@@ -283,13 +294,13 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                       {Platform.OS === "ios" && (
                         <DateTimePicker
                           locale={i18n.t("Lang.lang")}
-                          style={{ height: 60 }}
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
                           onChange={(event, time: any) => {
                             setStartTime(time.toString());
                             alartTimeChange();
+                            dispatch(addReminder(startTime));
                           }}
                         />
                       )}

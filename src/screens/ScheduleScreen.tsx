@@ -71,6 +71,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
+  const reminder = useSelector((state: RootState) => state.reminder);
 
   const showForm = () => {
     setForm(true);
@@ -168,7 +169,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const scheduleNotificationAsync = async () => {
     let notifications: any | notifications =
       await Notifications.getAllScheduledNotificationsAsync();
-
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -176,16 +176,22 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
+
     let date = selectedDate!.split("-");
+    let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+    let remindTimeSplit = remindTime.split(":");
     let alartDate = Number(date[2]) - 1;
-    let alartHour = 12;
-    let alartMinutes = 0;
+    let alartHour = remindTimeSplit[0];
+    let alartMinutes = remindTimeSplit[1];
     let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
     await Notifications.scheduleNotificationAsync({
       content: {
-        body: "test",
-        title: "a",
+        body: place,
+        title:
+          dayjs(startTime).format("HH:mm").toString() +
+          "~" +
+          dayjs(endTime).format("HH:mm").toString(),
       },
       trigger: {
         channelId: selectedDate,
@@ -232,6 +238,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
+            console.log(reservations[day].startTime);
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
           }
