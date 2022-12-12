@@ -1,7 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet, Text, Modal, TouchableOpacity, Platform } from "react-native";
 import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = {
   label: string;
@@ -36,6 +39,10 @@ export const LevelForm: React.FC<Props> = ({
   showDatepickerExam,
   onPressClose,
 }) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   return (
     <View style={styles.levelContainer}>
       <Text style={styles.levelLavel}>{label}</Text>

@@ -6,12 +6,20 @@ import DateTimePicker, { AndroidNativeProps } from "@react-native-community/date
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
 import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 type Props = {
   onPressDay: (day: string) => void;
   onChangeDay: (day: string) => void;
 };
 
 export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   const reservations = useSelector((state: RootState) => state.reservation);
   const [currentDate, setCurrentDate] = useState<dayjs.Dayjs>(dayjs());
   const [show, setShow] = useState(false);
@@ -171,7 +179,7 @@ const dayTextStyle = (date: any, currentDate: Date) =>
   });
 // カレンダーの日本語化
 
-if (i18n.t("Lang.lang") === "ja") {
+if (String(i18n.t("Lang.lang")) == "ja") {
 LocaleConfig.locales.jp = {
     monthNames: [
       "1月",

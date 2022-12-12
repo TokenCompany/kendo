@@ -5,6 +5,10 @@ import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
 import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = {
   textTraining: string;
@@ -45,6 +49,10 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   onChangeSendInput,
   onCheckedSend,
 }) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   // 既に実績を入力した場合に結果をvaluesに表示をする
   const resultsData: any = useSelector((state: RootState) => state.results);
   const setInitValues = () => {
@@ -115,6 +123,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   } else {
     input1 = true;
   }
+
 
   let subCategoriesData: any = [];
 
@@ -204,7 +213,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
               <View>
                 {subCategoriesData.map((data: any, index: number) => (
                   <View style={styles.inputGroup} key={index}>
-                    <Text style={styles.inputText}>{data.text}{data.mainCategory==="teacherSubCategories"?"先生":""}</Text>
+                    <Text style={styles.inputText}>{data.text}{data.mainCategory==="teacherSubCategories"?`${i18n.t("Statistics.teacher")}`:""}</Text>
                     <TextInput
                       style={styles.input}
                       keyboardType="numeric"

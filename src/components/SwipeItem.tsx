@@ -3,13 +3,20 @@ import { TouchableOpacity, StyleSheet, View, Text } from "react-native";
 import { colors } from "../styles";
 import { SwipeListView } from "react-native-swipe-list-view";
 import { SubCategory } from "../screens/SubCategoryScreen";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 type Props = {
   onPressDelete: (id: string, mainCategoryName: string) => void; // 親の呼び出し側で削除タップ時の処理を書く
   subCategories: SubCategory[];
 };
 
 export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   return (
     <SwipeListView
       data={subCategories}

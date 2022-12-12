@@ -1,7 +1,10 @@
 import React from "react";
 import { TouchableOpacity, StyleSheet, View, Text, TextInput } from "react-native";
 import { colors } from "../styles";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 type Props = {
   visible: boolean; // 入力フォームの表示/非表示
@@ -11,6 +14,10 @@ type Props = {
 };
 
 export const ItemInputForm: React.FC<Props> = ({ visible, onPressSubmit, text, onChangeText }) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   return visible ? (
     <View style={styles.body}>
       <View style={styles.item}>

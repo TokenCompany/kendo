@@ -19,7 +19,10 @@ import { LanguageScreen } from "../screens/LanguageScreen";
 import { SettingButton } from "../components/SettingButton";
 // types
 import { MainStackParamList } from "../types/navigation";
-import i18n from "../lang/localization";
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 
 const Stack = createNativeStackNavigator<MainStackParamList>();
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
@@ -28,6 +31,10 @@ const renderMenuButton = (navigation: any) => {
 };
 
 export const MainStack: React.FC<Props> = () => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   return (
     <Stack.Navigator
       screenOptions={{
