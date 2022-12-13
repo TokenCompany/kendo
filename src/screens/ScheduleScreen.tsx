@@ -519,6 +519,9 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     borderWidth: 1,
   },
+  boxIos:{
+    marginBottom:300,
+  },
   boxTitle: {
     fontSize: 20,
   },
