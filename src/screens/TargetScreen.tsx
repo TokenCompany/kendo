@@ -88,7 +88,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
     return judge;
   };
   // 各先生の値とindex番号を取得することによってcurrentTargets配列の中の値を更新
-  const onChangeCountByTeacher = (count: number, id: string, index: number) => {
+  const onChangeCountByTeacher = (count: string, id: string, index: number) => {
     let newCurrentTargets = [];
     for (const target of currentTargets) {
       if (target.id === id) {
@@ -107,14 +107,20 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
     setCurrentValues(newCurrentValues);
   };
 
+  console.log(currentValues.join(""));
+
   const onPressTargetSubmit = () => {
+    let result = currentValues.join("").match(/[^0-9]/);
     if (Number(currentYearGoal) > 365) {
-      // アラートの記述追加
       Alert.alert(`${i18n.t("TaskEdit.alert11")}`, `${i18n.t("TaskEdit.alert09")}`, [
         { text: `${i18n.t("TaskEdit.back")}` },
       ]);
     } else if (checkAllInput()) {
       Alert.alert(`${i18n.t("TaskEdit.alert12")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
+    } else if (result) {
+      Alert.alert(`${i18n.t("TaskEdit.alert16")}`, "", [
+        { text: `${i18n.t("TaskEdit.back")}` },
+      ]);
     } else {
       // allYearのデータも格納
       let result = 0;
@@ -183,7 +189,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
                     style={styles.objectiveInput}
                     keyboardType="numeric"
                     onChangeText={(count) => {
-                      onChangeCountByTeacher(Number(count), teacher.id, index);
+                      onChangeCountByTeacher(count, teacher.id, index);
                     }}
                     value={currentValues[index]}
                   ></TextInput>
