@@ -6,7 +6,7 @@
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/splash.png",
+      "image": "./assets/icon_ios.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
