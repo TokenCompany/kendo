@@ -1,10 +1,9 @@
 {
   "expo": {
     "name": "kendo-app",
-    "slug": "kendo-app",
-    "version": "1.0.0",
+    "slug": "way-to-hachi-dan",
+    "version": "1.0.9",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
@@ -14,18 +13,24 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
+    "assetBundlePatterns": ["**/*"],
+    "plugins": [
+      [
+        "expo-build-properties",
+        {
+          "ios": {
+            "deploymentTarget": "14.0"
+          }
+        }
+      ]
     ],
     "ios": {
+      "icon": "./assets/icon_ios.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.shimafactory.waytohachidan"
     },
     "android": {
-      "adaptiveIcon": {
-        "foregroundImage": "./assets/adaptive-icon.png",
-        "backgroundColor": "#FFFFFF"
-      },
+      "icon": "./assets/icon_android.png",
       "package": "com.shimafactory.waytohachidan"
     },
     "web": {
@@ -33,7 +38,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "5b15a8da-d7f6-4e8d-8ef4-61e1bfd31386"
+        "projectId": "8dd00997-bb05-42ae-a766-da9006928603"
       }
     }
   }
