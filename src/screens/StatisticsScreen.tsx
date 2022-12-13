@@ -56,12 +56,13 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           {
             value: element.goal,
             frontColor: "#A53010",
+            barStyle: { marginLeft: -15 },
             label: element.text + `${i18n.t("ResultEdit.teacher")}`,
           },
           {
             value: element.result,
             frontColor: "#DE7E18",
-            barStyle: { marginLeft: -20 },
+            barStyle: { marginLeft: -35 },
           },
         );
       }
@@ -123,7 +124,6 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               containerStyle={{ height: 40, width: 150 }}
               style={{ backgroundColor: "transparent", borderWidth: 0 }}
               dropDownContainerStyle={{ backgroundColor: "#fff" }}
-              activeItemStyle={{ alignItems: "center" }}
               onChangeValue={(value: any) => {
                 onChangeValue(value);
               }}
