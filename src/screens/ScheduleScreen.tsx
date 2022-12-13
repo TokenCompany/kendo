@@ -518,9 +518,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 5,
     borderWidth: 1,
-  },
-  boxIos:{
-    marginBottom:300,
+    marginBottom:400,
   },
   boxTitle: {
     fontSize: 20,

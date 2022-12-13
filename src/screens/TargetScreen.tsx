@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TextInput, Alert, KeyboardAvoidingView } from "react-native";
+import { View, StyleSheet, Text, TextInput, Alert, KeyboardAvoidingView, ScrollView } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { addTargetCategory } from "../store/subCategorySlice";
@@ -159,9 +159,8 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
-        <KeyboardAvoidingView>
           <View>
             <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.training09")}</Text>
             <View style={styles.objectiveInputArea}>
@@ -201,16 +200,15 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
               />
             </View>
           </View>
-        </KeyboardAvoidingView>
       </View>
-    </View>
+    </ScrollView>
   );
 };
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "space-between",
+
     flexDirection: "column",
     marginTop: 40,
   },
@@ -257,5 +255,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
     alignItems: "center",
+    marginBottom:300,
   },
 });
