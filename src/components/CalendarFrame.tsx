@@ -5,7 +5,6 @@ import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
 import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
 import { RootState } from "../store";
 import { useSelector, useDispatch } from "react-redux";
-import i18n from "../lang/localization";
 import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
