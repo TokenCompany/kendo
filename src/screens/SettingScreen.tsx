@@ -6,7 +6,6 @@ import { Button } from "../components/Button";
 import dayjs from "dayjs";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import * as Notifications from "expo-notifications";
 import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
