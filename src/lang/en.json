@@ -150,7 +150,7 @@
     "alert13": "Training goal has been registered",
     "alert14": "Task cannot exceed 5 lines",
     "alert15": "Input in entry field",
-    "alert16": "0~9以外の文字は使用できません",
+    "alert16": "You can enter numbers only",
     "ok": "Ok",
     "cancel": "Cancel",
     "back": "Back",
