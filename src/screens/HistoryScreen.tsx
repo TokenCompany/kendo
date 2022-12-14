@@ -82,6 +82,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
+            console.log(reservations[day].startTime);
             setEndTime(reservations[day].endTime);
             resultChangePlace(day);
             showingBox(true);
@@ -110,14 +111,15 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           }
         }}
       />
+
       {showBox && (
         <View style={styles.box}>
           <Text style={styles.boxTitle}>{selectedDateText}</Text>
           <View style={styles.boxInputArea}>
             <Text style={styles.timeText}>◆{i18n.t("History.time")}</Text>
             <View style={styles.boxInputTime}>
-              <Text style={styles.timeText}>{dayjs(startTime).format("hh:mm")}</Text>
-              <Text style={styles.timeText}> 〜 {dayjs(endTime).format("hh:mm")}</Text>
+              <Text style={styles.timeText}>{dayjs(startTime).format("HH:mm")}</Text>
+              <Text style={styles.timeText}> 〜 {dayjs(endTime).format("HH:mm")}</Text>
             </View>
           </View>
           <View style={styles.boxInputArea}>
