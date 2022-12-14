@@ -203,17 +203,15 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const alartTimeChange = async () => {
-    const notifications =
+    let notifications =
       await Notifications.getAllScheduledNotificationsAsync();
-      console.log(notifications);
 
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
-    console.log(notifications.length);
     for (let i = 0; i < notifications.length; i++) {
       let identifier = notifications[i].identifier;
       let alartBody = notifications[i].content.body;
-      // let alartTitle = notifications[i].content.title;
+      let alartTitle = notifications[i].content.title;
 
       Notifications.cancelScheduledNotificationAsync(identifier);
 
@@ -227,14 +225,16 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         Number(date[1]),
         alartDate,
         alartHour,
-        alartHour,
         alartMinutes,
       );
+      console.log(unixDate);
+
 
       await Notifications.scheduleNotificationAsync({
         content: {
           body: alartBody,
-          title: "明日稽古が予定されています",
+          title: alartTitle,
+          badge: 1,
         },
         trigger: {
           channelId: notifications[i].trigger.channelId,
