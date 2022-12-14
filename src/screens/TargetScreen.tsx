@@ -107,8 +107,6 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
     setCurrentValues(newCurrentValues);
   };
 
-  console.log(currentValues.join(""));
-
   const onPressTargetSubmit = () => {
     let result = currentValues.join("").match(/[^0-9]/);
     if (Number(currentYearGoal) > 365) {

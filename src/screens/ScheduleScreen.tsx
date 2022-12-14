@@ -238,7 +238,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           // 選択された日付が既に存在する場合
           if (day in reservations) {
             setStartTime(reservations[day].startTime);
-            console.log(reservations[day].startTime);
             setEndTime(reservations[day].endTime);
             setPlace(reservations[day].place);
           }

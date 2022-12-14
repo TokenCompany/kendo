@@ -21,7 +21,6 @@ export const counterSlice = createSlice({
     // 渡されるpayloadは日付をstringにしたもの(例: "12:00")
     addReminder: (state, action: PayloadAction<string>) => {
       state.reminderTimer = action.payload;
-      console.log(state);
     },
   },
 });
