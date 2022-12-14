@@ -116,8 +116,8 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           <View style={styles.boxInputArea}>
             <Text style={styles.timeText}>◆{i18n.t("History.time")}</Text>
             <View style={styles.boxInputTime}>
-              <Text style={styles.timeText}>{dayjs(startTime).format("hh:mm")}</Text>
-              <Text style={styles.timeText}> 〜 {dayjs(endTime).format("hh:mm")}</Text>
+              <Text style={styles.timeText}>{dayjs(startTime).format("HH:mm")}</Text>
+              <Text style={styles.timeText}> 〜 {dayjs(endTime).format("HH:mm")}</Text>
             </View>
           </View>
           <View style={styles.boxInputArea}>
