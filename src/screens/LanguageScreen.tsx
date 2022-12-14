@@ -12,8 +12,8 @@ type Props = NativeStackScreenProps<MainStackParamList, "Language">;
 
 export const LanguageScreen: React.FC<Props> = () => {
   const { currentLang, onChangeLang } = useLang();
-  const Restart = () => {
-    Updates.reloadAsync()
+  const Restart = async () => {
+    await Updates.reloadAsync()
   }
 
   const i18n = new I18n({ en, ja });
