@@ -122,6 +122,12 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       teacher.result = 0;
       teacher.goal = 0;
     }
+    newTeachers.push({
+      goal: 0,
+      id: "all",
+      result: 0,
+      text: `${i18n.t("TrainingEdit.training09")}`,
+    })
     targetRecords = newTeachers;
   } else {
     let newTargets = JSON.parse(JSON.stringify(targets));
