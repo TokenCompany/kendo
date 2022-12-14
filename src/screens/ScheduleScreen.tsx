@@ -190,7 +190,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduleNotificationAsync = async () => {
-    let notifications: any | notifications =
+    let notifications: any =
       await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
@@ -226,7 +226,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduledelete = async () => {
-    let notifications: any | notifications =
+    let notifications: any =
       await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
