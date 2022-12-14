@@ -193,6 +193,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
   }
 
+  console.log(resultsData);
+
+
   return (
     <View style={styles.inputWrap}>
       <View style={styles.check}>
