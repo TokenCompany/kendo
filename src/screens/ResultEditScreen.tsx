@@ -206,7 +206,6 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         checkArray.splice(idx, 1);
       }
     }
-    console.log(checkArray);
   };
 
   const createAlert = () =>
