@@ -154,11 +154,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         return;
       }
       token = (await Notifications.getExpoPushTokenAsync()).data;
-      console.log(token);
-    } else {
-      alert('Must use physical device for Push Notifications');
     }
-
     return token;
   }
 
@@ -322,7 +318,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
                                 alartTimeChange();
-                                dispatch(addReminder(time!.toString()))                              }}
+                                dispatch(addReminder(time!.toString()))}}
                             />
                           )}
                         </View>
