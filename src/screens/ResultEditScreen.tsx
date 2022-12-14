@@ -197,6 +197,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   let checkArray: string[] = [];
 
   const onCheckedBoolean = (textTrainingCategories: string, checked: boolean) => {
+
     if (checked === true) {
       checkArray.push(textTrainingCategories);
     } else {
@@ -205,6 +206,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         checkArray.splice(idx, 1);
       }
     }
+    console.log(checkArray);
   };
 
   const createAlert = () =>
