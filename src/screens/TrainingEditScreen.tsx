@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect} from "react";
 import {
   View,
   StyleSheet,
@@ -23,6 +23,7 @@ import { useLang } from "../hooks/useLang";
 import { addReminder } from "../store/reminderSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
+import * as Device from 'expo-device';
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -51,6 +52,14 @@ export type notifications = [
     trigger: Trigger;
   },
 ];
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const { currentLang, onChangeLang } = useLang();
@@ -107,16 +116,11 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [alartShow, setAlartShow] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>("0000");
+  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
 
-  React.useEffect(() => {
+  useEffect(() => {
 
-    Notifications.setNotificationHandler({
-      handleNotification: async () => ({
-        shouldShowAlert: true,
-        shouldPlaySound: false,
-        shouldSetBadge: false,
-      }),
-    });
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
 
     requestPermissionsAsync();
     AppState.addEventListener("change", _handleAppStateChange);
@@ -124,7 +128,39 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     return () => {
       AppState.addEventListener("change", _handleAppStateChange).remove();
     };
-  });
+  }, []);
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      if (finalStatus !== 'granted') {
+        alert('Failed to get push token for push notification!');
+        return;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+      console.log(token);
+    } else {
+      alert('Must use physical device for Push Notifications');
+    }
+
+    return token;
+  }
 
   // AppState.currentStateで現在の状態を取得できる
   const [appState, setAppState] = useState(AppState.currentState);
@@ -185,7 +221,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const onPressAlart = () => {
     setAlartShow(!alartShow);
-    setStartTime(dayjs(reminder.reminderTimer).toDate());
+    setStartTime(dayjs(reminder.reminderTimer).toString());
   };
 
   const onPressShowStartTimePicker = () => {
@@ -286,8 +322,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
                                 alartTimeChange();
-                                dispatch(addReminder(time!.toString()));
-                              }}
+                                dispatch(addReminder(time!.toString()))                              }}
                             />
                           )}
                         </View>
@@ -301,11 +336,20 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           onChange={(event, time: any) => {
                             setStartTime(time.toString());
                             alartTimeChange();
-                            dispatch(addReminder(startTime));
                           }}
                         />
                       )}
                     </View>
+                    <TouchableOpacity
+                      style={styles.setting}
+                      onPress={() => {
+                        dispatch(addReminder(startTime));
+                      }}
+                    >
+                      <Text>
+                      {i18n.t("ProfileEdit.setting")}
+                      </Text>
+                    </TouchableOpacity>
                   </View>
                 </View>
               </View>
@@ -440,8 +484,15 @@ const styles = StyleSheet.create({
   submitButtonContainer: {
     marginTop: 20,
     width: "100%",
-    // height: '30%',
-    // justifyContent: 'center',
     alignItems: "center",
+  },
+  setting:{
+    paddingHorizontal:20,
+    marginLeft:10,
+    height: 35,
+    borderRadius:10,
+    backgroundColor: "#F4F4F5",
+    alignItems: "center",
+    justifyContent: "center",
   },
 });

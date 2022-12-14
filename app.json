@@ -16,6 +16,11 @@
     "assetBundlePatterns": [
       "**/*"
     ],
+    "plugins": [
+      [
+        "expo-notifications"
+      ]
+    ],
     "ios": {
       "icon": "./assets/icon.png",
       "supportsTablet": true,

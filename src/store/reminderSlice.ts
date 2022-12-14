@@ -11,7 +11,7 @@ export interface ReminderState {
 
 // デフォルトの値
 const initialState: ReminderState = {
-  reminderTimer: dayjs("2022-01-01 00:00:00").format(),
+  reminderTimer: dayjs().format(),
 };
 
 export const counterSlice = createSlice({
