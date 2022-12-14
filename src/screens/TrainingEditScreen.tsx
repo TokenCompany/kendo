@@ -52,14 +52,6 @@ export type notifications = [
   },
 ];
 
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: false,
-    shouldSetBadge: false,
-  }),
-});
-
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const { currentLang, onChangeLang } = useLang();
   const i18n = new I18n({ en, ja });
@@ -117,6 +109,15 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [startTime, setStartTime] = useState<string>("0000");
 
   React.useEffect(() => {
+
+    Notifications.setNotificationHandler({
+      handleNotification: async () => ({
+        shouldShowAlert: true,
+        shouldPlaySound: false,
+        shouldSetBadge: false,
+      }),
+    });
+
     requestPermissionsAsync();
     AppState.addEventListener("change", _handleAppStateChange);
 
