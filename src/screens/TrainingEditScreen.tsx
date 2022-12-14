@@ -224,10 +224,14 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           body: alartBody,
           title: alartTitle,
           badge: 1,
+          sound: true,
         },
         trigger: {
-          channelId: notifications[i].trigger.channelId,
-          date: unixDate,
+          year: alartYear,
+          month: alartMonth,
+          day: alartDate,
+          hour: alartHour,
+          minute: alartMinutes,
         },
       });
     }
