@@ -36,31 +36,54 @@ Notifications.setNotificationHandler({
   }),
 });
 
-export type Content = {
-  autoDismiss: boolean;
-  badge: null;
-  body: string;
-  data: null;
-  sound: string;
-  sticky: boolean;
-  subtitle: null;
-  title: string;
-};
+export type NotificationContent = {
+  title: string | null;
+  subtitle: string | null;
+  body: string | null;
+  data: { [key: string]: unknown };
+  badge: number | null;
+  sound: 'default' | 'defaultCritical' | 'custom' | null;
+  categoryIdentifier: string | null;
+} & (
+  | {
+      attachments: {
+        identifier: string | null;
+        url: string | null;
+        type: string | null;
+      }[];
+      summaryArgument?: string | null;
+      summaryArgumentCount?: number;
+      threadIdentifier: string | null;
+      targetContentIdentifier?: string;
+    }
+  | {
+      priority?: AndroidNotificationPriority;
+      vibrationPattern?: number[];
+      color?: string;
+    }
+);
 
-export type Trigger = {
-  channelId: string;
-  repeats: boolean;
-  type: string;
-  value?: number;
-};
+export enum AndroidNotificationPriority {
+  MIN = 'min',
+  LOW = 'low',
+  DEFAULT = 'default',
+  HIGH = 'high',
+  MAX = 'max',
+}
 
-export type notifications = [
-  {
-    content: Content;
-    identifier: string;
-    trigger: Trigger;
-  },
-];
+export type DateTriggerInput = Date | number | { channelId?: string; date: Date | number };
+
+export type NotificationTrigger =
+  | SchedulableNotificationTriggerInput
+
+export type SchedulableNotificationTriggerInput =
+  | DateTriggerInput
+
+export interface NotificationRequest {
+  identifier: string;
+  content: NotificationContent;
+  trigger: NotificationTrigger;
+}
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const { currentLang, onChangeLang } = useLang();
