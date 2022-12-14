@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "Hachi-dan",
-    "slug": "kendo-app",
+    "slug": "way-to-hachi-dan",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
@@ -35,7 +35,7 @@
     },
     "extra": {
       "eas": {
-        "projectId": "5b15a8da-d7f6-4e8d-8ef4-61e1bfd31386"
+        "projectId": "8dd00997-bb05-42ae-a766-da9006928603"
       }
     }
   }

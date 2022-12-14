@@ -185,6 +185,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let alartMinutes = remindTimeSplit[1];
     let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
+
     await Notifications.scheduleNotificationAsync({
       content: {
         body: place,
@@ -192,6 +193,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           dayjs(startTime).format("HH:mm").toString() +
           "~" +
           dayjs(endTime).format("HH:mm").toString(),
+        badge: 1,
       },
       trigger: {
         channelId: selectedDate,

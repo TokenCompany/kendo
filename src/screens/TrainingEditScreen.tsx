@@ -27,31 +27,54 @@ import * as Device from 'expo-device';
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
-export type Content = {
-  autoDismiss: boolean;
-  badge: null;
-  body: string;
-  data: null;
-  sound: string;
-  sticky: boolean;
-  subtitle: null;
-  title: string;
-};
+export type NotificationContent = {
+  title: string | null;
+  subtitle: string | null;
+  body: string | null;
+  data: { [key: string]: unknown };
+  badge: number | null;
+  sound: 'default' | 'defaultCritical' | 'custom' | null;
+  categoryIdentifier: string | null;
+} & (
+  | {
+      attachments: {
+        identifier: string | null;
+        url: string | null;
+        type: string | null;
+      }[];
+      summaryArgument?: string | null;
+      summaryArgumentCount?: number;
+      threadIdentifier: string | null;
+      targetContentIdentifier?: string;
+    }
+  | {
+      priority?: AndroidNotificationPriority;
+      vibrationPattern?: number[];
+      color?: string;
+    }
+);
 
-export type Trigger = {
-  channelId: string;
-  repeats: boolean;
-  type: string;
-  value?: number;
-};
+export enum AndroidNotificationPriority {
+  MIN = 'min',
+  LOW = 'low',
+  DEFAULT = 'default',
+  HIGH = 'high',
+  MAX = 'max',
+}
 
-export type notifications = [
-  {
-    content: Content;
-    identifier: string;
-    trigger: Trigger;
-  },
-];
+export type DateTriggerInput = Date | number | { channelId?: string; date: Date | number };
+
+export type NotificationTrigger =
+  | SchedulableNotificationTriggerInput
+
+export type SchedulableNotificationTriggerInput =
+  | DateTriggerInput
+
+export interface NotificationRequest {
+  identifier: string;
+  content: NotificationContent;
+  trigger: NotificationTrigger;
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -118,6 +141,8 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [startTime, setStartTime] = useState<string>("0000");
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
 
+
+
   useEffect(() => {
 
     registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
@@ -178,18 +203,22 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const alartTimeChange = async () => {
-    let notifications: any | notifications =
+    const notifications =
       await Notifications.getAllScheduledNotificationsAsync();
+      console.log(notifications);
+
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
+    console.log(notifications.length);
     for (let i = 0; i < notifications.length; i++) {
       let identifier = notifications[i].identifier;
       let alartBody = notifications[i].content.body;
-      let alartTitle = notifications[i].content.title;
+      // let alartTitle = notifications[i].content.title;
 
       Notifications.cancelScheduledNotificationAsync(identifier);
 
       let date = notifications[i].trigger.channelId.split("-");
+
       let alartDate = Number(date[2]) - 1;
       let alartHour = Number(newTimeHour[0]);
       let alartMinutes = Number(newTimeHour[1]);
@@ -205,7 +234,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       await Notifications.scheduleNotificationAsync({
         content: {
           body: alartBody,
-          title: alartTitle,
+          title: "明日稽古が予定されています",
         },
         trigger: {
           channelId: notifications[i].trigger.channelId,
