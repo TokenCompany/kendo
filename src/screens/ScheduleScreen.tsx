@@ -42,7 +42,7 @@ export type NotificationContent = {
   body: string | null;
   data: { [key: string]: unknown };
   badge: number | null;
-  sound: 'default' | 'defaultCritical' | 'custom' | null;
+  sound: "default" | "defaultCritical" | "custom" | null;
   categoryIdentifier: string | null;
 } & (
   | {
@@ -64,20 +64,18 @@ export type NotificationContent = {
 );
 
 export enum AndroidNotificationPriority {
-  MIN = 'min',
-  LOW = 'low',
-  DEFAULT = 'default',
-  HIGH = 'high',
-  MAX = 'max',
+  MIN = "min",
+  LOW = "low",
+  DEFAULT = "default",
+  HIGH = "high",
+  MAX = "max",
 }
 
 export type DateTriggerInput = Date | number | { channelId?: string; date: Date | number };
 
-export type NotificationTrigger =
-  | SchedulableNotificationTriggerInput
+export type NotificationTrigger = SchedulableNotificationTriggerInput;
 
-export type SchedulableNotificationTriggerInput =
-  | DateTriggerInput
+export type SchedulableNotificationTriggerInput = DateTriggerInput;
 
 export interface NotificationRequest {
   identifier: string;
@@ -190,8 +188,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduleNotificationAsync = async () => {
-    let notifications: any =
-      await Notifications.getAllScheduledNotificationsAsync();
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -203,11 +200,18 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let date = selectedDate!.split("-");
     let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
     let remindTimeSplit = remindTime.split(":");
+    let alartYear = Number(date[0]);
+    let alartMonth = Number(date[1]) - 1;
     let alartDate = Number(date[2]) - 1;
-    let alartHour = remindTimeSplit[0];
-    let alartMinutes = remindTimeSplit[1];
-    let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
-
+    let alartHour = Number(remindTimeSplit[0]);
+    let alartMinutes = Number(remindTimeSplit[1]);
+    let unixDate = new Date(Date.now());
+    unixDate.setFullYear(alartYear);
+    unixDate.setDate(alartDate);
+    unixDate.setMonth(alartMonth);
+    unixDate.setHours(alartHour);
+    unixDate.setMinutes(alartMinutes);
+    unixDate.setSeconds(0);
 
     await Notifications.scheduleNotificationAsync({
       content: {
@@ -226,8 +230,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduledelete = async () => {
-    let notifications: any =
-      await Notifications.getAllScheduledNotificationsAsync();
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
 
@@ -542,7 +545,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 5,
     borderWidth: 1,
-    marginBottom:400,
+    marginBottom: 400,
   },
   boxTitle: {
     fontSize: 20,

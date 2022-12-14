@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -23,7 +23,7 @@ import { useLang } from "../hooks/useLang";
 import { addReminder } from "../store/reminderSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import * as Device from 'expo-device';
+import * as Device from "expo-device";
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -33,7 +33,7 @@ export type NotificationContent = {
   body: string | null;
   data: { [key: string]: unknown };
   badge: number | null;
-  sound: 'default' | 'defaultCritical' | 'custom' | null;
+  sound: "default" | "defaultCritical" | "custom" | null;
   categoryIdentifier: string | null;
 } & (
   | {
@@ -55,20 +55,18 @@ export type NotificationContent = {
 );
 
 export enum AndroidNotificationPriority {
-  MIN = 'min',
-  LOW = 'low',
-  DEFAULT = 'default',
-  HIGH = 'high',
-  MAX = 'max',
+  MIN = "min",
+  LOW = "low",
+  DEFAULT = "default",
+  HIGH = "high",
+  MAX = "max",
 }
 
 export type DateTriggerInput = Date | number | { channelId?: string; date: Date | number };
 
-export type NotificationTrigger =
-  | SchedulableNotificationTriggerInput
+export type NotificationTrigger = SchedulableNotificationTriggerInput;
 
-export type SchedulableNotificationTriggerInput =
-  | DateTriggerInput
+export type SchedulableNotificationTriggerInput = DateTriggerInput;
 
 export interface NotificationRequest {
   identifier: string;
@@ -139,13 +137,10 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [alartShow, setAlartShow] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>("0000");
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
-
-
+  const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
 
   useEffect(() => {
-
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+    registerForPushNotificationsAsync().then((token) => setExpoPushToken(token));
 
     requestPermissionsAsync();
     AppState.addEventListener("change", _handleAppStateChange);
@@ -158,19 +153,19 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   async function registerForPushNotificationsAsync() {
     let token;
 
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
+    if (Platform.OS === "android") {
+      await Notifications.setNotificationChannelAsync("default", {
+        name: "default",
         importance: Notifications.AndroidImportance.MAX,
         vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
+        lightColor: "#FF231F7C",
       });
     }
 
     if (Device.isDevice) {
       const { status: existingStatus } = await Notifications.getPermissionsAsync();
       let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
+      if (existingStatus !== "granted") {
         const { status } = await Notifications.requestPermissionsAsync();
         finalStatus = status;
       }
@@ -199,8 +194,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   const alartTimeChange = async () => {
-    let notifications =
-      await Notifications.getAllScheduledNotificationsAsync();
+    let notifications = await Notifications.getAllScheduledNotificationsAsync();
 
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
@@ -212,19 +206,18 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       Notifications.cancelScheduledNotificationAsync(identifier);
 
       let date = notifications[i].trigger.channelId.split("-");
-
+      let alartYear = Number(date[0]);
+      let alartMonth = Number(date[1]) - 1;
       let alartDate = Number(date[2]) - 1;
       let alartHour = Number(newTimeHour[0]);
       let alartMinutes = Number(newTimeHour[1]);
-      let unixDate = new Date(
-        Number(date[0]),
-        Number(date[1]),
-        alartDate,
-        alartHour,
-        alartMinutes,
-      );
-      console.log(unixDate);
-
+      let unixDate = new Date(Date.now());
+      unixDate.setFullYear(alartYear);
+      unixDate.setDate(alartDate);
+      unixDate.setMonth(alartMonth);
+      unixDate.setHours(alartHour);
+      unixDate.setMinutes(alartMinutes);
+      unixDate.setSeconds(0);
 
       await Notifications.scheduleNotificationAsync({
         content: {
@@ -343,7 +336,8 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
                                 alartTimeChange();
-                                dispatch(addReminder(time!.toString()))}}
+                                dispatch(addReminder(time!.toString()));
+                              }}
                             />
                           )}
                         </View>
@@ -367,9 +361,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                         dispatch(addReminder(startTime));
                       }}
                     >
-                      <Text>
-                      {i18n.t("ProfileEdit.setting")}
-                      </Text>
+                      <Text>{i18n.t("ProfileEdit.setting")}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -507,11 +499,11 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  setting:{
-    paddingHorizontal:20,
-    marginLeft:10,
+  setting: {
+    paddingHorizontal: 20,
+    marginLeft: 10,
     height: 35,
-    borderRadius:10,
+    borderRadius: 10,
     backgroundColor: "#F4F4F5",
     alignItems: "center",
     justifyContent: "center",
