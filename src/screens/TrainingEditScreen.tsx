@@ -140,6 +140,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const alartTimeChange = async () => {
     let notifications: any | notifications =
       await Notifications.getAllScheduledNotificationsAsync();
+    console.log(notifications);
     let newTime = dayjs(startTime).format("HH:mm").toString();
     let newTimeHour = newTime.split(":");
     for (let i = 0; i < notifications.length; i++) {
@@ -150,17 +151,19 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       Notifications.cancelScheduledNotificationAsync(identifier);
 
       let date = notifications[i].trigger.channelId.split("-");
+      let alartYear = Number(date[0]);
+      let alartMonth = Number(date[1]) - 1;
       let alartDate = Number(date[2]) - 1;
       let alartHour = Number(newTimeHour[0]);
       let alartMinutes = Number(newTimeHour[1]);
-      let unixDate = new Date(
-        Number(date[0]),
-        Number(date[1]),
-        alartDate,
-        alartHour,
-        alartHour,
-        alartMinutes,
-      );
+      let unixDate = new Date(Date.now());
+      unixDate.setFullYear(alartYear);
+      unixDate.setDate(alartDate);
+      unixDate.setMonth(alartMonth);
+      unixDate.setHours(alartHour);
+      unixDate.setMinutes(alartMinutes);
+      unixDate.setSeconds(0);
+      console.log(unixDate);
 
       await Notifications.scheduleNotificationAsync({
         content: {
