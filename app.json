@@ -1,12 +1,12 @@
 {
   "expo": {
-    "name": "kendo-app",
+    "name": "Hachi-dan",
     "slug": "kendo-app",
     "version": "1.0.0",
     "orientation": "portrait",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/icon_ios.png",
+      "image": "./assets/icon.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -17,12 +17,12 @@
       "**/*"
     ],
     "ios": {
-      "icon": "./assets/icon_ios.png",
+      "icon": "./assets/icon.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.shimafactory.waytohachidan"
     },
     "android": {
-      "icon": "./assets/icon_android.png",
+      "icon": "./assets/icon.png",
       "package": "com.shimafactory.waytohachidan"
     },
     "web": {
