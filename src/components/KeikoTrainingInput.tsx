@@ -193,6 +193,13 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     onChangeSendInput(results["placeSubCategories"], "placeSubCategories");
   }
 
+  // console.log(Object(Object(results["teacherSubCategories"])).id);
+  // if(results["teacherSubCategories"][0].text !== undefined){
+  //   setChecked(!checked);
+  // }
+  console.log(results["teacherSubCategories"][0].text);
+
+
   return (
     <View style={styles.inputWrap}>
       <View style={styles.check}>
