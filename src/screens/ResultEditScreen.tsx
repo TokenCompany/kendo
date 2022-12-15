@@ -53,7 +53,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   // reduxからサブカテゴリ―ズの情報を取得
   const subCategories = useSelector((state: RootState) => state.subCategory);
   const resultsData = useSelector((state: RootState) => state.results);
-
+  console.log(resultsData);
+  
   /* 2. Get the param */
   // ここで遷移元から渡されたパラメータを取得する
   const dateText = route.params.dateText;
@@ -183,11 +184,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       targetRecords.forEach((targetRecord) => {
         pastData.forEach((element) => {
           if (targetRecord.id === element.id) {
-            // console.log(targetRecord.text);
-            // console.log(targetRecord.result);
             targetRecord.result -= changeToHours(Number(element.result));
-            // console.log(targetRecord.text);
-            // console.log(targetRecord.result);
           }
         });
       });
