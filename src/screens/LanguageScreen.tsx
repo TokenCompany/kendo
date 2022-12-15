@@ -28,7 +28,7 @@ export const LanguageScreen: React.FC<Props> = () => {
     onChangeLang(i18n.locale);
     setTimeout(() => {
       Restart()
-    }, 1000);
+    }, 2000);
   };
 
   const langChengeEN = () => {
@@ -37,7 +37,7 @@ export const LanguageScreen: React.FC<Props> = () => {
     onChangeLang(i18n.locale);
     setTimeout(() => {
       Restart()
-    }, 1000);
+    }, 2000);
   };
 
   return (

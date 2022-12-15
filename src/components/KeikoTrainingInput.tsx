@@ -73,8 +73,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     newValues[index] = text;
     setValues(newValues);
   };
-  console.log(resultsData);
-  
+
   const confirmCheck = () => {
     let judgeCheck = false;
     if (resultsDate in resultsData) {
