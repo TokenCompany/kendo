@@ -189,62 +189,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     );
   };
 
-  const scheduleNotificationAsync = async () => {
-    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-      let identifier = notifications[i].identifier;
-      if (channelId == selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-      }
-
-      let date = selectedDate!.split("-");
-      let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
-      let remindTimeSplit = remindTime.split(":");
-      let alartYear = Number(date[0]);
-      let alartMonth = Number(date[1]);
-      let alartDate = Number(date[2])-1;
-      let alartHour = Number(remindTimeSplit[0]);
-      let alartMinutes = Number(remindTimeSplit[1]);
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          body: place.toString(),
-          title:
-            dayjs(startTime).format("HH:mm").toString() +
-            "~" +
-            dayjs(endTime).format("HH:mm").toString(),
-          sound: true,
-          badge: 1,
-        },
-        trigger: {
-          channelId: selectedDate,
-          year: alartYear,
-          month: alartMonth,
-          day: alartDate,
-          hour: alartHour,
-          minute: alartMinutes,
-        },
-      });
-    }
-
-
-  };
-
-
-  const scheduledelete = async () => {
-    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-
-      let identifier = notifications[i].identifier;
-      if (channelId === selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-      }
-    }
-  };
-
   const [expoPushToken, setExpoPushToken] = useState<string | undefined>("");
 
   useEffect(() => {
@@ -299,7 +243,65 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
     setPermission(granted);
+    console.log(granted);
+
   };
+
+  const scheduleNotificationAsync = async () => {
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId == selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+
+      let date = selectedDate!.split("-");
+      let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+      let remindTimeSplit = remindTime.split(":");
+      let alartYear = Number(date[0]);
+      let alartMonth = Number(date[1]);
+      let alartDate = Number(date[2])-1;
+      let alartHour = Number(remindTimeSplit[0]);
+      let alartMinutes = Number(remindTimeSplit[1]);
+    }
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        body: place.toString(),
+        title:
+          dayjs(startTime).format("HH:mm").toString() +
+          "~" +
+          dayjs(endTime).format("HH:mm").toString(),
+        sound: true,
+        badge: 1,
+      },
+      trigger: {
+        // channelId: selectedDate,
+        year: 2022,
+        month: 12,
+        day: 15,
+        hour: 18,
+        minute: 36,
+      },
+    });
+  };
+
+
+  const scheduledelete = async () => {
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+
+      let identifier = notifications[i].identifier;
+      if (channelId === selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+  };
+
+
 
   let dateTextArray;
 

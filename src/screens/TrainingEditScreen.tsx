@@ -195,10 +195,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const reservations = useSelector((state: RootState) => state.reservation);
   // console.log(Object.keys(reservations));
-if(dayjs().format("yyyy-mm-dd") in reservations){
-console.log("test");
-
-}
 
   let reservationsList = Object.keys(reservations).sort()
   const reservationAlert = () => {
@@ -244,23 +240,29 @@ console.log("test");
       unixDate.setHours(alartHour);
       unixDate.setMinutes(alartMinutes);
       unixDate.setSeconds(0);
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          body: alartBody,
-          title: alartTitle,
-          badge: 1,
-          sound: true,
-        },
-        trigger: {
-          year: alartYear,
-          month: alartMonth,
-          day: alartDate,
-          hour: alartHour,
-          minute: alartMinutes,
-        },
-      });
     }
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        // body: alartBody,
+        // title: alartTitle,
+        body: "ああああ",
+        title: "ああああ",
+        badge: 1,
+        sound: true,
+      },
+      trigger: {
+        // year: alartYear,
+        // month: alartMonth,
+        // day: alartDate,
+        // hour: alartHour,
+        // minute: alartMinutes,
+        year: 2022,
+        month: 12,
+        day: 15,
+        hour: 18,
+        minute: 36,
+      },
+    });
   };
 
   const onPressAlart = () => {
