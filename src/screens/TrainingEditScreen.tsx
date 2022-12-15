@@ -224,20 +224,26 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         alartMinutes,
       );
       console.log(unixDate);
-
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          body: alartBody,
-          title: alartTitle,
-          badge: 1,
-        },
-        trigger: {
-          channelId: notifications[i].trigger.channelId,
-          date: unixDate,
-        },
-      });
     }
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        // body: alartBody,
+        // title: alartTitle,
+        body: "aaaa",
+        title: "aaaa",
+        badge: 1,
+      },
+      trigger: {
+        // channelId: notifications[i].trigger.channelId,
+        // date: unixDate,
+        year: 2022,
+        month: 12,
+        day: 15,
+        hour: 18,
+        minute: 50,
+      },
+    });
   };
 
   const onPressAlart = () => {
