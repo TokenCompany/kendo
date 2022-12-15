@@ -236,9 +236,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     setAppState(nextAppState);
 
     // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
-    // if (nextAppState === "background") {
+    if (nextAppState === "background") {
       requestPermissionsAsync();
-    // }
+    }
   };
 
   const [permission, setPermission] = useState(true);
