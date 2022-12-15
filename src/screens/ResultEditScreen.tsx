@@ -127,7 +127,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       id: "all",
       result: 0,
       text: `${i18n.t("TrainingEdit.training09")}`,
-    })
+    });
     targetRecords = newTeachers;
   } else {
     let newTargets = JSON.parse(JSON.stringify(targets));
@@ -160,16 +160,14 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       }
     }
 
-    createAlert();    
+    createAlert();
     // targetCategoriesの一つ一つに累計を足す
-    // console.log(allResults.resultsSum.teacherSubCategories);
-    console.log(targetRecords);
     let newAllResults = JSON.parse(JSON.stringify(allResults));
     for (const targetObj of newAllResults.resultsSum.teacherSubCategories) {
       for (const targetRecord of targetRecords) {
         if (targetObj.id === targetRecord.id) {
-          if("result" in targetObj === false) targetObj.result = 0;
-          targetRecord.result += changeToHours(Number(targetObj.result)); 
+          if ("result" in targetObj === false) targetObj.result = 0;
+          targetRecord.result += changeToHours(Number(targetObj.result));
         }
       }
     }
@@ -185,26 +183,45 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       targetRecords.forEach((targetRecord) => {
         pastData.forEach((element) => {
           if (targetRecord.id === element.id) {
+            // console.log(targetRecord.text);
+            // console.log(targetRecord.result);
             targetRecord.result -= changeToHours(Number(element.result));
+            // console.log(targetRecord.text);
+            // console.log(targetRecord.result);
           }
         });
       });
     }
+    // console.log(targetRecords);
+
     setAllResults(newAllResults);
     const saveAllTargets = {
       year: selectedYear,
       targets: targetRecords,
     };
-    console.log(saveAllTargets);
-    
+
     // REDUXへの保存
     dispatch(addResults(newAllResults));
     dispatch(addTargetCategory(saveAllTargets));
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
-    let newAllResults: any = { ...allResults };
-    newAllResults["resultsSum"][mainCategory] = results;
+    // resultsステートを複製し、値を入力された値に書き換える
+    let newAllResults: any = JSON.parse(JSON.stringify(allResults));
+    // 既に登録内容があるかないかで出し分けが必要
+    // ①既にある情報を探し上書き
+    if (newAllResults["resultsSum"][mainCategory].length !== 0) {
+      newAllResults["resultsSum"][mainCategory].forEach((element: any) => {
+        results.forEach((element2: any) => {
+          if (element.id === element2.id && "result" in element2) {
+            element.result = element2.result;
+          }
+        });
+      });
+    } else {
+      // ②新しい入力値をそのまま追加
+      newAllResults["resultsSum"][mainCategory] = results;
+    }
     setAllResults(newAllResults);
   };
 
@@ -326,6 +343,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     marginBottom: 50,
-    paddingBottom:300,
+    paddingBottom: 300,
   },
 });
