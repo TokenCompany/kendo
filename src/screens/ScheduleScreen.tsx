@@ -190,23 +190,23 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   };
 
   const scheduleNotificationAsync = async () => {
-    let notifications: any =
-      await Notifications.getAllScheduledNotificationsAsync();
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-      let identifier = notifications[i].identifier;
-      if (channelId == selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-      }
-    }
+    // let notifications: any =
+    //   await Notifications.getAllScheduledNotificationsAsync();
+    // for (let i = 0; i < notifications.length; i++) {
+    //   let channelId = notifications[i].trigger.channelId;
+    //   let identifier = notifications[i].identifier;
+    //   if (channelId == selectedDate) {
+    //     Notifications.cancelScheduledNotificationAsync(identifier);
+    //   }
+    // }
 
-    let date = selectedDate!.split("-");
-    let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
-    let remindTimeSplit = remindTime.split(":");
-    let alartDate = Number(date[2]) - 1;
-    let alartHour = remindTimeSplit[0];
-    let alartMinutes = remindTimeSplit[1];
-    let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
+    // let date = selectedDate!.split("-");
+    // let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+    // let remindTimeSplit = remindTime.split(":");
+    // let alartDate = Number(date[2]) - 1;
+    // let alartHour = remindTimeSplit[0];
+    // let alartMinutes = remindTimeSplit[1];
+    // let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
 
     await Notifications.scheduleNotificationAsync({
@@ -219,8 +219,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         badge: 1,
       },
       trigger: {
-        channelId: selectedDate,
-        date: unixDate,
+        // channelId: selectedDate,
+        // date: unixDate,
+        hour:20,
+        minute:28,
+        repeats: true,
       },
     });
   };

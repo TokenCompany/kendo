@@ -186,7 +186,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setAppState(nextAppState);
 
     // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
-    if (nextAppState !== "background") {
+    if (nextAppState === "background") {
       requestPermissionsAsync();
     }
   };
@@ -198,47 +198,52 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setPermission(granted);
   };
 
-  const alartTimeChange = async () => {
-    let notifications =
-      await Notifications.getAllScheduledNotificationsAsync();
+  const alartTimeChange = () => {
+    // let notifications =
+    //   await Notifications.getAllScheduledNotificationsAsync();
 
-    let newTime = dayjs(startTime).format("HH:mm").toString();
-    let newTimeHour = newTime.split(":");
-    for (let i = 0; i < notifications.length; i++) {
-      let identifier = notifications[i].identifier;
-      let alartBody = notifications[i].content.body;
-      let alartTitle = notifications[i].content.title;
+    // let newTime = dayjs(startTime).format("HH:mm").toString();
+    // let newTimeHour = newTime.split(":");
+    // for (let i = 0; i < notifications.length; i++) {
+    //   let identifier = notifications[i].identifier;
+    //   let alartBody = notifications[i].content.body;
+    //   let alartTitle = notifications[i].content.title;
 
-      Notifications.cancelScheduledNotificationAsync(identifier);
+    //   Notifications.cancelScheduledNotificationAsync(identifier);
 
-      let date = notifications[i].trigger.channelId.split("-");
+    //   let date = notifications[i].trigger.channelId.split("-");
 
-      let alartDate = Number(date[2]) - 1;
-      let alartHour = Number(newTimeHour[0]);
-      let alartMinutes = Number(newTimeHour[1]);
-      let unixDate = new Date(
-        Number(date[0]),
-        Number(date[1]),
-        alartDate,
-        alartHour,
-        alartMinutes,
-      );
-      console.log(unixDate);
-
-
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          body: alartBody,
-          title: alartTitle,
-          badge: 1,
-        },
-        trigger: {
-          channelId: notifications[i].trigger.channelId,
-          date: unixDate,
-        },
-      });
-    }
+    //   let alartDate = Number(date[2]) - 1;
+    //   let alartHour = Number(newTimeHour[0]);
+    //   let alartMinutes = Number(newTimeHour[1]);
+    //   let unixDate = new Date(
+    //     Number(date[0]),
+    //     Number(date[1]),
+    //     alartDate,
+    //     alartHour,
+    //     alartMinutes,
+    //   );
+    // }
   };
+
+  async function schedulePushNotification() {
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        // body: alartBody,
+        // title: alartTitle,
+        body: "aaa",
+        title: "aaa",
+        badge: 1,
+      },
+      trigger: {
+        // channelId: notifications[i].trigger.channelId,
+        // date: unixDate,
+        hour:20,
+        minute:28,
+        repeats: true,
+      },
+    });
+  }
 
   const onPressAlart = () => {
     setAlartShow(!alartShow);
@@ -343,7 +348,10 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
                                 alartTimeChange();
-                                dispatch(addReminder(time!.toString()))}}
+                                dispatch(addReminder(time!.toString()))
+                                schedulePushNotification()
+                              }
+                              }
                             />
                           )}
                         </View>
@@ -357,6 +365,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           onChange={(event, time: any) => {
                             setStartTime(time.toString());
                             alartTimeChange();
+                            schedulePushNotification()
                           }}
                         />
                       )}
