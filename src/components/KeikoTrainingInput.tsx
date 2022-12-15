@@ -73,7 +73,17 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     newValues[index] = text;
     setValues(newValues);
   };
-  const [checked, setChecked] = useState(false);
+
+  const confirmCheck = () => {
+    let judgeCheck = false;
+    if (resultsDate in resultsData) {
+      if(resultsData[resultsDate][textTrainingCategories].length !== 0){
+        judgeCheck = true;
+      }
+    }
+    return judgeCheck;
+  }
+  const [checked, setChecked] = useState(confirmCheck);
   const [checked2, setChecked2] = useState(false);
   const [place, setPlace] = useState<string>(reservedPlace);
   const subCategories: any = useSelector((state: RootState) => state.subCategory);

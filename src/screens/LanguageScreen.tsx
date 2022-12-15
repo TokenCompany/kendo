@@ -26,18 +26,18 @@ export const LanguageScreen: React.FC<Props> = () => {
     i18n.locale = "ja-JP";
     setLocale(i18n.locale);
     onChangeLang(i18n.locale);
-    if(i18n.locale == "ja-JP"){
+    setTimeout(() => {
       Restart()
-    }
+    }, 2000);
   };
 
   const langChengeEN = () => {
     i18n.locale = "en";
     setLocale(i18n.locale);
     onChangeLang(i18n.locale);
-    if(i18n.locale == "en"){
+    setTimeout(() => {
       Restart()
-    }
+    }, 2000);
   };
 
   return (

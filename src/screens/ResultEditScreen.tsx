@@ -115,13 +115,19 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   let targetRecords: TargetCategory[];
   let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
   let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
-  // 既に目標データの登録があった場合の処理
+  // 目標データがある時とない時の処理
   if (selectedYear in targets === false) {
     let newTeachers = JSON.parse(JSON.stringify(teachers));
     for (const teacher of newTeachers) {
       teacher.result = 0;
       teacher.goal = 0;
     }
+    newTeachers.push({
+      goal: 0,
+      id: "all",
+      result: 0,
+      text: `${i18n.t("TrainingEdit.training09")}`,
+    });
     targetRecords = newTeachers;
   } else {
     let newTargets = JSON.parse(JSON.stringify(targets));
@@ -155,8 +161,17 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     }
 
     createAlert();
-    // REDUXへの保存
-    dispatch(addResults(allResults));
+    // targetCategoriesの一つ一つに累計を足す
+    let newAllResults = JSON.parse(JSON.stringify(allResults));
+    for (const targetObj of newAllResults.resultsSum.teacherSubCategories) {
+      for (const targetRecord of targetRecords) {
+        if (targetObj.id === targetRecord.id) {
+          if ("result" in targetObj === false) targetObj.result = 0;
+          targetRecord.result += changeToHours(Number(targetObj.result));
+        }
+      }
+    }
+    // 既に実績が登録されている場合重複しないように処理が必要
     if (!resultsFlag) {
       targetRecords.forEach((element) => {
         if (element.id === "all") {
@@ -173,24 +188,35 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         });
       });
     }
-    // targetCategoriesの一つ一つに累計を足す
-    for (const targetObj of allResults.resultsSum.teacherSubCategories) {
-      for (const targetRecord of targetRecords) {
-        if (targetObj.id === targetRecord.id) {
-          targetRecord.result += changeToHours(Number(targetObj.result));
-        }
-      }
-    }
+
+    setAllResults(newAllResults);
     const saveAllTargets = {
       year: selectedYear,
       targets: targetRecords,
     };
+
+    // REDUXへの保存
+    dispatch(addResults(newAllResults));
     dispatch(addTargetCategory(saveAllTargets));
   };
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
-    let newAllResults: any = { ...allResults };
-    newAllResults["resultsSum"][mainCategory] = results;
+    // resultsステートを複製し、値を入力された値に書き換える
+    let newAllResults: any = JSON.parse(JSON.stringify(allResults));
+    // 既に登録内容があるかないかで出し分けが必要
+    // ①既にある情報を探し上書き
+    if (newAllResults["resultsSum"][mainCategory].length !== 0) {
+      newAllResults["resultsSum"][mainCategory].forEach((element: any) => {
+        results.forEach((element2: any) => {
+          if (element.id === element2.id && "result" in element2) {
+            element.result = element2.result;
+          }
+        });
+      });
+    } else {
+      // ②新しい入力値をそのまま追加
+      newAllResults["resultsSum"][mainCategory] = results;
+    }
     setAllResults(newAllResults);
   };
 
@@ -312,6 +338,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 20,
     marginBottom: 50,
-    paddingBottom:300,
+    paddingBottom: 300,
   },
 });

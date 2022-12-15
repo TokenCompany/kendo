@@ -236,9 +236,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     setAppState(nextAppState);
 
     // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
-    if (nextAppState === "background") {
+    // if (nextAppState === "background") {
       requestPermissionsAsync();
-    }
+    // }
   };
 
   const [permission, setPermission] = useState(true);
@@ -306,6 +306,12 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let alartHour = Number(remindTimeSplit[0]);
     let alartMinutes = Number(remindTimeSplit[1]);
     let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
+
+    console.log(alartDate);
+    console.log(alartHour);
+    console.log(alartMinutes);
+    console.log(unixDate);
+
     await Notifications.scheduleNotificationAsync({
       content: {
         body: place,
@@ -316,8 +322,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         badge: 1,
       },
       trigger: {
-        // channelId: notifications[i].trigger.channelId,
-        // date: unixDate,
         hour:alartHour,
         minute: alartMinutes,
         repeats: true,
