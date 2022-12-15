@@ -115,7 +115,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   let targetRecords: TargetCategory[];
   let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
   let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
-  // 既に目標データの登録があった場合の処理
+  // 目標データがある時とない時の処理
   if (selectedYear in targets === false) {
     let newTeachers = JSON.parse(JSON.stringify(teachers));
     for (const teacher of newTeachers) {
@@ -160,9 +160,20 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       }
     }
 
-    createAlert();
-    // REDUXへの保存
-    dispatch(addResults(allResults));
+    createAlert();    
+    // targetCategoriesの一つ一つに累計を足す
+    // console.log(allResults.resultsSum.teacherSubCategories);
+    console.log(targetRecords);
+    let newAllResults = JSON.parse(JSON.stringify(allResults));
+    for (const targetObj of newAllResults.resultsSum.teacherSubCategories) {
+      for (const targetRecord of targetRecords) {
+        if (targetObj.id === targetRecord.id) {
+          if("result" in targetObj === false) targetObj.result = 0;
+          targetRecord.result += changeToHours(Number(targetObj.result)); 
+        }
+      }
+    }
+    // 既に実績が登録されている場合重複しないように処理が必要
     if (!resultsFlag) {
       targetRecords.forEach((element) => {
         if (element.id === "all") {
@@ -179,18 +190,15 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         });
       });
     }
-    // targetCategoriesの一つ一つに累計を足す
-    for (const targetObj of allResults.resultsSum.teacherSubCategories) {
-      for (const targetRecord of targetRecords) {
-        if (targetObj.id === targetRecord.id) {
-          targetRecord.result += changeToHours(Number(targetObj.result));
-        }
-      }
-    }
+    setAllResults(newAllResults);
     const saveAllTargets = {
       year: selectedYear,
       targets: targetRecords,
     };
+    console.log(saveAllTargets);
+    
+    // REDUXへの保存
+    dispatch(addResults(newAllResults));
     dispatch(addTargetCategory(saveAllTargets));
   };
 
