@@ -31,7 +31,10 @@
       "package": "com.shimafactory.waytohachidan"
     },
     "web": {
-      "favicon": "./assets/favicon.png"
+      "favicon": "./assets/icon.png"
+    },
+    "notification": {
+      "icon": "./assets/icon.png"
     },
     "extra": {
       "eas": {
