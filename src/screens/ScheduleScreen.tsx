@@ -191,7 +191,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
 
   const scheduleNotificationAsync = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(notifications);
 
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
@@ -203,10 +202,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       let date = selectedDate!.split("-");
       let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
       let remindTimeSplit = remindTime.split(":");
-      let alartYear = Number(date[0]) - 1;
+      let alartYear = Number(date[0]);
       let alartMonth = Number(date[1]);
       let alartDate = Number(date[2])-1;
-      let alartHour = Number(remindTimeSplit[0] );
+      let alartHour = Number(remindTimeSplit[0]);
       let alartMinutes = Number(remindTimeSplit[1]);
 
       await Notifications.scheduleNotificationAsync({
@@ -229,6 +228,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         },
       });
     }
+
+
   };
 
 

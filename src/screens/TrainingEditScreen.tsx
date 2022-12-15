@@ -193,6 +193,32 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     setPermission(granted);
   };
 
+  const reservations = useSelector((state: RootState) => state.reservation);
+  // console.log(Object.keys(reservations));
+if(dayjs().format("yyyy-mm-dd") in reservations){
+console.log("test");
+
+}
+
+  let reservationsList = Object.keys(reservations).sort()
+  const reservationAlert = () => {
+    let object = {}
+    Object.keys(reservations).sort().forEach((value) => {
+      // console.log(dayjs(value));
+
+      // console.log(dayjs(value).diff(dayjs()))
+
+      if (dayjs(value).diff(dayjs()) > 0) {
+        object = value;
+      }
+    });
+
+    return object;
+  };
+  const notifications = reservationAlert();
+  // console.log(notifications);
+
+
   const alartTimeChange = async () => {
     let notifications = await Notifications.getAllScheduledNotificationsAsync();
 
