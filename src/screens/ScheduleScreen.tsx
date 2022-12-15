@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   ScrollView,
@@ -9,6 +9,7 @@ import {
   Platform,
   TouchableOpacity,
   Modal,
+  AppState,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -25,6 +26,7 @@ import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
+import * as Device from 'expo-device';
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
@@ -189,6 +191,63 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     );
   };
 
+  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
+
+  useEffect(() => {
+
+    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
+
+    requestPermissionsAsync();
+    AppState.addEventListener("change", _handleAppStateChange);
+
+    return () => {
+      AppState.addEventListener("change", _handleAppStateChange).remove();
+    };
+  }, []);
+
+  async function registerForPushNotificationsAsync() {
+    let token;
+
+    if (Platform.OS === 'android') {
+      await Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
+    if (Device.isDevice) {
+      const { status: existingStatus } = await Notifications.getPermissionsAsync();
+      let finalStatus = existingStatus;
+      if (existingStatus !== 'granted') {
+        const { status } = await Notifications.requestPermissionsAsync();
+        finalStatus = status;
+      }
+      token = (await Notifications.getExpoPushTokenAsync()).data;
+    }
+    return token;
+  }
+
+  // AppState.currentStateで現在の状態を取得できる
+  const [appState, setAppState] = useState(AppState.currentState);
+
+  const _handleAppStateChange = (nextAppState: any) => {
+    setAppState(nextAppState);
+
+    // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
+    if (nextAppState === "background") {
+      requestPermissionsAsync();
+    }
+  };
+
+  const [permission, setPermission] = useState(true);
+
+  const requestPermissionsAsync = async () => {
+    const { granted } = await Notifications.getPermissionsAsync();
+    setPermission(granted);
+  };
+
   const scheduleNotificationAsync = async () => {
     // let notifications: any =
     //   await Notifications.getAllScheduledNotificationsAsync();
@@ -209,6 +268,44 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     // let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
 
+    // await Notifications.scheduleNotificationAsync({
+    //   content: {
+    //     body: place,
+    //     title:
+    //       dayjs(startTime).format("HH:mm").toString() +
+    //       "~" +
+    //       dayjs(endTime).format("HH:mm").toString(),
+    //     badge: 1,
+    //   },
+    //   trigger: {
+    //     // // channelId: selectedDate,
+    //     // // date: unixDate,
+    //     // hour:20,
+    //     minute:28,
+    //     repeats: true,
+    //   },
+    // });
+  };
+
+
+  async function schedulePushNotification() {
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+    // console.log(notifications);
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId == selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+
+    let date = selectedDate!.split("-");
+    let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+    let remindTimeSplit = remindTime.split(":");
+    let alartDate = Number(date[2]) - 1;
+    let alartHour = Number(remindTimeSplit[0]);
+    let alartMinutes = Number(remindTimeSplit[1]);
+    let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
     await Notifications.scheduleNotificationAsync({
       content: {
         body: place,
@@ -219,14 +316,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         badge: 1,
       },
       trigger: {
-        // channelId: selectedDate,
+        // channelId: notifications[i].trigger.channelId,
         // date: unixDate,
-        hour:20,
-        minute:28,
+        hour:alartHour,
+        minute: alartMinutes,
         repeats: true,
       },
     });
-  };
+  }
 
   const scheduledelete = async () => {
     let notifications: any =
@@ -491,7 +588,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                         text: `${i18n.t("TaskEdit.ok")}`,
                         onPress: () => {
                           onPressSelected();
-                          scheduleNotificationAsync();
+                          schedulePushNotification()
                         },
                       },
                     ]);
@@ -505,7 +602,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                         },
                       },
                     ]);
-                    scheduleNotificationAsync();
+                    schedulePushNotification()
                   }
                 }
               }
