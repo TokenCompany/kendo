@@ -23,6 +23,42 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   const [currentDate, setCurrentDate] = useState(dayjs());
   // reduxからサブカテゴリ―ズの情報を取得
   const allData = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  let minAxisValue = 5;
+  const getMaxValue = () => {
+    let scaleBuffer = 1.1;
+    let allMaxArray: number[] = [];
+    let teacherMaxArray: number[] = [];
+    if (currentDate.year().toString() in allData) {
+      allData[currentDate.year().toString()].forEach((element: any) => {
+        if (element.id === "all") {
+          allMaxArray.push(element.goal);
+          allMaxArray.push(element.result);
+        } else {
+          teacherMaxArray.push(element.goal);
+          teacherMaxArray.push(element.result);
+        }
+      });
+    }
+    let allMax = Math.max(...allMaxArray) * scaleBuffer;
+    let teacherMax = Math.max(...teacherMaxArray);
+    // 値が小さすぎるか確認
+    if (allMax < minAxisValue) {
+      allMax = minAxisValue;
+    }
+    if (teacherMax < minAxisValue) {
+      teacherMax = minAxisValue;
+    }
+    // スケールを5で割り切れるように調整
+    if (allMax % minAxisValue !== 0) {
+      allMax = Math.ceil(allMax / 10) * 10;
+    }
+    if (teacherMax % minAxisValue !== 0) {
+      teacherMax = Math.ceil(teacherMax / 10) * 10;
+    }
+
+    return [allMax, teacherMax];
+  };
+  let maxValues = getMaxValue();
 
   // 一番上のグラフのデータ
   let mainData: any = [];
@@ -58,11 +94,17 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             frontColor: "#A53010",
             barStyle: { marginLeft: -15 },
             label: element.text + `${i18n.t("ResultEdit.teacher")}`,
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
+            ),
           },
           {
             value: element.result,
             frontColor: "#DE7E18",
             barStyle: { marginLeft: -35 },
+            topLabelComponent: () => (
+              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.result}</Text>
+            ),
           },
         );
       }
@@ -150,9 +192,10 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           <BarChart
             data={mainData}
             horizontal
+            maxValue={isNaN(Number(maxValues[0])) ? 5 : Number(maxValues[0])}
             rulesType="solid"
             initialSpacing={20}
-            noOfSections={3}
+            noOfSections={5}
             xAxisLabelTextStyle={{
               transform: [{ translateX: -15 }, { translateY: -10 }],
             }}
@@ -166,7 +209,8 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
           <BarChart
             data={subData}
             rulesType="solid"
-            noOfSections={3}
+            maxValue={isNaN(Number(maxValues[1])) ? 5 : Number(maxValues[1])}
+            noOfSections={5}
             labelsExtraHeight={100}
             labelWidth={70}
             xAxisLabelTextStyle={{
