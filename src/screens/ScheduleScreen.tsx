@@ -191,106 +191,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     );
   };
 
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
-
   useEffect(() => {
-
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
     requestPermissionsAsync();
-    AppState.addEventListener("change", _handleAppStateChange);
+  })
 
-    return () => {
-      AppState.addEventListener("change", _handleAppStateChange).remove();
-    };
-  }, []);
-
-  async function registerForPushNotificationsAsync() {
-    let token;
-
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-    }
-    return token;
-  }
-
-  // AppState.currentStateで現在の状態を取得できる
-  const [appState, setAppState] = useState(AppState.currentState);
-
-  const _handleAppStateChange = (nextAppState: any) => {
-    setAppState(nextAppState);
-
-    // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
-    if (nextAppState === "background") {
-      requestPermissionsAsync();
-    }
-  };
-
-  const [permission, setPermission] = useState(true);
-
-  const requestPermissionsAsync = async () => {
-    const { granted } = await Notifications.getPermissionsAsync();
-    setPermission(granted);
-  };
-
-  const scheduleNotificationAsync = async () => {
-    // let notifications: any =
-    //   await Notifications.getAllScheduledNotificationsAsync();
-    // for (let i = 0; i < notifications.length; i++) {
-    //   let channelId = notifications[i].trigger.channelId;
-    //   let identifier = notifications[i].identifier;
-    //   if (channelId == selectedDate) {
-    //     Notifications.cancelScheduledNotificationAsync(identifier);
-    //   }
-    // }
-
-    // let date = selectedDate!.split("-");
-    // let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
-    // let remindTimeSplit = remindTime.split(":");
-    // let alartDate = Number(date[2]) - 1;
-    // let alartHour = remindTimeSplit[0];
-    // let alartMinutes = remindTimeSplit[1];
-    // let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
-
-
-    // await Notifications.scheduleNotificationAsync({
-    //   content: {
-    //     body: place,
-    //     title:
-    //       dayjs(startTime).format("HH:mm").toString() +
-    //       "~" +
-    //       dayjs(endTime).format("HH:mm").toString(),
-    //     badge: 1,
-    //   },
-    //   trigger: {
-    //     // // channelId: selectedDate,
-    //     // // date: unixDate,
-    //     // hour:20,
-    //     minute:28,
-    //     repeats: true,
-    //   },
-    // });
-  };
-
-
-  async function schedulePushNotification() {
+  const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    // console.log(notifications);
+
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -305,12 +212,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let alartDate = Number(date[2]) - 1;
     let alartHour = Number(remindTimeSplit[0]);
     let alartMinutes = Number(remindTimeSplit[1]);
-    let unixDate = new Date(Number(date[0]), Number(date[1]), alartDate, alartHour, alartMinutes);
 
     console.log(alartDate);
     console.log(alartHour);
     console.log(alartMinutes);
-    console.log(unixDate);
 
     await Notifications.scheduleNotificationAsync({
       content: {
@@ -322,12 +227,21 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         badge: 1,
       },
       trigger: {
-        hour:alartHour,
+        hour: alartHour,
         minute: alartMinutes,
         repeats: true,
       },
     });
   }
+
+  // 通知許可取得
+  const requestPermissionsAsync = async () => {
+    const { granted } = await Notifications.getPermissionsAsync();
+    if (granted) { return }
+
+    await Notifications.requestPermissionsAsync();
+  }
+
 
   const scheduledelete = async () => {
     let notifications: any =
@@ -546,7 +460,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                   fontSize: 18,
                   textAlign: "center",
                 }}
-                containerStyle={{ height: 40, width: 260, marginLeft: 10 }}
+                containerStyle={{ height: 40, width: 210, marginLeft: 10 }}
                 style={{ backgroundColor: "#F4F4F5", borderWidth: 0 }}
                 dropDownContainerStyle={{ backgroundColor: "#F4F4F5" }}
                 placeholderStyle={{

@@ -139,57 +139,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [alartShow, setAlartShow] = useState(false);
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>("0000");
-  const [expoPushToken, setExpoPushToken] = useState<string | undefined>('');
 
-
-
-  useEffect(() => {
-
-    registerForPushNotificationsAsync().then(token => setExpoPushToken(token));
-
-    requestPermissionsAsync();
-    AppState.addEventListener("change", _handleAppStateChange);
-
-    return () => {
-      AppState.addEventListener("change", _handleAppStateChange).remove();
-    };
-  }, []);
-
-  async function registerForPushNotificationsAsync() {
-    let token;
-
-    if (Platform.OS === 'android') {
-      await Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
-    }
-
-    if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      token = (await Notifications.getExpoPushTokenAsync()).data;
-    }
-    return token;
-  }
-
-  // AppState.currentStateで現在の状態を取得できる
-  const [appState, setAppState] = useState(AppState.currentState);
-
-  const _handleAppStateChange = (nextAppState: any) => {
-    setAppState(nextAppState);
-
-    // ここをactiveやinactiveに変えることでそれぞれの状態の時に発火できる
-    if (nextAppState === "background") {
-      requestPermissionsAsync();
-    }
-  };
 
   const [permission, setPermission] = useState(true);
 
@@ -197,53 +147,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     const { granted } = await Notifications.getPermissionsAsync();
     setPermission(granted);
   };
-
-  const alartTimeChange = () => {
-    // let notifications =
-    //   await Notifications.getAllScheduledNotificationsAsync();
-
-    // let newTime = dayjs(startTime).format("HH:mm").toString();
-    // let newTimeHour = newTime.split(":");
-    // for (let i = 0; i < notifications.length; i++) {
-    //   let identifier = notifications[i].identifier;
-    //   let alartBody = notifications[i].content.body;
-    //   let alartTitle = notifications[i].content.title;
-
-    //   Notifications.cancelScheduledNotificationAsync(identifier);
-
-    //   let date = notifications[i].trigger.channelId.split("-");
-
-    //   let alartDate = Number(date[2]) - 1;
-    //   let alartHour = Number(newTimeHour[0]);
-    //   let alartMinutes = Number(newTimeHour[1]);
-    //   let unixDate = new Date(
-    //     Number(date[0]),
-    //     Number(date[1]),
-    //     alartDate,
-    //     alartHour,
-    //     alartMinutes,
-    //   );
-    // }
-  };
-
-  async function schedulePushNotification() {
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        // body: alartBody,
-        // title: alartTitle,
-        body: "aaa",
-        title: "aaa",
-        badge: 1,
-      },
-      trigger: {
-        // channelId: notifications[i].trigger.channelId,
-        // date: unixDate,
-        hour:20,
-        minute:28,
-        repeats: true,
-      },
-    });
-  }
 
   const onPressAlart = () => {
     setAlartShow(!alartShow);
@@ -347,9 +250,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                               onChange={(event, time: any) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
-                                alartTimeChange();
                                 dispatch(addReminder(time!.toString()))
-                                schedulePushNotification()
                               }
                               }
                             />
@@ -364,8 +265,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           display={"default"}
                           onChange={(event, time: any) => {
                             setStartTime(time.toString());
-                            alartTimeChange();
-                            schedulePushNotification()
                           }}
                         />
                       )}
