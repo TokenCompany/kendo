@@ -94,17 +94,11 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             frontColor: "#A53010",
             barStyle: { marginLeft: -15 },
             label: element.text + `${i18n.t("ResultEdit.teacher")}`,
-            topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
-            ),
           },
           {
             value: element.result,
             frontColor: "#DE7E18",
             barStyle: { marginLeft: -35 },
-            topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.result}</Text>
-            ),
           },
         );
       }
