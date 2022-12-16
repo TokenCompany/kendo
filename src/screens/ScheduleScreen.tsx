@@ -26,7 +26,6 @@ import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
-import * as Device from 'expo-device';
 
 type Props = NativeStackScreenProps<MainStackParamList, "Schedule">;
 
@@ -37,6 +36,18 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+export interface NotificationRequest {
+  identifier: string;
+  content: NotificationContent;
+  trigger: NotificationTrigger;
+}
+
+export interface NotificationRequestInput {
+  identifier?: string;
+  content: NotificationContentInput;
+  trigger: NotificationTriggerInput;
+}
 
 export type NotificationContent = {
   title: string | null;
@@ -59,32 +70,82 @@ export type NotificationContent = {
       targetContentIdentifier?: string;
     }
   | {
-      priority?: AndroidNotificationPriority;
       vibrationPattern?: number[];
       color?: string;
     }
 );
 
-export enum AndroidNotificationPriority {
-  MIN = 'min',
-  LOW = 'low',
-  DEFAULT = 'default',
-  HIGH = 'high',
-  MAX = 'max',
+export interface NotificationContentInput {
+  title?: string;
+  subtitle?: string;
+  body?: string;
+  data?: { [key: string]: unknown };
+  badge?: number;
+  sound?: boolean | string;
+  vibrate?: boolean | number[];
+  color?: string;
+  autoDismiss?: boolean;
+  launchImageName?: string;
+  attachments?: {
+    url: string;
+    identifier?: string;
+
+    typeHint?: string;
+    hideThumbnail?: boolean;
+    thumbnailClipArea?: { x: number; y: number; width: number; height: number };
+    thumbnailTime?: number;
+  }[];
 }
 
-export type DateTriggerInput = Date | number | { channelId?: string; date: Date | number };
+export type NotificationTriggerInput =
+  | SchedulableNotificationTriggerInput;
 
 export type NotificationTrigger =
-  | SchedulableNotificationTriggerInput
+  | YearlyNotificationTrigger
 
 export type SchedulableNotificationTriggerInput =
-  | DateTriggerInput
+  // | CalendarNotificationTrigger
+  | YearlyTriggerInput
 
-export interface NotificationRequest {
-  identifier: string;
-  content: NotificationContent;
-  trigger: NotificationTrigger;
+// export interface CalendarNotificationTrigger {
+//   type: 'calendar';
+//   repeats: boolean;
+//   dateComponents: {
+//     era?: number;
+//     year?: number;
+//     month?: number;
+//     day?: number;
+//     hour?: number;
+//     minute?: number;
+//     second?: number;
+//     weekday?: number;
+//     weekdayOrdinal?: number;
+//     quarter?: number;
+//     weekOfMonth?: number;
+//     weekOfYear?: number;
+//     yearForWeekOfYear?: number;
+//     nanosecond?: number;
+//     isLeapMonth: boolean;
+//     timeZone?: string;
+//     calendar?: string;
+//   };
+// }
+
+export interface YearlyNotificationTrigger {
+  type: 'yearly';
+  day: number;
+  month: number;
+  hour: number;
+  minute: number;
+}
+
+export interface YearlyTriggerInput {
+  channelId?: string;
+  day: number;
+  month: number;
+  hour: number;
+  minute: number;
+  repeats: true;
 }
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
@@ -97,6 +158,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
   const reminder = useSelector((state: RootState) => state.reminder);
+
+  console.log(Object.values(reservations)[0]);
 
   const showForm = () => {
     setForm(true);
@@ -209,13 +272,11 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let date = selectedDate!.split("-");
     let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
     let remindTimeSplit = remindTime.split(":");
+    let alartYear = Number(date[0]);
+    let alartMonth = Number(date[1]) - 1;
     let alartDate = Number(date[2]) - 1;
     let alartHour = Number(remindTimeSplit[0]);
     let alartMinutes = Number(remindTimeSplit[1]);
-
-    console.log(alartDate);
-    console.log(alartHour);
-    console.log(alartMinutes);
 
     await Notifications.scheduleNotificationAsync({
       content: {
@@ -227,12 +288,16 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         badge: 1,
       },
       trigger: {
+        // year: alartYear,
+        month: alartMonth,
+        day: alartDate,
         hour: alartHour,
         minute: alartMinutes,
         repeats: true,
       },
-    });
+    })
   }
+
 
   // 通知許可取得
   const requestPermissionsAsync = async () => {

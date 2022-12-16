@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from "react";
+import React, { useState } from "react";
 import {
   View,
   StyleSheet,
@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Platform,
   Linking,
-  AppState,
   Text,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
@@ -23,7 +22,6 @@ import { useLang } from "../hooks/useLang";
 import { addReminder } from "../store/reminderSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
-import * as Device from 'expo-device';
 
 type Props = NativeStackScreenProps<MainStackParamList, "TrainingEdit">;
 
@@ -90,6 +88,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   i18n.locale = currentLang;
   i18n.enableFallback = true;
   const dispatch = useDispatch();
+  // const reservations = useSelector((state: RootState) => state.reservation);
   const reminder = useSelector((state: RootState) => state.reminder);
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
@@ -140,14 +139,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [showStartTimePicker, setShowStartTimePicker] = useState<boolean>();
   const [startTime, setStartTime] = useState<string>("0000");
 
-
-  const [permission, setPermission] = useState(true);
-
-  const requestPermissionsAsync = async () => {
-    const { granted } = await Notifications.getPermissionsAsync();
-    setPermission(granted);
-  };
-
   const onPressAlart = () => {
     setAlartShow(!alartShow);
     setStartTime(dayjs(reminder.reminderTimer).toString());
@@ -156,6 +147,54 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const onPressShowStartTimePicker = () => {
     setShowStartTimePicker(true);
   };
+
+  const [permission, setPermission] = useState(true);
+
+  const requestPermissionsAsync = async () => {
+    const { granted } = await Notifications.getPermissionsAsync();
+    setPermission(granted);
+  };
+
+  // const schedulePushNotification = async () => {
+  //   let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+
+  //   for (let i = 0; i < notifications.length; i++) {
+  //     let channelId = notifications[i].trigger.channelId;
+  //     let identifier = notifications[i].identifier;
+  //     if (channelId == selectedDate) {
+  //       Notifications.cancelScheduledNotificationAsync(identifier);
+  //     }
+  //   }
+
+  //   let date = selectedDate!.split("-");
+  //   let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+  //   let remindTimeSplit = remindTime.split(":");
+  //   let alartYear = Number(date[0]);
+  //   let alartMonth = Number(date[1]) - 1;
+  //   let alartDate = Number(date[2]) - 1;
+  //   let alartHour = Number(remindTimeSplit[0]);
+  //   let alartMinutes = Number(remindTimeSplit[1]);
+
+  //   await Notifications.scheduleNotificationAsync({
+  //     content: {
+  //       body: place,
+  //       title:
+  //         dayjs(startTime).format("HH:mm").toString() +
+  //         "~" +
+  //         dayjs(endTime).format("HH:mm").toString(),
+  //       badge: 1,
+  //     },
+  //     trigger: {
+  //       // year: alartYear,
+  //       month: alartMonth,
+  //       day: alartDate,
+  //       hour: alartHour,
+  //       minute: alartMinutes,
+  //       repeats: true,
+  //     },
+  //   })
+  //   console.log(notifications);
+  // }
 
   return (
     <View style={styles.container}>
@@ -251,6 +290,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
                                 dispatch(addReminder(time!.toString()))
+                                requestPermissionsAsync()
                               }
                               }
                             />
@@ -273,6 +313,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                       style={styles.setting}
                       onPress={() => {
                         dispatch(addReminder(startTime));
+                        requestPermissionsAsync()
                       }}
                     >
                       <Text>
