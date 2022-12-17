@@ -279,19 +279,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
-
-    await Notifications.scheduleNotificationAsync({
-      content: {
-        body: place,
-        title:
-          dayjs(startTime).format("HH:mm").toString() +
-          "~" +
-          dayjs(endTime).format("HH:mm").toString(),
-      },
-      trigger: {
-        channelId: selectedDate,
-      },
-    })
   };
 
 

@@ -228,13 +228,17 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   }
 
   // 通知許可取得
+  const [permission, setPermission] = useState(true);
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
-    if (granted) { return }
-    await Notifications.requestPermissionsAsync();
+    if (granted) {
+    requestPermissionsAsync()
+    setPermission(granted)
+    }else{
+      requestPermissionsAsync()
+      setPermission(false)
+    }
   }
-
-  const [permission, setPermission] = useState(true);
 
   return (
     <View style={styles.container}>

@@ -20,6 +20,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
     if (granted) { return }
+    await Notifications.requestPermissionsAsync();
   }
   const profile: any = useSelector((state: RootState) => state.profile);
   const [fontsLoaded] = useFonts({
