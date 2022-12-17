@@ -124,7 +124,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   i18n.locale = currentLang;
   i18n.enableFallback = true;
   const dispatch = useDispatch();
-  // const reservations = useSelector((state: RootState) => state.reservation);
   const reminder = useSelector((state: RootState) => state.reminder);
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
@@ -214,9 +213,9 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           content: {
             body:notifications[i].content.body,
             title:notifications[i].content.title,
-            badge: 1,
           },
           trigger: {
+            channelId: selectedDate,
             month: alartMonth,
             day: alartDate,
             hour: alartHour,

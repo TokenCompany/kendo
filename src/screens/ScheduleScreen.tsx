@@ -9,7 +9,6 @@ import {
   Platform,
   TouchableOpacity,
   Modal,
-  AppState,
 } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
@@ -230,13 +229,14 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     requestPermissionsAsync();
   })
 
+  // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
 
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
-      if (channelId == selectedDate) {
+      if (channelId === selectedDate) {
         Notifications.cancelScheduledNotificationAsync(identifier);
       }
     }
@@ -256,9 +256,9 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
           dayjs(startTime).format("HH:mm").toString() +
           "~" +
           dayjs(endTime).format("HH:mm").toString(),
-        badge: 1,
       },
       trigger: {
+        channelId: selectedDate,
         month: alartMonth,
         day: alartDate,
         hour: alartHour,
@@ -267,6 +267,32 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       },
     })
   }
+
+  // 予定消去
+  const scheduleDelete = async () => {
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+
+    for (let i = 0; i < notifications.length; i++) {
+      let channelId = notifications[i].trigger.channelId;
+      let identifier = notifications[i].identifier;
+      if (channelId === selectedDate) {
+        Notifications.cancelScheduledNotificationAsync(identifier);
+      }
+    }
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        body: place,
+        title:
+          dayjs(startTime).format("HH:mm").toString() +
+          "~" +
+          dayjs(endTime).format("HH:mm").toString(),
+      },
+      trigger: {
+        channelId: selectedDate,
+      },
+    })
+  };
 
 
   // 通知許可取得
@@ -277,18 +303,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   }
 
 
-  const scheduledelete = async () => {
-    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
 
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-
-      let identifier = notifications[i].identifier;
-      if (channelId === selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-      }
-    }
-  };
   let dateTextArray;
 
   return (
@@ -570,7 +585,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                     text: `${i18n.t("TaskEdit.ok")}`,
                     onPress: () => {
                       onPressDelete();
-                      scheduledelete();
+                      scheduleDelete();
                     },
                   },
                 ]);
