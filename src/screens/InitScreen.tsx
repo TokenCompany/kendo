@@ -160,9 +160,9 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
         <View>
-          {splitText.map((data) => {
+          {splitText.map((data,index) => {
             return (
-              <Text key={data} style={styles.text}>
+              <Text key={index} style={styles.text}>
                 {data}
               </Text>
             );
