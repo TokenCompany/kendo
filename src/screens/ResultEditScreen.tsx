@@ -200,6 +200,19 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     dispatch(addTargetCategory(saveAllTargets));
   };
 
+  const checkNewTeacher = (results: SubCategories[],allResults: SubCategories[]) => {
+    results.forEach((teacher:SubCategories)=>{
+      let found = allResults.find((e:SubCategories) => e.id === teacher.id);
+      if(!found){
+        allResults.push({
+          id: teacher.id,
+          result: "result" in teacher ? teacher.result : 0,
+          text: teacher.text,
+        })
+      }
+    })
+  }
+
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
     // resultsステートを複製し、値を入力された値に書き換える
     let newAllResults: any = JSON.parse(JSON.stringify(allResults));
@@ -213,6 +226,10 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           }
         });
       });
+      // 後から新しい先生追加した場合の記述
+      checkNewTeacher(results,newAllResults["resultsSum"][mainCategory]);
+      console.log(newAllResults["resultsSum"][mainCategory]);
+      
     } else {
       // ②新しい入力値をそのまま追加
       newAllResults["resultsSum"][mainCategory] = results;
