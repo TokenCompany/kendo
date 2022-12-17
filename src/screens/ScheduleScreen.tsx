@@ -89,7 +89,6 @@ export interface NotificationContentInput {
   attachments?: {
     url: string;
     identifier?: string;
-
     typeHint?: string;
     hideThumbnail?: boolean;
     thumbnailClipArea?: { x: number; y: number; width: number; height: number };
@@ -104,32 +103,7 @@ export type NotificationTrigger =
   | YearlyNotificationTrigger
 
 export type SchedulableNotificationTriggerInput =
-  // | CalendarNotificationTrigger
   | YearlyTriggerInput
-
-// export interface CalendarNotificationTrigger {
-//   type: 'calendar';
-//   repeats: boolean;
-//   dateComponents: {
-//     era?: number;
-//     year?: number;
-//     month?: number;
-//     day?: number;
-//     hour?: number;
-//     minute?: number;
-//     second?: number;
-//     weekday?: number;
-//     weekdayOrdinal?: number;
-//     quarter?: number;
-//     weekOfMonth?: number;
-//     weekOfYear?: number;
-//     yearForWeekOfYear?: number;
-//     nanosecond?: number;
-//     isLeapMonth: boolean;
-//     timeZone?: string;
-//     calendar?: string;
-//   };
-// }
 
 export interface YearlyNotificationTrigger {
   type: 'yearly';
@@ -158,8 +132,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
   const reminder = useSelector((state: RootState) => state.reminder);
-
-  console.log(Object.values(reservations)[0]);
 
   const showForm = () => {
     setForm(true);
@@ -272,7 +244,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     let date = selectedDate!.split("-");
     let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
     let remindTimeSplit = remindTime.split(":");
-    let alartYear = Number(date[0]);
     let alartMonth = Number(date[1]) - 1;
     let alartDate = Number(date[2]) - 1;
     let alartHour = Number(remindTimeSplit[0]);
@@ -288,7 +259,6 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         badge: 1,
       },
       trigger: {
-        // year: alartYear,
         month: alartMonth,
         day: alartDate,
         hour: alartHour,
@@ -303,14 +273,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
     if (granted) { return }
-
     await Notifications.requestPermissionsAsync();
   }
 
 
   const scheduledelete = async () => {
-    let notifications: any =
-      await Notifications.getAllScheduledNotificationsAsync();
+    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
 
