@@ -3,21 +3,28 @@ import { TouchableOpacity, StyleSheet, Text, View, FlatList } from "react-native
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { useInitText } from "../hooks/useInitText";
-
+import { I18n } from "i18n-js";
+import en from "../lang/en.json";
+import ja from "../lang/ja.json";
+import { useLang } from "../hooks/useLang";
 type Props = NativeStackScreenProps<MainStackParamList, "InitEdit">;
 
 export const InitEditScreen: React.FC<Props> = ({}: Props) => {
+  const { currentLang, onChangeLang } = useLang();
+  const i18n = new I18n({ en, ja });
+  i18n.locale = currentLang;
+  i18n.enableFallback = true;
   const initEditText = [
-    "八段への道",
-    "全国大会への道",
-    "流汗悟道",
-    "交剣知愛",
-    "不動心",
-    "切磋琢磨",
+    `${i18n.t("InitEdit.InitEdit01")}`,
+    `${i18n.t("InitEdit.InitEdit02")}`,
+    `${i18n.t("InitEdit.InitEdit03")}`,
+    `${i18n.t("InitEdit.InitEdit04")}`,
+    `${i18n.t("InitEdit.InitEdit05")}`,
+    `${i18n.t("InitEdit.InitEdit06")}`,
   ];
 
   const { currentText, onPressSave } = useInitText();
-  const initTitle = currentText ? currentText : "八段への道";
+  const initTitle = currentText ? currentText : `${i18n.t("InitEdit.InitEdit01")}`;
   const [Selected, setSelected] = useState(initTitle);
   const renderItem = ({ item }: any) => {
     const SelectedStyle = item === Selected ? styles.selectedStyle : styles.notSelectedStyle;
