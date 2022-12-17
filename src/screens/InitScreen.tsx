@@ -10,10 +10,17 @@ import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
-
+import * as Notifications from "expo-notifications";
 type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 
 export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
+  useEffect(() => {
+    requestPermissionsAsync();
+  })
+  const requestPermissionsAsync = async () => {
+    const { granted } = await Notifications.getPermissionsAsync();
+    if (granted) { return }
+  }
   const profile: any = useSelector((state: RootState) => state.profile);
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
