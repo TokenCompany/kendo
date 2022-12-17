@@ -184,15 +184,10 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     requestPermissionsAsync();
   });
 
-  // const reservations = useSelector((state: RootState) => state.reservation);
-  // let today = dayjs().date();
-
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
-      console.log(dayjs(channelId));
       let identifier = notifications[i].identifier;
       let day = channelId.split("-");
       Notifications.cancelScheduledNotificationAsync(identifier);

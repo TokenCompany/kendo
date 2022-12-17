@@ -54,7 +54,7 @@ export type NotificationContent = {
   body: string | null;
   data: { [key: string]: unknown };
   badge: number | null;
-  sound: 'default' | 'defaultCritical' | 'custom' | null;
+  sound: "default" | "defaultCritical" | "custom" | null;
   categoryIdentifier: string | null;
 } & (
   | {
@@ -95,17 +95,14 @@ export interface NotificationContentInput {
   }[];
 }
 
-export type NotificationTriggerInput =
-  | SchedulableNotificationTriggerInput;
+export type NotificationTriggerInput = SchedulableNotificationTriggerInput;
 
-export type NotificationTrigger =
-  | YearlyNotificationTrigger
+export type NotificationTrigger = YearlyNotificationTrigger;
 
-export type SchedulableNotificationTriggerInput =
-  | YearlyTriggerInput
+export type SchedulableNotificationTriggerInput = YearlyTriggerInput;
 
 export interface YearlyNotificationTrigger {
-  type: 'yearly';
+  type: "yearly";
   day: number;
   month: number;
   hour: number;
@@ -227,18 +224,17 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
 
   useEffect(() => {
     requestPermissionsAsync();
-  })
+  });
 
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
       if (channelId === selectedDate) {
         Notifications.cancelScheduledNotificationAsync(identifier);
-        break
+        break;
       }
     }
 
@@ -266,8 +262,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         minute: alartMinutes,
         repeats: true,
       },
-    })
-  }
+    });
+  };
 
   // 予定消去
   const scheduleDelete = async () => {
@@ -278,20 +274,19 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       let identifier = notifications[i].identifier;
       if (channelId === selectedDate) {
         Notifications.cancelScheduledNotificationAsync(identifier);
-        break
+        break;
       }
     }
   };
 
-
   // 通知許可取得
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
-    if (granted) { return }
+    if (granted) {
+      return;
+    }
     await Notifications.requestPermissionsAsync();
-  }
-
-
+  };
 
   let dateTextArray;
 
@@ -544,7 +539,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                         text: `${i18n.t("TaskEdit.ok")}`,
                         onPress: () => {
                           onPressSelected();
-                          schedulePushNotification()
+                          schedulePushNotification();
                         },
                       },
                     ]);
@@ -558,7 +553,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                         },
                       },
                     ]);
-                    schedulePushNotification()
+                    schedulePushNotification();
                   }
                 }
               }
@@ -598,7 +593,7 @@ const styles = StyleSheet.create({
     padding: 20,
     paddingTop: 5,
     borderWidth: 1,
-    marginBottom:400,
+    marginBottom: 400,
   },
   boxTitle: {
     fontSize: 20,
