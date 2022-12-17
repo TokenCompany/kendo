@@ -184,37 +184,40 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     requestPermissionsAsync();
   });
 
-  const reservations = useSelector((state: RootState) => state.reservation);
-  let today = dayjs().date();
+  // const reservations = useSelector((state: RootState) => state.reservation);
+  // let today = dayjs().date();
 
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
     console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
+      console.log(dayjs(channelId));
       let identifier = notifications[i].identifier;
       let day = channelId.split("-");
       Notifications.cancelScheduledNotificationAsync(identifier);
-      let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
-      let remindTimeSplit = remindTime.split(":");
-      let alartMonth = Number(day[1]) - 1;
-      let alartDate = Number(day[2]) - 1;
-      let alartHour = Number(remindTimeSplit[0]);
-      let alartMinutes = Number(remindTimeSplit[1]);
-      await Notifications.scheduleNotificationAsync({
-        content: {
-          body: notifications[i].content.body,
-          title: notifications[i].content.title,
-        },
-        trigger: {
-          channelId: channelId,
-          month: alartMonth,
-          day: alartDate,
-          hour: alartHour,
-          minute: alartMinutes,
-          repeats: true,
-        },
-      });
+      if (dayjs(channelId) >= dayjs().subtract(7, "day")) {
+        let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+        let remindTimeSplit = remindTime.split(":");
+        let alartMonth = Number(day[1]) - 1;
+        let alartDate = Number(day[2]) - 1;
+        let alartHour = Number(remindTimeSplit[0]);
+        let alartMinutes = Number(remindTimeSplit[1]);
+        await Notifications.scheduleNotificationAsync({
+          content: {
+            body: notifications[i].content.body,
+            title: notifications[i].content.title,
+          },
+          trigger: {
+            channelId: channelId,
+            month: alartMonth,
+            day: alartDate,
+            hour: alartHour,
+            minute: alartMinutes,
+            repeats: true,
+          },
+        });
+      }
     }
   };
 
