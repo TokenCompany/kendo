@@ -115,6 +115,20 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   let targetRecords: TargetCategory[];
   let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
   let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
+  // 新しい先生が後から追加された時にターゲットにも追加する
+  const addNewTeacherToTargets = (teachers: SubCategories[], newTargets: TargetCategory[]) => {
+    teachers.forEach((teacher: SubCategories) => {
+      let found = newTargets.find((e: TargetCategory) => e.id === teacher.id);
+      if (!found) {
+        newTargets.push({
+          id: teacher.id,
+          result: 0,
+          goal: 0,
+          text: teacher.text,
+        });
+      }
+    });
+  };
   // 目標データがある時とない時の処理
   if (selectedYear in targets === false) {
     let newTeachers = JSON.parse(JSON.stringify(teachers));
@@ -131,6 +145,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     targetRecords = newTeachers;
   } else {
     let newTargets = JSON.parse(JSON.stringify(targets));
+    let newTeachers = JSON.parse(JSON.stringify(teachers));
+    // 新しい先生が入った時に追加
+    addNewTeacherToTargets(newTeachers, newTargets[selectedYear]);
     targetRecords = newTargets[selectedYear];
   }
 
@@ -200,6 +217,19 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     dispatch(addTargetCategory(saveAllTargets));
   };
 
+  const checkNewTeacher = (results: SubCategories[], allResults: SubCategories[]) => {
+    results.forEach((teacher: SubCategories) => {
+      let found = allResults.find((e: SubCategories) => e.id === teacher.id);
+      if (!found) {
+        allResults.push({
+          id: teacher.id,
+          result: "result" in teacher ? teacher.result : 0,
+          text: teacher.text,
+        });
+      }
+    });
+  };
+
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
     // resultsステートを複製し、値を入力された値に書き換える
     let newAllResults: any = JSON.parse(JSON.stringify(allResults));
@@ -213,6 +243,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           }
         });
       });
+      // 後から新しい先生追加した場合の記述
+      checkNewTeacher(results, newAllResults["resultsSum"][mainCategory]);
+      console.log(newAllResults["resultsSum"][mainCategory]);
     } else {
       // ②新しい入力値をそのまま追加
       newAllResults["resultsSum"][mainCategory] = results;
