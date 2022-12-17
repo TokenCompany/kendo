@@ -201,7 +201,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       let alartDate = Number(day[2]) - 1;
       let alartHour = Number(remindTimeSplit[0]);
       let alartMinutes = Number(remindTimeSplit[1]);
-
       await Notifications.scheduleNotificationAsync({
         content: {
           body: notifications[i].content.body,
@@ -220,15 +219,17 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
 
   // 通知許可取得
+  const [permission, setPermission] = useState(true);
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
     if (granted) {
-      return;
+      requestPermissionsAsync();
+      setPermission(granted);
+    } else {
+      requestPermissionsAsync();
+      setPermission(false);
     }
-    await Notifications.requestPermissionsAsync();
   };
-
-  const [permission, setPermission] = useState(true);
 
   return (
     <View style={styles.container}>
