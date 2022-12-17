@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -51,7 +51,7 @@ export type NotificationContent = {
   body: string | null;
   data: { [key: string]: unknown };
   badge: number | null;
-  sound: 'default' | 'defaultCritical' | 'custom' | null;
+  sound: "default" | "defaultCritical" | "custom" | null;
   categoryIdentifier: string | null;
 } & (
   | {
@@ -92,17 +92,14 @@ export interface NotificationContentInput {
   }[];
 }
 
-export type NotificationTriggerInput =
-  | SchedulableNotificationTriggerInput;
+export type NotificationTriggerInput = SchedulableNotificationTriggerInput;
 
-export type NotificationTrigger =
-  | YearlyNotificationTrigger
+export type NotificationTrigger = YearlyNotificationTrigger;
 
-export type SchedulableNotificationTriggerInput =
-  | YearlyTriggerInput
+export type SchedulableNotificationTriggerInput = YearlyTriggerInput;
 
 export interface YearlyNotificationTrigger {
-  type: 'yearly';
+  type: "yearly";
   day: number;
   month: number;
   hour: number;
@@ -185,54 +182,51 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   useEffect(() => {
     requestPermissionsAsync();
-  })
+  });
 
   const reservations = useSelector((state: RootState) => state.reservation);
-  let today = dayjs().date()
+  let today = dayjs().date();
 
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-
+    console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
-      let day = Object.keys(reservations)[i].split("-")
-      let selectedDate:any = day[0]+"-"+day[1]+"-"+day[2]
-      if (channelId == selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-      }
-      if (Number(day[2]) === today + 1) {
-        let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
-        let remindTimeSplit = remindTime.split(":");
-        let alartMonth = Number(day[1]) - 1;
-        let alartDate = Number(day[2]) - 1;
-        let alartHour = Number(remindTimeSplit[0]);
-        let alartMinutes = Number(remindTimeSplit[1]);
+      let day = channelId.split("-");
+      Notifications.cancelScheduledNotificationAsync(identifier);
+      let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
+      let remindTimeSplit = remindTime.split(":");
+      let alartMonth = Number(day[1]) - 1;
+      let alartDate = Number(day[2]) - 1;
+      let alartHour = Number(remindTimeSplit[0]);
+      let alartMinutes = Number(remindTimeSplit[1]);
 
-        await Notifications.scheduleNotificationAsync({
-          content: {
-            body:notifications[i].content.body,
-            title:notifications[i].content.title,
-          },
-          trigger: {
-            channelId: selectedDate,
-            month: alartMonth,
-            day: alartDate,
-            hour: alartHour,
-            minute: alartMinutes,
-            repeats: true,
-          },
-        })
-      }
+      await Notifications.scheduleNotificationAsync({
+        content: {
+          body: notifications[i].content.body,
+          title: notifications[i].content.title,
+        },
+        trigger: {
+          channelId: channelId,
+          month: alartMonth,
+          day: alartDate,
+          hour: alartHour,
+          minute: alartMinutes,
+          repeats: true,
+        },
+      });
     }
-  }
+  };
 
   // 通知許可取得
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
-    if (granted) { return }
+    if (granted) {
+      return;
+    }
     await Notifications.requestPermissionsAsync();
-  }
+  };
 
   const [permission, setPermission] = useState(true);
 
@@ -329,10 +323,9 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                               onChange={(event, time: any) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
-                                dispatch(addReminder(time!.toString()))
-                                schedulePushNotification()
-                              }
-                              }
+                                dispatch(addReminder(time!.toString()));
+                                schedulePushNotification();
+                              }}
                             />
                           )}
                         </View>
@@ -353,12 +346,10 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                       style={styles.setting}
                       onPress={() => {
                         dispatch(addReminder(startTime));
-                        schedulePushNotification()
+                        schedulePushNotification();
                       }}
                     >
-                      <Text>
-                      {i18n.t("ProfileEdit.setting")}
-                      </Text>
+                      <Text>{i18n.t("ProfileEdit.setting")}</Text>
                     </TouchableOpacity>
                   </View>
                 </View>
@@ -496,11 +487,11 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
   },
-  setting:{
-    paddingHorizontal:20,
-    marginLeft:10,
+  setting: {
+    paddingHorizontal: 20,
+    marginLeft: 10,
     height: 35,
-    borderRadius:10,
+    borderRadius: 10,
     backgroundColor: "#F4F4F5",
     alignItems: "center",
     justifyContent: "center",
