@@ -223,9 +223,12 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             repeats: true,
           },
         })
+        break
       }
     }
   }
+
+
 
   // 通知許可取得
   const [permission, setPermission] = useState(true);

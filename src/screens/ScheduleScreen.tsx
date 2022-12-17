@@ -232,12 +232,13 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-
+    console.log(notifications);
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
       if (channelId === selectedDate) {
         Notifications.cancelScheduledNotificationAsync(identifier);
+        break
       }
     }
 
@@ -277,6 +278,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       let identifier = notifications[i].identifier;
       if (channelId === selectedDate) {
         Notifications.cancelScheduledNotificationAsync(identifier);
+        break
       }
     }
   };
