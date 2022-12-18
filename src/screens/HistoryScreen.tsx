@@ -1,10 +1,12 @@
 import React, { useState } from "react";
-import { View, ScrollView, Text, StyleSheet } from "react-native";
+import { View, ScrollView, Text, StyleSheet,Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { TextButton } from "../components/TextButton";
 import { useSelector } from "react-redux";
+import { deleteResults } from "../store/resultsSlice";
+import { useDispatch } from "react-redux";
 import { RootState } from "../store";
 import dayjs from "dayjs";
 import { I18n } from "i18n-js";
@@ -15,10 +17,13 @@ import { useLang } from "../hooks/useLang";
 type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
 export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
+  // 言語の設定
   const { currentLang, onChangeLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
+
+  const dispatch = useDispatch();
 
   const onPress = () => {
     navigation.navigate("ResultEdit", {
@@ -85,6 +90,9 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
             setEndTime(reservations[day].endTime);
             resultChangePlace(day);
             showingBox(true);
+            if (day in results === true) {
+              setShowButton(true);
+            }
           } else {
             showingBox(false);
           }
@@ -133,6 +141,16 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
             onPress01={onPress}
             onPress02={() => {
               showingButton();
+              if (selectedDate in results) {
+                Alert.alert(
+                  `${i18n.t("TaskEdit.alert04")}`,
+                  '',
+                  [
+                    {text:  `${i18n.t("TaskEdit.ok")}`, onPress: () => dispatch(deleteResults(selectedDate))},
+                    {text: `${i18n.t("TaskEdit.cancel")}`},
+                  ],
+                )
+              }
             }}
             judge={showButton}
           />

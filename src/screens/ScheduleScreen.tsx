@@ -15,6 +15,8 @@ import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { TextButton } from "../components/TextButton";
 import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
+import { deleteResults } from "../store/resultsSlice";
+import { addTargetCategory } from "../store/subCategorySlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -124,6 +126,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   i18n.locale = currentLang;
   i18n.enableFallback = true;
 
+  const targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+   // reduxからの実績情報取得
+  const results = useSelector((state: RootState) => state.results);
+
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
@@ -212,20 +218,57 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       }),
     );
   };
+  const changeToHours = (num: number) => {
+    let parsedHours = Math.floor((num / 60) * 100) / 100;
+    return parsedHours;
+  };
 
   const onPressDelete = () => {
     setShowSelectedDate(false);
+    // 予約を削除
     dispatch(
       deleteReservationItem({
         date: selectedDate!,
       }),
     );
+    // 既に実績入力されている場合は合計実績と実績を削除
+    if (selectedDate in results) {
+      let newTargets = JSON.parse(JSON.stringify(targets));
+      let selectedYear = dayjs(selectedDate).year().toString();
+      let newResults = JSON.parse(JSON.stringify(results));
+      let teachersResults = newResults[selectedDate].teacherSubCategories;
+      teachersResults.forEach((teacher:any) => {
+        newTargets[selectedYear].forEach((target:any) => {
+          if (teacher.id === target.id) {
+            target.result -= changeToHours(Number(teacher.result));
+            
+          }
+        });
+      });
+      // 全ての合計の処理も追加
+      newTargets[selectedYear].forEach((target:any) => {
+        if (target.id === "all") {
+          target.result -= 1;
+        }
+      });
+       
+      // REDUXへ保存
+      const saveAllTargets = {
+        year: selectedYear,
+        targets: newTargets[selectedYear],
+      };
+      dispatch(addTargetCategory(saveAllTargets));
+    }
+    dispatch(deleteResults(selectedDate));
   };
 
   useEffect(() => {
     requestPermissionsAsync();
   });
 
+  const deleteTargetResult = ()=> {
+
+  }
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();

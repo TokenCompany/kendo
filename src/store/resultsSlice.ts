@@ -35,10 +35,16 @@ export const counterSlice = createSlice({
     addResults: (state, action) => {
       state[action.payload.trainingDate] = action.payload.resultsSum;
     },
+    deleteResults: (state, action) => {
+      const newState = JSON.parse(JSON.stringify(state));
+      delete newState[action.payload];
+      state = newState;
+    }
   },
 });
 
 // Action creators are generated for each case reducer function
 export const { addResults } = counterSlice.actions;
+export const { deleteResults } = counterSlice.actions;
 
 export default counterSlice.reducer;
