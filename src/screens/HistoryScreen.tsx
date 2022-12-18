@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, ScrollView, Text, StyleSheet,Alert } from "react-native";
+import { View, ScrollView, Text, StyleSheet, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
@@ -140,17 +140,8 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
             text02={i18n.t("History.ncw")}
             onPress01={onPress}
             onPress02={() => {
+              //実績が入力されている場合
               showingButton();
-              if (selectedDate in results) {
-                Alert.alert(
-                  `${i18n.t("TaskEdit.alert04")}`,
-                  '',
-                  [
-                    {text:  `${i18n.t("TaskEdit.ok")}`, onPress: () => dispatch(deleteResults(selectedDate))},
-                    {text: `${i18n.t("TaskEdit.cancel")}`},
-                  ],
-                )
-              }
             }}
             judge={showButton}
           />
