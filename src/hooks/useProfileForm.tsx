@@ -174,7 +174,7 @@ export const useProfileForm = (): Hooks => {
   };
   const onChangePassedDate00 = (passed0: number) => {
     setCurrentPassedDate00(passed0);
-    currentExamDate00 === 19900000 ? setCurrentExamDate01(passed0 + 10000) : setCurrentExamDate01(currentExamDate01);
+    currentExamDate01 === 19900000 ? setCurrentExamDate01(passed0 + 10000) : setCurrentExamDate01(currentExamDate01);
     currentExamDate02 === 19900000 ? setCurrentExamDate02(passed0 + 30000) : setCurrentExamDate02(currentExamDate02);
     currentExamDate03 === 19900000 ? setCurrentExamDate03(passed0 + 60000) : setCurrentExamDate03(currentExamDate03);
     currentExamDate04 === 19900000 ? setCurrentExamDate04(passed0 + 100000) : setCurrentExamDate04(currentExamDate04);
