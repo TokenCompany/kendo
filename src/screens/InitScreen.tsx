@@ -22,6 +22,16 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     if (granted) { return }
     await Notifications.requestPermissionsAsync();
   }
+
+  // アイコンバッジを０に戻す
+  const deleteBadge = async () => {
+    await Notifications.setBadgeCountAsync(0);
+    return
+  }
+  {
+    deleteBadge()
+  }
+
   const profile: any = useSelector((state: RootState) => state.profile);
   const [fontsLoaded] = useFonts({
     KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
