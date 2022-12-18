@@ -36,9 +36,7 @@ export const counterSlice = createSlice({
       state[action.payload.trainingDate] = action.payload.resultsSum;
     },
     deleteResults: (state, action) => {
-      const newState = JSON.parse(JSON.stringify(state));
-      delete newState[action.payload];
-      state = newState;
+      delete state[action.payload];
     }
   },
 });

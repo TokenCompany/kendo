@@ -127,7 +127,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   i18n.enableFallback = true;
 
   const targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
-   // reduxからの実績情報取得
+  // reduxからの実績情報取得
   const results = useSelector((state: RootState) => state.results);
 
   const dispatch = useDispatch();
@@ -215,6 +215,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         startTime: startTime,
         endTime: endTime,
         place: place,
+        resultStatus: true,
       }),
     );
   };
@@ -232,26 +233,25 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       }),
     );
     // 既に実績入力されている場合は合計実績と実績を削除
-    if (selectedDate in results) {
+    if (selectedDate! in results) {
       let newTargets = JSON.parse(JSON.stringify(targets));
       let selectedYear = dayjs(selectedDate).year().toString();
       let newResults = JSON.parse(JSON.stringify(results));
-      let teachersResults = newResults[selectedDate].teacherSubCategories;
-      teachersResults.forEach((teacher:any) => {
-        newTargets[selectedYear].forEach((target:any) => {
+      let teachersResults = newResults[selectedDate!].teacherSubCategories;
+      teachersResults.forEach((teacher: any) => {
+        newTargets[selectedYear].forEach((target: any) => {
           if (teacher.id === target.id) {
             target.result -= changeToHours(Number(teacher.result));
-            
           }
         });
       });
       // 全ての合計の処理も追加
-      newTargets[selectedYear].forEach((target:any) => {
+      newTargets[selectedYear].forEach((target: any) => {
         if (target.id === "all") {
           target.result -= 1;
         }
       });
-       
+
       // REDUXへ保存
       const saveAllTargets = {
         year: selectedYear,
@@ -266,9 +266,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     requestPermissionsAsync();
   });
 
-  const deleteTargetResult = ()=> {
-
-  }
+  const deleteTargetResult = () => {};
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();

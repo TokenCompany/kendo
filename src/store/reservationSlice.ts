@@ -8,6 +8,7 @@ interface ReservationItem {
   startTime: string; // 開始時間
   endTime: string; // 終了時間
   place: string; // 稽古場所
+  resultStatus: boolean; //稽古実績に
 }
 
 export interface ReservationState {
@@ -23,6 +24,7 @@ type BookReservationItemPayload = {
   startTime: string;
   endTime: string;
   place: string;
+  resultStatus: boolean; //稽古実績の未実施ボタンステータス
 };
 type DeleteReservationItemPayload = {
   date: string;
@@ -38,6 +40,7 @@ export const counterSlice = createSlice({
         startTime: action.payload.startTime,
         endTime: action.payload.endTime,
         place: action.payload.place,
+        resultStatus: action.payload.resultStatus,
       };
     },
     // 予約情報を削除するアクションです
