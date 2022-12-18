@@ -27,14 +27,14 @@
       "bundleIdentifier": "com.shimafactory.waytohachidan"
     },
     "android": {
-      "icon": "./assets/icon.png",
+      "icon": "./assets/icon_android.png",
       "package": "com.shimafactory.waytohachidan"
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
     "notification": {
-      "icon": "./assets/icon.png"
+      "icon": "./assets/icon_android.png"
     },
     "extra": {
       "eas": {
