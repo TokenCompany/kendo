@@ -117,7 +117,7 @@ export interface YearlyTriggerInput {
   month: number;
   hour: number;
   minute: number;
-  repeats: true;
+  repeats: boolean;
 }
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
@@ -275,10 +275,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
-      if (channelId === selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-        break;
-      }
+      Notifications.cancelScheduledNotificationAsync(identifier);
     }
 
     let date = selectedDate!.split("-");
