@@ -112,7 +112,7 @@ export interface YearlyTriggerInput {
   month: number;
   hour: number;
   minute: number;
-  repeats: true;
+  repeats: boolean;
 }
 
 export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
@@ -186,6 +186,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let identifier = notifications[i].identifier;
@@ -214,6 +215,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         });
       }
     }
+    console.log(notifications);
   };
 
   // 通知許可取得
