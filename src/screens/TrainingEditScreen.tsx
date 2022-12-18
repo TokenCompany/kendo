@@ -215,6 +215,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
         });
       }
     }
+    console.log(notifications);
   };
 
   // 通知許可取得
