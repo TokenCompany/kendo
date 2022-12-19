@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TextInput } from "react-native";
+import { View, Text, StyleSheet, TextInput, Alert } from "react-native";
 import { Checkbox } from "react-native-paper";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
@@ -228,8 +228,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                       style={styles.input}
                       keyboardType="numeric"
                       onChangeText={(text) => {
-                        onChangeCountResults(Number(text), data.id, data.mainCategory);
-                        onChangeValues(text, index);
+                        let result = text.match(/[^0-9]/);
+                        if(result){
+                          Alert.alert(`${i18n.t("TaskEdit.alert16")}`, "", [
+                            { text: `${i18n.t("TaskEdit.back")}` },
+                          ]);
+                        } else {
+                          onChangeCountResults(Number(text), data.id, data.mainCategory);
+                          onChangeValues(text, index);
+                        }
                       }}
                       value={values[index] ? values[index].toString() : ""}
                     />
@@ -261,8 +268,15 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           style={styles.input}
                           keyboardType="numeric"
                           onChangeText={(text) => {
+                            let result = text.match(/[^0-9]/);
+                            if(result){
+                              Alert.alert(`${i18n.t("TaskEdit.alert16")}`, "", [
+                                { text: `${i18n.t("TaskEdit.back")}` },
+                              ]);
+                            } else {
                             onChangeCountResults(Number(text), data.id, data.mainCategory);
                             onChangeValues(text, index);
+                            }
                           }}
                           value={values[index] ? values[index].toString() : ""}
                         />
