@@ -44,9 +44,9 @@
     "th03": "Accredited Date/Number of days until review",
     "year": "Year",
     "month": "Month",
-    "day": "Day",
+    "day": "Day(s)",
     "old": "",
-    "remain": "Days left",
+    "remain": "Days left ",
     "intoName": "Your name",
     "intoBirthday": "Your birthday",
     "intoAge": "Your age",
@@ -73,8 +73,8 @@
   },
   "Statistics": {
     "title": "Training chart",
-    "label01": "Number of trainings",
-    "label02": "Training goal",
+    "label01": "Times",
+    "label02": "Goal",
     "year": "",
     "teacher": ""
   },
@@ -131,7 +131,7 @@
   "Modal": {
     "task": "Subject",
     "stage": "",
-    "day": "days",
+    "day": "day(s)",
     "registered": "Registered"
   },
   "TaskEdit": {
