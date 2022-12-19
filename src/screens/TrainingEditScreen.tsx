@@ -184,12 +184,26 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     requestPermissionsAsync();
   });
 
+  // const notificationsDate = useSelector((state: RootState) => state.notificationsDate);
+  let notificationsDate = {
+    "aaaaaaaaaaaaaaa":"2022-12-20",
+    "bbbbbbbbbbbbbbb":"2022-12-21",
+  }
+
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
+      // let channelId = notificationsDate[i].trigger.channelId;
+
       let identifier = notifications[i].identifier;
+      // let identifier = notificationsDate[i].identifier;
+
+      // let date = notificationsDate[identifier]
+
       let day = channelId.split("-");
+      // let day = date.split("-");
+
       Notifications.cancelScheduledNotificationAsync(identifier);
       if (dayjs(channelId) >= dayjs().subtract(7, "day")) {
         let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();

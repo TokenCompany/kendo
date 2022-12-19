@@ -266,20 +266,31 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     requestPermissionsAsync();
   });
 
+  // const notificationsDate = useSelector((state: RootState) => state.notificationsDate);
+  let notificationsDate = {
+    "aaaaaaaaaaaaaaa":"2022-12-20",
+    "bbbbbbbbbbbbbbb":"2022-12-21",
+  }
+
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
+      // let channelId = notificationsDate[i].trigger.channelId;
       let identifier = notifications[i].identifier;
+       // let identifier = notificationsDate[i].identifier;
       Notifications.cancelScheduledNotificationAsync(identifier);
     }
+    // let date = notificationsDate[identifier]
 
-    let date = selectedDate!.split("-");
+    let day = selectedDate!.split("-");
+    // let day = date.split("-");
+
     let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
     let remindTimeSplit = remindTime.split(":");
-    let alartMonth = Number(date[1]) - 1;
-    let alartDate = Number(date[2]) - 1;
+    let alartMonth = Number(day[1]) - 1;
+    let alartDate = Number(day[2]) - 1;
     let alartHour = Number(remindTimeSplit[0]);
     let alartMinutes = Number(remindTimeSplit[1]);
 
