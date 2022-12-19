@@ -16,26 +16,30 @@
     "assetBundlePatterns": [
       "**/*"
     ],
-    "plugins": [
-      [
-        "expo-notifications"
-      ]
-    ],
     "ios": {
       "icon": "./assets/icon.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.shimafactory.waytohachidan"
     },
     "android": {
-      "icon": "./assets/icon_android.png",
+      "icon": "./assets/icon.png",
       "package": "com.shimafactory.waytohachidan"
     },
     "web": {
       "favicon": "./assets/icon.png"
     },
     "notification": {
-      "icon": "./assets/icon_android.png"
+      "icon": "./assets/icon.png"
     },
+    "plugins": [
+      [
+        "expo-notifications",
+        {
+          "icon": "./assets/notification-icon.png",
+          "color": "#000000"
+        }
+      ]
+    ],
     "extra": {
       "eas": {
         "projectId": "8dd00997-bb05-42ae-a766-da9006928603"
