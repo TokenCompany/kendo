@@ -554,7 +554,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             onPress01={() => {
               if (
                 Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) -
-                  Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) >
+                  Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) >=
                 0
               ) {
                 Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [
