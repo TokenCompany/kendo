@@ -17,6 +17,7 @@ import { TextButton } from "../components/TextButton";
 import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
 import { deleteResults } from "../store/resultsSlice";
 import { addTargetCategory } from "../store/subCategorySlice";
+import { addNotifications,deleteNotifications } from "../store/notificationsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -266,21 +267,36 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
     requestPermissionsAsync();
   });
 
-  // const notificationsDate = useSelector((state: RootState) => state.notificationsDate);
-  let notificationsDate = {
-    "aaaaaaaaaaaaaaa":"2022-12-20",
-    "bbbbbbbbbbbbbbb":"2022-12-21",
+  const getIdentifier = () => {
+    for (const key in notificationsData) {
+      if (notificationsData[key] === selectedDate) {
+        return key;
+      }
+    }
   }
 
+  const notificationsData = useSelector((state: RootState) => state.notifications);
+  
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-      // let channelId = notificationsDate[i].trigger.channelId;
-      let identifier = notifications[i].identifier;
-       // let identifier = notificationsDate[i].identifier;
-      Notifications.cancelScheduledNotificationAsync(identifier);
+    if (dayjs(selectedDate) <= dayjs().subtract(7, "day")){
+      for (let i = 0; i < notifications.length; i++) {
+        let channelId = notifications[i].trigger.channelId;
+        // let channelId = notificationsDate[i].trigger.channelId;
+        let identifier = notifications[i].identifier;
+         // let identifier = notificationsDate[i].identifier;
+        Notifications.cancelScheduledNotificationAsync(identifier);
+        // reduxでもキャンセルする
+        dispatch(deleteNotifications(identifier));
+      }
+    }
+    // 予定を修正した時に一度Notifications削除する
+    let selectedIdentifier = getIdentifier();
+    if (selectedIdentifier) {
+      Notifications.cancelScheduledNotificationAsync(selectedIdentifier);
+      // reduxでもキャンセルする
+      dispatch(deleteNotifications(selectedIdentifier));
     }
     // let date = notificationsDate[identifier]
 
@@ -311,20 +327,28 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         repeats: true,
       },
     });
+    let notifications2: any = await Notifications.getAllScheduledNotificationsAsync();
+    dispatch(addNotifications({
+      date: selectedDate!,
+      identifier: notifications2[notifications2.length - 1].identifier,
+    }))
   };
 
   // 予定消去
   const scheduleDelete = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-      let identifier = notifications[i].identifier;
-      if (channelId === selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-        break;
-      }
+    let selectedIdentifier = getIdentifier();
+    if (selectedIdentifier) {
+      Notifications.cancelScheduledNotificationAsync(selectedIdentifier);
     }
+    // for (let i = 0; i < notifications.length; i++) {
+    //   let channelId = notifications[i].trigger.channelId;
+    //   let identifier = notifications[i].identifier;
+    //   if (channelId === selectedDate) {
+    //     Notifications.cancelScheduledNotificationAsync(identifier);
+    //     break;
+    //   }
+    // }
   };
 
   // 通知許可取得

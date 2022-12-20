@@ -3,10 +3,14 @@ import type { PayloadAction } from "@reduxjs/toolkit";
 
 //
 // 練習実績に関わるREDUX
-//
 export interface NotificationsState {
   [identifier: string]: string
 }
+//保存イメージ
+// let state = {
+//   "aaaaaaaaaaaaaaa":"2022-12-20",
+//   "bbbbbbbbbbbbbbb":"2022-12-21",
+// }
 
 type NotificationsPayload = {
   date: string;
@@ -22,10 +26,10 @@ export const counterSlice = createSlice({
   reducers: {
     // 渡されるpayloadはメインカテゴリーの名前と登録されたサブカテゴリ―の配列が格納される
     addNotifications: (state, action: PayloadAction<NotificationsPayload>) => {
-      state[action.payload.identifier] = action.payload.date;
+      state[action.payload.identifier] = action.payload.date;      
     },
-    deleteNotifications: (state, action: PayloadAction<NotificationsPayload>) => {
-      delete state[action.payload.identifier];
+    deleteNotifications: (state, action: PayloadAction<string>) => {
+      delete state[action.payload];      
     }
   },
 });

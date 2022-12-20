@@ -20,6 +20,7 @@ import en from "../lang/en.json";
 import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
 import { addReminder } from "../store/reminderSlice";
+import { addNotifications,deleteNotifications } from "../store/notificationsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 
@@ -122,6 +123,12 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   i18n.enableFallback = true;
   const dispatch = useDispatch();
   const reminder = useSelector((state: RootState) => state.reminder);
+  console.log(reminder);
+  
+  // notificationsの日付データ保持のためのredux読込
+  const notificationsData = useSelector((state: RootState) => state.notifications);
+  // console.log(notificationsData);
+  
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -184,28 +191,30 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     requestPermissionsAsync();
   });
 
-  // const notificationsDate = useSelector((state: RootState) => state.notificationsDate);
-  let notificationsDate = {
-    "aaaaaaaaaaaaaaa":"2022-12-20",
-    "bbbbbbbbbbbbbbb":"2022-12-21",
-  }
+  const notificationsDate = useSelector((state: RootState) => state.notifications);
+  // REDUXをmutateしないようにコピー
+  let copyNotificationsDate = JSON.parse(JSON.stringify(notificationsDate));
 
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+    console.log(notifications);
+    
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
-      // let channelId = notificationsDate[i].trigger.channelId;
+      let channelIdAndroid = notifications[i].trigger.channelId;
 
       let identifier = notifications[i].identifier;
       // let identifier = notificationsDate[i].identifier;
 
-      // let date = notificationsDate[identifier]
-
-      let day = channelId.split("-");
-      // let day = date.split("-");
+      let date = copyNotificationsDate[identifier];
+      
+      // let day = channelId.split("-");
+      let day = date.split("-");
 
       Notifications.cancelScheduledNotificationAsync(identifier);
-      if (dayjs(channelId) >= dayjs().subtract(7, "day")) {
+      // reduxでもキャンセルする
+      dispatch(deleteNotifications(identifier));
+      if (dayjs(date) >= dayjs().subtract(7, "day")) {
         let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
         let remindTimeSplit = remindTime.split(":");
         let alartMonth = Number(day[1]) - 1;
@@ -226,12 +235,16 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             repeats: true,
           },
         });
+        let notifications2: any = await Notifications.getAllScheduledNotificationsAsync();
+        console.log(notifications2);
+        dispatch(addNotifications({
+          date: date!,
+          identifier: notifications2[notifications2.length - 1].identifier,
+        }))
       }
     }
-    console.log(notifications);
-    
   };
-  
+
   // 通知許可取得
   const [permission, setPermission] = useState(true);
   const requestPermissionsAsync = async () => {
@@ -339,7 +352,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                                 setShowStartTimePicker(false);
                                 setStartTime(time!.toString());
                                 dispatch(addReminder(time!.toString()));
-                                schedulePushNotification();
+                                // schedulePushNotification();
                               }}
                             />
                           )}
