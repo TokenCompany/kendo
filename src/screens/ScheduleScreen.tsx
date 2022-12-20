@@ -276,7 +276,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   }
 
   const notificationsData = useSelector((state: RootState) => state.notifications);
-  
+
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();

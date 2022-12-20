@@ -123,12 +123,10 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   i18n.enableFallback = true;
   const dispatch = useDispatch();
   const reminder = useSelector((state: RootState) => state.reminder);
-  console.log(reminder);
-  
+
   // notificationsの日付データ保持のためのredux読込
   const notificationsData = useSelector((state: RootState) => state.notifications);
-  // console.log(notificationsData);
-  
+
   const onPressPlace = () => {
     navigation.navigate("SubCategory", {
       // 遷移先にどの小項目を編集したいかを渡す
@@ -197,8 +195,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    console.log(notifications);
-    
+
     for (let i = 0; i < notifications.length; i++) {
       let channelId = notifications[i].trigger.channelId;
       let channelIdAndroid = notifications[i].trigger.channelId;
@@ -207,7 +204,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       // let identifier = notificationsDate[i].identifier;
 
       let date = copyNotificationsDate[identifier];
-      
+
       // let day = channelId.split("-");
       let day = date.split("-");
 
@@ -236,7 +233,6 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           },
         });
         let notifications2: any = await Notifications.getAllScheduledNotificationsAsync();
-        console.log(notifications2);
         dispatch(addNotifications({
           date: date!,
           identifier: notifications2[notifications2.length - 1].identifier,
