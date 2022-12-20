@@ -8,6 +8,7 @@ import resultsReducer from "./resultsSlice";
 import reminderReducer from "./reminderSlice";
 import initTextReducer from "./initTextSlice";
 import langReducer from "./langSlice";
+import notificationsReducer from "./notificationsSlice";
 import {
   persistStore,
   persistReducer,
@@ -35,6 +36,7 @@ const rootReducer = combineReducers({
   results: resultsReducer,
   reminder: reminderReducer,
   lang: langReducer,
+  notifications:notificationsReducer,
   // allResults:allResultsReducer,
 });
 
