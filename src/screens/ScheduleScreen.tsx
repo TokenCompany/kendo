@@ -15,6 +15,9 @@ import { MainStackParamList } from "../types/navigation";
 import { CalendarFrame } from "../components/CalendarFrame";
 import { TextButton } from "../components/TextButton";
 import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
+import { deleteResults } from "../store/resultsSlice";
+import { addTargetCategory } from "../store/subCategorySlice";
+import { addNotifications,deleteNotifications } from "../store/notificationsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -124,6 +127,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   i18n.locale = currentLang;
   i18n.enableFallback = true;
 
+  const targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
+  // reduxからの実績情報取得
+  const results = useSelector((state: RootState) => state.results);
+
   const dispatch = useDispatch();
   const reservations = useSelector((state: RootState) => state.reservation);
   const places = useSelector((state: RootState) => state.subCategory.placeSubCategories);
@@ -209,37 +216,97 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         startTime: startTime,
         endTime: endTime,
         place: place,
+        resultStatus: true,
       }),
     );
+  };
+  const changeToHours = (num: number) => {
+    let parsedHours = Math.floor((num / 60) * 100) / 100;
+    return parsedHours;
   };
 
   const onPressDelete = () => {
     setShowSelectedDate(false);
+    // 予約を削除
     dispatch(
       deleteReservationItem({
         date: selectedDate!,
       }),
     );
+    // 既に実績入力されている場合は合計実績と実績を削除
+    if (selectedDate! in results) {
+      let newTargets = JSON.parse(JSON.stringify(targets));
+      let selectedYear = dayjs(selectedDate).year().toString();
+      let newResults = JSON.parse(JSON.stringify(results));
+      let teachersResults = newResults[selectedDate!].teacherSubCategories;
+      teachersResults.forEach((teacher: any) => {
+        newTargets[selectedYear].forEach((target: any) => {
+          if (teacher.id === target.id) {
+            target.result -= changeToHours(Number(teacher.result));
+          }
+        });
+      });
+      // 全ての合計の処理も追加
+      newTargets[selectedYear].forEach((target: any) => {
+        if (target.id === "all") {
+          target.result -= 1;
+        }
+      });
+
+      // REDUXへ保存
+      const saveAllTargets = {
+        year: selectedYear,
+        targets: newTargets[selectedYear],
+      };
+      dispatch(addTargetCategory(saveAllTargets));
+    }
+    dispatch(deleteResults(selectedDate));
   };
 
   useEffect(() => {
     requestPermissionsAsync();
   });
 
+  const getIdentifier = () => {
+    for (const key in notificationsData) {
+      if (notificationsData[key] === selectedDate) {
+        return key;
+      }
+    }
+  }
+
+  const notificationsData = useSelector((state: RootState) => state.notifications);
+
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-      let identifier = notifications[i].identifier;
-      Notifications.cancelScheduledNotificationAsync(identifier);
+    if (dayjs(selectedDate) <= dayjs().subtract(7, "day")){
+      for (let i = 0; i < notifications.length; i++) {
+        let channelId = notifications[i].trigger.channelId;
+        // let channelId = notificationsDate[i].trigger.channelId;
+        let identifier = notifications[i].identifier;
+         // let identifier = notificationsDate[i].identifier;
+        Notifications.cancelScheduledNotificationAsync(identifier);
+        // reduxでもキャンセルする
+        dispatch(deleteNotifications(identifier));
+      }
     }
+    // 予定を修正した時に一度Notifications削除する
+    let selectedIdentifier = getIdentifier();
+    if (selectedIdentifier) {
+      Notifications.cancelScheduledNotificationAsync(selectedIdentifier);
+      // reduxでもキャンセルする
+      dispatch(deleteNotifications(selectedIdentifier));
+    }
+    // let date = notificationsDate[identifier]
 
-    let date = selectedDate!.split("-");
+    let day = selectedDate!.split("-");
+    // let day = date.split("-");
+
     let remindTime = dayjs(reminder.reminderTimer).format("HH:mm").toString();
     let remindTimeSplit = remindTime.split(":");
-    let alartMonth = Number(date[1]) - 1;
-    let alartDate = Number(date[2]) - 1;
+    let alartMonth = Number(day[1]) - 1;
+    let alartDate = Number(day[2]) - 1;
     let alartHour = Number(remindTimeSplit[0]);
     let alartMinutes = Number(remindTimeSplit[1]);
 
@@ -260,20 +327,28 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         repeats: true,
       },
     });
+    let notifications2: any = await Notifications.getAllScheduledNotificationsAsync();
+    dispatch(addNotifications({
+      date: selectedDate!,
+      identifier: notifications2[notifications2.length - 1].identifier,
+    }))
   };
 
   // 予定消去
   const scheduleDelete = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-
-    for (let i = 0; i < notifications.length; i++) {
-      let channelId = notifications[i].trigger.channelId;
-      let identifier = notifications[i].identifier;
-      if (channelId === selectedDate) {
-        Notifications.cancelScheduledNotificationAsync(identifier);
-        break;
-      }
+    let selectedIdentifier = getIdentifier();
+    if (selectedIdentifier) {
+      Notifications.cancelScheduledNotificationAsync(selectedIdentifier);
     }
+    // for (let i = 0; i < notifications.length; i++) {
+    //   let channelId = notifications[i].trigger.channelId;
+    //   let identifier = notifications[i].identifier;
+    //   if (channelId === selectedDate) {
+    //     Notifications.cancelScheduledNotificationAsync(identifier);
+    //     break;
+    //   }
+    // }
   };
 
   // 通知許可取得
@@ -514,7 +589,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
             onPress01={() => {
               if (
                 Number(renderChangeText(dayjs(startTime).format("HH:mm").toString())) -
-                  Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) >
+                  Number(renderChangeText(dayjs(endTime).format("HH:mm").toString())) >=
                 0
               ) {
                 Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [

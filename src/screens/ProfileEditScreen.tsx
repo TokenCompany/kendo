@@ -280,7 +280,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     if (status === "granted") {
       let resultCamera = await ImagePicker.launchCameraAsync({
         mediaTypes: ImagePicker.MediaTypeOptions.Images,
-        quality: 0,
+        quality: 1,
         base64: true,
       });
       if (!resultCamera.cancelled) {
