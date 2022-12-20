@@ -203,7 +203,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
                       place: reservations[selectedDate!].place,
                       resultStatus: false,
                     }),
-                  );  
+                  );
                 }else{
                   dispatch(
                     bookReservationItem({
@@ -213,9 +213,9 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
                       place: reservations[selectedDate!].place,
                       resultStatus: true,
                     }),
-                  );  
+                  );
                 }
-                
+
               }
             }}
             judge={showButton}
@@ -249,6 +249,7 @@ const styles = StyleSheet.create({
   boxInputText: {
     paddingLeft: 10,
     flexGrow: 1,
+    width:"90%",
   },
   boxInputTime: {
     paddingLeft: 10,
