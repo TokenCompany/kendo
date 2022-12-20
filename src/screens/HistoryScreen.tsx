@@ -143,7 +143,9 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           <TextButton
             text01={i18n.t("History.input")}
             text02={i18n.t("History.ncw")}
-            onPress01={onPress}
+            onPress01={()=>{
+              onPress();
+            }}
             onPress02={() => {
               //実績が入力されている場合
               if (selectedDate! in results) {
@@ -192,15 +194,28 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
                 ]);
               } else {
                 showingButton();
-                dispatch(
-                  bookReservationItem({
-                    date: selectedDate!,
-                    startTime: reservations[selectedDate!].startTime,
-                    endTime: reservations[selectedDate!].endTime,
-                    place: reservations[selectedDate!].place,
-                    resultStatus: false,
-                  }),
-                );
+                if (reservations[selectedDate!].resultStatus) {
+                  dispatch(
+                    bookReservationItem({
+                      date: selectedDate!,
+                      startTime: reservations[selectedDate!].startTime,
+                      endTime: reservations[selectedDate!].endTime,
+                      place: reservations[selectedDate!].place,
+                      resultStatus: false,
+                    }),
+                  );  
+                }else{
+                  dispatch(
+                    bookReservationItem({
+                      date: selectedDate!,
+                      startTime: reservations[selectedDate!].startTime,
+                      endTime: reservations[selectedDate!].endTime,
+                      place: reservations[selectedDate!].place,
+                      resultStatus: true,
+                    }),
+                  );  
+                }
+                
               }
             }}
             judge={showButton}
