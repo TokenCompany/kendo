@@ -366,6 +366,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                           display={"default"}
                           onChange={(event, time: any) => {
                             setStartTime(time.toString());
+                            dispatch(addReminder(time!.toString()));
                           }}
                         />
                       )}
@@ -373,7 +374,7 @@ export const TrainingEditScreen: React.FC<Props> = ({ navigation }: Props) => {
                     <TouchableOpacity
                       style={styles.setting}
                       onPress={() => {
-                        dispatch(addReminder(startTime));
+                        // dispatch(addReminder(startTime));
                         schedulePushNotification();
                       }}
                     >
