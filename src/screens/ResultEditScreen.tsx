@@ -179,6 +179,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
 
     createAlert();
     // targetCategoriesの一つ一つに累計を足す
+
     let newAllResults = JSON.parse(JSON.stringify(allResults));
     for (const targetObj of newAllResults.resultsSum.teacherSubCategories) {
       for (const targetRecord of targetRecords) {
@@ -232,9 +233,12 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
 
   const onChangeResults = (results: SubCategories[], mainCategory: string) => {
     // resultsステートを複製し、値を入力された値に書き換える
+
     let newAllResults: any = JSON.parse(JSON.stringify(allResults));
+
     // 既に登録内容があるかないかで出し分けが必要
     // ①既にある情報を探し上書き
+
     if (newAllResults["resultsSum"][mainCategory].length !== 0) {
       newAllResults["resultsSum"][mainCategory].forEach((element: any) => {
         results.forEach((element2: any) => {
@@ -245,11 +249,18 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       });
       // 後から新しい先生追加した場合の記述
       checkNewTeacher(results, newAllResults["resultsSum"][mainCategory]);
-      console.log(newAllResults["resultsSum"][mainCategory]);
     } else {
       // ②新しい入力値をそのまま追加
       newAllResults["resultsSum"][mainCategory] = results;
     }
+    if (mainCategory === "placeSubCategories"){
+      newAllResults["resultsSum"][mainCategory].forEach((element: any) => {
+        if(element.id === "new" && element.result){
+          newAllResults["resultsSum"][mainCategory] = results;
+        }
+      });
+    }
+
     setAllResults(newAllResults);
   };
 
@@ -336,6 +347,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
           newPlaceJudge={newPlaceFlag}
           onChangeSendInput={(changedResults: any, mainCategory) => {
             onChangeResults(changedResults, mainCategory);
+          }}
+          onChangeSendPlace={(changedResults: any) => {
+            onChangeResults(changedResults,"placeSubCategories")
           }}
           onCheckedSend={(textTrainingCategories, checked) => {
             onCheckedBoolean(textTrainingCategories, checked);

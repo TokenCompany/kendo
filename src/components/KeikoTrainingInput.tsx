@@ -17,6 +17,7 @@ type Props = {
   reservedPlace: string;
   newPlaceJudge: boolean;
   onChangeSendInput: (changedResults: SubCategories[], mainCategory: string) => void;
+  onChangeSendPlace: (changedResults: SubCategories[]) => void;
   onCheckedSend: (mainCategory: string, judge: boolean) => void;
   resultsDate: any;
 };
@@ -48,6 +49,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
   newPlaceJudge,
   onChangeSendInput,
   onCheckedSend,
+  onChangeSendPlace
 }) => {
   const { currentLang, onChangeLang } = useLang();
   const i18n = new I18n({ en, ja });
@@ -168,7 +170,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       value: place.text,
     });
   }
-  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm.toString() });
+  initItems.push({ label: `${i18n.t("ScheduleScreen.input")}`, value: showForm });
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
   const [items, setItems] = useState(initItems);
@@ -178,6 +180,7 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     } else {
       setPlaceInputSelected(false);
     }
+
     if (value !== "") {
       let newResults = { ...results };
       for (const place of newResults["placeSubCategories"]) {
@@ -185,7 +188,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       }
       if (newResults["placeSubCategories"][itemIndex]) {
         newResults["placeSubCategories"][itemIndex]["result"] = true;
-
       }else{
         newResults["placeSubCategories"].push({
           id: "new",
@@ -195,8 +197,6 @@ export const KeikoTrainingInput: React.FC<Props> = ({
       }
 
       setResults(newResults);
-    } else {
-      setPlaceInputSelected(true);
     }
 
     setPlace(value.toString());
@@ -325,7 +325,9 @@ export const KeikoTrainingInput: React.FC<Props> = ({
                           }
                         }
                         setResults(newResults)
+                        onChangeSendPlace(newResults["placeSubCategories"])
                       }}
+                      value={directValue}
                     />
                   )}
                 </View>
