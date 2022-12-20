@@ -159,7 +159,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
 
-    for (let i = 6; i < 11; i++) {
+    for (let i = 7; i < 11; i++) {
       if (index === i && profile[`passed${i}`] === 19900000) {
         return "-";
       }
