@@ -265,7 +265,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   const pickImage = async () => {
     let resultImage = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0,
+      quality: 1,
       base64: true,
     });
 
