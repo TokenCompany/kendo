@@ -50,7 +50,7 @@ export const MainStack: React.FC<Props> = () => {
       <Stack.Screen name="Menu" component={MenuScreen} options={{ headerShown: false }} />
       <Stack.Screen name="History" component={HistoryScreen} options={{ title: `${i18n.t("History.title")}` }} />
       <Stack.Screen name="Schedule" component={ScheduleScreen} options={{ title: `${i18n.t("ScheduleScreen.title")}` }} />
-      <Stack.Screen name="Setting" component={SettingScreen} options={{ title: `${i18n.t("ProfileEdit.setting")}` }} />
+      <Stack.Screen name="Setting" component={SettingScreen} options={{ title: `${i18n.t("Setting.title")}` }} />
       <Stack.Screen name="Statistics" component={StatisticsScreen} options={{ title: `${i18n.t("Statistics.title")}` }} />
       <Stack.Screen
         name="ResultEdit"

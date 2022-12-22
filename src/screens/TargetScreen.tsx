@@ -191,7 +191,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }}
                     value={currentValues[index]}
                   ></TextInput>
-                  <Text style={styles.objectiveText}>{i18n.t("ScheduleScreen.time")}</Text>
+                  <Text style={styles.objectiveText}>{i18n.t("ResultEdit.textUnit03")}</Text>
                 </View>
               );
             })}
