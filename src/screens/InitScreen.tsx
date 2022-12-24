@@ -34,7 +34,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const profile: any = useSelector((state: RootState) => state.profile);
   const [fontsLoaded] = useFonts({
-    KouzanGyousho: require("../../assets/fonts/KouzanGyoushoOTF.otf"),
+    KouzanMouhituFont: require("../../assets/fonts/KouzanMouhituFontOTF.otf"),
   });
 
   const [modalVisible, setModalVisible] = useState(false);
@@ -232,7 +232,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   text: {
-    fontFamily: "KouzanGyousho",
+    fontFamily: "KouzanMouhituFont",
     fontSize: 64,
   },
   centeredView: {
