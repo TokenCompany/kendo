@@ -236,12 +236,12 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     if (currentPassedDate05 !== 19900000) {
       setOpenRenshi(true);
-      setOpenHanshi(true);
+      //setOpenHanshi(true);
     }
 
     if (currentPassedDate06 !== 19900000) {
       setOpenKyoushi(true);
-      setOpenHanshi(true);
+      //setOpenHanshi(true);
     }
   });
 

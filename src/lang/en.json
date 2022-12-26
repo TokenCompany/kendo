@@ -149,7 +149,7 @@
     "alert12": "Set goals of all teachers",
     "alert13": "Practice goal has been registered",
     "alert14": "Task cannot exceed 5 lines",
-    "alert15": "Input in entry field",
+    "alert15": "You need to input at least 1 data in checked practice menu",
     "alert16": "You can enter numbers only",
     "ok": "Ok",
     "cancel": "Cancel",
