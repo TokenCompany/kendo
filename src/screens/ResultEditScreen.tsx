@@ -185,7 +185,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       for (const targetRecord of targetRecords) {
         if (targetObj.id === targetRecord.id) {
           if ("result" in targetObj === false) targetObj.result = 0;
-          targetRecord.result += changeToHours(Number(targetObj.result));
+          targetRecord.result += 1;
+          //targetRecord.result += changeToHours(Number(targetObj.result));
         }
       }
     }
@@ -201,7 +202,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       targetRecords.forEach((targetRecord) => {
         pastData.forEach((element) => {
           if (targetRecord.id === element.id) {
-            targetRecord.result -= changeToHours(Number(element.result));
+            targetRecord.result -= 1;
+            //targetRecord.result -= changeToHours(Number(element.result));
           }
         });
       });

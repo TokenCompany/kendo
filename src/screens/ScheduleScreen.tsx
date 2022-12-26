@@ -242,7 +242,8 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       teachersResults.forEach((teacher: any) => {
         newTargets[selectedYear].forEach((target: any) => {
           if (teacher.id === target.id) {
-            target.result -= changeToHours(Number(teacher.result));
+            target.result -= 1;
+            //target.result -= changeToHours(Number(teacher.result));
           }
         });
       });
