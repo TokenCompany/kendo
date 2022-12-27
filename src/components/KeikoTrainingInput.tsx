@@ -61,7 +61,11 @@ export const KeikoTrainingInput: React.FC<Props> = ({
     let initValues: string[] = [];
     if (resultsDate in resultsData) {
       for (const result of resultsData[resultsDate][textTrainingCategories]) {
-        if(result.result)initValues.push(result.result.toString());
+        if(result.result){
+          initValues.push(result.result.toString())
+        }else{
+          initValues.push("0");
+        }
       }
     }
     return initValues;

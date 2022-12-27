@@ -181,32 +181,53 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     // targetCategoriesの一つ一つに累計を足す
 
     let newAllResults = JSON.parse(JSON.stringify(allResults));
-    for (const targetObj of newAllResults.resultsSum.teacherSubCategories) {
-      for (const targetRecord of targetRecords) {
-        if (targetObj.id === targetRecord.id) {
-          if ("result" in targetObj === false) targetObj.result = 0;
-          targetRecord.result += 1;
-          //targetRecord.result += changeToHours(Number(targetObj.result));
-        }
-      }
-    }
     // 既に実績が登録されている場合重複しないように処理が必要
     if (!resultsFlag) {
+      for (const teacher of newAllResults.resultsSum.teacherSubCategories) {
+        for (const targetRecord of targetRecords) {
+          if (teacher.id === targetRecord.id && "result" in teacher && teacher.result > 0) {
+              targetRecord.result += 1;
+          }else if("result" in teacher === false){
+            teacher.result = 0;
+          }
+        }
+      }
+      // 稽古回数の更新
       targetRecords.forEach((element) => {
         if (element.id === "all") {
           element.result += 1;
         }
       });
     } else {
+      // 重複データの特定とデータが消された時（０にされた時）の処理
       let pastData = resultsRecords[date].teacherSubCategories;
-      targetRecords.forEach((targetRecord) => {
+      let decrementTargets: string[] = [];
+      let incrementTargets: string[] = [];
+      newAllResults.resultsSum.teacherSubCategories.forEach((teacher:any) => {
         pastData.forEach((element) => {
-          if (targetRecord.id === element.id) {
-            targetRecord.result -= 1;
-            //targetRecord.result -= changeToHours(Number(element.result));
+          if (teacher.id === element.id && element.result > 0 && teacher.result === 0 ) {
+            decrementTargets.push(teacher.id)
+          }else if(teacher.id === element.id && element.result === 0 && teacher.result > 0 ){
+            incrementTargets.push(teacher.id);
           }
         });
       });
+      // 重複しないように下げる
+      decrementTargets.forEach((decTarget:string) => {
+        for (const targetRecord of targetRecords) {
+          if (targetRecord.id === decTarget) {
+            targetRecord.result -= 1;
+          }
+        }
+      })
+      // その後再度追加された場合に追加する
+      incrementTargets.forEach((incTarget:string) => {
+        for (const targetRecord of targetRecords) {
+          if (targetRecord.id === incTarget) {
+            targetRecord.result += 1;
+          }
+        }
+      })
     }
 
     setAllResults(newAllResults);
@@ -214,7 +235,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       year: selectedYear,
       targets: targetRecords,
     };
-
+    // console.log(saveAllTargets);
+    
     // REDUXへの保存
     dispatch(addResults(newAllResults));
     dispatch(addTargetCategory(saveAllTargets));
