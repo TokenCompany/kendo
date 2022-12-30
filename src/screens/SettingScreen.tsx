@@ -93,11 +93,11 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const addLevel = () => {
     if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
-      //kendoLevel[kendoLevel.length + 1] = `${i18n.t("ProfileEdit.stage11")}`;
+      kendoLevel[kendoLevel.length + 1] = `${i18n.t("ProfileEdit.stage11")}`;
     } else if (profile.passed6 !== 19900000 ) {
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage10")}`;
-      //kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage11")}`;
+      kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage11")}`;
     }
   };
   {

@@ -132,10 +132,9 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
         return i18n.t("ProfileEdit.stage09");
       } else if (Object.keys(onlyExamScheduleLast).toString() === "exam9") {
         return i18n.t("ProfileEdit.stage010");
-      } 
-      //else {
-      //  return i18n.t("ProfileEdit.stage11");
-      //}
+      } else {
+        return i18n.t("ProfileEdit.stage11");
+      }
     } else {
       return i18n.t("ProfileEdit.stage01");
     }
