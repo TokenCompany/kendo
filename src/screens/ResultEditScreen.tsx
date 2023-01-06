@@ -341,7 +341,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     },
     teacherSubCategories: {
       text: `${i18n.t("TrainingEdit.training07")}`,
-      unit: `${i18n.t("ResultEdit.textUnit02")}`,
+      unit: `${i18n.t("TrainingEdit.times")}`,
     },
     kakarigeikoSubCategories: {
       text: `${i18n.t("TrainingEdit.training08")}`,
