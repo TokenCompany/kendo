@@ -249,8 +249,8 @@ const styles = StyleSheet.create({
   },
   MainBarWrap: {
     zIndex: -100,
-    marginTop: 30,
-    marginLeft: "30%",
+    marginRight: "100%",
+    transform: [{ translateX: 220 },{ translateY: -100 }]
   },
   subBarWrap: {
     marginTop: -30,
