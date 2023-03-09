@@ -116,15 +116,17 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
   let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
   // 新しい先生が後から追加された時にターゲットにも追加する
-  const addNewTeacherToTargets = (teachers: SubCategories[], newTargets: TargetCategory[]) => {
-    teachers.forEach((teacher: SubCategories) => {
-      let found = newTargets.find((e: TargetCategory) => e.id === teacher.id);
+  const addNewTeacherToTargets = (newTeachers: SubCategories[], newTargets: TargetCategory[]) => {
+    newTeachers.forEach((teacher: SubCategories) => {
+      let found = newTargets.find(
+        (e: TargetCategory) => e.id === String(Object.values(teacher)[0]),
+      );
       if (!found) {
         newTargets.push({
-          id: teacher.id,
+          id: String(Object.values(teacher)[0]),
           result: 0,
           goal: 0,
-          text: teacher.text,
+          text: String(Object.values(teacher)[1]),
         });
       }
     });
@@ -205,9 +207,9 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       let incrementTargets: string[] = [];
       newAllResults.resultsSum.teacherSubCategories.forEach((teacher: any) => {
         pastData.forEach((element) => {
-          if (teacher.id === element.id && element.result > 0 && teacher.result === 0) {
+          if (teacher.id === element.id && Number(element.result) > 0 && teacher.result === 0) {
             decrementTargets.push(teacher.id);
-          } else if (teacher.id === element.id && element.result === 0 && teacher.result > 0) {
+          } else if (teacher.id === element.id && element.result === 0) {
             incrementTargets.push(teacher.id);
           }
         });
@@ -241,14 +243,16 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     dispatch(addTargetCategory(saveAllTargets));
   };
 
-  const checkNewTeacher = (results: SubCategories[], allResults: SubCategories[]) => {
+  const checkNewTeacher = (results: SubCategories[], Newallresults: SubCategories[]) => {
     results.forEach((teacher: SubCategories) => {
-      let found = allResults.find((e: SubCategories) => e.id === teacher.id);
+      let found = Newallresults.find(
+        (e: SubCategories) => String(Object.values(e)[0]) === String(Object.values(teacher)[0]),
+      );
       if (!found) {
-        allResults.push({
-          id: teacher.id,
+        Newallresults.push({
+          id: String(Object.values(teacher)[0]),
           result: "result" in teacher ? teacher.result : 0,
-          text: teacher.text,
+          text: String(Object.values(teacher)[1]),
         });
       }
     });
