@@ -247,6 +247,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
+    // date.toString()が人によってエラー
     let originDate = date.toString().split("");
     let changeText = "";
     originDate.forEach((element, index) => {
