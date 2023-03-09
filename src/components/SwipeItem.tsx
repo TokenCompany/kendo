@@ -13,7 +13,7 @@ type Props = {
 };
 
 export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -25,10 +25,12 @@ export const SwipeItem: React.FC<Props> = ({ onPressDelete, subCategories }) => 
           <Text style={styles.input}>{data.item.text}</Text>
         </View>
       )}
-      renderHiddenItem={(data, rowMap) => {
-
+      renderHiddenItem={(data) => {
         return (
-          <TouchableOpacity style={styles.delete} onPress={() => onPressDelete(data.item.id, data.item.text)}>
+          <TouchableOpacity
+            style={styles.delete}
+            onPress={() => onPressDelete(data.item.id, data.item.text)}
+          >
             <Text>{i18n.t("TaskEdit.delete")}</Text>
           </TouchableOpacity>
         );

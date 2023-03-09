@@ -16,7 +16,7 @@ import { ProfileTextForm } from "../components/ProfileTextForm";
 import { useProfileForm } from "../hooks/useProfileForm";
 import { Button } from "../components/Button";
 import { LevelForm } from "../components/LevelForm";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import * as ImagePicker from "expo-image-picker";
 import { I18n } from "i18n-js";
@@ -27,7 +27,7 @@ import { useLang } from "../hooks/useLang";
 type Props = NativeStackScreenProps<MainStackParamList, "ProfileEdit">;
 
 export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -222,12 +222,12 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 年齢が14歳以上なら合格日審査日を入力できる
   const [open, setOpen] = useState<boolean>(false);
   useEffect(() => {
-    if (currentAge > 14) {
+    if (currentAge >= 14) {
       setOpen(true);
     } else {
       setOpen(false);
     }
-  });
+  }, [currentAge]);
 
   // 練士、教士、範士の表示
   const [openRenshi, setOpenRenshi] = useState<boolean>(false);
@@ -243,7 +243,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
       setOpenKyoushi(true);
       setOpenHanshi(true);
     }
-  });
+  }, [currentPassedDate05, currentPassedDate06]);
 
   // 日付表示変換
   const renderChangeText = (date: number) => {
@@ -252,7 +252,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
     originDate.forEach((element, index) => {
       if (index == 4) {
         changeText += "/";
-      } else if (index == 6) {
+      } else if (index === 6) {
         changeText += "/";
       }
       changeText += element;
@@ -407,7 +407,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
           )}
           <View>
             <Text style={styles.label}>{i18n.t("ProfileEdit.age")}</Text>
-            <Text style={styles.input}>{String(currentAge) != "0" ? String(currentAge) : ""}</Text>
+            <Text style={styles.input}>{String(currentAge) !== "0" ? String(currentAge) : ""}</Text>
           </View>
           <ProfileTextForm
             label={i18n.t("ProfileEdit.number")}
@@ -454,7 +454,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow01(false);
               // 14歳未満の合格は制限
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow01(false);
               } else {
                 if (date1) {
@@ -480,7 +480,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow02(false);
               // 14歳未満の合格は制限
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow02(false);
               } else {
                 if (date2) {
@@ -521,7 +521,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate01.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow03(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow03(false);
               } else {
                 if (date1) {
@@ -546,7 +546,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate01.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow04(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow04(false);
               } else {
                 if (date2) {
@@ -586,7 +586,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate02.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow05(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow05(false);
               } else {
                 if (date1) {
@@ -611,7 +611,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate02.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow06(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow06(false);
               } else {
                 if (date2) {
@@ -651,7 +651,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate03.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow07(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow07(false);
               } else {
                 if (date1) {
@@ -676,7 +676,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate03.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow08(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow08(false);
               } else {
                 if (date2) {
@@ -716,7 +716,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate04.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow09(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow09(false);
               } else {
                 if (date1) {
@@ -741,7 +741,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate04.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow10(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow10(false);
               } else {
                 if (date2) {
@@ -781,7 +781,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate05.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow11(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow11(false);
               } else {
                 if (date1) {
@@ -806,7 +806,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate05.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow12(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow12(false);
               } else {
                 if (date2) {
@@ -846,7 +846,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate06.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow13(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow13(false);
               } else {
                 if (date1) {
@@ -871,7 +871,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate06.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow14(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow14(false);
               } else {
                 if (date2) {
@@ -911,7 +911,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate07.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow15(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow15(false);
               } else {
                 if (date1) {
@@ -936,7 +936,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate07.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow16(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow16(false);
               } else {
                 if (date2) {
@@ -980,7 +980,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate08.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow17(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow17(false);
               } else {
                 if (date1) {
@@ -1005,7 +1005,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate08.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow18(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow18(false);
               } else {
                 if (date2) {
@@ -1049,7 +1049,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate09.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow19(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow19(false);
               } else {
                 if (date1) {
@@ -1074,7 +1074,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate09.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow20(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow20(false);
               } else {
                 if (date2) {
@@ -1118,7 +1118,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             passedDateValue={dayjs(currentPassedDate10.toString(), "YYYYMMDD").toDate()}
             onChangePassed={(event, date1) => {
               Platform.OS === "android" && setShow21(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow21(false);
               } else {
                 if (date1) {
@@ -1143,7 +1143,7 @@ export const ProfileEditScreen: React.FC<Props> = ({ navigation }: Props) => {
             examDateValue={dayjs(currentExamDate10.toString(), "YYYYMMDD").toDate()}
             onChangeExam={(event, date2) => {
               Platform.OS === "android" && setShow22(false);
-              if (event.type == "dismissed") {
+              if (event.type === "dismissed") {
                 Platform.OS === "android" && setShow22(false);
               } else {
                 if (date2) {

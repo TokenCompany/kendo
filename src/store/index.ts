@@ -36,7 +36,7 @@ const rootReducer = combineReducers({
   results: resultsReducer,
   reminder: reminderReducer,
   lang: langReducer,
-  notifications:notificationsReducer,
+  notifications: notificationsReducer,
 });
 
 // 永続化のための設定

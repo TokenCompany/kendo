@@ -11,8 +11,8 @@ type Props = {
   onPressSubmitKeiko: () => void;
 };
 
-export const ItemTextForm: React.FC<Props> = ({ visible, onPressSubmitKeiko, text }) => {
-  const { currentLang, onChangeLang } = useLang();
+export const ItemTextForm: React.FC<Props> = ({ visible, onPressSubmitKeiko }) => {
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -44,10 +44,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: 5,
     flexGrow: 1,
   },
-  containerText:{
-    color:"#fff",
+  containerText: {
+    color: "#fff",
     fontWeight: "600",
-    fontSize:18,
+    fontSize: 18,
   },
   category: {
     height: 25,

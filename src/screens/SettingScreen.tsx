@@ -4,7 +4,7 @@ import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { Button } from "../components/Button";
 import dayjs from "dayjs";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import { I18n } from "i18n-js";
 import en from "../lang/en.json";
@@ -14,7 +14,7 @@ import { useLang } from "../hooks/useLang";
 type Props = NativeStackScreenProps<MainStackParamList, "Setting">;
 
 export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -43,9 +43,9 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
       let originDate = date.toString().split("");
       let changeText = "";
       originDate.forEach((element, index) => {
-        if (index == 4) {
+        if (index === 4) {
           changeText += "/";
-        } else if (index == 6) {
+        } else if (index === 6) {
           changeText += "/";
         }
         changeText += element;
@@ -94,7 +94,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     if (profile.passed5 !== 19900000 && profile.passed6 === 19900000) {
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
       kendoLevel[kendoLevel.length + 1] = `${i18n.t("ProfileEdit.stage11")}`;
-    } else if (profile.passed6 !== 19900000 ) {
+    } else if (profile.passed6 !== 19900000) {
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage09")}`;
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage10")}`;
       kendoLevel[kendoLevel.length] = `${i18n.t("ProfileEdit.stage11")}`;
@@ -119,7 +119,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   };
   const onlyPassedObject = passedObject1();
 
-
   // 合格日が記載されているもののみ抽出
   const passedObject2 = () => {
     let object = {} as keyType;
@@ -136,7 +135,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
   const passedObject3 = () => {
     let object = {} as keyType;
     Object.keys(onlyPassed).filter((key, index) => {
-      if (index == Object.keys(onlyPassed).length - 1) {
+      if (index === Object.keys(onlyPassed).length - 1) {
         object[key] = onlyPassed[key];
       }
     });
@@ -148,7 +147,7 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
     let object = {} as keyType;
     Object.keys(onlyPassedObject).some((key) => {
       object[key] = onlyPassedObject[key];
-      if (key.indexOf(Object.keys(onlyPassedLast).toString()) == 0) {
+      if (key.indexOf(Object.keys(onlyPassedLast).toString()) === 0) {
         return true;
       }
     });
@@ -158,7 +157,6 @@ export const SettingScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   // 合格済みかどうか
   const renderPassedCheck = (passed: number, index: number) => {
-
     for (let i = 7; i < 11; i++) {
       if (index === i && profile[`passed${i}`] === 19900000) {
         return "-";

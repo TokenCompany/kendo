@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, Alert } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
-import { FAB, Provider as PaperProvider } from "react-native-paper";
+import { FAB } from "react-native-paper";
 import { ItemInputForm } from "../components/ItemInputForm";
 import { ItemTextForm } from "../components/ItemTextForm";
 import { SwipeItem } from "../components/SwipeItem";
@@ -23,8 +23,8 @@ export type SubCategory = {
   text: string;
 };
 
-export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+export const SubCategoryScreen: React.FC<Props> = ({ route }: Props) => {
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -48,6 +48,7 @@ export const SubCategoryScreen: React.FC<Props> = ({ route, navigation }: Props)
   }
 
   // 小項目の出し分け
+
   const renderSubCategoryEditor = () => {
     if (subCategoryType === "placeSubCategories") {
       return <Text style={styles.MajorText}>{i18n.t("TrainingEdit.training01")}</Text>;

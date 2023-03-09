@@ -3,7 +3,7 @@ import { View, StyleSheet, Text, TouchableOpacity, ScrollView } from "react-nati
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import dayjs from "dayjs";
-import { BarChart, LineChart, PieChart } from "react-native-gifted-charts";
+import { BarChart } from "react-native-gifted-charts";
 import { useSelector } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -15,7 +15,7 @@ import { useLang } from "../hooks/useLang";
 type Props = NativeStackScreenProps<MainStackParamList, "Statistics">;
 
 export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -67,24 +67,22 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
   // 関数の定義
   let setData = (yearData: any, data: any, teacherData: any) => {
     for (const element of yearData) {
-      let LabelNum: any = [];
+      // let LabelNum: any = [];
       if (element.id === "all") {
         data.push(
           {
             value: element.goal,
             frontColor: "#61A68A",
             label: `${i18n.t("Statistics.label02")}`,
-            topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.goal}</Text>
-            ),
+            // eslint-disable-next-line react/no-unstable-nested-components
+            topLabelComponent: () => <Text style={styles.labelTextStyle1}>{element.goal}</Text>,
           },
           {
             value: element.result,
             frontColor: "#61A68A",
             label: `${i18n.t("Statistics.label01")}`,
-            topLabelComponent: () => (
-              <Text style={{ color: "#000", fontSize: 12, marginBottom: 6 }}>{element.result}</Text>
-            ),
+            // eslint-disable-next-line react/no-unstable-nested-components
+            topLabelComponent: () => <Text style={styles.labelTextStyle1}>{element.result}</Text>,
           },
         );
       } else {
@@ -94,11 +92,15 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             frontColor: "#A53010",
             barStyle: { marginLeft: -15 },
             label: element.text + `${i18n.t("ResultEdit.teacher")}`,
+            // eslint-disable-next-line react/no-unstable-nested-components
+            topLabelComponent: () => <Text style={styles.labelTextStyle2}>{element.goal}</Text>,
           },
           {
             value: element.result,
             frontColor: "#DE7E18",
             barStyle: { marginLeft: -35 },
+            // eslint-disable-next-line react/no-unstable-nested-components
+            topLabelComponent: () => <Text style={styles.labelTextStyle3}>{element.result}</Text>,
           },
         );
       }
@@ -159,7 +161,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               }}
               containerStyle={{ height: 40, width: 150 }}
               style={{ backgroundColor: "transparent", borderWidth: 0 }}
-              dropDownContainerStyle={{ backgroundColor: "#fff" }}
+              dropDownContainerStyle={{ backgroundColor: "#ffffff" }}
               onChangeValue={(value: any) => {
                 onChangeValue(value);
               }}
@@ -202,13 +204,16 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.subBarWrap}>
           <BarChart
             data={subData}
-            rulesType="solid"
+            horizontal
             maxValue={isNaN(Number(maxValues[1])) ? 5 : Number(maxValues[1])}
+            rulesType="solid"
             noOfSections={5}
-            labelsExtraHeight={100}
             labelWidth={70}
             xAxisLabelTextStyle={{
-              transform: [{ translateX: -5 }],
+              transform: [{ translateX: -5 }, { translateY: -17 }],
+            }}
+            yAxisTextStyle={{
+              transform: [{ rotate: "-90deg" }],
             }}
           />
         </View>
@@ -250,10 +255,22 @@ const styles = StyleSheet.create({
   MainBarWrap: {
     zIndex: -100,
     marginRight: "100%",
-    transform: [{ translateX: 220 },{ translateY: -100 }]
+    transform: [{ translateX: 220 }, { translateY: -100 }],
   },
   subBarWrap: {
-    marginTop: -30,
+    marginTop: 50,
     marginLeft: 10,
+  },
+  labelTextStyle1: {
+    fontSize: 12,
+    marginBottom: 6,
+  },
+  labelTextStyle2: {
+    fontSize: 12,
+    transform: [{ translateY: -15 }],
+  },
+  labelTextStyle3: {
+    fontSize: 12,
+    transform: [{ translateY: -35 }],
   },
 });

@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet, Text, TextInput, Alert, KeyboardAvoidingView, ScrollView } from "react-native";
+import { View, StyleSheet, Text, TextInput, Alert, ScrollView } from "react-native";
 import type { NativeStackScreenProps } from "@react-navigation/native-stack";
 import { MainStackParamList } from "../types/navigation";
 import { addTargetCategory } from "../store/subCategorySlice";
@@ -20,8 +20,8 @@ export type TargetCategory = {
   result: number;
 };
 
-export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+export const TargetScreen: React.FC<Props> = () => {
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -55,7 +55,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   const setInitValues = () => {
     let initValues: any = [];
     if (currentYear in targets) {
-      targets[currentYear].forEach((element: any, index: number) => {
+      targets[currentYear].forEach((element: any) => {
         if (element.id !== "all") {
           initValues.push(element.goal.toString());
         }
@@ -70,7 +70,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   const setInitYearGoal = () => {
     let res: string = "";
     if (currentYear in targets) {
-      targets[currentYear].forEach((element: any, index: number) => {
+      targets[currentYear].forEach((element: any) => {
         if (element.id === "all") {
           res = element.goal.toString();
         }
@@ -115,18 +115,16 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
       ]);
     } else if (checkAllInput()) {
       Alert.alert(`${i18n.t("TaskEdit.alert12")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
-    } else if (result) {
-      Alert.alert(`${i18n.t("TaskEdit.alert16")}`, "", [
-        { text: `${i18n.t("TaskEdit.back")}` },
-      ]);
+    } else if (result || Number.isNaN(Number(currentYearGoal))) {
+      Alert.alert(`${i18n.t("TaskEdit.alert16")}`, "", [{ text: `${i18n.t("TaskEdit.back")}` }]);
     } else {
       // allYearのデータも格納
-      let result = 0;
+      let yearResult = 0;
       let yearGoal = 0;
       if (currentYear in targets) {
         for (const target of targets[currentYear]) {
           if (target.id === "all" && target.result !== 0) {
-            result = target.result;
+            yearResult = target.result;
           }
           if (target.id === "all" && Number(currentYearGoal) === 0) {
             yearGoal = target.goal;
@@ -144,7 +142,7 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
           id: "all",
           text: `${i18n.t("TrainingEdit.training09")}`,
           goal: yearGoal,
-          result: result,
+          result: yearResult,
         },
       ];
       // reduxへの保存
@@ -165,45 +163,48 @@ export const TargetScreen: React.FC<Props> = ({ navigation }: Props) => {
   return (
     <ScrollView style={styles.container}>
       <View style={styles.buttonContainer}>
-          <View>
-            <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.training09")}</Text>
-            <View style={styles.objectiveInputArea}>
-              <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.result")}</Text>
-              <TextInput
-                style={styles.objectiveInput}
-                keyboardType="numeric"
-                value={currentYearGoal.toString()}
-                onChangeText={(num) => {
-                  setCurrentYearGoal(num);
-                }}
-              ></TextInput>
-              <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.times")}</Text>
-            </View>
-            {teachers.map((teacher: any, index: number) => {
-              return (
-                <View style={styles.objectiveInputArea} key={index}>
-                  <Text style={styles.objectiveText}>{teacher.text}{i18n.t("Statistics.teacher")}</Text>
-                  <TextInput
-                    style={styles.objectiveInput}
-                    keyboardType="numeric"
-                    onChangeText={(count) => {
-                      onChangeCountByTeacher(count, teacher.id, index);
-                    }}
-                    value={currentValues[index]}
-                  ></TextInput>
-                  <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.times")}</Text>
-                </View>
-              );
-            })}
-            <View style={styles.submitButtonContainer}>
-              <Button
-                text={i18n.t("TrainingEdit.register")}
-                onPress={() => {
-                  onPressTargetSubmit();
-                }}
-              />
-            </View>
+        <View>
+          <Text style={styles.objectiveLabel}>{i18n.t("TrainingEdit.training09")}</Text>
+          <View style={styles.objectiveInputArea}>
+            <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.result")}</Text>
+            <TextInput
+              style={styles.objectiveInput}
+              keyboardType="numeric"
+              value={currentYearGoal.toString()}
+              onChangeText={(num) => {
+                setCurrentYearGoal(num);
+              }}
+            />
+            <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.times")}</Text>
           </View>
+          {teachers.map((teacher: any, index: number) => {
+            return (
+              <View style={styles.objectiveInputArea} key={index}>
+                <Text style={styles.objectiveText}>
+                  {teacher.text}
+                  {i18n.t("Statistics.teacher")}
+                </Text>
+                <TextInput
+                  style={styles.objectiveInput}
+                  keyboardType="numeric"
+                  onChangeText={(count) => {
+                    onChangeCountByTeacher(count, teacher.id, index);
+                  }}
+                  value={currentValues[index]}
+                />
+                <Text style={styles.objectiveText}>{i18n.t("TrainingEdit.times")}</Text>
+              </View>
+            );
+          })}
+          <View style={styles.submitButtonContainer}>
+            <Button
+              text={i18n.t("TrainingEdit.register")}
+              onPress={() => {
+                onPressTargetSubmit();
+              }}
+            />
+          </View>
+        </View>
       </View>
     </ScrollView>
   );
@@ -259,6 +260,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     width: "100%",
     alignItems: "center",
-    marginBottom:300,
+    marginBottom: 300,
   },
 });
