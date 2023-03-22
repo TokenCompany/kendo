@@ -204,15 +204,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
         <View style={styles.subBarWrap}>
           <BarChart
             data={subData}
-            rulesType="solid"
-            maxValue={isNaN(Number(maxValues[1])) ? 5 : Number(maxValues[1])}
-            noOfSections={5}
-            labelsExtraHeight={100}
-            labelWidth={70}
-            xAxisLabelTextStyle={{
-              transform: [{ translateX: -5 }],
-            //先生との稽古目標グラフの縦棒グラフバージョンのバックアップ
-            /*      horizontal
+            horizontal
             maxValue={isNaN(Number(maxValues[1])) ? 5 : Number(maxValues[1])}
             rulesType="solid"
             noOfSections={5}
@@ -221,7 +213,7 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
               transform: [{ translateX: -5 }, { translateY: -17 }],
             }}
             yAxisTextStyle={{
-              transform: [{ rotate: "-90deg" }], */
+              transform: [{ rotate: "-90deg" }],
             }}
           />
         </View>
@@ -266,12 +258,13 @@ const styles = StyleSheet.create({
     transform: [{ translateX: 220 }, { translateY: -100 }],
   },
   subBarWrap: {
+    zIndex: -100,
+    marginRight: "100%",
+    transform: [{ translateX: 220 }, { translateY: -100 }],
     //marginTop: 50,
     //marginLeft: 10,
-    marginTop: -30,
-    marginLeft: 10,
   },
-  /*labelTextStyle1: {
+  labelTextStyle1: {
     fontSize: 12,
     marginBottom: 6,
   },
@@ -282,5 +275,5 @@ const styles = StyleSheet.create({
   labelTextStyle3: {
     fontSize: 12,
     transform: [{ translateY: -35 }],
-  }, */
+  },
 });
