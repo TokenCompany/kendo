@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React from "react";
 import { View, TouchableOpacity, StyleSheet, Text } from "react-native";
 
 type Props = {
@@ -6,7 +6,7 @@ type Props = {
   text02: string;
   onPress01: () => void;
   onPress02: () => void;
-  judge:boolean;
+  judge: boolean;
 };
 export const TextButton: React.FC<Props> = ({ text01, text02, onPress01, onPress02, judge }) => {
   return (
@@ -16,9 +16,9 @@ export const TextButton: React.FC<Props> = ({ text01, text02, onPress01, onPress
           <Text style={styles.buttonText01}>{text01}</Text>
         </TouchableOpacity>
       )}
-         <TouchableOpacity style={styles.button} onPress={onPress02}>
-         <Text style={styles.buttonText02}>{text02}</Text>
-       </TouchableOpacity>
+      <TouchableOpacity style={styles.button} onPress={onPress02}>
+        <Text style={styles.buttonText02}>{text02}</Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -29,7 +29,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "center",
-    zIndex:-1,
+    zIndex: -1,
   },
   button: {
     flexGrow: 1,

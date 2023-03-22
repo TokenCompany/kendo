@@ -8,7 +8,12 @@ type Props = {
   placeholder?: string;
 };
 
-export const ProfileTextForm: React.FC<Props> = ({ label, value, onChangeText, placeholder = "" }) => {
+export const ProfileTextForm: React.FC<Props> = ({
+  label,
+  value,
+  onChangeText,
+  placeholder = "",
+}) => {
   return (
     <View style={styles.container}>
       <Text style={styles.label}>{label}</Text>

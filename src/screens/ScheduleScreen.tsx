@@ -17,12 +17,12 @@ import { TextButton } from "../components/TextButton";
 import { bookReservationItem, deleteReservationItem } from "../store/reservationSlice";
 import { deleteResults } from "../store/resultsSlice";
 import { addTargetCategory } from "../store/subCategorySlice";
-import { addNotifications,deleteNotifications } from "../store/notificationsSlice";
+import { addNotifications, deleteNotifications } from "../store/notificationsSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { RootState } from "../store";
 import DropDownPicker from "react-native-dropdown-picker";
 import * as Notifications from "expo-notifications";
-import DateTimePicker, { DateTimePickerEvent } from "@react-native-community/datetimepicker";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import dayjs from "dayjs";
 import { I18n } from "i18n-js";
 import en from "../lang/en.json";
@@ -122,7 +122,7 @@ export interface YearlyTriggerInput {
 }
 
 export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -160,7 +160,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
   const [form, setForm] = useState(false);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState<string>(`${i18n.t("ScheduleScreen.selectPlace")}`);
-  const [newPlaceFlag, setNewPlaceFlag] = useState<boolean>(false);
+  const [, setNewPlaceFlag] = useState<boolean>(false);
   const [showStart, setStartShow] = useState(false);
   const [showEnd, setEndShow] = useState(false);
 
@@ -220,10 +220,10 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       }),
     );
   };
-  const changeToHours = (num: number) => {
+  /* const changeToHours = (num: number) => {
     let parsedHours = Math.floor((num / 60) * 100) / 100;
     return parsedHours;
-  };
+  };*/
 
   const onPressDelete = () => {
     setShowSelectedDate(false);
@@ -274,19 +274,19 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
         return key;
       }
     }
-  }
+  };
 
   const notificationsData = useSelector((state: RootState) => state.notifications);
 
   // 予定を入れる
   const schedulePushNotification = async () => {
     let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
-    if (dayjs(selectedDate) <= dayjs().subtract(7, "day")){
+    if (dayjs(selectedDate) <= dayjs().subtract(7, "day")) {
       for (let i = 0; i < notifications.length; i++) {
-        let channelId = notifications[i].trigger.channelId;
+        // let channelId = notifications[i].trigger.channelId;
         // let channelId = notificationsDate[i].trigger.channelId;
         let identifier = notifications[i].identifier;
-         // let identifier = notificationsDate[i].identifier;
+        // let identifier = notificationsDate[i].identifier;
         Notifications.cancelScheduledNotificationAsync(identifier);
         // reduxでもキャンセルする
         dispatch(deleteNotifications(identifier));
@@ -329,15 +329,17 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
       },
     });
     let notifications2: any = await Notifications.getAllScheduledNotificationsAsync();
-    dispatch(addNotifications({
-      date: selectedDate!,
-      identifier: notifications2[notifications2.length - 1].identifier,
-    }))
+    dispatch(
+      addNotifications({
+        date: selectedDate!,
+        identifier: notifications2[notifications2.length - 1].identifier,
+      }),
+    );
   };
 
   // 予定消去
   const scheduleDelete = async () => {
-    let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
+    // let notifications: any = await Notifications.getAllScheduledNotificationsAsync();
     let selectedIdentifier = getIdentifier();
     if (selectedIdentifier) {
       Notifications.cancelScheduledNotificationAsync(selectedIdentifier);
@@ -439,7 +441,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                           value={dayjs(startTime).toDate()}
                           mode="time"
                           display={"default"}
-                          onChange={(event, date1) => {
+                          onChange={(date1) => {
                             setShowStartTimePicker(false);
                             setStartTime(date1!.toString());
                           }}
@@ -500,7 +502,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                           value={dayjs(endTime).toDate()}
                           mode="time"
                           display={"default"}
-                          onChange={(event, date2) => {
+                          onChange={(event: any, date2: any) => {
                             setShowEndTimePicker(false);
                             setEndTime(date2!.toString());
                           }}
@@ -531,7 +533,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                             value={dayjs(endTime).toDate()}
                             mode="time"
                             display={"spinner"}
-                            onChange={(event, date2) => {
+                            onChange={(event: any, date2: any) => {
                               setEndTime(date2!.toString());
                             }}
                           />
@@ -596,7 +598,7 @@ export const ScheduleScreen: React.FC<Props> = ({}: Props) => {
                 Alert.alert(`${i18n.t("TaskEdit.alert01")}`, "", [
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
-              } else if (place == `${i18n.t("ScheduleScreen.selectPlace")}`) {
+              } else if (place === `${i18n.t("ScheduleScreen.selectPlace")}`) {
                 Alert.alert(`${i18n.t("TaskEdit.alert06")}`, "", [
                   { text: `${i18n.t("TaskEdit.ok")}` },
                 ]);
@@ -705,8 +707,8 @@ const styles = StyleSheet.create({
     marginLeft: "18%",
     marginTop: "5%",
     borderWidth: 1,
-    backgroundColor: "#fff",
-    borderColor: "#aaa",
+    backgroundColor: "#fffffff",
+    borderColor: "#aaaaaa",
     borderRadius: 5,
     paddingHorizontal: 5,
   },

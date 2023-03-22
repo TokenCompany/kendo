@@ -6,15 +6,15 @@ import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
 import { useLang } from "../hooks/useLang";
-import * as Updates from 'expo-updates'
+import * as Updates from "expo-updates";
 
 type Props = NativeStackScreenProps<MainStackParamList, "Language">;
 
 export const LanguageScreen: React.FC<Props> = () => {
   const { currentLang, onChangeLang } = useLang();
   const Restart = () => {
-    Updates.reloadAsync()
-  }
+    Updates.reloadAsync();
+  };
 
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
@@ -27,7 +27,7 @@ export const LanguageScreen: React.FC<Props> = () => {
     setLocale(i18n.locale);
     onChangeLang(i18n.locale);
     setTimeout(() => {
-      Restart()
+      Restart();
     }, 2000);
   };
 
@@ -36,7 +36,7 @@ export const LanguageScreen: React.FC<Props> = () => {
     setLocale(i18n.locale);
     onChangeLang(i18n.locale);
     setTimeout(() => {
-      Restart()
+      Restart();
     }, 2000);
   };
 

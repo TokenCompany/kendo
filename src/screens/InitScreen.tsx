@@ -16,20 +16,22 @@ type Props = NativeStackScreenProps<MainStackParamList, "Init">;
 export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   useEffect(() => {
     requestPermissionsAsync();
-  })
+  });
   const requestPermissionsAsync = async () => {
     const { granted } = await Notifications.getPermissionsAsync();
-    if (granted) { return }
+    if (granted) {
+      return;
+    }
     await Notifications.requestPermissionsAsync();
-  }
+  };
 
   // アイコンバッジを０に戻す
   const deleteBadge = async () => {
     await Notifications.setBadgeCountAsync(0);
-    return
-  }
+    return;
+  };
   {
-    deleteBadge()
+    deleteBadge();
   }
 
   const profile: any = useSelector((state: RootState) => state.profile);
@@ -40,12 +42,11 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [onPressJudge, setOnPressJudge] = useState(false);
 
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
 
-  let time: any;
   const onPress = (time: any) => {
     setOnPressJudge(true);
     setModalVisible(true);
@@ -68,7 +69,6 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
 
   const initText = useSelector((state: RootState) => state.initText.initText);
   const splitText = initText.split("");
-  const task = useSelector((state: RootState) => state.profile.task);
   interface keyType {
     [key: string]: Function;
   }
@@ -101,7 +101,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   const passedObject3 = () => {
     let object = {} as keyType;
     Object.keys(onlyExamSchedule).filter((key, index) => {
-      if (index == Object.keys(onlyExamSchedule).length - 1) {
+      if (index === Object.keys(onlyExamSchedule).length - 1) {
         object[key] = onlyExamSchedule[key];
       }
     });
@@ -112,7 +112,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 段数を表示
   const renderLevel = () => {
     if (Object.keys(onlyExamSchedule).length <= 10) {
-      if (Object.keys(onlyExamScheduleLast) === ["exam0"]) {
+      if (Object.keys(onlyExamScheduleLast).toString() === "exam0") {
         return i18n.t("ProfileEdit.stage01");
       } else if (Object.keys(onlyExamScheduleLast).toString() === "exam1") {
         return i18n.t("ProfileEdit.stage02");
@@ -178,7 +178,7 @@ export const InitScreen: React.FC<Props> = ({ navigation }: Props) => {
     <TouchableOpacity style={styles.container} onPress={onPress}>
       {fontsLoaded ? (
         <View>
-          {splitText.map((data,index) => {
+          {splitText.map((data, index) => {
             return (
               <Text key={index} style={styles.text}>
                 {data}

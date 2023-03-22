@@ -11,7 +11,7 @@ import { useLang } from "../hooks/useLang";
 type Props = NativeStackScreenProps<MainStackParamList, "InitEdit">;
 
 export const InitEditScreen: React.FC<Props> = ({}: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;

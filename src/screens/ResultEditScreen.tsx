@@ -44,7 +44,7 @@ export type Results = {
 };
 
 export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -116,15 +116,17 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
   let targets: any = useSelector((state: RootState) => state.subCategory.targetSubCategories);
   let teachers = useSelector((state: RootState) => state.subCategory.teacherSubCategories);
   // 新しい先生が後から追加された時にターゲットにも追加する
-  const addNewTeacherToTargets = (teachers: SubCategories[], newTargets: TargetCategory[]) => {
-    teachers.forEach((teacher: SubCategories) => {
-      let found = newTargets.find((e: TargetCategory) => e.id === teacher.id);
+  const addNewTeacherToTargets = (newTeachers: SubCategories[], newTargets: TargetCategory[]) => {
+    newTeachers.forEach((teacher: SubCategories) => {
+      let found = newTargets.find(
+        (e: TargetCategory) => e.id === String(Object.values(teacher)[0]),
+      );
       if (!found) {
         newTargets.push({
-          id: teacher.id,
+          id: String(Object.values(teacher)[0]),
           result: 0,
           goal: 0,
-          text: teacher.text,
+          text: String(Object.values(teacher)[1]),
         });
       }
     });
@@ -159,10 +161,10 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     resultsFlag = true;
   }
 
-  const changeToHours = (num: number) => {
+  /* const changeToHours = (num: number) => {
     let parsedHours = Math.floor((num / 60) * 100) / 100;
     return parsedHours;
-  };
+  }; */
 
   const onPressBtn = () => {
     for (const check of checkArray) {
@@ -186,8 +188,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       for (const teacher of newAllResults.resultsSum.teacherSubCategories) {
         for (const targetRecord of targetRecords) {
           if (teacher.id === targetRecord.id && "result" in teacher && teacher.result > 0) {
-              targetRecord.result += 1;
-          }else if("result" in teacher === false){
+            targetRecord.result += 1;
+          } else if ("result" in teacher === false) {
             teacher.result = 0;
           }
         }
@@ -203,31 +205,31 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
       let pastData = resultsRecords[date].teacherSubCategories;
       let decrementTargets: string[] = [];
       let incrementTargets: string[] = [];
-      newAllResults.resultsSum.teacherSubCategories.forEach((teacher:any) => {
+      newAllResults.resultsSum.teacherSubCategories.forEach((teacher: any) => {
         pastData.forEach((element) => {
-          if (teacher.id === element.id && element.result > 0 && teacher.result === 0 ) {
-            decrementTargets.push(teacher.id)
-          }else if(teacher.id === element.id && element.result === 0 && teacher.result > 0 ){
+          if (teacher.id === element.id && Number(element.result) > 0 && teacher.result === 0) {
+            decrementTargets.push(teacher.id);
+          } else if (teacher.id === element.id && Number(element.result) === 0 && teacher.result > 0) {
             incrementTargets.push(teacher.id);
           }
         });
       });
       // 重複しないように下げる
-      decrementTargets.forEach((decTarget:string) => {
+      decrementTargets.forEach((decTarget: string) => {
         for (const targetRecord of targetRecords) {
           if (targetRecord.id === decTarget) {
             targetRecord.result -= 1;
           }
         }
-      })
+      });
       // その後再度追加された場合に追加する
-      incrementTargets.forEach((incTarget:string) => {
+      incrementTargets.forEach((incTarget: string) => {
         for (const targetRecord of targetRecords) {
           if (targetRecord.id === incTarget) {
             targetRecord.result += 1;
           }
         }
-      })
+      });
     }
 
     setAllResults(newAllResults);
@@ -241,14 +243,16 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     dispatch(addTargetCategory(saveAllTargets));
   };
 
-  const checkNewTeacher = (results: SubCategories[], allResults: SubCategories[]) => {
+  const checkNewTeacher = (results: SubCategories[], Newallresults: SubCategories[]) => {
     results.forEach((teacher: SubCategories) => {
-      let found = allResults.find((e: SubCategories) => e.id === teacher.id);
+      let found = Newallresults.find(
+        (e: SubCategories) => String(Object.values(e)[0]) === String(Object.values(teacher)[0]),
+      );
       if (!found) {
-        allResults.push({
-          id: teacher.id,
+        Newallresults.push({
+          id: String(Object.values(teacher)[0]),
           result: "result" in teacher ? teacher.result : 0,
-          text: teacher.text,
+          text: String(Object.values(teacher)[1]),
         });
       }
     });
@@ -262,8 +266,8 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
     // 既に登録内容があるかないかで出し分けが必要
     // ①既にある情報を探し上書き
 
-    if (newAllResults["resultsSum"][mainCategory].length !== 0) {
-      newAllResults["resultsSum"][mainCategory].forEach((element: any) => {
+    if (newAllResults.resultsSum[mainCategory].length !== 0) {
+      newAllResults.resultsSum[mainCategory].forEach((element: any) => {
         results.forEach((element2: any) => {
           if (element.id === element2.id && "result" in element2) {
             element.result = element2.result;
@@ -271,15 +275,15 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         });
       });
       // 後から新しい先生追加した場合の記述
-      checkNewTeacher(results, newAllResults["resultsSum"][mainCategory]);
+      checkNewTeacher(results, newAllResults.resultsSum[mainCategory]);
     } else {
       // ②新しい入力値をそのまま追加
-      newAllResults["resultsSum"][mainCategory] = results;
+      newAllResults.resultsSum[mainCategory] = results;
     }
-    if (mainCategory === "placeSubCategories"){
-      newAllResults["resultsSum"][mainCategory].forEach((element: any) => {
-        if(element.id === "new" && element.result){
-          newAllResults["resultsSum"][mainCategory] = results;
+    if (mainCategory === "placeSubCategories") {
+      newAllResults.resultsSum[mainCategory].forEach((element: any) => {
+        if (element.id === "new" && element.result) {
+          newAllResults.resultsSum[mainCategory] = results;
         }
       });
     }
@@ -372,7 +376,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
             onChangeResults(changedResults, mainCategory);
           }}
           onChangeSendPlace={(changedResults: any) => {
-            onChangeResults(changedResults,"placeSubCategories")
+            onChangeResults(changedResults, "placeSubCategories");
           }}
           onCheckedSend={(textTrainingCategories, checked) => {
             onCheckedBoolean(textTrainingCategories, checked);

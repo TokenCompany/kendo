@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import dayjs from "dayjs";
 import { View, StyleSheet, Text, TouchableOpacity, Modal, Platform } from "react-native";
-import { Calendar, CalendarList, LocaleConfig } from "react-native-calendars";
-import DateTimePicker, { AndroidNativeProps } from "@react-native-community/datetimepicker";
+import { Calendar } from "react-native-calendars";
+import DateTimePicker from "@react-native-community/datetimepicker";
 import { RootState } from "../store";
-import { useSelector, useDispatch } from "react-redux";
+import { useSelector } from "react-redux";
 import { I18n } from "i18n-js";
 import en from "../lang/en.json";
 import ja from "../lang/ja.json";
@@ -14,8 +14,8 @@ type Props = {
   onChangeDay: (day: string) => void;
 };
 
-export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props) => {
-  const { currentLang, onChangeLang } = useLang();
+export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay }: Props) => {
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -32,8 +32,8 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
 
   const [showPickerAndroid, setShowPickerAndroid] = useState<boolean>();
   const onPressShowPickerAndroid = () => {
-    setShowPickerAndroid(true)
-  }
+    setShowPickerAndroid(true);
+  };
 
   return (
     <View style={styles.container}>
@@ -51,51 +51,51 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
           </TouchableOpacity>
         </View>
       )}
-        {Platform.OS === "android" && (
-          <View>
-            {showPickerAndroid && (
+      {Platform.OS === "android" && (
+        <View>
+          {showPickerAndroid && (
             <DateTimePicker
               locale={i18n.t("Lang.lang")}
               value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
               mode="date"
               display={"default"}
               onChange={(event, date) => {
-                setShowPickerAndroid(false)
+                setShowPickerAndroid(false);
                 setCurrentDate(dayjs(date));
-                onChangeDay(dayjs(date).format("YYYY-MM-DD").toString())
+                onChangeDay(dayjs(date).format("YYYY-MM-DD").toString());
               }}
             />
-            )}
+          )}
+        </View>
+      )}
+      {Platform.OS === "ios" && (
+        <Modal
+          animationType="fade"
+          visible={show}
+          transparent={true}
+          onRequestClose={() => {
+            setShow(false);
+          }}
+        >
+          <View style={styles.modalView}>
+            <DateTimePicker
+              locale={i18n.t("Lang.lang")}
+              value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
+              mode="date"
+              display={"spinner"}
+              onChange={(event, date) => {
+                if (date) {
+                  setCurrentDate(dayjs(date));
+                  onChangeDay(dayjs(date).format("YYYY-MM-DD").toString());
+                }
+              }}
+            />
+            <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
+              <Text style={styles.textStyle}>×</Text>
+            </TouchableOpacity>
           </View>
-        )}
-        {Platform.OS === "ios" && (
-          <Modal
-            animationType="fade"
-            visible={show}
-            transparent={true}
-            onRequestClose={() => {
-              setShow(false);
-            }}
-          >
-            <View style={styles.modalView}>
-              <DateTimePicker
-                locale={i18n.t("Lang.lang")}
-                value={dayjs(currentDate.toString(), "YYYY-MM-DD").toDate()}
-                mode="date"
-                display={"spinner"}
-                onChange={(event, date) => {
-                  if (date) {
-                    setCurrentDate(dayjs(date));
-                    onChangeDay(dayjs(date).format("YYYY-MM-DD").toString())
-                  }
-                }}
-              />
-              <TouchableOpacity style={styles.modalButton} onPress={hideDatePicker}>
-                <Text style={styles.textStyle}>×</Text>
-              </TouchableOpacity>
-            </View>
-          </Modal>
-        )}
+        </Modal>
+      )}
       <Calendar
         // 日付を選択したときの挙動。
         theme={{
@@ -160,18 +160,20 @@ export const CalendarFrame: React.FC<Props> = ({ onPressDay, onChangeDay}: Props
   );
 };
 
-const JapaneseHolidays = require('japanese-holidays');
+const JapaneseHolidays = require("japanese-holidays");
 const dayTextStyle = (date: any, currentDate: Date) =>
-
   StyleSheet.create({
     dayText: {
       fontSize: 16,
       backgroundColor: "transparent",
       color:
         date.month !== dayjs(currentDate).month() + 1
-          ? "gray" : dayjs(date.dateString).day() === 0
-          ? "red" : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
-          ? "red" : dayjs(date.dateString).day() === 6
+          ? "gray"
+          : dayjs(date.dateString).day() === 0
+          ? "red"
+          : JapaneseHolidays.isHoliday(new Date(dayjs(date.dateString).format("YYYY/MM/DD")))
+          ? "red"
+          : dayjs(date.dateString).day() === 6
           ? "blue"
           : "black",
     },
@@ -179,12 +181,12 @@ const dayTextStyle = (date: any, currentDate: Date) =>
 
 const styles = StyleSheet.create({
   container: {
-    position:"relative",
+    position: "relative",
     margin: 10,
   },
-  dateButton:{
-    paddingHorizontal:30,
-    height:40,
+  dateButton: {
+    paddingHorizontal: 30,
+    height: 40,
   },
   buttonSelected: {
     height: 34,
@@ -192,7 +194,7 @@ const styles = StyleSheet.create({
     marginBottom: 6,
     padding: 5,
     paddingLeft: 4,
-    backgroundColor:"#fff",
+    backgroundColor: "#fff",
   },
   button: {
     marginBottom: 6,
@@ -203,15 +205,15 @@ const styles = StyleSheet.create({
   },
   dayInput: {
     flex: 1,
-    alignItems:"center",
-    justifyContent:"center",
+    alignItems: "center",
+    justifyContent: "center",
     borderColor: "#000",
     color: "#000",
     fontSize: 20,
-    position:"absolute",
-    zIndex:2,
-    left:"30%",
-    top:"2%",
+    position: "absolute",
+    zIndex: 2,
+    left: "30%",
+    top: "2%",
   },
   buttonText: {
     fontSize: 20,
@@ -249,9 +251,9 @@ const styles = StyleSheet.create({
     marginLeft: 10,
     height: 40,
   },
-  arrowButton:{
-    fontSize:18,
-    fontWeight:"bold",
-    color:"red",
+  arrowButton: {
+    fontSize: 18,
+    fontWeight: "bold",
+    color: "red",
   },
 });

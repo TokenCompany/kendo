@@ -7,7 +7,7 @@ import { TextButton } from "../components/TextButton";
 import { useSelector } from "react-redux";
 import { deleteResults } from "../store/resultsSlice";
 import { addTargetCategory } from "../store/subCategorySlice";
-import { bookReservationItem} from "../store/reservationSlice";
+import { bookReservationItem } from "../store/reservationSlice";
 import { useDispatch } from "react-redux";
 import { RootState } from "../store";
 import dayjs from "dayjs";
@@ -20,7 +20,7 @@ type Props = NativeStackScreenProps<MainStackParamList, "History">;
 
 export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   // 言語の設定
-  const { currentLang, onChangeLang } = useLang();
+  const { currentLang } = useLang();
   const i18n = new I18n({ en, ja });
   i18n.locale = currentLang;
   i18n.enableFallback = true;
@@ -40,10 +40,9 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
   const results = useSelector((state: RootState) => state.results);
 
   const resultChangePlace = (day: string) => {
-
     if (day in results) {
       results[day].placeSubCategories.forEach((element) => {
-        if (element.result === true) setPlace(element.text)
+        if (element.result === true) setPlace(element.text);
       });
     } else {
       setPlace(reservations[day].place);
@@ -70,10 +69,10 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
     }
   };
 
-  const changeToHours = (num: number) => {
+  /* const changeToHours = (num: number) => {
     let parsedHours = Math.floor((num / 60) * 100) / 100;
     return parsedHours;
-  };
+  };*/
 
   let dateTextArray;
   return (
@@ -144,7 +143,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
           <TextButton
             text01={i18n.t("History.input")}
             text02={i18n.t("History.ncw")}
-            onPress01={()=>{
+            onPress01={() => {
               onPress();
             }}
             onPress02={() => {
@@ -206,7 +205,7 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
                       resultStatus: false,
                     }),
                   );
-                }else{
+                } else {
                   dispatch(
                     bookReservationItem({
                       date: selectedDate!,
@@ -217,7 +216,6 @@ export const HistoryScreen: React.FC<Props> = ({ navigation }: Props) => {
                     }),
                   );
                 }
-
               }
             }}
             judge={showButton}
@@ -251,7 +249,7 @@ const styles = StyleSheet.create({
   boxInputText: {
     paddingLeft: 10,
     flexGrow: 1,
-    width:"90%",
+    width: "90%",
   },
   boxInputTime: {
     paddingLeft: 10,
