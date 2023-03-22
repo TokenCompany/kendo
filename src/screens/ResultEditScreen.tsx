@@ -209,7 +209,7 @@ export const ResultEditScreen: React.FC<Props> = ({ route, navigation }: Props) 
         pastData.forEach((element) => {
           if (teacher.id === element.id && Number(element.result) > 0 && teacher.result === 0) {
             decrementTargets.push(teacher.id);
-          } else if (teacher.id === element.id && element.result === 0) {
+          } else if (teacher.id === element.id && Number(element.result) === 0 && teacher.result > 0) {
             incrementTargets.push(teacher.id);
           }
         });
