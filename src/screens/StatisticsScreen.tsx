@@ -207,11 +207,15 @@ export const StatisticsScreen: React.FC<Props> = ({}: Props) => {
             horizontal
             maxValue={isNaN(Number(maxValues[1])) ? 5 : Number(maxValues[1])}
             rulesType="solid"
+            initialSpacing={20}
             noOfSections={5}
-            labelWidth={70}
+            labelWidth={50}
             xAxisLabelTextStyle={{
-              transform: [{ translateX: -5 }, { translateY: -17 }],
+              transform: [{ translateX: -15 }, { translateY: -10 }],
             }}
+            /*xAxisLabelTextStyle={{
+              transform: [{ translateX: -5 }, { translateY: -17 }],
+            }}*/
             yAxisTextStyle={{
               transform: [{ rotate: "-90deg" }],
             }}
