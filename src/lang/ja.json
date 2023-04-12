@@ -56,7 +56,7 @@
   "ResultEdit": {
     "title": "実績入力",
     "textTime": "稽古時間",
-    "teacher": "先生",
+    "teacher": "",
     "textButton": "稽古実績登録",
     "textUnit01": "本",
     "textUnit02": "分",
@@ -76,7 +76,7 @@
     "label01": "稽古回数",
     "label02": "稽古目標",
     "year": "年",
-    "teacher": "先生"
+    "teacher": ""
   },
   "ProfileEdit": {
     "title": "プロフィール編集",
