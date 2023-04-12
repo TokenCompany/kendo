@@ -39,7 +39,8 @@
           "icon": "./assets/notification-icon.png",
           "color": "#000000"
         }
-      ]
+      ],
+      "expo-localization"
     ],
     "extra": {
       "eas": {
